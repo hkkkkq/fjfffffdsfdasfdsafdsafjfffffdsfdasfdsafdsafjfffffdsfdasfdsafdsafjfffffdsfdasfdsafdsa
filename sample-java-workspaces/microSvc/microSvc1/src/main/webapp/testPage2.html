@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>TestPage</title>
+</head>
+<body>
+  <h1>svc1 -> svc2 처리</h1>
+  <body>
+	<form action = "./api/users/members" accept-charset="utf-8" name = "users" method = "post">
+	    <fieldset style = "width:150">
+	        <legend>Test Case2</legend>
+	           아이디 : <input type = "text" name = "id"/><br><br>
+	           이름 : <input type = "text" name = "name" required/><br><br>
+	           주민번호 : <input type = "text" name = "security_number" 
+	                      pattern = "\d{6}\-\d{7}" 
+	                      title = "123456-1234567 형식으로 입력해주세요"/><br><br>
+	
+	           <input type = "submit" value = "submit"/>
+	           <input type = "reset" value = "reset"/><br><br>
+	    </fieldset> 
+	</form>
+  </body>
+</html>

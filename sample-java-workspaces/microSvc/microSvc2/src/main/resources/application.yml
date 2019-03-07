@@ -1,0 +1,22 @@
+
+server:
+  port: 8090
+  servlet:
+    context-path: /svc2
+
+spring:
+  datasource:
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:postgres}
+    driver-class-name: org.postgresql.Driver
+    username: ${DB_USER:postgres}
+    password: ${DB_PASSWD:postgres}
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    
+herasoo:
+  name: wonho
+  host:
+    svc1: ${SVC1HOST:localhost}
+    svc2: ${SVC2HOST:localhost}
+
+debug: false
