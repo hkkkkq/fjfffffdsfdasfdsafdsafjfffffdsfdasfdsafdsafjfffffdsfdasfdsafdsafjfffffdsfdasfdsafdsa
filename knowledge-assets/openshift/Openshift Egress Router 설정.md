@@ -14,16 +14,6 @@
 
 ###  사전 준비
 
-- 클러스터 관리자는 Namespace 별 사용 가능한 static IPs를 할당한다. 이는 특정 Namespace에서 나가는 트래픽을 쉽게 구분시켜 주는 장점이 있다.  
-
-```bash
-$ oc patch netnamespace <project_name> -p '{"egressIPs": ["<IP_address>"]}'
-```
-
-```bash
-$ oc patch netnamespace herasoo -p '{"egressIPs": ["192.168.12.99"]}'
-```
-
 - 클러스터 관리자는 노드별 사용 가능한  static IPs를 할당한다.
 
 ```bash
@@ -34,6 +24,16 @@ $ oc patch hostsubnet <node_name> -p \
 ```bash
 $ oc patch hostsubnet herasoo-dmz-infra-wokernode1 -p \
   '{"egressIPs": ["192.168.12.99", "192.168.12.100", "192.168.12.101"]}'
+```
+
+- 클러스터 관리자는 Namespace 별 사용 가능한 static IPs를 할당한다. 이는 특정 Namespace에서 나가는 트래픽을 쉽게 구분시켜 주는 장점이 있다.  
+
+```bash
+$ oc patch netnamespace <project_name> -p '{"egressIPs": ["<IP_address>"]}'
+```
+
+```bash
+$ oc patch netnamespace herasoo -p '{"egressIPs": ["192.168.12.99"]}'
 ```
 
 - 위와 같이 설정한다면 herasoo Namespace에 생성되는 Egress Router Pod는 herasoo-dmz-infra-wokernode1 Node에 배치되고 그 때  static IP 192.168.12.99를 가지게 된다. 이로써 Node별 static IPs, Namespace별 static IPs  관리되어 효율적인 관리와 가시적인 모니터링이 가능하다.
