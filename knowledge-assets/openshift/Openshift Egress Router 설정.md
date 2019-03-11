@@ -61,7 +61,7 @@ spec:
     spec:
       initContainers:
       - name: egress-router
-        image: ktis-bastion01.container.ipc.kt.com:5000/openshift3/ose-egress-router:v3.11.16
+        image: ktis-bastion01.container.ipc.kt.com:5000/openshift3/ose-egress-router:v3.11
         imagePullPolicy: Always
         env:
         - name: EGRESS_SOURCE
@@ -82,7 +82,7 @@ spec:
           privileged: true
       containers:
       - name: egress-router-wait
-        image: ktis-bastion01.container.ipc.kt.com:5000/openshift3/ose-pod:v3.11.16
+        image: ktis-bastion01.container.ipc.kt.com:5000/openshift3/ose-pod:v3.11
       #nodeSelector:
         #site: springfield-1
       nodeName: herasoo-dmz-infra-wokernode1
