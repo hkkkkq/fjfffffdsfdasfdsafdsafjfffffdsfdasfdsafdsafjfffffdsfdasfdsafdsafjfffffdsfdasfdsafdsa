@@ -19,7 +19,11 @@ spring:
 services:
   comment: "컨테이너 클러스터 내외부 서비스 host정보 정의"
   host:
-    svc1: ${SVC1HOST:localhost}
-    svc2: ${SVC2HOST:localhost}
-
+    svc1: ${svc1Host:localhost}
+    svc2: ${svc2Host:localhost}
+  port:
+    svc1: ${svc1Port:8080}
+    svc2: ${svc2Port:8090}
 debug: false
+
+management:  endpoints:    web:      exposure:        include:        - "*"        

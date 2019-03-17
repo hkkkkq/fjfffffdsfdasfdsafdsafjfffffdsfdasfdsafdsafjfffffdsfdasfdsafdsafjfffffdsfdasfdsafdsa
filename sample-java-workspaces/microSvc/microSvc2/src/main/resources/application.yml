@@ -18,5 +18,7 @@ herasoo:
   host:
     svc1: ${SVC1HOST:localhost}
     svc2: ${SVC2HOST:localhost}
-
+  port:
+    svc1: ${svc1Port:8080}
+    svc2: ${svc2Port:8090}
 debug: false

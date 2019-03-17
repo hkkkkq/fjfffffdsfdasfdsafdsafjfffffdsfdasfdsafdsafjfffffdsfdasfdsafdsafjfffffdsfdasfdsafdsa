@@ -35,6 +35,9 @@ public class MemberApiController {
 	@Value("${herasoo.host.svc1}")
 	private String svc1Host;
 	
+	@Value("${herasoo.port.svc1}")
+	private String svc1Port;
+	
 //	@GetMapping(value = "")
 //	public String getAllMemberss(Request req) {
 //		
@@ -79,7 +82,7 @@ public class MemberApiController {
 		
 		//DB Insert
 		logger.info("# createConnectionHistory");
-		sqlMapperDao.createConnectionHistory(req);
+		//sqlMapperDao.createConnectionHistory(req);
 		
 		return new ResponseEntity<Response>(res, headers, HttpStatus.CREATED);
 	    //return new ResponseEntity<String>(headers, HttpStatus.CREATED);
@@ -106,7 +109,7 @@ public class MemberApiController {
 		
 		//DB Insert
 		logger.info("# createConnectionHistory");
-		sqlMapperDao.createConnectionHistory(req);
+		//sqlMapperDao.createConnectionHistory(req);
 				
 		return new ResponseEntity<Response>(res, headers, HttpStatus.CREATED);
 	    //return new ResponseEntity<String>(headers, HttpStatus.CREATED);
@@ -119,7 +122,7 @@ public class MemberApiController {
 		
 		req.setId(req.getId()+"_userss");
 		
-		logger.info("# svc1 http://localhost:8080/svc1/api/users/api2 POST 호출");
+		logger.info("# svc1 http://" + svc1Host + ":" + svc1Port + "//svc1/api/users/api2 POST 호출");
 		
 		// svc1 http 호출
 		HttpHeaders headers = new HttpHeaders();
@@ -128,13 +131,14 @@ public class MemberApiController {
 		
 		logger.info("# requestHttpEntity.getBody().toString(): " + requestHttpEntity.getBody().toString());
 		logger.info("# properties - herasoo.host.svc1: " + svc1Host);
+		logger.info("# properties - herasoo.port.svc1: " + svc1Port);
 		
-		ResponseEntity<Response> responseEntity = restTemplate.exchange("http://" + svc1Host + ":8080/svc1/api/users/api2", HttpMethod.POST, requestHttpEntity, Response.class);
+		ResponseEntity<Response> responseEntity = restTemplate.exchange("http://" + svc1Host + ":" + svc1Port + "/svc1/api/users/api2", HttpMethod.POST, requestHttpEntity, Response.class);
 		responseEntity.getBody().setResultMsg("User(svc1) member created!!!!");
 		
 		//DB Insert
 		logger.info("# createConnectionHistory");
-		sqlMapperDao.createConnectionHistory(req);
+		//sqlMapperDao.createConnectionHistory(req);
 		
 		return responseEntity;
 

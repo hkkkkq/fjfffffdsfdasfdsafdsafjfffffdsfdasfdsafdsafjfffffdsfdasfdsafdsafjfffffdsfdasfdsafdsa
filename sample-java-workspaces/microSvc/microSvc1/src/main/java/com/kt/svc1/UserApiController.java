@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+
 
 @RestController
 @RequestMapping("/api/users")
@@ -35,6 +37,9 @@ public class UserApiController {
 	
 	@Value("${services.host.svc2}")
 	private String svc2Host;
+	
+	@Value("${services.port.svc2}")
+	private String svc2Port;
 	
 	
 //	@GetMapping(value = "")
@@ -81,7 +86,7 @@ public class UserApiController {
 		
 		//DB Insert
 		logger.info("# createConnectionHistory");
-		sqlMapperDao.createConnectionHistory(req);
+		//sqlMapperDao.createConnectionHistory(req);
 
 		return new ResponseEntity<Response>(res, headers, HttpStatus.CREATED);
 	    //return new ResponseEntity<String>(headers, HttpStatus.CREATED);
@@ -108,20 +113,21 @@ public class UserApiController {
 
 		//DB Insert
 		logger.info("# createConnectionHistory");
-		sqlMapperDao.createConnectionHistory(req);
+		//sqlMapperDao.createConnectionHistory(req);
 		
 		return new ResponseEntity<Response>(res, headers, HttpStatus.CREATED);
 	    //return new ResponseEntity<String>(headers, HttpStatus.CREATED);
 	}
 	
 	@PostMapping(value = "/members", consumes= {MediaType.APPLICATION_FORM_URLENCODED_VALUE,MediaType.APPLICATION_JSON_UTF8_VALUE}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@HystrixCommand(fallbackMethod = "createMemberFallback")
 	public ResponseEntity<Response> createMember(Request req) { // The problem is that when we use application/x-www-form-urlencoded, Spring doesn't understand it as a RequestBody. So, if we want to use this we must remove the @RequestBody annotation
 		
 		logger.info("req => " + req.toString());
 		
 		req.setId(req.getId()+"_members");
 		
-		logger.info("# svc2 http://localhost:8090/svc2/api/members/api2 POST 호출");
+		logger.info("# svc2 http://" + svc2Host + ":" + svc2Port + "/svc2/api/members/api2 POST 호출");
 		
 		// RestTemplate을 이용하여 svc2 서비스 Http Request 호출하기
 		HttpHeaders headers = new HttpHeaders();
@@ -130,6 +136,7 @@ public class UserApiController {
 		
 		logger.info("# requestHttpEntity.getBody().toString(): " + requestHttpEntity.getBody().toString());
 		logger.info("# properties - services.host.svc2: " + svc2Host);
+		logger.info("# properties - services.port.svc2: " + svc2Port);
 		
 		// 필요 시 default timeout 아닌 개별 timeout 설정
 		HttpComponentsClientHttpRequestFactory requestFactory = new HttpComponentsClientHttpRequestFactory();
@@ -137,13 +144,13 @@ public class UserApiController {
 		requestFactory.setReadTimeout(1000*15);
 		restTemplate.setRequestFactory(requestFactory);
 		
-		ResponseEntity<Response> responseEntity = restTemplate.exchange("http://" + svc2Host + ":8090/svc2/api/members/api2", HttpMethod.POST, requestHttpEntity, Response.class);
+		ResponseEntity<Response> responseEntity = restTemplate.exchange("http://" + svc2Host + ":" + svc2Port + "/svc2/api/members/api2", HttpMethod.POST, requestHttpEntity, Response.class);
 		logger.info("# responseEntity.getBody().toString(): " + responseEntity.getBody().toString());
 		responseEntity.getBody().setResultMsg("Member(svc2) user created!!!!");
 		
 		//DB Insert
 		logger.info("# createConnectionHistory");
-		sqlMapperDao.createConnectionHistory(req);
+		//sqlMapperDao.createConnectionHistory(req);
 		
 		return responseEntity;
 
@@ -151,5 +158,23 @@ public class UserApiController {
 	    //return new ResponseEntity<String>(headers, HttpStatus.CREATED);
 	}
 	
+	public ResponseEntity<Response> createMemberFallback(Request req) { 
+		
+		logger.info("req => " + req.toString());
+		
+		req.setId(req.getId()+"_members");
+		
+		logger.info("# svc2 http://" + svc2Host + ":" + svc2Port + "/svc2/api/members/api2 POST 호출  Fallback");
+		
+		Response response = new Response();
+		response.setId(req.getId());
+		response.setName(req.getName());
+		response.setSecurity_number(req.getSecurity_number());
+		response.setResultCode("Fallback");
+		response.setResultMsg("svc1=>svc2 Fallback");
+		
+		ResponseEntity<Response> responseEntity = new ResponseEntity<Response>(response, HttpStatus.OK);
+		return responseEntity;
+	}
 }
 
