@@ -20,11 +20,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
+import com.netflix.hystrix.contrib.javanica.annotation.DefaultProperties;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
 
 
 @RestController
 @RequestMapping("/api/users")
+//@DefaultProperties(groupKey="",threadPoolKey="",commandProperties= {},threadPoolProperties= {})
 public class UserApiController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(UserApiController.class);
@@ -120,7 +123,17 @@ public class UserApiController {
 	}
 	
 	@PostMapping(value = "/members", consumes= {MediaType.APPLICATION_FORM_URLENCODED_VALUE,MediaType.APPLICATION_JSON_UTF8_VALUE}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-	@HystrixCommand(fallbackMethod = "createMemberFallback")
+//	@HystrixCommand(fallbackMethod = "createMemberFallback")
+	@HystrixCommand(fallbackMethod = "createMemberFallback",
+					commandProperties = {@HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "3000")
+										,@HystrixProperty(name = "metrics.rollingStats.timeInMilliseconds", value = "10000")
+										,@HystrixProperty(name = "circuitBreaker.requestVolumeThreshold", value = "20")
+										,@HystrixProperty(name = "circuitBreaker.errorThresholdPercentage", value = "50")
+										,@HystrixProperty(name = "circuitBreaker.sleepWindowInMilliseconds", value = "5000")
+					},
+					threadPoolProperties = {@HystrixProperty(name = "coreSize", value = "10")											
+					}//,groupKey="" , commandKey="", threadPoolKey=""
+	)
 	public ResponseEntity<Response> createMember(Request req) { // The problem is that when we use application/x-www-form-urlencoded, Spring doesn't understand it as a RequestBody. So, if we want to use this we must remove the @RequestBody annotation
 		
 		logger.info("req => " + req.toString());
