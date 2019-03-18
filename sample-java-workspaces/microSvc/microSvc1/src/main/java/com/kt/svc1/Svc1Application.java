@@ -30,8 +30,8 @@ public class Svc1Application {
 		HttpComponentsClientHttpRequestFactory httpComponentsClientHttpRequestFactory = new HttpComponentsClientHttpRequestFactory();
 		
 		// default timeout setting
-		httpComponentsClientHttpRequestFactory.setReadTimeout(1000*5);
-		httpComponentsClientHttpRequestFactory.setConnectTimeout(1000*30);
+		httpComponentsClientHttpRequestFactory.setReadTimeout(1000*10);
+		httpComponentsClientHttpRequestFactory.setConnectTimeout(1000*3);
 		
 		return new RestTemplate(httpComponentsClientHttpRequestFactory);
 	}

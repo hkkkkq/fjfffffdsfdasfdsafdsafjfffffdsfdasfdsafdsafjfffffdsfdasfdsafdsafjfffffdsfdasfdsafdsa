@@ -26,4 +26,16 @@ services:
     svc2: ${svc2Port:8090}
 debug: false
 
+hystrix:
+  command:
+    default:
+      execution.isolation.thread.timeoutInMilliseconds: 5000
+      metrics.rollingStats.timeInMilliseconds: 10000
+      circuitBreaker.requestVolumeThreshold: 20
+      circuitBreaker.errorThresholdPercentage: 50
+      circuitBreaker.sleepWindowInMilliseconds: 5000
+  threadpool:
+    default:
+      coreSize: 10
+        
 management:  endpoints:    web:      exposure:        include:        - "*"        

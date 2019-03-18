@@ -136,6 +136,16 @@ git reset work.text # git reset --mixed HEAD work.txt
 
 
 
+```bash
+# 특정 버전으로 Rollback 하기 (사용주의)
+# HEAD, Index, Working Dir을 특정 버전으로 돌리고 remote origin에 반영하기
+# Remote의 protected branch 설정에 따라 push 시 Maintainer 권한이 필요하다
+git reset --hard HEAD~
+git push --force origin master
+```
+
+
+
 - git checkout:  `Switch branches or restore working tree files`
 
 ```bash
@@ -315,5 +325,5 @@ pull 을 실행하면, 원격 저장소의 내용을 가져와 자동으로 병�
 
 `ref^` is shorthand for `ref^1` and means the commit's first parent. But where the two differ is that `ref^2` means the commit's **second parent(두번쨰 부모)**(remember, commits can have two parents when they are a merge).
 
-![20190223104038](assets/20190223104038.jpg)
+![그림1](assets/1.jpg)
 

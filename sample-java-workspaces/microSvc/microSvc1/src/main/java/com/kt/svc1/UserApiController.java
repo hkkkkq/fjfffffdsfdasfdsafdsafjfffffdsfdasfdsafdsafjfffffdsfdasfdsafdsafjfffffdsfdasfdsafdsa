@@ -139,10 +139,10 @@ public class UserApiController {
 		logger.info("# properties - services.port.svc2: " + svc2Port);
 		
 		// 필요 시 default timeout 아닌 개별 timeout 설정
-		HttpComponentsClientHttpRequestFactory requestFactory = new HttpComponentsClientHttpRequestFactory();
-		requestFactory.setConnectionRequestTimeout(1000*3);
-		requestFactory.setReadTimeout(1000*15);
-		restTemplate.setRequestFactory(requestFactory);
+//		HttpComponentsClientHttpRequestFactory requestFactory = new HttpComponentsClientHttpRequestFactory();
+//		requestFactory.setConnectionRequestTimeout(1000*5);
+//		requestFactory.setReadTimeout(1000*15);
+//		restTemplate.setRequestFactory(requestFactory);
 		
 		ResponseEntity<Response> responseEntity = restTemplate.exchange("http://" + svc2Host + ":" + svc2Port + "/svc2/api/members/api2", HttpMethod.POST, requestHttpEntity, Response.class);
 		logger.info("# responseEntity.getBody().toString(): " + responseEntity.getBody().toString());

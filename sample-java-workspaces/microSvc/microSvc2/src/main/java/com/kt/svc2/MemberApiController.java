@@ -89,7 +89,9 @@ public class MemberApiController {
 	}
 	
 	@PostMapping(value = "/api2", consumes= MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-	public ResponseEntity<Response> createMembers3(@RequestBody Request req) {
+	public ResponseEntity<Response> createMembers3(@RequestBody Request req) throws InterruptedException {
+		
+		//Thread.sleep(5000);
 		
 		logger.info("req => " + req.toString());
 		
