@@ -198,16 +198,3 @@ public ResponseEntity<Response> createMemberFallback(Request req) {
 @DefaultProperties(groupKey="",threadPoolKey="",commandProperties= {},threadPoolProperties= {})
 public class UserApiController {
 ```
-
-
-
-### Istio
-
-
-
-
-
-
-
-
-

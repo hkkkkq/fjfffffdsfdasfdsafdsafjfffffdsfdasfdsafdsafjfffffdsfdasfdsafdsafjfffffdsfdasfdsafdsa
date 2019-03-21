@@ -3,6 +3,7 @@ FROM alpine:3.9
 USER root
 
 ENV JAVA_MAJOR_VERSION=8
+ENV TZ=Asia/Seoul
 
 # /dev/urandom is used as random source, which is perfectly safe
 # according to http://www.2uo.de/myths-about-urandom/
