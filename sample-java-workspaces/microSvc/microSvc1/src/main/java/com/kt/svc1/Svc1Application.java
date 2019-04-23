@@ -1,5 +1,7 @@
 package com.kt.svc1;
 
+import java.time.Duration;
+
 import javax.sql.DataSource;
 
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -7,6 +9,7 @@ import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.cloud.client.circuitbreaker.EnableCircuitBreaker;
 import org.springframework.cloud.netflix.hystrix.dashboard.EnableHystrixDashboard;
 import org.springframework.context.annotation.Bean;
@@ -24,16 +27,25 @@ public class Svc1Application {
 	}
 	
 	
+//	@Bean
+//	public RestTemplate restTemplate() {
+//		
+//		HttpComponentsClientHttpRequestFactory httpComponentsClientHttpRequestFactory = new HttpComponentsClientHttpRequestFactory();
+//		
+//		// default timeout setting
+//		httpComponentsClientHttpRequestFactory.setReadTimeout(1000*10);
+//		httpComponentsClientHttpRequestFactory.setConnectTimeout(1000*3);
+//		
+//		return new RestTemplate(httpComponentsClientHttpRequestFactory);
+//	}
+	
 	@Bean
-	public RestTemplate restTemplate() {
+	public RestTemplate restTemplate(RestTemplateBuilder builder) {
 		
-		HttpComponentsClientHttpRequestFactory httpComponentsClientHttpRequestFactory = new HttpComponentsClientHttpRequestFactory();
+		return builder.setConnectTimeout(Duration.ofMillis(3000))
+			   .setReadTimeout(Duration.ofMillis(5000))
+			   .build();
 		
-		// default timeout setting
-		httpComponentsClientHttpRequestFactory.setReadTimeout(1000*10);
-		httpComponentsClientHttpRequestFactory.setConnectTimeout(1000*3);
-		
-		return new RestTemplate(httpComponentsClientHttpRequestFactory);
 	}
 	
 	

@@ -157,6 +157,7 @@ public class UserApiController {
 //		requestFactory.setReadTimeout(1000*15);
 //		restTemplate.setRequestFactory(requestFactory);
 		
+		
 		ResponseEntity<Response> responseEntity = restTemplate.exchange("http://" + svc2Host + ":" + svc2Port + "/svc2/api/members/api2", HttpMethod.POST, requestHttpEntity, Response.class);
 		logger.info("# responseEntity.getBody().toString(): " + responseEntity.getBody().toString());
 		responseEntity.getBody().setResultMsg("Member(svc2) user created!!!!");
