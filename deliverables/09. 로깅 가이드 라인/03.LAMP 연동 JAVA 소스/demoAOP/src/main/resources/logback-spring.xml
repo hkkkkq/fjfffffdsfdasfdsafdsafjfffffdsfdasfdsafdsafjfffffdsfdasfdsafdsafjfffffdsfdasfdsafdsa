@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+	
+	<appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+		<layout class="ch.qos.logback.classic.PatternLayout">
+			<Pattern>%d{yyyy-MM-dd HH:mm:ss} - %msg%n</Pattern>
+		</layout>
+	</appender>
+	
+	<!-- 기본 로그 레벨 -->
+	<root level="INFO">
+		<appender-ref ref="console" />
+	</root>
+	
+	
+	<timestamp key="dateType" datePattern="yyyyMMdd"/>
+	<appender name="LAMPFILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>var/log/LAMP/${hostname}_${dateType}.log</file>
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+			<Pattern>%d{yyyy-MM-dd HH:mm:ss} - %msg%n</Pattern>
+		</encoder>
+		
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<!-- daily rollover -->
+			<fileNamePattern>var/log/LAMP/${hostname}.%d{yyyyMMdd}.%i.log</fileNamePattern>
+			<timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<maxFileSize>10MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+			<!-- 로그 생성날짜 기준 최신 3개 유지 -->
+			<maxHistory>3</maxHistory>
+		</rollingPolicy>
+	</appender>
+	
+	<logger name="TX_LOGGER" level="debug" additivity="false">
+		<appender-ref ref="LAMPFILE" />
+	</logger>
+	
+	<root level="error">
+		<appender-ref ref="LAMPFILE" /> 
+	</root>
+
+</configuration>
