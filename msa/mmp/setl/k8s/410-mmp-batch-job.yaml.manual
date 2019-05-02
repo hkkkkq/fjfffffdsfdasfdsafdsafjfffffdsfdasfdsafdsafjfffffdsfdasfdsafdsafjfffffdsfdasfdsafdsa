@@ -1,0 +1,45 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: setl
+  labels:
+    app: setl
+    version: 1.0.0
+    release: mmp
+spec:
+  #ttlSecondsAfterFinished: 50
+  backoffLimit: 2
+  #completions: 5
+  #parallelism: 2
+  template:
+    metadata:
+      name: setl
+      labels:
+        app: setl
+        version: 1.0.0
+        release: mmp
+    spec:
+      containers:
+        - name: setl
+          image: docker-registry.default.svc.cluster.local:5000/mmp/setl:latest
+          envFrom:
+          - configMapRef:
+              name: setl
+          command: ["sh","-c","java $JAVA_OPTS -Djava.security.egd=file:/dev/./urandom -jar /app.jar"]
+          #command: ["sh","-c","java $JAVA_OPTS -Djava.security.egd=file:/dev/./urandom -jar /app.jar", "--job.name=setlCalcJob --setlTgtYm=201904"]
+          resources:
+            requests:
+              memory: "1250Mi"
+            limits:
+              cpu: "2000m"
+              memory: "1250Mi"
+          volumeMounts:
+          - mountPath: /etc/localtime
+            name: timezone-config
+      restartPolicy: Never
+      nodeSelector:
+        ktis-node: "true"
+      volumes:
+      - hostPath:
+          path: /usr/share/zoneinfo/Asia/Seoul
+        name: timezone-config

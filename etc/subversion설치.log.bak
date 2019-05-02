@@ -1,0 +1,47 @@
+(root 계정으로)
+
+yum install -y subversion.x86_64
+
+svnadmin create --fs-type fsfs /home/saadm/repos
+
+chown -R saadm:saadm repos
+
+  [참고]
+  이 파일을 생성해주어야 service svnserve start/stop이 가능하다
+  echo 'OPTIONS="--threads --root /home/saadm --listen-port 38189"' > /etc/sysconfig/svnserve
+
+  service svnserve start
+     ps -ef | grep svnserve | grep -v grep
+     netstat -anp | grep svnserve
+      
+  재부팅시 자동시작 설정
+  chkconfig --list svnserve
+  chkconfig svnserve on
+
+[저장소 삭제]
+만들 때는 svnadmin으로 하였지만, 지울 때는 그냥 저장소 폴더를 지우면 된다.
+
+명령어
+service svnserve stop
+rm -rf /repos/project1
+ll
+
+(saadm/New1234! 계정으로)
+
+/home/saadm/repos/conf/svnserve.conf 설정
+/home/saadm/repos/conf/passwd 설정
+/home/saadm/repos/conf/authz 설정
+
+서비스 시작
+svnserve -d -r /home/saadm/ --listen-port 38189 --listen-host 0.0.0.0
+
+서비스 중지
+kill PID
+killall svnserve
+
+.bash_profile 에 추가: export SVN_EDITOR=/usr/bin/vim
+
+svn mkdir svn://10.217.136.61:38189/repos/trunk
+svn mkdir svn://10.217.136.61:38189/repos/branches
+svn mkdir svn://10.217.136.61:38189/repos/tags
+svn list svn://10.217.136.61:38189/repos

@@ -1,0 +1,180 @@
+admin / xcxDYQuvu2
+admin / xcxDYquvu2
+[Jenkins] admin / P@ssw0rd
+mmp-admin / new1234!
+milletos / Dtserver1234!
+[mattermost] ktds_82023121 / 82023121
+
+------------- onm --------------
+91220301
+test1234@
+
+10012615
+test1234@
+--------------------------------
+
+ktis-bastion01.container.ipc.kt.com:5000/admin/openjdk:8-jre-alpine
+
+ktis-bastion01.container.ipc.kt.com:5000/herasoo/micro-svc-2:0.1
+
+args ["-DSVC1HOST='service-micro-svc-1' -DSVC2HOST='service-micro-svc-2' -DDB_HOST='10.217.59.20' -DDB_PORT='5432' -DDB_NAME='postgres' -DDB_USER='postgres' -DDB_PASSWD='postgres'"]
+
+
+
+docker build --no-cache -t ktis-bastion01.container.ipc.kt.com:5000/herasoo/micro-svc-1:0.3 -f Dockerfile-micro-svc-1 .
+docker build --no-cache -t ktis-bastion01.container.ipc.kt.com:5000/herasoo/micro-svc-2:0.3 -f Dockerfile-micro-svc-2 .
+
+docker push ktis-bastion01.container.ipc.kt.com:5000/herasoo/micro-svc-1:0.3
+docker push ktis-bastion01.container.ipc.kt.com:5000/herasoo/micro-svc-2:0.3
+
+docker tag ktis-bastion01.container.ipc.kt.com:5000/herasoo/micro-svc-1:0.3 ktis-bastion01.container.ipc.kt.com:5000/herasoo/micro-svc-1:latest
+docker tag ktis-bastion01.container.ipc.kt.com:5000/herasoo/micro-svc-2:0.3 ktis-bastion01.container.ipc.kt.com:5000/herasoo/micro-svc-2:latest
+
+docker push ktis-bastion01.container.ipc.kt.com:5000/herasoo/micro-svc-1:latest
+docker push ktis-bastion01.container.ipc.kt.com:5000/herasoo/micro-svc-2:latest
+
+
+CMD ["java","-DSVC1HOST='service-micro-svc-1' -DSVC2HOST='service-micro-svc-2' -DDB_HOST='10.217.59.20' -DDB_PORT='5432' -DDB_NAME='postgres' -DDB_USER='postgres' -DDB_PASSWD='postgres'","-jar app.jar"]
+
+args: ["-DSVC1HOST=service-micro-svc-1","-DSVC2HOST=service-micro-svc-2","-DDB_HOST=10.217.59.20","-DDB_PORT=5432","-DDB_NAME=postgres","-DDB_USER=postgres","-DDB_PASSWD=postgres"]
+
+java -DSVC1HOST='service-micro-svc-1' -DSVC2HOST='service-micro-svc-2' -DDB_HOST='10.217.59.20' -DDB_PORT='5432' -DDB_NAME='postgres' -DDB_USER='postgres' -DDB_PASSWD='postgres' -jar app.jar
+
+java -jar app.jar -DSVC1HOST='service-micro-svc-1' -DSVC2HOST='service-micro-svc-2' -DDB_HOST='10.217.59.20' -DDB_PORT='5432' -DDB_NAME='postgres' -DDB_USER='postgres' -DDB_PASSWD='postgres'
+java -jar app.jar -DSVC1HOST=service-micro-svc-1 -DSVC2HOST=service-micro-svc-2 -DDB_HOST=10.217.59.20 -DDB_PORT=5432 -DDB_NAME=postgres -DDB_USER=postgres -DDB_PASSWD=postgres
+
+
+java -jar microSvc1-0.0.1-SNAPSHOT.jar -DSVC1HOST='service-micro-svc-1' -DSVC2HOST='service-micro-svc-2' -DDB_HOST='10.217.59.20' -DDB_PORT='5432' -DDB_NAME='postgres' -DDB_USER='postgres' -DDB_PASSWD='postgres'
+java -jar microSvc1-0.0.1-SNAPSHOT.jar -DSVC1HOST=service-micro-svc-1 -DSVC2HOST=service-micro-svc-2 -DDB_HOST=10.217.59.20 -DDB_PORT=5432 -DDB_NAME=postgres -DDB_USER=postgres -DDB_PASSWD=postgres
+
+java -DSVC1HOST=service-micro-svc-1 -DSVC2HOST=service-micro-svc-2 -DDB_HOST=10.217.59.20 -DDB_PORT=5432 -DDB_NAME=postgres -DDB_USER=postgres -DDB_PASSWD=postgres -jar microSvc1-0.0.1-SNAPSHOT.jar
+
+
+curl 192.168.13.125:8080/svc1/hello
+curl -X POST -H "Content-Type: application/json" 192.168.13.125:8080/svc1/api/users/call
+curl -X POST -H "Content-Type: application/json" 192.168.13.125:8080/svc1/api/users/members/call
+
+curl 172.30.127.235/svc1/hello
+curl -X POST -H "Content-Type: application/json" 172.30.127.235/svc1/api/users/call
+curl -X POST -H "Content-Type: application/json" 172.30.127.235/svc1/api/users/members/call
+
+
+curl 192.168.7.219:8090/svc2/hello
+curl -X POST -H "Content-Type: application/json" 192.168.7.219:8090/svc2/api/members/call
+curl -X POST -H "Content-Type: application/json" 192.168.7.219:8090/svc2/api/members/users/call
+
+
+curl 172.30.163.86/svc2/hello
+curl -X POST -H "Content-Type: application/json" 172.30.163.86/svc2/api/members/call
+curl -X POST -H "Content-Type: application/json" 172.30.163.86/svc2/api/members/users/call
+
+
+[postgres 계정으로]
+
+<중지>
+
+/usr/bin/pg_ctl stop -m fast -D /var/lib/pgsql/data 
+
+<기동>
+
+/usr/bin/pg_ctl start -w -D /var/lib/pgsql/data  -o "-p 5432" 
+
+ 
+<재기동>
+/usr/bin/pg_ctl restart -w -D /var/lib/pgsql/data 
+
+
+
+
+
+curl -X POST -H "Content-Type: application/json" 192.168.13.123:8080/svc1/api/users/call
+
+
+
+curl -X GET 10.106.65.91/api/books
+
+curl -X POST -H "Content-Type: application/json" \
+-d " \
+{ \
+ \"title\":\"c++\", \
+ \"author\":\"steven\",\
+ \"description\":\"wow\",\
+ \"published\":777\
+}\
+" \
+http://10.106.65.91/api/books/create
+
+curl -X PUT -H "Content-Type: application/json" \
+-d " \
+{ \
+ \"id\":1, \
+ \"title\":\"c++\", \
+ \"author\":\"steven\",\
+ \"description\":\"wow\",\
+ \"published\":888\
+}\
+" \
+http://10.106.65.91/api/books/1
+
+curl -X DELETE 10.106.65.91/api/books/1
+
+
+ISTIO Grafana 접속
+	10.217.59.30  grafana-istio-system.container.ipc.kt.com
+	http://grafana-istio-system.container.ipc.kt.com
+ 
+Prometheus 
+	10.217.59.30 prometheus-istio-system.container.ipc.kt.com
+	http://prometheus-istio-system.container.ipc.kt.com
+ 
+Kiali
+	10.217.59.30  kiali-istio-system.container.ipc.kt.com
+	https://kiali-istio-system.container.ipc.kt.com
+
+	
+kind: Pod
+metadata:
+  annotations:
+    sidecar.istio.io/inject: "true"
+
+    
+oc adm policy add-scc-to-user anyuid -z default -n istio-system
+oc adm policy add-scc-to-user anyuid -z elasticsearch -n istio-system
+oc adm policy add-scc-to-user anyuid -z grafana -n istio-system
+oc adm policy add-scc-to-user anyuid -z istio-citadel-service-account -n istio-system
+oc adm policy add-scc-to-user anyuid -z istio-egressgateway-service-account -n istio-system
+oc adm policy add-scc-to-user anyuid -z istio-galley-service-account -n istio-system
+oc adm policy add-scc-to-user anyuid -z istio-ingressgateway-service-account -n istio-system
+oc adm policy add-scc-to-user anyuid -z istio-mixer-service-account -n istio-system
+oc adm policy add-scc-to-user anyuid -z istio-pilot-service-account -n istio-system
+oc adm policy add-scc-to-user anyuid -z istio-sidecar-injector-service-account -n istio-system
+oc adm policy add-scc-to-user anyuid -z jaeger -n istio-system
+oc adm policy add-scc-to-user anyuid -z kiali-service-account -n istio-system
+oc adm policy add-scc-to-user anyuid -z openshift-ansible -n istio-system
+oc adm policy add-scc-to-user anyuid -z prometheus -n istio-system
+
+
+oc adm policy add-scc-to-user anyuid -z default -n herasoo $ oc adm policy add-scc-to-user privileged -z default -n herasoo
+
+
+
+
+
+k get po productpage-v1-69b749ff4c-qw46l -o=jsonpath='{..containers}'
+
+<istio>
+
+k label ns herasoo istio-injection=enabled
+
+annotations:
+  sidecar.istio.io/inject: "true"
+
+/home/bsscoe/herasoo/istio-1.0.4/samples/bookinfo/platform/kube
+/home/bsscoe/herasoo/istio_test
+
+istio-ingressgateway
+
+cp ../istio-1.0.4/samples/bookinfo/networking/destination-rule-all.yaml ./
+
+curl 172.30.158.41/productpage
+

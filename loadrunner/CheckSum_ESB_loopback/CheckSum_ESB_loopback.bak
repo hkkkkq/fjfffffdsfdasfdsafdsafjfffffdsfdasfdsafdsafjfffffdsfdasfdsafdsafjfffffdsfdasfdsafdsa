@@ -1,0 +1,75 @@
+[General]
+Type=Multi
+AdditionalTypes=QTWeb,WS_SOAP
+ActiveTypes=QTWeb,WS_SOAP
+GenerateTypes=QTWeb,WS_SOAP
+RecordedProtocols=
+DefaultCfg=default.cfg
+AppName=
+BuildTarget=
+ParamRightBrace=}
+ParamLeftBrace={
+NewFunctionHeader=1
+LastActiveAction=Action
+CorrInfoReportDir=result1
+LastResultDir=result1
+DevelopTool=Vugen
+ActionLogicExt=action_logic
+MajorVersion=11
+MinorVersion=0
+ParameterFile=CheckSum_ESB_loopback.prm
+GlobalParameterFile=
+RunType=cci
+LastModifyVer=11.0.0.0
+AddOnName=SOA
+AddOnVersion=1.0
+[TransactionsOrder]
+Order="ESBFW_SATest_ETC_PL_LoopBack1__*delimiter*__ESBFW_SATest_ETC_PL_LoopBack2"
+[ExtraFiles]
+globals.h=
+[Actions]
+vuser_init=vuser_init.c
+Action1=Action1.c
+Action2=Action2.c
+vuser_end=vuser_end.c
+[Recorded Actions]
+vuser_init=0
+Action1=0
+Action2=0
+vuser_end=0
+[Replayed Actions]
+vuser_init=1
+Action1=1
+Action2=1
+vuser_end=1
+[Modified Actions]
+vuser_init=1
+Action1=1
+Action2=0
+vuser_end=0
+[ProtocolsVersion]
+QTWeb=11.0.0.0
+WS_SOAP=11.0.0.0
+[RunLogicFiles]
+Default Profile=default.usp
+[StateManagement]
+1=1
+5=0
+6=0
+9=0
+10=0
+11=0
+12=0
+13=0
+17=0
+18=0
+20=0
+21=0
+CurrentState=1
+VuserStateHistory= 0 65536 65552
+LastReplayStatus=2
+LastReplayErrorID1=-19890
+LastReplayErrorMsg1=vuser_init.c(160): Error: C interpreter run time error: vuser_init.c (160):  Error -- File error : LoadLibrary(C:\nexaNbssAdp.dll) failed : 지정된 모듈을 찾을 수 없습니다.%&lt;br/%&gt;.
+[Transactions]
+ESBFW_SATest_ETC_PL_LoopBack1=
+ESBFW_SATest_ETC_PL_LoopBack2=

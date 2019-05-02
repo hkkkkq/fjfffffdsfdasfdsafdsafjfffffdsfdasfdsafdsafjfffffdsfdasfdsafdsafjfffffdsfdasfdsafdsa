@@ -1,0 +1,21 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: route-micro-svc-1
+  labels:
+    appName: herasoo
+    svcName: micro-svc-1
+    version: v1
+  namespace: istio-system
+spec:
+  host: sample1-millet.container.ipc.kt.com
+  port:
+    #targetPort: 80    # has to be port name!!
+    targetPort: http2
+  path: "/svc1"
+  to:
+    kind: Service
+    #name: service-micro-svc-1 #.herasoo.svc.cluster.local  # FQDN is not working
+    name: istio-ingressgateway
+    weight: 100
+  wildcardPolicy: None

@@ -1,0 +1,403 @@
+[debug] Created tunnel using local port: '36363'
+
+[debug] SERVER: "127.0.0.1:36363"
+
+[debug] Original chart version: ""
+[debug] CHART PATH: /home/bsscoe/song/helm/chart/grafana
+
+NAME:   grafana
+REVISION: 1
+RELEASED: Mon Mar 25 11:15:07 2019
+CHART: grafana-2.2.5
+USER-SUPPLIED VALUES:
+{}
+
+COMPUTED VALUES:
+admin:
+  existingSecret: ""
+  passwordKey: admin-password
+  userKey: admin-user
+adminUser: admin
+affinity: {}
+chownDataImage:
+  pullPolicy: IfNotPresent
+  repository: busybox
+  tag: 1.30.0
+dashboardProviders: {}
+dashboards: {}
+dashboardsConfigMaps: {}
+datasources: {}
+deploymentStrategy: RollingUpdate
+downloadDashboardsImage:
+  pullPolicy: IfNotPresent
+  repository: appropriate/curl
+  tag: latest
+env: {}
+envFromSecret: ""
+extraConfigmapMounts: []
+extraContainers: ""
+extraSecretMounts: []
+extraVolumeMounts: []
+grafana.ini:
+  analytics:
+    check_for_updates: true
+  grafana_net:
+    url: https://grafana.net
+  log:
+    mode: console
+  paths:
+    data: /var/lib/grafana/data
+    logs: /var/log/grafana
+    plugins: /var/lib/grafana/plugins
+    provisioning: /etc/grafana/provisioning
+image:
+  pullPolicy: IfNotPresent
+  repository: ktis-bastion01.container.ipc.kt.com:5000/prom/grafana
+  tag: 6.0.0
+ingress:
+  annotations: {}
+  enabled: false
+  hosts:
+  - chart-example.local
+  labels: {}
+  path: /
+  tls: []
+ldap:
+  config: ""
+  existingSecret: ""
+livenessProbe:
+  failureThreshold: 10
+  httpGet:
+    path: /api/health
+    port: 3000
+  initialDelaySeconds: 60
+  timeoutSeconds: 30
+nodeSelector: {}
+persistence:
+  accessModes:
+  - ReadWriteOnce
+  enabled: false
+  initChownData: true
+  size: 10Gi
+plugins: []
+rbac:
+  create: true
+  namespaced: false
+  pspEnabled: true
+  pspUseAppArmor: true
+readinessProbe:
+  httpGet:
+    path: /api/health
+    port: 3000
+replicas: 1
+resources: {}
+securityContext:
+  fsGroup: 472
+  runAsUser: 472
+service:
+  annotations: {}
+  labels: {}
+  port: 80
+  targetPort: 3000
+  type: ClusterIP
+serviceAccount:
+  create: true
+  name: null
+sidecar:
+  dashboards:
+    enabled: false
+    folder: /tmp/dashboards
+    label: grafana_dashboard
+    searchNamespace: null
+  datasources:
+    enabled: false
+    label: grafana_datasource
+    searchNamespace: null
+  image: kiwigrid/k8s-sidecar:0.0.13
+  imagePullPolicy: IfNotPresent
+  resources: {}
+smtp:
+  existingSecret: ""
+  passwordKey: password
+  userKey: user
+tolerations: []
+
+HOOKS:
+MANIFEST:
+
+---
+# Source: grafana/templates/secret.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: grafana
+  labels:
+    app: grafana
+    chart: grafana-2.2.5
+    release: grafana
+    heritage: Tiller
+type: Opaque
+data:
+  admin-user: "YWRtaW4="
+  admin-password: "ckxud3FaYm5PeG5GSkdqcks5TzRGc0tXOEZ3TktQdGxlMGcwMFRQVw=="
+  ldap-toml: ""
+---
+# Source: grafana/templates/configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: grafana
+  labels:
+    app: grafana
+    chart: grafana-2.2.5
+    release: grafana
+    heritage: Tiller
+data:
+  grafana.ini: |
+    [analytics]
+    check_for_updates = true
+    [grafana_net]
+    url = https://grafana.net
+    [log]
+    mode = console
+    [paths]
+    data = /var/lib/grafana/data
+    logs = /var/log/grafana
+    plugins = /var/lib/grafana/plugins
+    provisioning = /etc/grafana/provisioning
+---
+# Source: grafana/templates/serviceaccount.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  labels:
+    app: grafana
+    chart: grafana-2.2.5
+    heritage: Tiller
+    release: grafana
+  name: grafana
+---
+# Source: grafana/templates/clusterrole.yaml
+kind: ClusterRole
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  labels:
+    app: grafana
+    chart: grafana-2.2.5
+    release: grafana
+    heritage: Tiller
+  name: grafana-clusterrole
+rules: []
+---
+# Source: grafana/templates/clusterrolebinding.yaml
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: grafana-clusterrolebinding
+  labels:
+    app: grafana
+    chart: grafana-2.2.5
+    release: grafana
+    heritage: Tiller
+subjects:
+  - kind: ServiceAccount
+    name: grafana
+    namespace: dev-song
+roleRef:
+  kind: ClusterRole
+  name: grafana-clusterrole
+  apiGroup: rbac.authorization.k8s.io
+---
+# Source: grafana/templates/role.yaml
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: Role
+metadata:
+  name: grafana
+  labels:
+    app: grafana
+    chart: grafana-2.2.5
+    heritage: Tiller
+    release: grafana
+rules:
+- apiGroups:      ['extensions']
+  resources:      ['podsecuritypolicies']
+  verbs:          ['use']
+  resourceNames:  [grafana]
+---
+# Source: grafana/templates/rolebinding.yaml
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: RoleBinding
+metadata:
+  name: grafana
+  labels:
+    app: grafana
+    chart: grafana-2.2.5
+    heritage: Tiller
+    release: grafana
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: grafana
+subjects:
+- kind: ServiceAccount
+  name: grafana
+  namespace: dev-song
+---
+# Source: grafana/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: grafana
+  labels:
+    app: grafana
+    chart: grafana-2.2.5
+    release: grafana
+    heritage: Tiller
+spec:
+  type: ClusterIP
+  ports:
+    - name: service
+      port: 80
+      protocol: TCP
+      targetPort: 3000
+
+  selector:
+    app: grafana
+    release: grafana
+---
+# Source: grafana/templates/deployment.yaml
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: grafana
+  labels:
+    app: grafana
+    chart: grafana-2.2.5
+    release: grafana
+    heritage: Tiller
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: grafana
+      release: grafana
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: grafana
+        release: grafana
+    spec:
+      serviceAccountName: grafana
+      securityContext:
+        fsGroup: 472
+        runAsUser: 472
+      containers:
+        - name: grafana
+          image: "ktis-bastion01.container.ipc.kt.com:5000/prom/grafana:6.0.0"
+          imagePullPolicy: IfNotPresent
+          volumeMounts:
+            - name: config
+              mountPath: "/etc/grafana/grafana.ini"
+              subPath: grafana.ini
+            - name: ldap
+              mountPath: "/etc/grafana/ldap.toml"
+              subPath: ldap.toml
+            - name: storage
+              mountPath: "/var/lib/grafana"
+          ports:
+            - name: service
+              containerPort: 80
+              protocol: TCP
+            - name: grafana
+              containerPort: 3000
+              protocol: TCP
+          env:
+            - name: GF_SECURITY_ADMIN_USER
+              valueFrom:
+                secretKeyRef:
+                  name: grafana
+                  key: admin-user
+            - name: GF_SECURITY_ADMIN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: grafana
+                  key: admin-password
+          livenessProbe:
+            failureThreshold: 10
+            httpGet:
+              path: /api/health
+              port: 3000
+            initialDelaySeconds: 60
+            timeoutSeconds: 30
+          readinessProbe:
+            httpGet:
+              path: /api/health
+              port: 3000
+          resources:
+            {}
+      volumes:
+        - name: config
+          configMap:
+            name: grafana
+        - name: ldap
+          secret:
+            secretName: grafana
+            items:
+              - key: ldap-toml
+                path: ldap.toml
+        - name: storage
+          emptyDir: {}
+---
+# Source: grafana/templates/podsecuritypolicy.yaml
+apiVersion: extensions/v1beta1
+kind: PodSecurityPolicy
+metadata:
+  name: grafana
+  labels:
+    app: grafana
+    chart: grafana-2.2.5
+    heritage: Tiller
+    release: grafana
+  annotations:
+    seccomp.security.alpha.kubernetes.io/allowedProfileNames: 'docker/default'
+    seccomp.security.alpha.kubernetes.io/defaultProfileName:  'docker/default'
+    apparmor.security.beta.kubernetes.io/allowedProfileNames: 'runtime/default'
+    apparmor.security.beta.kubernetes.io/defaultProfileName:  'runtime/default'
+spec:
+  privileged: false
+  allowPrivilegeEscalation: false
+  requiredDropCapabilities:
+    # Default set from Docker, without DAC_OVERRIDE or CHOWN
+    - FOWNER
+    - FSETID
+    - KILL
+    - SETGID
+    - SETUID
+    - SETPCAP
+    - NET_BIND_SERVICE
+    - NET_RAW
+    - SYS_CHROOT
+    - MKNOD
+    - AUDIT_WRITE
+    - SETFCAP
+  volumes:
+    - 'configMap'
+    - 'emptyDir'
+    - 'projected'
+    - 'secret'
+    - 'downwardAPI'
+    - 'persistentVolumeClaim'
+  hostNetwork: false
+  hostIPC: false
+  hostPID: false
+  runAsUser:
+    rule: 'RunAsAny'
+  seLinux:
+    rule: 'RunAsAny'
+  supplementalGroups:
+    rule: 'RunAsAny'
+  fsGroup:
+    rule: 'RunAsAny'
+  readOnlyRootFilesystem: false

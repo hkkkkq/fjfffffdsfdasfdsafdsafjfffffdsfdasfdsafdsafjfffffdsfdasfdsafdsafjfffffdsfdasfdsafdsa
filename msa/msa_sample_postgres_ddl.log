@@ -1,0 +1,21 @@
+
+create sequence sq_tb_connection_history
+increment 1
+minvalue 1
+maxvalue 9999999999999
+start 1
+cache 1
+cycle;
+
+
+CREATE TABLE public.tb_connection_history
+(
+    seq bigint NOT NULL DEFAULT nextval('sq_tb_connection_history'::regclass),
+    id character varying(20),
+    name character varying(20),
+    security_number character varying(14),
+    create_date timestamp without time zone NOT NULL DEFAULT LOCALTIMESTAMP,
+    CONSTRAINT tb_connection_history_pkey PRIMARY KEY (seq)
+)
+;
+

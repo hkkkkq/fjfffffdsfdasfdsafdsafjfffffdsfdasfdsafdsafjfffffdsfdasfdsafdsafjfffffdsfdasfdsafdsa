@@ -1,0 +1,77 @@
+[Vacuum]
+- 각 테이블 단위로 진행
+1) 디스크 공간 확보
+2) 옵티마이저 사용 통계 정보 갱신
+3) 인덱스 검색 성능 향상에 필요한 지도 정보 갱신
+4) 트랜잭션ID 정비로 오래된 자료 손실 방지
+
+- vacuum
+: DML 작업과 동시 사용 가능, DDL은 불가
+- vacuum full
+: 배타적 잠금으로 어떤 작업도 불가
+
+
+단편화 테이블/인덱스 조치
+: kmosdb 모든테이블 vacuum full 수행필요.
+: 수행방법 
+  => vacuum full 스키마명.테이블명; 
+
+
+select * from dba_objects
+where 1=1
+and object_type = 'TABLE'
+and schema_name like 'KKOSOWN';
+
+select 'vacuum full ' || schema_name || '.' || object_name || ';'
+from dba_objects
+where 1=1
+and object_type = 'TABLE'
+and schema_name like 'KKOSOWN';
+
+
+
+
+vacuum full KMOSOWN.TB_WRLIN_ORDR_EQUIP;
+vacuum full KMOSOWN.TB_WRLIN_ORDR_ADTN_SVC;
+vacuum full KMOSOWN.TB_WRLIN_ORDR_BAS;
+vacuum full KMOSOWN.TB_WRLIN_ORDR_CHAGE;
+vacuum full KMOSOWN.TB_WRLIN_ORDR_PROD_META_CD;
+vacuum full KMOSOWN.TB_PDF_IMG_REG_INFO;
+vacuum full KMOSOWN.TB_PROD_ALWD_BAS;
+vacuum full KMOSOWN.TB_USER_IMG_REG_INFO;
+vacuum full KMOSOWN.TB_QR_CODE_TRT_HST;
+vacuum full KMOSOWN.TB_STORE_SBSC_PROD_INFO_LIST;
+vacuum full KMOSOWN.TB_KTS_BMON;
+vacuum full KMOSOWN.TB_EMAIL_SEND_BAS;
+vacuum full KMOSOWN.TB_KTS_ODER_TRT;
+vacuum full KMOSOWN.TB_NEW_SBSC_TRT_INFO;
+vacuum full KMOSOWN.TB_BILL_ACC_INFO;
+vacuum full KMOSOWN.TB_ICG_SVC_CONT_INFO;
+vacuum full KMOSOWN.TB_TRT_BASE_INFO;
+vacuum full KMOSOWN.TB_SBSC_INTM_INFO;
+vacuum full KMOSOWN.TB_TRMN_ORDER_BASE_INFO;
+vacuum full KMOSOWN.TB_CUST_INFO;
+vacuum full KMOSOWN.TB_NP_INFO;
+vacuum full KMOSOWN.TB_CUST_PPL_INFO_IF_LIST;
+vacuum full KMOSOWN.TB_CUST_PPL_UNIT_SVC_INFO_IF_LIST;
+vacuum full KMOSOWN.TB_TRMN_PROD_INFO_IF_LIST;
+vacuum full KMOSOWN.TB_TRMN_PROD_UNIT_SVC_INFO_IF_LIST;
+vacuum full KMOSOWN.TB_SBSC_PROD_INFO_IF_LIST;
+vacuum full KMOSOWN.TB_PRE_CHK_RSLT_LIST;
+vacuum full KMOSOWN.TB_ICG_ETC_INFO;
+vacuum full KMOSOWN.TB_BILL_ACC_CUST_CNTPLC_INFO;
+vacuum full KMOSOWN.TB_ICG_CNCL_TRT_INFO;
+vacuum full KMOSOWN.TB_NEW_SBSC_INTM_USIM_INFO;
+vacuum full KMOSOWN.TB_NEW_SBSC_SPNSR_INFO;
+vacuum full KMOSOWN.TB_INTM_INSL_INFO_OUT;
+vacuum full KMOSOWN.TB_ICG_TRT_INFO;
+vacuum full KMOSOWN.TB_APPLE_USER_BAS;
+vacuum full KMOSOWN.TB_CRIS_TYPE_INFO;
+vacuum full KMOSOWN.TB_BATCH_CONTROL_INFO;
+vacuum full KMOSOWN.TB_CRIS_APLY_INFO;
+vacuum full KMOSOWN.TB_ICG_CNCL_SVC_CONT_INFO;
+vacuum full KMOSOWN.TB_IMG_REG_INFO;
+vacuum full KMOSOWN.TB_IMG_TYPE_INFO;
+vacuum full KMOSOWN.TB_MSK_TYPE_INFO;
+vacuum full KMOSOWN.TB_MSK_APLY_INFO;
+

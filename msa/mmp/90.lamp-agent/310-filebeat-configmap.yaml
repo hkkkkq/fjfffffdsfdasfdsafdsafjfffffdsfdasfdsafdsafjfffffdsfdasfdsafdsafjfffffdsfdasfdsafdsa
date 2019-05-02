@@ -1,0 +1,29 @@
+# Source: 300-filebeat-configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: filebeat
+  labels:
+    app: filebeat
+    release: filebeat
+data:
+  filebeat.yml: |-
+    filebeat:
+      prospectors:
+      - paths: /var/log/LAMP/*.log
+        input_type: log
+    output:
+      kafka:
+        hosts: ["10.217.235.61:9092", "10.217.235.62:9092", "10.217.235.63:9092"]   # TB
+        #hosts: ["10.220.136.90:9092", "10.220.136.91:9092", "10.220.136.92:9092"]  # PROD
+        ssl:
+          certificate: /usr/share/filebeat/ssl/lampkafka.crt
+          key: /usr/share/filebeat/ssl/lampkafka.key
+          certificate_authorities: /usr/share/filebeat/ssl/lampkafka.crt
+          verification_mode: none
+        topic: "TOPIC_LAMP"
+        partition.round_robin:
+          reachable_only: false
+        required_acks: 1
+        compression: gzip
+        max_message_bytes: 1000000

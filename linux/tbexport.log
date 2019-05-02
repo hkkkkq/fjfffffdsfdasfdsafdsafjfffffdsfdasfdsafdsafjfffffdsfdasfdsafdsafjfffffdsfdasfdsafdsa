@@ -1,0 +1,2 @@
+tbexport full=y username=infinilink password=infinilink file=20150715.dmp sid=dev1gwi ip=10.217.136.157 port=8629 log=20150715_export.log rows=y
+tbexport full=y username=infinilink password=infinilink file=20150715.dmp sid=dev1gwe ip=10.217.136.157 port=8640 log=20150715_export.log rows=y

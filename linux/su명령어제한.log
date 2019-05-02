@@ -1,0 +1,5 @@
+vi /etc/group
+
+wheel:x:10:cloud-user,bsscoe
+
+wheel그룹에 추가해주기(su 가능)

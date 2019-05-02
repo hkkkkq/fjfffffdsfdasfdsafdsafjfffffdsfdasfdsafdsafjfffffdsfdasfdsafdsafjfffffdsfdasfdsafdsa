@@ -1,0 +1,21 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: ServiceEntry
+metadata:
+  name: athn-postgresdb
+  labels:
+    app: athn
+    version: 1.0.0
+    release: mmp
+spec:
+  hosts:
+  - 10.217.59.68
+  addresses:
+  - 10.217.59.68/32
+  ports:
+  - number: 5432
+    name: tcp
+    protocol: TCP
+  location: MESH_INTERNAL
+  resolution: STATIC
+  endpoints:
+    - address: 10.217.59.68

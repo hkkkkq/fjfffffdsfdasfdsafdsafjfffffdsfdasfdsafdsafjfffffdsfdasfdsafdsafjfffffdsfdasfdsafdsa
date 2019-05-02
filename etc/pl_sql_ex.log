@@ -1,0 +1,18 @@
+declare
+	v_c SYS_REFCURSOR;
+	v_r il_transaction_log_20%rowtype;
+begin
+	open v_c for
+	select * from il_transaction_log_20
+	where rownum < 20;
+	 --dbms_output.put_line(v_guid);
+	 --dbms_output.put_line(v_guid);
+	 --dbms_output.put_line(sql%ROWCOUNT);
+	
+	loop
+		fetch v_c into v_r;
+		exit when v_c%notfound;
+		dbms_output.put_line(v_r.guid);	
+	end loop;
+ 	close v_c;
+end;

@@ -1,0 +1,141 @@
+---
+# Source: prometheus-kafka-exporter/templates/serviceaccount.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: prometheus-kafka-exporter
+  labels:
+    app: prometheus-kafka-exporter
+---
+# Source: prometheus-kafka-exporter/templates/role.yaml
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: Role
+metadata:
+  name: prometheus-kafka-exporter
+  labels:
+    app: prometheus-kafka-exporter
+rules:
+- apiGroups:      ['extensions']
+  resources:      ['podsecuritypolicies']
+  verbs:          ['use']
+  resourceNames:  [prometheus-kafka-exporter]
+---
+# Source: prometheus-kafka-exporter/templates/rolebinding.yaml
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: RoleBinding
+metadata:
+  name: prometheus-kafka-exporter
+  labels:
+    app: prometheus-kafka-exporter
+    chart: prometheus-kafka-exporter-1.0.2
+    heritage: Tiller
+    release: prometheus-kafka-exporter
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: prometheus-kafka-exporter
+subjects:
+- kind: ServiceAccount
+  name: prometheus-kafka-exporter
+---
+# Source: prometheus-kafka-exporter/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: prometheus-kafka-exporter
+  labels:
+    app: prometheus-kafka-exporter
+  annotations:
+    {}
+spec:
+  type: ClusterIP
+  ports:
+    - name: kafka-exporter
+      port: 9308
+      targetPort: exporter-port
+      protocol: TCP
+  selector:
+    app: prometheus-kafka-exporter
+    release: prometheus-kafka-exporter
+---
+# Source: prometheus-kafka-exporter/templates/deployment.yaml
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: prometheus-kafka-exporter
+  labels:
+    app: prometheus-kafka-exporter
+    chart: prometheus-kafka-exporter-1.0.2
+    release: prometheus-kafka-exporter
+    heritage: Tiller
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: prometheus-kafka-exporter
+      release: prometheus-kafka-exporter
+  template:
+    metadata:
+      annotations:
+        {}
+      labels:
+        app: prometheus-kafka-exporter
+        release: prometheus-kafka-exporter
+    spec:
+      #serviceAccountName: prometheus-kafka-exporter
+      containers:
+        - name: prometheus-kafka-exporter
+          image: "ktis-bastion01.container.ipc.kt.com:5000/prom/kafka_exporter:v1.2.0"
+          imagePullPolicy: IfNotPresent
+          args:
+          - --kafka.server=complex02-kafka.millet.svc.cluster.local:9092
+          ports:
+            - name: exporter-port
+              containerPort: 9308
+          livenessProbe:
+            httpGet:
+              path: /
+              port: exporter-port
+          readinessProbe:
+            httpGet:
+              path: /
+              port: exporter-port
+          resources:
+            {}
+---
+# Source: prometheus-kafka-exporter/templates/podsecuritypolicy.yaml
+apiVersion: extensions/v1beta1
+kind: PodSecurityPolicy
+metadata:
+  name: prometheus-kafka-exporter
+  labels:
+    app: prometheus-kafka-exporter
+  annotations:
+    seccomp.security.alpha.kubernetes.io/allowedProfileNames: 'docker/default'
+    apparmor.security.beta.kubernetes.io/allowedProfileNames: 'runtime/default'
+    seccomp.security.alpha.kubernetes.io/defaultProfileName:  'docker/default'
+    apparmor.security.beta.kubernetes.io/defaultProfileName:  'runtime/default'
+spec:
+  privileged: false
+  allowPrivilegeEscalation: false
+  requiredDropCapabilities:
+    - ALL
+  volumes:
+    - 'configMap'
+    - 'emptyDir'
+    - 'projected'
+    - 'secret'
+    - 'downwardAPI'
+  hostNetwork: false
+  hostIPC: false
+  hostPID: false
+  runAsUser:
+    rule: 'RunAsAny'
+  seLinux:
+    rule: 'RunAsAny'
+  supplementalGroups:
+    rule: 'RunAsAny'
+  fsGroup:
+    rule: 'RunAsAny'
+  readOnlyRootFilesystem: false
+

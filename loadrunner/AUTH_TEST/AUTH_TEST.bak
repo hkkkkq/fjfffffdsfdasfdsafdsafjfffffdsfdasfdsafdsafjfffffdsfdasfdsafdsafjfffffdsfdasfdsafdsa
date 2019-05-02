@@ -1,0 +1,121 @@
+[General]
+Type=Multi
+AdditionalTypes=QTWeb
+ActiveTypes=QTWeb
+GenerateTypes=QTWeb
+RecordedProtocols=
+DefaultCfg=default.cfg
+AppName=
+BuildTarget=
+ParamRightBrace=}
+ParamLeftBrace={
+NewFunctionHeader=1
+LastActiveAction=Action11
+CorrInfoReportDir=result1
+LastResultDir=result1
+DevelopTool=Vugen
+ActionLogicExt=action_logic
+MajorVersion=11
+MinorVersion=0
+ParameterFile=AUTH_TEST.prm
+GlobalParameterFile=
+RunType=cci
+LastModifyVer=11.0.0.0
+[TransactionsOrder]
+Order="01_서비스번호로 고객검색_ASIS__*delimiter*__01_서비스번호로 고객검색_checkSum__*delimiter*__4_UserMenuInfoRetvSO__*delimiter*__3_UserInfoRetvSO__*delimiter*__2_ExceptWrkjobRuleAutExistYnSO__*delimiter*__A_서비스번호로고객조회_retrieveCustInfoByCustIdfy__*delimiter*__B_고객요약정보 조화_CustDtlInfoRetvSO__*delimiter*__C_고객보유상품 조회_CustSvcFirstLvlInfoRetvSO__*delimiter*__D_계약정보 조회_CustSvcContInfoRetvSO__*delimiter*__E_납부정보 조회_CustSvcPayInfoRetvSO__*delimiter*__03_계약정보조회_ASIS__*delimiter*__03_계약정보조회_checkSUM__*delimiter*__1_ChgUiCompRetvSO__*delimiter*__02_검색서비스번호 요약조회_TOBE__*delimiter*__02_검색서비스번호 요약조회_checkSum__*delimiter*__05_상품조회_TOBE__*delimiter*__05_상품조회_checkSum"
+[Actions]
+vuser_init=vuser_init.c
+Action11=Action11.c
+Auth4=Auth4.c
+Auth3=Auth3.c
+Auth2=Auth2.c
+Action=Action.c
+Action51=Action51.c
+Action41=Action41.c
+Auth1=Auth1.c
+Action21=Action21.c
+Action31=Action31.c
+vuser_end=vuser_end.c
+[ProtocolsVersion]
+QTWeb=11.0.0.0
+[RunLogicFiles]
+Default Profile=default.usp
+[StateManagement]
+1=1
+7=0
+8=1
+9=0
+10=1
+11=1
+12=1
+13=1
+17=1
+18=0
+20=0
+21=0
+CurrentState=17
+VuserStateHistory= 0 65536 65537 65552 1048576 1048577 1048592
+LastReplayStatus=2
+[Transactions]
+"01_서비스번호로 고객검색_ASIS"=
+"01_서비스번호로 고객검색_checkSum"=
+4_UserMenuInfoRetvSO=
+3_UserInfoRetvSO=
+2_ExceptWrkjobRuleAutExistYnSO=
+A_서비스번호로고객조회_retrieveCustInfoByCustIdfy=
+"B_고객요약정보 조화_CustDtlInfoRetvSO"=
+"C_고객보유상품 조회_CustSvcFirstLvlInfoRetvSO"=
+"D_계약정보 조회_CustSvcContInfoRetvSO"=
+"E_납부정보 조회_CustSvcPayInfoRetvSO"=
+03_계약정보조회_ASIS=
+03_계약정보조회_checkSUM=
+1_ChgUiCompRetvSO=
+"02_검색서비스번호 요약조회_TOBE"=
+"02_검색서비스번호 요약조회_checkSum"=
+05_상품조회_TOBE=
+05_상품조회_checkSum=
+[ExtraFiles]
+globals.h=
+[Recorded Actions]
+vuser_init=1
+Action11=1
+Auth4=0
+Auth3=0
+Auth2=0
+Action=0
+Action51=0
+Action41=0
+Auth1=0
+Action21=0
+Action31=0
+vuser_end=0
+[Replayed Actions]
+vuser_init=1
+Action11=1
+Auth4=1
+Auth3=1
+Auth2=1
+Action=1
+Action51=1
+Action41=1
+Auth1=1
+Action21=1
+Action31=1
+vuser_end=1
+[Modified Actions]
+vuser_init=1
+Action11=1
+Auth4=0
+Auth3=0
+Auth2=0
+Action=0
+Action51=0
+Action41=0
+Auth1=1
+Action21=0
+Action31=0
+vuser_end=1
+[Interpreters]
+vuser_init=cci
+Action11=cci
+vuser_end=cci

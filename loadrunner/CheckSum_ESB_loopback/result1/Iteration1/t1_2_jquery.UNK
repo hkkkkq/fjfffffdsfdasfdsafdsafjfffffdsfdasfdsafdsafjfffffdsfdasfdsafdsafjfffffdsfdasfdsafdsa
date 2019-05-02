@@ -1,0 +1,855 @@
+String.prototype.replaceByObject = function(obj){
+	var retValue = this;
+	for(var p in obj){
+		var reg = new RegExp("\\$\\{\\s*"+p+"\\s*\\}", "ig");
+		retValue = retValue.replace(reg, obj[p]);
+	}
+	return retValue;
+};
+String.prototype.stripTags = function() {
+	 return this.replace(/<\!--/ig, "").replace(/-->/ig, "").replace(/<\s*br\s*\/*>/ig, "\n").replace('&amp;', '"').replace('&quot;', '"')
+	 			.replace('&#39;', "'").replace('&lt;', '<').replace('&gt;', '>').replace('&nbsp;', ' ').replace(/<\/?[^>]+>/gi, "").trim();
+};
+String.prototype.htmlChars = function() {
+       var str = ((this.replace('"', '&amp;')).replace('"', '&quot;')).replace('\'', '&#39;');
+       return (str.replace('<', '&lt;')).replace('>', '&gt;');
+};
+String.prototype.ltrim = function() {
+	return this.replace(/^\s*/g, "");
+};
+String.prototype.rtrim = function() {
+	return this.replace(/\s*$/g, "");
+};
+String.prototype.trim = function() {
+	return this.rtrim().ltrim();
+};
+String.prototype.startWith  = function(c){
+	return this.indexOf(c) == 0;
+};
+String.prototype.endWith  = function(c){
+	return this.length >= c.length && this.lastIndexOf(c) + c.length == this.length;
+};
+String.prototype.byteLength = function() {
+	var l = 0;
+	for ( var idx = 0; idx < this.length; idx++) {
+		var c = escape(this.charAt(idx));
+		if (c.length == 1)
+			l++;
+		else if (c.indexOf("%u") != -1)
+			l += 2;
+		else if (c.indexOf("%") != -1)
+			l += c.length / 3;
+	}
+	return l;
+};
+String.isEmpty = function(str){
+	return str == undefined || str == null || str == "";
+};
+String.isNotEmpty = function(str){
+	return !String.isEmpty(str);
+};
+String.defaultString = function(str, target) {
+	return String.isEmpty(str) ? target : str;
+};
+/************************************************************************************
+ * toMoney
+ ************************************************************************************
+ *
+ * var numMoney = 1203000, strMoney = "1203000";
+ * numMoney.toMoney(); -> 1,203,000
+ * strMoney.toMoney(); -> 1,203,000
+ ************************************************************************************/
+String.prototype.toMoney = Number.prototype.toMoney = function(){
+	var strMoney = String(this);
+	if(strMoney == '') return 0;
+	if(strMoney.indexOf('.') > 0) {
+		var checkVal = (strMoney.replace('-','')).substring(0, (strMoney.replace('-','').indexOf('.')));
+		if(checkVal.length < 4) return strMoney;
+    }
+	var reg = /(\-?\d+)(\d{3})($|\.\d+)/;
+    if(reg.test(strMoney)){
+        return strMoney.replace(reg, function( strOrg, p1, p2, p3 ){
+                return p1.toMoney() + "," + p2 + p3;
+            }
+        );
+    }else{
+        return strMoney;
+    }
+};
+/************************************************************************************
+ * toLongValue
+ ************************************************************************************
+ *
+ * var strMoney = "1,203,000";
+ * strMoney.toLongValue(); -> 1203000
+ ************************************************************************************/
+String.prototype.toLongValue  = function(){
+	return Number(this.replace(/\,/ig,"")) == '' ? 0 : Number(this.replace(/\,/ig,""));
+};
+/************************************************************************************
+ * toLongValue
+ ************************************************************************************
+ *
+ ************************************************************************************/
+Number.prototype.toLongValue = function(){
+	return this;
+};
+/************************************************************************************
+ * toDate
+ ************************************************************************************
+ *	 yyyy mm dd
+ *	"2011-10-10".toDate('yyyy-mm-dd'); -> 2011-10-10
+ ************************************************************************************/
+String.prototype.toDate = function (format) {
+    var strDate = this;
+    var date = new Date();
+    format = format||'yyyy-MM-dd';
+    var regexArray = new Array("yyyy", "MM", "dd", "hh", "mm", "ss");
+    for(var i=0; i<regexArray.length; i=i+1) {
+        var regex = new RegExp(regexArray[i]);
+        var regexString = regexArray[i];
+        var startIndex = format.search(regex) ;
+        var endIndex= regexArray[i].length + startIndex;
+        var value = strDate.substring(startIndex, endIndex);
+
+        switch(regexString) {
+            case "yyyy" : date.setFullYear(Number(value)); break;
+            case "MM" : date.setMonth(Number(value)-1); break;
+            case "dd" : date.setDate(Number(value)); break;
+            case "hh" : date.setHours(Number(value)); break;
+            case "mm" : date.setMinutes(Number(value)); break;
+            case "ss" : date.setSeconds(Number(value)); break;
+        }
+    }
+    return date;
+};
+
+/************************************************************************************
+ * countDaysBetween
+ ************************************************************************************
+ *
+ ************************************************************************************/
+Date.countDaysBetween = function(from, to){
+	if(!to){
+		to = from;
+		from = new Date();
+	}
+	var oneDay = 24*60*60*1000; // hours*minutes*seconds*milliseconds
+	var diffDays = Math.round(Math.abs((from.getTime() - to.getTime())/(oneDay)));
+	return diffDays;
+};
+/************************************************************************************
+ * toMaskString
+ ************************************************************************************
+ *
+ * "2011-10-10".toDate('yyyy-mm-dd'); -> 11-10-10
+ ************************************************************************************/
+Date.prototype.toMaskString = function(exp){
+	return this.format('yyyy-mm-dd');
+};
+/************************************************************************************
+ * format
+ ************************************************************************************
+ *
+ * new Date().format('yyyy-mm-dd HH:mm:ss'); -> 2011-10-10 24:50:11
+ ************************************************************************************/
+Date.prototype.format = function(f) {
+	if (!this.valueOf())
+		return " ";
+	var weekNameKor = [ "일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일" ];
+	var weekNameEng = [ "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sun" ];
+	var d = this;
+	return f.replace(/(yyyy|yy|MM|dd|E|e|hh|HH|mm|ss|a\/p|ampm)/gi, function($1) {
+		switch ($1) {
+		case "yyyy":
+			return d.getFullYear();
+		case "yy":
+			return (d.getFullYear() % 1000).zf(2);
+		case "MM":
+			return (d.getMonth() + 1).zf(2);
+		case "dd":
+			return d.getDate().zf(2);
+		case "E":
+			return weekNameKor[d.getDay()];
+		case "e":
+			return weekNameEng[d.getDay()];
+		case "HH":
+			return d.getHours().zf(2);
+		case "hh":
+			return ((h = d.getHours() % 12) ? h : 12).zf(2);
+		case "mm":
+			return d.getMinutes().zf(2);
+		case "ss":
+			return d.getSeconds().zf(2);
+		case "a/p":
+			return d.getHours() < 12 ? "오전" : "오후";
+		case "ampm":
+			return d.getHours() < 12 ? "AM" : "PM";
+		default:
+			return $1;
+		}
+	});
+};
+
+Date.prototype.addDays = function(days, format){
+	var date = new Date();
+	date.setDate(date.getDate() + days);
+	
+	return date.format(format);
+};
+
+Date.prototype.addMonths = function(months, format){
+	var date = new Date();
+	date.setMonth(date.getMonth() + months);
+	
+	return date.format(format);
+};
+
+String.prototype.string = function(len){var s = '', i = 0; while (i++ < len) { s += this; } return s;};
+String.prototype.zf = function(len){return "0".string(len - this.length) + this;};
+Number.prototype.zf = function(len){return this.toString().zf(len);};
+Array.prototype.indexOf = function(o){
+	for(var i = 0;i<this.length;i++){
+		if(this[i] == o) return i;
+	}
+	return -1;
+};
+/************************************************************************************
+ * unique
+ ************************************************************************************
+ * 해당 배열의 중복제거
+ *
+ ************************************************************************************/
+Array.prototype.unique = function() {
+	var a = {};
+	for ( var i = 0; i < this.length; i++) {
+		if (typeof a[this[i]] == undefined)
+			a[this[i]] = 1;
+	}
+	var arr = [];
+	for ( var i in a)
+		arr[arr.length] = i;
+	return arr;
+};
+/************************************************************************************
+ * remove
+ ************************************************************************************
+ * 해당 idx의 배열 제거
+ *
+ ************************************************************************************/
+Array.prototype.remove = function(idx){
+    var temp = [];
+    var i = this.length;
+
+    while(i > idx){
+        var kk = this.pop();
+        temp.push(kk);
+
+        i--;
+    }
+
+    for(var i=temp.length - 2; i>=0; i--){
+        this.push(temp[i]);
+    }
+};
+/************************************************************************************
+ * sortBy
+ ************************************************************************************
+ * var arrJson = [{text:"a", num:1}, {text:"C", num:19}, {text:"MANA",
+ * num:1209}];
+ *
+ * //Sort by num, high to low arrJson.sortBy('num', true, parseInt);
+ *
+ * //Sort by text, case-insensitive, A-Z arrJson.sortBy('text', false,
+ * function(a){return a.toUpperCase()});
+ *
+ ************************************************************************************/
+Array.prototype.sortBy = function(field, reverse, primer){
+	this.sort(jsonFunction(field, reverse, primer));
+};
+
+function jsonFunction(field, reverse, primer){
+	var key = function(fn){
+		return primer ? primer(fn[field]) : fn[field];
+	};
+	return function (a,b) {
+		var A = key(a), B = key(b);
+		return ((A < B) ? -1 : (A > B) ? 1 : 0) * [-1,1][+!!reverse];
+	};
+}
+/************************************************************************************
+ * Interval
+ ************************************************************************************
+ * var interval = new Interval();
+ * interval.add("talkRefresh", 3, function(){ console.log("talk refresh"); });
+ * interval.add("menuRefresh", 5, function(){ console.log("menu refresh"); });
+ *
+ *
+ * interval.start();
+ *
+ * 	//슬립 테스트
+ * 	setTimeout(function(){
+ * 		interval.sleep("talkRefresh");
+ * 		console.log("talkRefresh sleep");
+ * 	}, 10000);
+ *
+ * 	//웨이크 테스트
+ * 	setTimeout(function(){
+ * 		interval.wake("talkRefresh");
+ * 		console.log("talkRefresh wake");
+ * 	}, 20000);
+ *
+ * 	//리무브 테스트
+ * 	setTimeout(function(){
+ * 		interval.remove("menuRefresh");
+ * 		console.log("menuRefresh remove");
+ * 	}, 30000);
+ *
+ * 	//stop 테스트
+ * 	setTimeout(function(){
+ * 		interval.stop();
+ * 		console.log("stop");
+ * 	}, 50000);
+ *
+ ************************************************************************************/
+var IntervalAction = function(time, func){
+	this.time = time;
+	this.func = func;
+	this.sleep = false;
+};
+IntervalAction.prototype = {
+	getTime: function(){
+		return this.time;
+	},
+	setTime: function(time){
+		this.time = time;
+		return this;
+	},
+	getFunc: function(){
+		return this.func;
+	},
+	setFunc: function(func){
+		this.func = func;
+		return this;
+	},
+	setSleep: function(flag){
+		this.sleep = flag;
+		return this;
+	},
+	isSleep: function(){
+		return this.sleep;
+	},
+	toggle: function(){
+		this.sleep = !this.sleep;
+	}
+};
+
+var Interval = function(){
+	this.map = {};
+	this.holder = null;
+};
+Interval.prototype = {
+	//Interval 함수 추가
+	add: function(name, time, func){
+		this.map[name] = new IntervalAction(time, func);
+	},
+	//Interval 함수 제거
+	remove: function(name){
+		delete this.map[name];
+	},
+	//sleeping toggle
+	toggle: function(name){
+		this.map[name].toggle();
+	},
+	//sleep
+	sleep: function(name){
+		this.map[name].setSleep(true);
+	},
+	//wake
+	wake: function(name){
+		this.map[name].setSleep(false);
+	},
+	//전체 제거(Interval 함수는 실행됨)
+	clear: function(){
+		for(var name in this.map){
+			this.removeAction(name);
+		}
+	},
+	//Interval 시작
+	start: function(){
+		var obj = this;
+		this.holder = setInterval(function(){ obj.roop.call(obj); }, 1000);
+	},
+	//rooping 함수
+	roop: function(){
+		var time = parseInt(+new Date()/1000);
+		for(var name in this.map){
+			var action = this.map[name];
+			if(time % action.getTime() == 0 && !action.isSleep()) {
+				(action.getFunc())();
+			}
+		}
+	},
+	//stop
+	stop: function(){
+		if(this.holder){
+			clearInterval(this.holder);
+			this.holder = null;
+		}
+	}
+};
+/*
+ * //jquery plugin
+ *
+ */
+(function($){
+	/**** micro template ****/
+	$.extend({ tmpl : __extended });
+	$.fn.extend({tmpl : function(str, data) {
+		return this.each(function() {
+			$(this).html($.tmpl(str, data));
+		});
+	}});
+	/**** micro template ****/
+	$.fn.extend({
+		toLongValue:function(){
+			return $(this).val().toLongValue();
+		},
+		toMoney:function(){
+			return $(this).val().toMoney();
+		},
+		fixBind:function(eventName, func){
+			return !jQuery.browser.mozilla || !(eventName.indexOf('key') == 0) ? $(this).bind(eventName, func) : $(this).each(function(){
+				var isIntervalRunning = null;
+				var $this = $(this);
+				$this.bind(eventName, func).bind('focus', function(){
+					isIntervalRunning = !isIntervalRunning ? setInterval(function(){ $this.trigger(eventName); }, 100) : isIntervalRunning;
+				}).bind('blur', function(){
+					if(isIntervalRunning){
+						clearInterval(isIntervalRunning);
+						isIntervalRunning = null;
+					}
+				});
+			});
+		},
+		/**
+		 * 날짜 선택
+		 * @param options : json 형태의 옵션값 항목은 overRange, underRange, dataFormat, uiFormat 4가지
+		 * options.overRange : (number) 선택 년도 이후 범위 (0 입력시 시작범위는 올해로 고정. 10 을 입력하면 1900년 선택시 1910년까지만 선택가능하도록 출력됨)
+		 * options.underRange : (number) 선택 년도 이전 범위 (10을 입력후 1900년 선택 시 1890년 까지 출력됨)
+		 * options.underLimit : (number) 출력되는 선택 년도 이전 범위 한계 년도. 0 또는 미 입력시 적용안됨 (underRange 값이 100이고 underLimit 값이 1850일때 1900년 선택시 1800이 아닌 1850까지만 출력)
+		 * options.dataFormat : (text) 입력되는 데이터값의 년 월 일 구분 ( - 입력시 2012-01-01로 데이터값이 설정되며 빈값 입력시 숫자만 나열 20120101)
+		 * options.uiFormat : (text) UI출력 시 년 월 일 구분 UI 형태설정 빈값일 경우 한글로 년, 월, 일, 이 표시.
+		 * options.uiInElement : (boolean) true일 경우 ui format 에 해당하는 단어가 selectbox 내부에 표시된다. default false
+		 */
+		simpleDate:function(options){
+			if (options.underLimit == undefined || options.underLimit == null || isNaN(options.underLimit)) options.underLimit = 0;
+			if (options.uiInElement == undefined || options.uiInElement == null || isNaN(options.uiInElement)) options.underLimit = false;
+			var $this = $(this);
+			var dateString = "yyyy" + options.dataFormat + "MM" + options.dataFormat + "dd";
+			var thisDate = $this.val() ? $this.val().toDate(dateString) : null;
+			var standardDate = thisDate || new Date();
+			$this.hide();
+			var format = options.dataFormat !=  undefined && options.dataFormat != null ? options.dataFormat : '-';
+			var $year = $('<select id="'+$this.attr('id')+'Year" class="simpleDate simpleDateYear"></select>');
+			var $month = $('<select id="'+$this.attr('id')+'Month" class="simpleDate simpleDateMonth"></select>');
+			var $day = $('<select id="'+$this.attr('id')+'Day" class="simpleDate simpleDateDay"></select>');
+			$this.after($year);
+			$year.after($month);
+			$month.after($day);
+			var uiInElementYear = '';
+			var uiInElementMonth = '';
+			var uiInElementDay = '';
+			if (options.uiFormat == undefined || options.uiFormat == null || options.uiFormat == '') {
+//				$year.after($('<span class="simpleDateFormat">&nbsp;년&nbsp;</span>'));
+//				$month.after($('<span class="simpleDateFormat">&nbsp;월&nbsp;</span>'));
+//				$day.after($('<span class="simpleDateFormat">&nbsp;일&nbsp;</span>'));
+			} else if (options.uiFormat == 'kor') {
+				if (options.uiInElement) {
+					uiInElementYear = '년';
+					uiInElementMonth = '월';
+					uiInElementDay = '일';
+				} else {
+					$year.after($('<span class="simpleDateFormat">&nbsp;년&nbsp;</span>'));
+					$month.after($('<span class="simpleDateFormat">&nbsp;월&nbsp;</span>'));
+					$day.after($('<span class="simpleDateFormat">&nbsp;일&nbsp;</span>'));
+				}
+			} else {
+				$year.after($('<span class="simpleDateFormat">&nbsp;'+ options.uiFormat + '&nbsp;</span>'));
+				$month.after($('<span class="simpleDateFormat">&nbsp;'+ options.uiFormat + '&nbsp;</span>'));
+			}
+
+			$year.change(function(e){
+				var selectedValue = $year.val()||standardDate.getFullYear();
+				//var startDate = Number(selectedValue) + options.overRange;
+				var startDate = Number(selectedValue) + options.overRange;
+				var yearHtml = "";
+
+				if (options.overRange == 0) {
+					var now = new Date();
+					var nowYear = now.getFullYear();
+					for (; nowYear > startDate; nowYear--) {
+						yearHtml += '<option value="'+(nowYear)+'">'+(nowYear)+uiInElementYear+'</option>';
+					}
+				}
+
+				for(var i = 0 ; i < (options.overRange + options.underRange) ; i ++){
+					//yearHtml += '<option value="'+(startDate)+'">'+(startDate++)+'</option>';
+					yearHtml += '<option value="'+(startDate)+'">'+(startDate--)+uiInElementYear+'</option>';
+					if (options.underLimit != 0) {
+						if (startDate < options.underLimit) break;
+					}
+				}
+				$year.html(yearHtml);
+				$year.val(selectedValue);
+				calculateDate();
+				valueCopy();
+			});
+			var monthHtml = "";
+			for(var i = 1; i <= 12 ; i++){
+				monthHtml += '<option value="'+(i.zf(2))+'">'+(i.zf(2))+uiInElementMonth+'</option>';
+			}
+			$month.html(monthHtml).change(function(e){
+				calculateDate();
+				valueCopy();
+			});
+			$month.val((standardDate.getMonth()+1).zf(2));
+			$day.change(function(e){
+				valueCopy();
+			});
+			function calculateDate(){
+				var selectedValue = $day.val()||standardDate.getDate();
+				selectedValue = selectedValue.zf(2);
+				var lastDate = new Date($year.val(), $month.val(), 0).getDate();
+				var dayHtml = "";
+				for(var i = 1; i <= lastDate ; i++){
+					dayHtml += '<option value="'+(i.zf(2))+'">'+(i.zf(2))+uiInElementDay+'</option>';
+				}
+				$day.html(dayHtml);
+				$day.val(selectedValue);
+			}
+			function valueCopy(){
+				$this.val($year.val() + format + $month.val() + format + $day.val());
+			}
+			$year.change();
+			return $this.change(function(e){
+				try{
+					var arrDate = $this.val().split('-');
+					$day.html($day.html() + '<option value="'+(arrDate[2])+'">'+(arrDate[2])+uiInElementDay+'</option>').val(arrDate[2]).change();
+					$month.val(arrDate[1]).change();
+					$year.html($year.html() + '<option value="'+(arrDate[0])+'">'+(arrDate[0])+uiInElementYear+'</option>').val(arrDate[0]).change();
+
+				}catch(e){
+					var date = new Date();
+					$day.html($day.html() + '<option value="'+(date.getDate().zf(2))+'">'+(date.getDate().zf(2))+uiInElementDay+'</option>').val(date.getDate().zf(2)).change();
+					$month.val((date.getMonth() + 1).zf(2)).change();
+					$year.html($year.html() + '<option value="'+(date.getFullYear())+'">'+(date.getFullYear())+uiInElementYear+'</option>').val(date.getFullYear()).change();
+				}
+			});
+		},
+		onNumber : function(target, func) {
+			func = func || function(){};
+			return $(this).on('keydown', target, function(e){
+				if(/*!isNumeric(e) ||*/ !isValidKey(e, validNumber)) {
+					return false;
+				} else {
+					return func(e);
+				}
+			});
+		},
+		onFloat : function(target, func) {
+			func = func || function(){};
+			return $(this).on('keydown', target, function(e){
+				if(/*!isNumeric(e) ||*/ !isValidKey(e, validFloat)) {
+					return false;
+				} else {
+					return func(e);
+				}
+			});
+		},
+		fitImage : function(options) {
+			options = options||{};
+			return $(this).each(function(){
+				// 원본 이미지 사이즈 저장
+				var $this = $(this);
+				if($this.attr('src').indexOf("images/common/noImg") > -1){
+					/*var size = ($(window).width() - ($this.offset().left * 2));
+					$this.attr({
+						width : size,
+						height : size
+					}).css({
+						width : size,
+						height : size
+					});*/
+					return;
+				}
+				var imageObject = new Image();
+				imageObject.src = $this.attr('src');
+				var width = imageObject.width;
+				var height = imageObject.height;
+				// 가로, 세로 최대 사이즈 설정
+				//var $target = $(target||$this.parent());
+				//alert($.debugElement(imageObject));
+				// maxWidth = 100 이런 식으로 입력
+				var maxWidth = options.maxWidth || ($(window).width() - ($this.offset().left * 2));
+				// maxHeight = 100 이런 식으로 입력
+				var maxHeight = options.maxHeight || height;
+				// 가로나 세로의 길이가 최대 사이즈보다 크면 실행
+				var resizeWidth = width;
+				var resizeHeight = height;
+				/*var ratio = width/maxWidth >= height/maxHeight ? width/maxWidth : height/maxHeight;
+				if(width > maxWidth || height > maxHeight){
+					// 가로가 세로보다 크면 가로는 최대사이즈로, 세로는 비율 맞춰 리사이즈
+					if(width > height){
+						resizeWidth = maxWidth;
+						resizeHeight = Math.round(height / ratio);
+					// 세로가 가로보다 크면 세로는 최대사이즈로, 가로는 비율 맞춰 리사이즈
+					} else {
+						resizeHeight = maxHeight;
+						resizeWidth = Math.round(width / ratio);
+					}
+					// 최대사이즈보다 작으면 원본 그대로
+				}*/
+				if(width > maxWidth){
+					resizeHeight = Math.round(height / (width / maxWidth));
+					resizeWidth = maxWidth;
+				}
+				if(height > maxHeight){
+					resizeWidth = Math.round(width / (height / maxHeight));
+					resizeHeight = maxHeight;
+				}
+
+				//alert("prt : "+maxWidth + " " + maxHeight +"\n"+"org : " + width + " " + height +"\n"+"rsz : " +resizeWidth + " " + resizeHeight);
+				// 리사이즈한 크기로 이미지 크기 다시 지정
+				$this.attr({
+					width : resizeWidth,
+					height : resizeHeight
+				}).css({
+					width : resizeWidth,
+					height : resizeHeight
+				});// 폭과 높이를 새로 지정
+				/*var $this = $(this);
+				var $target = $(target||$this.parent());
+				var imgWidth = $this.width(); // 해당 img의 속성 중 폭(width)의 값
+				var targetWidth = $target.width();
+				if (imgWidth > targetWidth) { // 폭이 window width 초과할 때에만 줄임
+					var imgHeight = $this.height(); // 해당 img의 속성 중 높이(height)의 값
+					var ratio = imgWidth / imgHeight; // 비율
+					var newHeight = Math.round(targetWidth / ratio); // 새 높이는 window width으로 원래 비율에 맞춤
+					$this.attr({
+						width : targetWidth,
+						height : newHeight
+					});// 폭과 높이를 새로 지정
+				}*/
+			});
+		}
+	});
+	//숫자 키이벤트 처리
+	var isNumeric = function(e){
+		if (e.shiftKey) return false;
+		return (e.keyCode >= 48 && e.keyCode <= 57) || (e.keyCode >= 96 && e.keyCode <= 105);
+	};
+	var validNumber =  [
+			8,        // backspace
+			9,        // tab
+			13,       // enter
+			27,       // escape
+			35,       // end
+			36,       // home
+			37,       // left arrow
+			39,       // right arrow
+			46,       // delete
+			48, 96,   // 0
+			49, 97,   // 1
+			50, 98,   // 2
+			51, 99,   // 3
+			52, 100,  // 4
+			53, 101,  // 5
+			54, 102,  // 6
+			55, 103,  // 7
+			56, 104,  // 8
+			57, 105   // 9
+		];
+	var validFloat =  [
+			8,        // backspace
+			9,        // tab
+			13,       // enter
+			27,       // escape
+			35,       // end
+			36,       // home
+			37,       // left arrow
+			39,       // right arrow
+			46,       // delete
+			48, 96,   // 0
+			49, 97,   // 1
+			50, 98,   // 2
+			51, 99,   // 3
+			52, 100,  // 4
+			53, 101,  // 5
+			54, 102,  // 6
+			55, 103,  // 7
+			56, 104,  // 8
+			57, 105,  // 9
+			110, 190  // period
+		];
+	var isValidKey = function(e, valid){
+		// only allow shift key with tab
+		if (e.shiftKey && e.keyCode != 9) return false;
+
+		for (var i = 0, c; c = valid[i]; i++) {
+			if (e.keyCode == c) return true;
+		}
+		return false;
+	};
+	$.extend({
+		_forwardUrl: function(url, params){
+			param =  params ? $.param(params) : "";
+			var conjunction = url.indexOf('?') > -1 ? '&' : '?';
+			param = param ? conjunction + param : param;
+			location.href = url + param;
+		},
+		_forwardPostUrl : function(url, params){
+			var $form = $('<form></form>').attr('method', 'post').attr('action', url.split('?')[0]);
+			if(params){
+				for(var key in params){
+					$('<input type="hidden" name="'+key+'" value="'+params[key]+'">').appendTo($form);
+				}
+			}
+			var urlParam = $.getUrlParams(url);
+			if(urlParam){
+				for(var key in urlParam){
+					$('<input type="hidden" name="'+key+'" value="'+urlParam[key]+'">').appendTo($form);
+				}
+			}
+			$form.appendTo('body').submit();
+		},
+	    getUrlParams: function(url){
+	        var vars = {}, hash;
+	        url = url || location.href;
+	        url = url.replace(/#$/, "");
+	        var hashes = url.slice(url.indexOf('?') + 1).split('&');
+	        for(var i = 0; i < hashes.length; i++) {
+	            hash = hashes[i].split('=');
+	            vars[hash[0]] = decodeURIComponent(hash[1]);
+	        }
+	        return vars;
+	    },
+	    getUrlParam: function(url, name) {
+	    	if(name == undefined){
+	    		return $.getUrlParams()[url];
+	    	}else{
+	    		return $.getUrlParams(url)[name];
+	    	}
+	    },
+	    stringify : function(obj) {
+			var t = typeof (obj);
+			if(t != "object" || obj === null){
+				// simple data type
+				if (t == "string") obj = '"' + obj + '"';
+			    return String(obj);
+			}else{
+				var v, json = [], arr = (obj && obj.constructor == Array);
+				for (var n in obj) {
+				    v = obj[n];
+				    t = typeof(v);
+				    if (obj.hasOwnProperty(n)) {
+				        if (t == "string") v = '"' + v + '"'; else if (t == "object" && v !== null) v = jQuery.stringify(v);
+				        json.push((arr ? "" : '"' + n + '":') + String(v));
+				    }
+				}
+				return (arr ? "[" : "{") + String(json) + (arr ? "]" : "}");
+			}
+	    },
+	    encodedStringify : function(obj){
+	    	return encodeURIComponent($.stringify(obj));
+	    },
+	    debugElement: function(obj){
+	    	var str = "";
+	    	for(var p in obj){
+	    		str += p + " : " +obj[p] + "\n";
+	    	}
+	    	alert(str);
+	    },
+	    noImage: function(src){
+	    	$('img').error(function() {
+				$(this).attr('src', src||'/images/common/noImg_60x60.gif');
+			});
+	    }
+	});
+	$.forwardURI = $.forwardUrl = $._forwardUrl;
+	$.forwardPostURI = $.forwardPostUrl = $._forwardPostUrl;
+})(jQuery);
+
+
+/**
+ * micro-template.js
+ */
+function __template (id, data) {
+	var exp = "%";
+	var startExp = new RegExp("<[\\"+exp+"]", "g");
+	var endExp = new RegExp("[\\"+exp+"]>", "g");
+	var me = arguments.callee;
+	if (!me.cache[id]) me.cache[id] = (function () {
+		var name = id, string = /^[\w\-\/]+$/.test(id) ? me.get(id): (name = '__template(string)', id); // no warnings
+		var line = 1, body = (
+			"try { " +
+				(me.variable ?  "var " + me.variable + " = this.stash;" : "with (this.stash) { ") +
+					"this.ret += '"  +
+					string.
+						replace(startExp, '\x11').replace(endExp, '\x13'). // if you want other tag, just edit this line
+						replace(/'(?![^\x11\x13]+?\x13)/g, '\\x27').
+						replace(/^\s*|\s*$/g, '').
+						replace(/\r\n/g, '\n').
+						replace(/\n\r/g, '\n').
+						replace(/\n/g, function () { return "';\nthis.line = " + (++line) + "; this.ret += '\\n"; }).
+						replace(/\x11=raw(.+?)\x13/g, "' + ($1) + '").
+						replace(/\x11=(.+?)\x13/g, "' + this.escapeHTML($1) + '").
+						replace(/\x11(.+?)\x13/g, "'; $1; this.ret += '") +
+				"'; " + (me.variable ? "" : "}") + "return this.ret;" +
+			"} catch (e) { throw 'TemplateError: ' + e + ' (on " + name + "' + ' line ' + this.line + ')'; } " +
+			"//@ sourceURL=" + name + "\n" // source map
+		).replace(/this\.ret \+= '';/g, '');
+		var func = new Function(body);
+		var map  = { '&' : '&amp;', '<' : '&lt;', '>' : '&gt;', '\x22' : '&#x22;', '\x27' : '&#x27;' };
+		var escapeHTML = function (string) { return (''+string).replace(/[&<>\'\"]/g, function (_) { return map[_]; }); };
+		return function (stash) { return func.call(me.context = { escapeHTML: escapeHTML, line: 1, ret : '', stash: stash }); };
+	})();
+	return data ? me.cache[id](data) : me.cache[id];
+}
+__template.cache = {};
+
+/**
+ * Extended template function:
+ *   requires: basic template() function
+ *   provides:
+ *     include(id)
+ *     wrapper(id, function () {})
+ */
+function __extended (id, data) {
+	var fun = function (data) {
+		data.include = function (name) {
+			__template.context.ret += __template(name, __template.context.stash);
+		};
+
+		data.wrapper = function (name, fun) {
+			var current = __template.context.ret;
+			__template.context.ret = '';
+			fun.apply(__template.context);
+			var content = __template.context.ret;
+			var orig_content = __template.context.stash.content;
+			__template.context.stash.content = content;
+			__template.context.ret = current + __template(name, __template.context.stash);
+			__template.context.stash.content = orig_content;
+		};
+
+		return __template(id, data);
+	};
+
+	return data ? fun(data) : fun;
+}
+
+var __suffix = ".tmpl";
+__template.get = function (id) {
+	var fun = __extended.get;
+	return fun ? fun(id) : $.ajax({url: id + __suffix, async:false, global:false}).responseText;//document.getElementById(id).innerHTML;
+};

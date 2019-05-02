@@ -1,0 +1,67 @@
+# embeded tomcat
+server:
+  servlet:
+    context-path: /athn
+  tomcat:
+    uri-encoding: UTF-8      
+  error:
+    whitelabel:
+      enabled: true  
+  compression:
+    enabled: true
+  port: 80
+# log file name  
+logging:
+  file: kmc
+  path: /var/log
+  level:
+    com:
+      kt:
+        athn:
+          mapper: TRACE
+          model: TRACE
+          dao: TRACE
+
+#jasypt encryptor
+jasypt:
+  encryptor:
+    bean: jasyptStringEncrptor
+      
+# spring boot - actuator expose
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, prometheus 
+        
+---
+
+# Dev Profile
+spring:
+  profiles: dev
+  datasource:
+    url: jdbc:postgresql://10.217.59.68:5432/mmpdb
+    username: mmpown
+    password: ENC(uIqx+krC3maqJVC1L+MXXkcLeGoLMUPi5nH/BRQX75fdtx9L3emtlQ==)
+    driver-class-name: org.postgresql.Driver
+  http:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
+      
+---
+
+# Prd Profile
+spring:
+  profiles: prd
+  datasource:
+    url: jdbc:postgresql://10.220.184.171:5432/mmpdb
+    username: mmpown
+    password: ENC(uIqx+krC3maqJVC1L+MXXkcLeGoLMUPi5nH/BRQX75fdtx9L3emtlQ==)
+    driver-class-name: org.postgresql.Driver
+  http:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true

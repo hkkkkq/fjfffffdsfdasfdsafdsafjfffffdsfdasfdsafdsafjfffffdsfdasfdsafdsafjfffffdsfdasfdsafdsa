@@ -1,0 +1,2 @@
+policy_RequestXml
+<?xml version="1.0" encoding="UTF-8"?><Root xmlns="http://www.nexacroplatform.com/platform/dataset"><Parameters><Parameter id="command">request_policy</Parameter></Parameters></Root>

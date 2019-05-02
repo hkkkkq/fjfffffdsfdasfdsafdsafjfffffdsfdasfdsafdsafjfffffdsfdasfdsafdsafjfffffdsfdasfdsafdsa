@@ -1,0 +1,9 @@
+-+
+-DCCI
+-D_IDA_XL
+-DWINNT
+-ID:\05.checksum\01.Script\AUTH_TEST
+-IC:\Program Files\HP\LoadRunner\include
+-ed:\05.checksum\01.script\auth_test\\logfile.log
+d:\05.checksum\01.script\auth_test\\combined_AUTH_TEST.c
+d:\05.checksum\01.script\auth_test\\pre_cci.c

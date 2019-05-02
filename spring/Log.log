@@ -1,0 +1,15 @@
+@Component
+: @Controller는 @Component를 상속한다.
+<context:component-scan base-package=""/> 
+=> 태그를 사용해서 스프링이 클래스(@Controller, @Component 등으로 설정한 클래스)를 검색할 패키지를 지정
+=> 태크는 base-package에서 지정한 패키지에서 @Component가 적용된 클래스를 검색하여 bean으로 자동 등록한다. 
+
+[의존관계설정]
+@Resource
+- Name 기반
+- <context:annotaion-config> 선언
+
+@Autowired
+- Type 기반
+- <context:annotaion-config> 선언
+- Qualifier("Name") : Type의 중복될 경우 특정 Name의 클래스를 설정

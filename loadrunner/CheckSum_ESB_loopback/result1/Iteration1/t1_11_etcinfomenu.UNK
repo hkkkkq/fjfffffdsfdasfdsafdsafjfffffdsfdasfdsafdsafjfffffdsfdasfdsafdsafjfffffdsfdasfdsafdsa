@@ -1,0 +1,269 @@
+$(function(){
+	var liacti = $(".liactigo li a");
+	liacti.click(function(){
+		var self = $(this);
+		liacti.removeClass("on");
+		self.addClass("on");
+	});
+//	var tab_wrap01_01 = $(".tab_wrap01_01");
+//	var con01_01 = $(".tab_wrap").siblings(".tabcon01_01");
+//	tab_wrap01_01.click(function(){
+//		var self = $(this);
+//		con01_01.hide(2).eq(self.index(1)).show(1);
+//	});
+});
+
+function MM_showHideLayers2() { //v9.0
+	  var i,p,v,obj,args=MM_showHideLayers2.arguments;
+	  for (i=0; i<(args.length-2); i+=3) 
+	  with (document) if (getElementById && ((obj=getElementById(args[i]))!=null)) { v=args[i+2];
+	    if (obj.style) { obj=obj.style; v=(v=='show')?'block':(v=='hide')?'none':v; }
+	    obj.display=v; }
+	}
+	
+//탭 스크립트
+$(function(){
+	var tab01_01 = $(".tab_wrap01_01 a");
+	var con01_01 = $(".tab_wrap01_01").siblings(".tabcon01_01"); //스크립트 제어를 위해 추가된 클래스
+	tab01_01.click(function(){
+		var self = $(this);
+		tab01_01.removeClass("on");
+		self.addClass("on");
+		con01_01.hide().eq(self.index()).show();
+	});
+});
+
+$(function(){
+	var tab02_01 = $(".tab_wrap02_01 a");
+	var con02_01 = $(".tab_wrap02_01").siblings(".tabcon02_01"); //스크립트 제어를 위해 추가된 클래스
+	tab02_01.click(function(){
+		var self = $(this);
+		tab02_01.removeClass("on");
+		self.addClass("on");
+		con02_01.hide().eq(self.index()).show();
+	});
+});
+
+$(function(){
+	var tab02_02 = $(".tab_wrap02_02 a");
+	var con02_02 = $(".tab_wrap02_02").siblings(".tabcon02_02"); //스크립트 제어를 위해 추가된 클래스
+	tab02_02.click(function(){
+		var self = $(this);
+		tab02_02.removeClass("on");
+		self.addClass("on");
+		con02_02.hide().eq(self.index()).show();
+	});
+});
+
+$(function(){
+	var tab02_03 = $(".tab_wrap02_03 a");
+	var con02_03 = $(".tab_wrap02_03").siblings(".tabcon02_03"); //스크립트 제어를 위해 추가된 클래스
+	tab02_03.click(function(){
+		var self = $(this);
+		tab02_03.removeClass("on");
+		self.addClass("on");
+		con02_03.hide().eq(self.index()).show();
+	});
+});
+
+$(function(){
+	var tab02_04 = $(".tab_wrap02_04 a");
+	var con02_04 = $(".tab_wrap02_04").siblings(".tabcon02_04"); //스크립트 제어를 위해 추가된 클래스
+	tab02_04.click(function(){
+		var self = $(this);
+		tab02_04.removeClass("on");
+		self.addClass("on");
+		con02_04.hide().eq(self.index()).show();
+	});
+});
+
+$(function(){
+	var tab02_05 = $(".tab_wrap02_05 a");
+	var con02_05 = $(".tab_wrap02_05").siblings(".tabcon02_05"); //스크립트 제어를 위해 추가된 클래스
+	tab02_05.click(function(){
+		var self = $(this);
+		tab02_05.removeClass("on");
+		self.addClass("on");
+		con02_05.hide().eq(self.index()).show();
+	});
+});
+
+$(function(){
+	var tab03_01 = $(".tab_wrap03_01 a");
+	var con03_01 = $(".tab_wrap03_01").siblings(".tabcon03_01"); //스크립트 제어를 위해 추가된 클래스
+	tab03_01.click(function(){
+		var self = $(this);
+		tab03_01.removeClass("on");
+		self.addClass("on");
+		con03_01.hide().eq(self.index()).show();
+	});
+});
+
+$(function(){
+	var tab04_01 = $(".tab_wrap04_01 a");
+	var con04_01 = $(".tab_wrap04_01").siblings(".tabcon04_01"); //스크립트 제어를 위해 추가된 클래스
+	tab04_01.click(function(){
+		var self = $(this);
+		tab04_01.removeClass("on");
+		self.addClass("on");
+		con04_01.hide().eq(self.index()).show();
+	});
+});
+
+$(function(){
+	var tab04_02 = $(".tab_wrap04_02 a");
+	var con04_02 = $(".tab_wrap04_02").siblings(".tabcon04_02"); //스크립트 제어를 위해 추가된 클래스
+	tab04_02.click(function(){
+		var self = $(this);
+		tab04_02.removeClass("on");
+		self.addClass("on");
+		con04_02.hide().eq(self.index()).show();
+	});
+});
+
+
+$(function(){
+	var tab04_03 = $(".tab_wrap04_03 a");
+	var con04_03 = $(".tab_wrap04_03").siblings(".tabcon04_03"); //스크립트 제어를 위해 추가된 클래스
+	tab04_03.click(function(){
+		var self = $(this);
+		tab04_03.removeClass("on");
+		self.addClass("on");
+		con04_03.hide().eq(self.index()).show();
+	});
+});
+
+
+$(function(){
+	var tab05_01 = $(".tab_wrap05_01 a");
+	var con05_01 = $(".tab_wrap05_01").siblings(".tabcon05_01"); //스크립트 제어를 위해 추가된 클래스
+	tab05_01.click(function(){
+		var self = $(this);
+		tab05_01.removeClass("on");
+		self.addClass("on");
+		con05_01.hide().eq(self.index()).show();
+	});
+});
+
+$(function(){
+	var tab05_02 = $(".tab_wrap05_02 a");
+	var con05_02 = $(".tab_wrap05_02").siblings(".tabcon05_02"); //스크립트 제어를 위해 추가된 클래스
+	tab05_02.click(function(){
+		var self = $(this);
+		tab05_02.removeClass("on");
+		self.addClass("on");
+		con05_02.hide().eq(self.index()).show();
+	});
+});
+
+$(function(){
+	var tab05_03 = $(".tab_wrap05_03 a");
+	var con05_03 = $(".tab_wrap05_03").siblings(".tabcon05_03"); //스크립트 제어를 위해 추가된 클래스
+	tab05_03.click(function(){
+		var self = $(this);
+		tab05_03.removeClass("on");
+		self.addClass("on");
+		con05_03.hide().eq(self.index()).show();
+	});
+});
+
+$(function(){
+	var tab05_04 = $(".tab_wrap05_04 a");
+	var con05_04 = $(".tab_wrap05_04").siblings(".tabcon05_04"); //스크립트 제어를 위해 추가된 클래스
+	tab05_04.click(function(){
+		var self = $(this);
+		tab05_04.removeClass("on");
+		self.addClass("on");
+		con05_04.hide().eq(self.index()).show();
+	});
+});
+
+$(function(){
+	var tab05_05 = $(".tab_wrap05_05 a");
+	var con05_05 = $(".tab_wrap05_05").siblings(".tabcon05_05"); //스크립트 제어를 위해 추가된 클래스
+	tab05_05.click(function(){
+		var self = $(this);
+		tab05_05.removeClass("on");
+		self.addClass("on");
+		con05_05.hide().eq(self.index()).show();
+	});
+});
+
+
+$(function(){
+	var tab06_01 = $(".tab_wrap06_01 a");
+	var con06_01 = $(".tab_wrap06_01").siblings(".tabcon06_01"); //스크립트 제어를 위해 추가된 클래스
+	tab06_01.click(function(){
+		var self = $(this);
+		tab06_01.removeClass("on");
+		self.addClass("on");
+		con06_01.hide().eq(self.index()).show();
+	});
+});
+
+
+$(function(){
+	var tab06_02 = $(".tab_wrap06_02 a");
+	var con06_02 = $(".tab_wrap06_02").siblings(".tabcon06_02"); //스크립트 제어를 위해 추가된 클래스
+	tab06_02.click(function(){
+		var self = $(this);
+		tab06_02.removeClass("on");
+		self.addClass("on");
+		con06_02.hide().eq(self.index()).show();
+	});
+});
+
+$(function(){
+	var tab06_03 = $(".tab_wrap06_03 a");
+	var con06_03 = $(".tab_wrap06_03").siblings(".tabcon06_03"); //스크립트 제어를 위해 추가된 클래스
+	tab06_03.click(function(){
+		var self = $(this);
+		tab06_03.removeClass("on");
+		self.addClass("on");
+		con06_03.hide().eq(self.index()).show();
+	});
+});
+
+$(function(){
+	var tab06_04 = $(".tab_wrap06_04 a");
+	var con06_04 = $(".tab_wrap06_04").siblings(".tabcon06_04"); //스크립트 제어를 위해 추가된 클래스
+	tab06_04.click(function(){
+		var self = $(this);
+		tab06_04.removeClass("on");
+		self.addClass("on");
+		con06_04.hide().eq(self.index()).show();
+	});
+});
+
+$(function(){
+	var tab06_05 = $(".tab_wrap06_05 a");
+	var con06_05 = $(".tab_wrap06_05").siblings(".tabcon06_05"); //스크립트 제어를 위해 추가된 클래스
+	tab06_05.click(function(){
+		var self = $(this);
+		tab06_05.removeClass("on");
+		self.addClass("on");
+		con06_05.hide().eq(self.index()).show();
+	});
+});
+
+$(function(){
+	var tab06_06 = $(".tab_wrap06_06 a");
+	var con06_06 = $(".tab_wrap06_06").siblings(".tabcon06_06"); //스크립트 제어를 위해 추가된 클래스
+	tab06_06.click(function(){
+		var self = $(this);
+		tab06_06.removeClass("on");
+		self.addClass("on");
+		con06_06.hide().eq(self.index()).show();
+	});
+});
+
+$(function(){
+	var tab06_07 = $(".tab_wrap06_07 a");
+	var con06_07 = $(".tab_wrap06_07").siblings(".tabcon06_07"); //스크립트 제어를 위해 추가된 클래스
+	tab06_07.click(function(){
+		var self = $(this);
+		tab06_07.removeClass("on");
+		self.addClass("on");
+		con06_07.hide().eq(self.index()).show();
+	});
+});

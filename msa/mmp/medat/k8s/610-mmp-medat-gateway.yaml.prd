@@ -1,0 +1,59 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: medat
+  labels:
+    app: medat
+    version: 1.0.0
+    release: mmp
+spec:
+  selector:
+    istio: ingressgateway # use istio default controller
+  servers:
+  - port:
+      number: 80
+      name: http
+      protocol: HTTP
+    hosts:
+    #- "*"
+    - "ins.insuretech.kt.com"
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: gateway-medat
+  labels:
+    app: medat
+    version: 1.0.0
+    release: mmp
+spec:
+  hosts:
+  - "ins.insuretech.kt.com"
+  gateways:
+  - medat
+  http:
+  - match:
+    - uri:
+        prefix: /medat
+      headers:
+        end-user:
+          exact: canary
+    route:
+    - destination:
+        host: medat
+        port:
+          number: 80
+        subset: v2
+      weight: 100
+    timeout: 10s
+  - match:
+    - uri:
+        prefix: /medat
+    route:
+    - destination:
+        host: medat
+        port:
+          number: 80
+        subset: v1
+      weight: 100
+    timeout: 10s

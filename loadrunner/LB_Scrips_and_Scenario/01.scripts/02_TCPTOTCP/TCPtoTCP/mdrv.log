@@ -1,0 +1,30 @@
+Virtual User Script started at : 2015-07-23 19:05:07
+Starting action vuser_init.
+vuser_init.c(6): lrs_startup(257)
+Ending action vuser_init.
+Running Vuser...
+Starting iteration 1.
+Starting action Action.
+Action.c(10): Notify: Transaction "02_TCPTOTCP" started.
+Action.c(12): lrs_create_socket(socket1, TCP, ...)
+Action.c(12): Notify: Parameter Substitution: parameter "IP" =  "10.217.232.101"
+Action.c(16): lrs_send(socket1, buf1)
+Action.c(22): lrs_receive_ex(socket1, buf2)
+================================RECEIVED BUFFER================================
+	"012345678901234567890123456789012345678901234567"
+
+===============================================================================
+Action.c(22): callRecv:48 bytes were received
+Action.c(29): lrs_save_searched_string(socket1, null, success_flag, null, null, -1, 0, 48)
+Action.c(29): Notify: Saving Parameter "success_flag = 012345678901234567890123456789012345678901234567".
+Action.c(32): Notify: Parameter Substitution: parameter "success_flag" =  "012345678901234567890123456789012345678901234567"
+Action.c(34): lrs_close_socket(socket1)
+Action.c(35): Notify: Transaction "02_TCPTOTCP" ended with "Pass" status (Duration: 0.0187).
+Ending action Action.
+Ending iteration 1.
+Ending Vuser...
+Starting action vuser_end.
+vuser_end.c(6): lrs_cleanup()
+Ending action vuser_end.
+Vuser Terminated.
+Vuser 0 (thread 6640), ended OK."

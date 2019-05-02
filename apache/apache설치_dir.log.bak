@@ -1,0 +1,51 @@
+
+설치위치
+apache /app/apache
+scripts /app/scripts
+
+기동/정지 스크립트
+기동 : startWeb_<apache listen port>.sh
+정지 : stopWeb_<apache listen port>.sh
+
+apache 설정 파일
+/app/apache/conf/httpd_< apache listen port>.conf
+※ 설정파일 내용은 apache listen port 별 설정파일이 동일합니다만 ps 명령어로 process 확인 시 어떤 포트가 떠있는지 확인하기 위한 용도 입니다.
+
+※ 앞으로 기동유저 변경 시 등 변경할 일이 있으시면 아래 사항을 참고 하시기 바랍니다.
+- 기동유저 변경 : 스크립트 내의 이하 부분을 변경
+ : export APACHE_USER=infadm
+- WAS HTTP 포트 변경 (proxy destination)
+ : export FORWARD_URL="http://127.0.0.1:38088"
+
+
+
+ps -ef | grep httpd | grep -v grep | awk '{print $NF}' | uniq -c
+
+
+/app/apache/conf/httpd_포트번호.conf
+
+<IfModule mpm_worker_module>
+    StartServers 16
+    ServerLimit 32
+    MaxClients 2048
+    MinSpareThreads 256
+    MaxSpareThreads 1024
+    ThreadsPerChild 64
+    MaxRequestsPerChild 0
+</IfModule>
+
+StartServers가 16으로 되어 있어서
+각 설정 파일마다 16 + 1(controller) = 17로 뜬다고 보시면 됩니다.
+
+# Timeout: The number of seconds before receives and sends time out.
+TimeOut 30
+
+
+
+/app/apache/conf/extra/httpd-default.conf
+# Timeout: The number of seconds before receives and sends time out.
+#
+Timeout 300
+
+/app/apache/conf/httpd_포트번호.conf 에서 Include /app/apache/conf/extra/httpd-default.conf가 없으므로 적용되지 않는다.
+/app/apache/conf/httpd_포트번호.conf 의 TimeOut 설정이 사용된다. 동일한 개념으로. Timeout: The number of seconds before receives and sends time out.

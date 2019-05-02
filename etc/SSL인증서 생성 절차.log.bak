@@ -1,0 +1,116 @@
+keytool은 Java Key Store(이하 JKS)를 생성 및 관리를 하는 응용 프로그램이다. 키 쌍(공개키, 개인키)를 생성할 수 있고 인증서 발급도 가능하다.
+JKS는 Java서 사용하는 키 저장소 방식이며, 내용을 추출할 라이브러리를 제공한다.
+
+키스토어는 두개의 항목을 가지고 있습니다. 
+1) 키 엔트리 (key entry) : 비밀키와 공개키와 관련된 인증서 체인으로 구성됩니다. 
+2) 공인 인증서 엔트리 (trusted certificate entry) : 신뢰할 수 있는 기관을 나타내는 공개키 인증서 
+
+KeyStore는 비밀키, 관련된 인증서 혹은 인증서 체인을 가지고 있는 데이타베이스입니다. 인증서 체인은 클라이언트 인증서와 하나 이상의 CA 인증서(공인인증서)로 구성됩니다. 보통 서버 역할을 하는 측에서만 필요하지만, 클라이언트 인증을 요구하는 경우 클라이언트 쪽도 있어야 합니다. 
+TrustStore는 클라이언트가 신뢰할 수 있는 인증서만을 가지고 있습니다. 이들 인증서는 CA 루트 인증서 즉 자기서명 인증서입니다. 보통 웹서버가 설치되면 cacerts.jks라는 파일명으로 이 TrustStore가 저장됩니다. 
+
+<옵션>
+ -genkey : 공개키/개인키 쌍과 자체서명 인증서를 생성하는 명령어
+ -export : 인증서 파일 추출(truststore)
+ -import : 인증서를 키 스토어에 저장
+ -list : JKS파일 조회
+ -v: 결과를 상세하게 보기 옵션이다.
+ -keystore: 지정할 키가 저장된 키 스토어 명. 없을 경우는 생성한다.
+ -alias: 키의 별칭이다.
+ -sigalg: 인증서의 알고리즘이다. 해시 알고리즘으로 구성된다.
+ -keysize: 직역대로 키 사이즈이며 키 사이즈가 클 수록 암복호화 시간이 오래 걸리지만 좀 더 안전하다.
+ -validity: 인증서의 유효기간이다.
+ -certreq: certificate signing request (CSR) 생성
+ -rfc: RFC 형태로 저장
+ -file: 저장할 파일 명
+ 
+Check a stand-alone certificate
+=> keytool -printcert -v -file gw_public.cer
+(openssl -x509 -in gw_public.cer -noout -text)
+Check which certificates are in a Java keystore
+=> keytool -list -v -keystore gw_keystore.jks
+Check a particular keystore entry using an alias
+=> keytool -list -v -keystore gw_keystore.jks -alias gw_private
+ 
+<STEP 1: 개인 키와 자체서명 인증서를 생성>
+keytool -genkey -v -keystore gw_keystore.jks -alias gw_private -keyalg RSA -sigalg MD5withRSA -keysize 1024 -validity 7300
+
+==>
+ 
+[sbxgweap01:/home/infadm/sslTest]keytool -genkey -v -keystore gw_keystore.jks -alias gw_private -keyalg RSA -sigalg MD5withRSA -keysize 1024 -validity 7300
+Enter keystore password:
+Re-enter new password:
+What is your first and last name?
+  [Unknown]:  10.217.136.61
+What is the name of your organizational unit?
+  [Unknown]:
+What is the name of your organization?
+  [Unknown]:
+What is the name of your City or Locality?
+  [Unknown]:
+What is the name of your State or Province?
+  [Unknown]:
+What is the two-letter country code for this unit?
+  [Unknown]:
+Is CN=10.217.136.61, OU=Unknown, O=Unknown, L=Unknown, ST=Unknown, C=Unknown correct?
+  [no]:  yes
+
+Generating 1,024 bit RSA key pair and self-signed certificate (MD5withRSA) with a validity of 3,650 days
+        for: CN=10.217.136.61, OU=Unknown, O=Unknown, L=Unknown, ST=Unknown, C=Unknown
+Enter key password for <gw_private>
+        (RETURN if same as keystore password):
+[Storing gw_keystore.jks]
+
+--------- 서버 인증은 여기까지만 하면 된다. ---------
+
+<STEP 2: 개인 키로부터 공개키 인증서 추출>
+keytool -export -alias gw_private -keystore gw_keystore.jks -rfc -file gw_public.cer
+
+==>
+
+[sbxgweap01:/home/infadm/sslTest]keytool -export -alias gw_private -keystore gw_keystore.jks -rfc -file gw_public.cer
+Enter keystore password:
+Certificate stored in file <gw_public.cer>
+
+<STEP 3: 공개키 인증서파일을 JKS 파일로 이동시키는 작업>
+: 클라이언트 인증 필요 시 클라이언트 공개키 인증서를 서버의 키스토어에 저장할 때 사용한다. 또는 서버 공개키를 따로 JKS 저장하고 전달할 때
+keytool -import -alias trustClient -file trustClient.cer -keystore server.jks
+keytool -import -alias gw_public -file gw_public.cer -keystore ./gw_truststore.jks
+
+==>
+
+[sbxgweap01:/home/infadm/sslTest]keytool -import -alias gw_public -file gw_public.cer -keystore ./gw_truststore.jks
+Enter keystore password:
+Re-enter new password:
+Owner: CN=10.217.136.61, OU=Unknown, O=Unknown, L=Unknown, ST=Unknown, C=Unknown
+Issuer: CN=10.217.136.61, OU=Unknown, O=Unknown, L=Unknown, ST=Unknown, C=Unknown
+Serial number: 4d0450a7
+Valid from: Wed Dec 06 18:40:25 KST 2017 until: Sat Dec 04 18:40:25 KST 2027
+Certificate fingerprints:
+         MD5:  35:3F:DB:95:AD:58:3F:7B:9A:DF:F3:C1:BD:A6:87:AF
+         SHA1: DD:4B:CA:B6:5C:54:F0:CA:04:0C:14:A9:37:B3:B2:F0:37:BE:E5:BA
+         SHA256: 24:73:B2:C5:A4:9A:CC:43:DE:C2:B0:6A:DD:1B:22:CD:9F:D6:FA:83:45:C7:98:2D:B5:1E:BC:F8:BB:99:A1:46
+         Signature algorithm name: MD5withRSA
+         Version: 3
+
+Extensions:
+
+#1: ObjectId: 2.5.29.14 Criticality=false
+SubjectKeyIdentifier [
+KeyIdentifier [
+0000: 71 6C 4D D8 F8 37 0A F0   36 EB CB 98 C4 22 EE 47  qlM..7..6....".G
+0010: 02 D3 5D 0D                                        ..].
+]
+]
+
+Trust this certificate? [no]:  yes
+Certificate was added to keystore
+
+---------------------
+jvm option 추가 가능: -Djavax.net.debug=ssl
+
+
+*********참고*********
+-Djavax.net.ssl.keyStore=
+-Djavax.net.ssl.keyStorePassword=
+-Djavax.net.ssl.trustStore=
+-Djavax.net.ssl.trustStorePassword=

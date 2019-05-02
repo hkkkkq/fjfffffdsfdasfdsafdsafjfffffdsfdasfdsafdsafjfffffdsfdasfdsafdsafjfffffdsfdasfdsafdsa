@@ -1,0 +1,12 @@
+function logging
+{
+    cmd=$(history|tail -1)
+    if [ "$cmd" != "$cmd_old" ]; then
+        IP=`who am i|awk '{print $5}'|sed 's/[()]//g'`
+        logger -p local5.debug -t CMD "`hostname` $USER $IP $$ $PWD C=$cmd"
+    fi
+    cmd_old=$cmd
+}
+declare -r HISTSIZE
+declare -r logging
+trap logging DEBUG

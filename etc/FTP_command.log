@@ -1,0 +1,262 @@
+You are on the nsftools.com site 
+This page originally appeared at http://www.dreamhaven.org/ftp-raw.html, but the last time I looked it wasn't there any more, so I posted a local copy for you here. If you were really looking for a list of commands for the Microsoft Windows command-line FTP client, please look here instead.
+
+List of raw FTP commands
+(Warning: this is a technical document, not necessary for most FTP use.) 
+Note that commands marked with a * are not implemented in a number of FTP servers. 
+
+Common commands
+-ABOR - abort a file transfer 
+-CWD - change working directory 
+-DELE - delete a remote file 
+-LIST - list remote files 
+-MDTM - return the modification time of a file 
+-MKD - make a remote directory 
+-NLST - name list of remote directory 
+-PASS - send password 
+-PASV - enter passive mode 
+-PORT - open a data port 
+-PWD - print working directory 
+-QUIT - terminate the connection 
+-RETR - retrieve a remote file 
+-RMD - remove a remote directory 
+-RNFR - rename from 
+-RNTO - rename to 
+-SITE - site-specific commands 
+-SIZE - return the size of a file 
+-STOR - store a file on the remote host 
+-TYPE - set transfer type 
+-USER - send username 
+
+Less common commands
+-ACCT* - send account information 
+-APPE - append to a remote file 
+-CDUP - CWD to the parent of the current directory 
+-HELP - return help on using the server 
+-MODE - set transfer mode 
+-NOOP - do nothing 
+-REIN* - reinitialize the connection 
+-STAT - return server status 
+-STOU - store a file uniquely 
+-STRU - set file transfer structure 
+-SYST - return system type 
+
+ 
+ABOR
+Syntax: ABOR 
+Aborts a file transfer currently in progress. 
+
+ 
+
+ACCT*
+Syntax: ACCT account-info 
+This command is used to send account information on systems that require it. Typically sent after a PASS command. 
+
+ 
+
+ALLO
+Syntax: ALLO size [R max-record-size] 
+Allocates sufficient storage space to receive a file. If the maximum size of a record also needs to be known, that is sent as a second numeric parameter following a space, the capital letter "R", and another space. 
+
+ 
+
+APPE
+Syntax: APPE remote-filename 
+Append data to the end of a file on the remote host. If the file does not already exist, it is created. This command must be preceded by a PORT or PASV command so that the server knows where to receive data from. 
+
+ 
+
+CDUP
+Syntax: CDUP 
+Makes the parent of the current directory be the current directory. 
+
+ 
+
+CWD
+Syntax: CWD remote-directory 
+Makes the given directory be the current directory on the remote host. 
+
+ 
+
+DELE
+Syntax: DELE remote-filename 
+Deletes the given file on the remote host. 
+
+ 
+
+HELP
+Syntax: HELP [command] 
+If a command is given, returns help on that command; otherwise, returns general help for the FTP server (usually a list of supported commands). 
+
+ 
+
+LIST
+Syntax: LIST [remote-filespec] 
+If remote-filespec refers to a file, sends information about that file. If remote-filespec refers to a directory, sends information about each file in that directory. remote-filespec defaults to the current directory. This command must be preceded by a PORT or PASV command. 
+
+ 
+
+MDTM
+Syntax: MDTM remote-filename 
+Returns the last-modified time of the given file on the remote host in the format "YYYYMMDDhhmmss": YYYY is the four-digit year, MM is the month from 01 to 12, DD is the day of the month from 01 to 31, hh is the hour from 00 to 23, mm is the minute from 00 to 59, and ss is the second from 00 to 59. 
+
+ 
+
+MKD
+Syntax: MKD remote-directory 
+Creates the named directory on the remote host. 
+
+ 
+
+MODE
+Syntax: MODE mode-character 
+Sets the transfer mode to one of: 
+-S - Stream 
+-B - Block 
+-C - Compressed 
+The default mode is Stream. 
+ 
+
+NLST
+Syntax: NLST [remote-directory] 
+Returns a list of filenames in the given directory (defaulting to the current directory), with no other information. Must be preceded by a PORT or PASV command. 
+
+ 
+
+NOOP
+Syntax: NOOP 
+Does nothing except return a response. 
+
+ 
+
+PASS
+Syntax: PASS password 
+After sending the USER command, send this command to complete the login process. (Note, however, that an ACCT command may have to be used on some systems.) 
+
+ 
+
+PASV
+Syntax: PASV 
+Tells the server to enter "passive mode". In passive mode, the server will wait for the client to establish a connection with it rather than attempting to connect to a client-specified port. The server will respond with the address of the port it is listening on, with a message like:
+227 Entering Passive Mode (a1,a2,a3,a4,p1,p2)
+ where a1.a2.a3.a4 is the IP address and p1*256+p2 is the port number. 
+
+ 
+
+PORT
+Syntax: PORT a1,a2,a3,a4,p1,p2 
+Specifies the host and port to which the server should connect for the next file transfer. This is interpreted as IP address a1.a2.a3.a4, port p1*256+p2. 
+
+ 
+
+PWD
+Syntax: PWD 
+Returns the name of the current directory on the remote host. 
+
+ 
+
+QUIT
+Syntax: QUIT 
+Terminates the command connection. 
+
+ 
+
+REIN*
+Syntax: REIN 
+Reinitializes the command connection - cancels the current user/password/account information. Should be followed by a USER command for another login. 
+
+ 
+
+REST
+Syntax: REST position 
+Sets the point at which a file transfer should start; useful for resuming interrupted transfers. For nonstructured files, this is simply a decimal number. This command must immediately precede a data transfer command (RETR or STOR only); i.e. it must come after any PORT or PASV command. 
+
+ 
+
+RETR
+Syntax:  RETR remote-filename 
+Begins transmission of a file from the remote host. Must be preceded by either a PORT command or a PASV command to indicate where the server should send data. 
+
+ 
+
+RMD
+Syntax: RMD remote-directory 
+Deletes the named directory on the remote host. 
+
+ 
+
+RNFR
+Syntax:  RNFR from-filename 
+Used when renaming a file. Use this command to specify the file to be renamed; follow it with an RNTO command to specify the new name for the file. 
+
+ 
+
+RNTO
+Syntax:  RNTO to-filename 
+Used when renaming a file. After sending an RNFR command to specify the file to rename, send this command to specify the new name for the file. 
+
+ 
+
+SITE*
+Syntax: SITE site-specific-command 
+Executes a site-specific command. 
+
+ 
+
+SIZE
+Syntax: SIZE remote-filename 
+Returns the size of the remote file as a decimal number. 
+
+ 
+
+STAT
+Syntax: STAT [remote-filespec] 
+If invoked without parameters, returns general status information about the FTP server process. If a parameter is given, acts like the LIST command, except that data is sent over the control connection (no PORT or PASV command is required). 
+
+ 
+
+STOR
+Syntax: STOR remote-filename 
+Begins transmission of a file to the remote site. Must be preceded by either a PORT command or a PASV command so the server knows where to accept data from. 
+
+ 
+
+STOU
+Syntax: STOU 
+Begins transmission of a file to the remote site; the remote filename will be unique in the current directory. The response from the server will include the filename. 
+
+ 
+
+STRU
+Syntax: STRU structure-character 
+Sets the file structure for transfer to one of: 
+-F - File (no structure) 
+-R - Record structure 
+-P - Page structure 
+The default structure is File. 
+ 
+
+SYST
+Syntax: SYST 
+Returns a word identifying the system, the word "Type:", and the default transfer type (as would be set by the TYPE command). For example: UNIX Type: L8 
+
+ 
+
+TYPE
+Syntax: TYPE type-character [second-type-character] 
+Sets the type of file to be transferred. type-character can be any of: 
+-A - ASCII text 
+-E - EBCDIC text 
+-I - image (binary data) 
+-L - local format 
+For A and E, the second-type-character specifies how the text should be interpreted. It can be: -N - Non-print (not destined for printing). This is the default if second-type-character is omitted. 
+-T - Telnet format control (<CR>, <FF>, etc.) 
+-C - ASA Carriage Control 
+For L, the second-type-character specifies the number of bits per byte on the local system, and may not be omitted. 
+ 
+
+USER
+Syntax:  USER username 
+Send this command to begin the login process. username should be a valid username on the system, or "anonymous" to initiate an anonymous login. 
+
+

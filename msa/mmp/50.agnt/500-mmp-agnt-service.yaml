@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: service-agnt
+  labels:
+    appName: mmp
+    svcName: agnt
+    version: 1.0.0
+spec:
+  #type: NodePort
+  type: ClusterIP
+  ports:
+  - name: http
+    port: 80
+    targetPort: 80
+  #clusterIP: None
+  selector:
+    appName: mmp
+    svcName: agnt
+    version: 1.0.0

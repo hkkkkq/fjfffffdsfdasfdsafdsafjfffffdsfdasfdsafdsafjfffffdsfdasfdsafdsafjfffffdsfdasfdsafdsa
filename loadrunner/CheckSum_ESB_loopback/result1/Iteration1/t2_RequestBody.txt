@@ -1,0 +1,2 @@
+"plainUserId=94051245&plainScrtNo=New1234%21&userLocalIp=10.217.233.11&macAdrsNm=FF-FF-FF-FF-FF"
+"-FF&CSRFToken=142da45f-0a83-4663-bdb0-329bac5e400e"

@@ -1,0 +1,94 @@
+def label = "mmp_setl-${UUID.randomUUID().toString()}"
+
+def notifyStarted() {
+    //slackSend (color: '#FFFF00', message: "STARTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+}
+
+def notifySuccessful() {
+    //slackSend (color: '#00FF00', message: "SUCCESSFUL: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+}
+
+def notifyFailed() {
+  //slackSend (color: '#FF0000', message: "FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+}
+
+podTemplate(label: label, 
+	containers: [
+	  containerTemplate(name: 'maven', image: 'ktis-bastion01.container.ipc.kt.com:5000/admin/maven:3.3.9-jdk-8-alpine', ttyEnabled: true, command: 'cat'),
+	  containerTemplate(name: 'docker', image: 'ktis-bastion01.container.ipc.kt.com:5000/admin/docker:stable', ttyEnabled: true, command: 'cat'),
+	  containerTemplate(name: 'oc', image: 'ktis-bastion01.container.ipc.kt.com:5000/openshift3/ose-cli:latest', command: 'cat', ttyEnabled: true),
+	  containerTemplate(name: 'jnlp', image: 'ktis-bastion01.container.ipc.kt.com:5000/jenkins/jnlp-slave:alpine', args: '${computer.jnlpmac} ${computer.name}')
+	],
+	volumes: [hostPathVolume(hostPath: '/var/run/docker.sock', mountPath: '/var/run/docker.sock')]
+	) {
+	
+	node(label) {
+	try {
+	
+	  def commitId		
+	  
+	  stage('Get Source') {
+		git url: "http://10.217.59.20/imp/setl.git",
+		    credentialsId: 'git-credentials',
+		    branch: 'master'
+		    commitId = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
+	  }
+	  def props = readProperties  file:'devops/pipelineCI.properties'
+	  def tag = commitId
+	  def gitSrc = props['gitSrc']
+	  def dockerRegistry = props['dockerRegistry']
+	  def image = props['image']
+	  def cronjob = props['cronjob']
+	  def service = props['service']
+	  def selector = props['selector']
+	  def namespace = props['namespace']
+	  def appname = props['appname']
+
+
+	stage('Unit Test'){
+	       container('maven') {	
+		        def mvnSettings = 'devops/settings.xml'
+		    	sh "mvn test --settings ${mvnSettings}"
+		}
+	}
+	
+	 stage('maven build project') {
+	       container('maven') {
+		        def mvnSettings = 'devops/settings.xml'
+		    	sh "mvn clean install -DskipTests --settings ${mvnSettings}"
+		}
+	}
+ 
+	  stage('Build Docker image') {
+		container('docker') {
+		  	docker.withRegistry("${dockerRegistry}", 'cluster-registry-credentials') {
+				//sh "mvn clean package --settings ${mvnSettings} -DskipTests docker:build"
+				sh "docker build -t ${image}:${tag} ."
+				sh "docker push ${image}:${tag}"
+				sh "docker tag ${image}:${tag} ${image}:latest"
+				sh "docker push ${image}:latest"
+			}
+		}
+
+	  }
+
+	  stage( 'Deploy to Cluster' ) {
+		container('oc') {
+		  withCredentials([[$class: 'UsernamePasswordMultiBinding',
+							  credentialsId: 'registry-credentials',
+							  usernameVariable: 'DOCKER_HUB_USER',
+							  passwordVariable: 'DOCKER_HUB_PASSWORD']]) {
+              /* rolling update */
+       		sh "oc -n ${namespace} --record=true set image CronJob ${selector} ${appname}=${image}:${tag}"
+		  }
+		}
+	  }
+		
+	  notifySuccessful()
+	  } catch(e) {
+        currentBuild.result = "FAILED"
+        notifyFailed()
+    }
+    
+  }
+}

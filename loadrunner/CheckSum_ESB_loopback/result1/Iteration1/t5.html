@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Root xmlns="http://www.nexacro.com/platform/dataset" ver="5000">
+	<Parameters>
+		<Parameter id="ErrorCode" type="string">0</Parameter>
+	</Parameters>
+	<Dataset id="commonHeader">
+		<ColumnInfo>
+			<Column id="appName" type="string" size="32"/>
+			<Column id="svcName" type="string" size="32"/>
+			<Column id="fnName" type="string" size="32"/>
+			<Column id="fnCd" type="string" size="32"/>
+			<Column id="globalNo" type="string" size="32"/>
+			<Column id="chnlType" type="string" size="32"/>
+			<Column id="envrFlag" type="string" size="32"/>
+			<Column id="trFlag" type="string" size="32"/>
+			<Column id="trDate" type="string" size="32"/>
+			<Column id="trTime" type="string" size="32"/>
+			<Column id="clntIp" type="string" size="32"/>
+			<Column id="responseType" type="string" size="32"/>
+			<Column id="responseCode" type="string" size="32"/>
+			<Column id="responseLogcd" type="string" size="32"/>
+			<Column id="responseTitle" type="string" size="32"/>
+			<Column id="responseBasc" type="string" size="32"/>
+			<Column id="responseDtal" type="string" size="32"/>
+			<Column id="responseSystem" type="string" size="32"/>
+			<Column id="userId" type="string" size="32"/>
+			<Column id="realUserId" type="string" size="32"/>
+			<Column id="filler" type="string" size="32"/>
+			<Column id="langCode" type="string" size="32"/>
+			<Column id="orgId" type="string" size="32"/>
+			<Column id="srcId" type="string" size="32"/>
+			<Column id="curHostId" type="string" size="32"/>
+			<Column id="lgDateTime" type="string" size="32"/>
+			<Column id="tokenId" type="string" size="32"/>
+			<Column id="cmpnCd" type="string" size="32"/>
+			<Column id="lockType" type="string" size="32"/>
+			<Column id="lockId" type="string" size="32"/>
+			<Column id="lockTimeSt" type="string" size="32"/>
+			<Column id="businessKey" type="string" size="32"/>
+			<Column id="arbitraryKey" type="string" size="32"/>
+			<Column id="resendFlag" type="string" size="32"/>
+			<Column id="phase" type="string" size="32"/>
+		</ColumnInfo>
+		<Rows>
+			<Row>
+				<Col id="appName">NBSS_CST</Col>
+				<Col id="svcName">/ESBFW/SATest/ETC/PL_LoopBack2</Col>
+				<Col id="fnName">service</Col>
+				<Col id="fnCd"></Col>
+				<Col id="globalNo">00000940512452016061713310811109</Col>
+				<Col id="chnlType">UI</Col>
+				<Col id="envrFlag"></Col>
+				<Col id="trFlag">R</Col>
+				<Col id="trDate">20160617</Col>
+				<Col id="trTime">133108</Col>
+				<Col id="clntIp">10.217.157.128</Col>
+				<Col id="responseType">I</Col>
+				<Col id="responseCode">성공</Col>
+				<Col id="responseLogcd"></Col>
+				<Col id="responseTitle">성공</Col>
+				<Col id="responseBasc">성공.</Col>
+				<Col id="responseDtal"></Col>
+				<Col id="responseSystem"></Col>
+				<Col id="userId">94051245</Col>
+				<Col id="realUserId">94051245</Col>
+				<Col id="filler">E</Col>
+				<Col id="langCode"></Col>
+				<Col id="orgId">SPT8050</Col>
+				<Col id="srcId">DNIUI1000LY</Col>
+				<Col id="curHostId"></Col>
+				<Col id="lgDateTime">20160617133231</Col>
+				<Col id="tokenId">6452cc38e20a1d14a3a6ce5f65c3d6576f0b8b0b1cf5cce2fc1111580624396b</Col>
+				<Col id="cmpnCd">KT</Col>
+				<Col id="lockType"></Col>
+				<Col id="lockId"></Col>
+				<Col id="lockTimeSt">20160617133108</Col>
+				<Col id="businessKey"></Col>
+				<Col id="arbitraryKey">{}</Col>
+				<Col id="resendFlag"></Col>
+				<Col id="phase">PA3</Col>
+			</Row>
+		</Rows>
+	</Dataset>
+	<Dataset id="bizHeader">
+		<ColumnInfo>
+			<Column id="orderId" type="string" size="32"/>
+			<Column id="cbSvcName" type="string" size="32"/>
+			<Column id="cbFnName" type="string" size="32"/>
+		</ColumnInfo>
+		<Rows>
+			<Row>
+				<Col id="orderId">orderId</Col>
+				<Col id="cbSvcName">SecurCulnInfoRetvSO</Col>
+				<Col id="cbFnName">service</Col>
+			</Row>
+		</Rows>
+	</Dataset>
+	<Dataset id="securColnInfoDTO">
+		<ColumnInfo>
+			<Column id="uiColnNm" type="string" size="32"/>
+			<Column id="securRfrnClmnId" type="string" size="32"/>
+			<Column id="esbColnNm" type="string" size="32"/>
+			<Column id="securItemNm" type="string" size="32"/>
+			<Column id="uiSecurItemSeq" type="string" size="32"/>
+		</ColumnInfo>
+		<Rows>
+			<Row>
+				<Col id="uiColnNm">ACPT_TRTM_PRSN_TLPH_NO</Col>
+				<Col id="securRfrnClmnId"></Col>
+				<Col id="esbColnNm">ACPT_TRTM_PRSN_TLPH_NO</Col>
+				<Col id="securItemNm">접수자&#32;전화번호</Col>
+				<Col id="uiSecurItemSeq">5</Col>
+			</Row>
+			<Row>
+				<Col id="uiColnNm">ACPT_TRTM_PRSN_TLPH_NO1</Col>
+				<Col id="securRfrnClmnId">1</Col>
+				<Col id="esbColnNm">ACPT_TRTM_PRSN_TLPH_NO1</Col>
+				<Col id="securItemNm">접수자&#32;전화번호1</Col>
+				<Col id="uiSecurItemSeq">1</Col>
+			</Row>
+			<Row>
+				<Col id="uiColnNm">ACPT_TRTM_PRSN_TLPH_NO2</Col>
+				<Col id="securRfrnClmnId">2</Col>
+				<Col id="esbColnNm">ACPT_TRTM_PRSN_TLPH_NO2</Col>
+				<Col id="securItemNm">접수자&#32;전화번호2</Col>
+				<Col id="uiSecurItemSeq">2</Col>
+			</Row>
+			<Row>
+				<Col id="uiColnNm">ACPT_TRTM_PRSN_TLPH_NO3</Col>
+				<Col id="securRfrnClmnId">3</Col>
+				<Col id="esbColnNm">ACPT_TRTM_PRSN_TLPH_NO3</Col>
+				<Col id="securItemNm">접수자&#32;전화번호3</Col>
+				<Col id="uiSecurItemSeq">3</Col>
+			</Row>
+			<Row>
+				<Col id="uiColnNm">ACPT_TRTM_PRSN_TLPH_NO4</Col>
+				<Col id="securRfrnClmnId">4</Col>
+				<Col id="esbColnNm">ACPT_TRTM_PRSN_TLPH_NO4</Col>
+				<Col id="securItemNm">접수자&#32;전화번호4</Col>
+				<Col id="uiSecurItemSeq">4</Col>
+			</Row>
+			<Row>
+				<Col id="uiColnNm">ACPT_TRTM_PRSN_TLPH_NO5</Col>
+				<Col id="securRfrnClmnId">5</Col>
+				<Col id="esbColnNm">ACPT_TRTM_PRSN_TLPH_NO5</Col>
+				<Col id="securItemNm">접수자&#32;전화번호5</Col>
+				<Col id="uiSecurItemSeq">5</Col>
+			</Row>
+			<Row>
+				<Col id="uiColnNm">ACPT_TRTM_PRSN_TLPH_NO6</Col>
+				<Col id="securRfrnClmnId">6</Col>
+				<Col id="esbColnNm">ACPT_TRTM_PRSN_TLPH_NO6</Col>
+				<Col id="securItemNm">접수자&#32;전화번호6</Col>
+				<Col id="uiSecurItemSeq">6</Col>
+			</Row>
+			<Row>
+				<Col id="uiColnNm">ACPT_TRTM_PRSN_TLPH_NO7</Col>
+				<Col id="securRfrnClmnId">7</Col>
+				<Col id="esbColnNm">ACPT_TRTM_PRSN_TLPH_NO7</Col>
+				<Col id="securItemNm">접수자&#32;전화번호7</Col>
+				<Col id="uiSecurItemSeq">7</Col>
+			</Row>
+			<Row>
+				<Col id="uiColnNm">ACPT_TRTM_PRSN_TLPH_NO8</Col>
+				<Col id="securRfrnClmnId">8</Col>
+				<Col id="esbColnNm">ACPT_TRTM_PRSN_TLPH_NO8</Col>
+				<Col id="securItemNm">접수자&#32;전화번호8</Col>
+				<Col id="uiSecurItemSeq">8</Col>
+			</Row>
+			<Row>
+				<Col id="uiColnNm">ACPT_TRTM_PRSN_TLPH_NO9</Col>
+				<Col id="securRfrnClmnId">9</Col>
+				<Col id="esbColnNm">ACPT_TRTM_PRSN_TLPH_NO9</Col>
+				<Col id="securItemNm">접수자&#32;전화번호9</Col>
+				<Col id="uiSecurItemSeq">9</Col>
+			</Row>
+			<Row>
+				<Col id="uiColnNm">ACPT_TRTM_PRSN_TLPH_NO10</Col>
+				<Col id="securRfrnClmnId">10</Col>
+				<Col id="esbColnNm">ACPT_TRTM_PRSN_TLPH_NO10</Col>
+				<Col id="securItemNm">접수자&#32;전화번호10</Col>
+				<Col id="uiSecurItemSeq">10</Col>
+			</Row>
+		</Rows>
+	</Dataset>
+</Root>

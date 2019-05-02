@@ -1,0 +1,3 @@
+cert_RequestXml
+<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Root xmlns=\"http://www.nexacroplatform.com/platform/dataset\">\n\t<Parameters>\n\t\t<Parameter id=\"command\">request_cert</Parameter>\n\t</Parameters>\n</Root>
+<?xml version="1.0" encoding="UTF-8"?><Root xmlns="http://www.nexacroplatform.com/platform/dataset"><Parameters><Parameter id="command">request_cert</Parameter></Parameters></Root>

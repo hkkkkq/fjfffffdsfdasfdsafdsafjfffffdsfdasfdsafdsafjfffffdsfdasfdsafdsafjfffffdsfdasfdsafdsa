@@ -1,0 +1,48 @@
+1. node-v8.11.3-linux-x64.tar.xz 다운로드 (/home/apache)
+
+2. 압축해제
+
+3. 환경변수 추가
+
+4. 확인
+[apache@c-kmos-dk1-w01 _logs]$ node -v
+v8.11.3
+
+[apache@c-kmos-dk1-w01 _logs]$ npm version
+{ npm: '5.6.0',
+  ares: '1.10.1-DEV',
+  cldr: '32.0',
+  http_parser: '2.8.0',
+  icu: '60.1',
+  modules: '57',
+  napi: '3',
+  nghttp2: '1.32.0',
+  node: '8.11.3',
+  openssl: '1.0.2o',
+  tz: '2017c',
+  unicode: '10.0',
+  uv: '1.19.1',
+  v8: '6.2.414.54',
+  zlib: '1.2.11' }
+
+
+[apache@c-kmos-dk1-w01 dev]$ npm install -g itms-services
+[..................] / rollbackFailedOptional: verb npm-session 788e27306863b413
+[..................] / rollbackFailedOptional: verb npm-session 788e27306863b413
+npm ERR! code ETIMEDOUT
+npm ERR! errno ETIMEDOUT
+npm ERR! network request to https://registry.npmjs.org/itms-services failed, reason: connect ETIMEDOUT 104.16.21.35:443
+npm ERR! network This is a problem related to network connectivity.
+npm ERR! network In most cases you are behind a proxy or have bad network settings.
+npm ERR! network
+npm ERR! network If you are behind a proxy, please make sure that the
+npm ERR! network 'proxy' config is set properly.  See: 'npm help config'
+
+npm ERR! A complete log of this run can be found in:
+npm ERR!     /home/apache/.npm/_logs/2018-07-30T08_51_45_362Z-debug.log
+
+itsm-serives -h
+
+npm config list
+npm config set http-proxt http://dev.k-kos.kt.co.kr
+npm config set https-proxt https://dev.k-kos.kt.co.kr

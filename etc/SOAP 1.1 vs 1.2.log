@@ -1,0 +1,86 @@
+6. SOAP 1.1과 SOAP 1.2 간의 차이점
+
+SOAP 버전 1.2는 문법에 있어서 몇 가지 변화가 있고 [SOAP 1.1]에서 기술된 것에 부가적인 의미들을 제공한다. 다음은 두 규격들 간에 차이가 있는 특징들의 목록이다. 이 목록의 목적은 두 규격들 간에 차이점을 독자에게 빠르고 쉽게 전달하기 위함이다. 특징들은 참조하기 편리하도록 범주를 나누었고 어떤 경우에는 한 item이 똑같이 다른 범주에 있을 수도 있다.
+
+문서 구조
+The SOAP 1.2 규격은 두 부분으로 제공된다. [SOAP Part1]은 Infoset 기반으로 SOAP 메시지 구조, 처리 모델 그리고 하위 프로토콜 바인딩 프레임워크의 추상적인 정의를 제공한다, 반면 [SOAP Part2]는 특정 HTTP 바인딩 뿐만 아니라 그런 infoset을 전달하는 직렬화(serialization) 규칙을 제공한다. 
+SOAP 1.2 는 약어를 풀어쓰지 않았다. 
+SOAP 1.2 는 SOAP 1.1에서 요구된 <?xml....?> 형태의 직렬화(serialization)으로써가 아니고, XML infoset의 용어로 다시 쓰여졌다. 
+
+추가 또는 변경된 문법
+SOAP 1.2는 body 이후에 어떤 엘리먼트도 허용하지 않는다. SOAP 1.1 스키마 정의는 그것에 대해서 서술하지는 않았지만, 그런 가능성을 허용한다. 
+SOAP 1.2는 SOAP env:Envelope에 env:encodingStyle 속성을 허용하지 않는다, 반면 SOAP 1.1은 모든 엘리먼트에 사용 가능한다. SOAP 1.2는 이 속성이 사용될 특정 엘리먼트들을 지정한다. 
+SOAP 1.2는 env:NotUnderstood 헤더 엘리먼트를 새로 정의한다, 이 엘리먼트는, env:MustUnderstand 실패 코드로써 명시되는 것과 같이, 처리하지 않아도 되는 정보를 필수 헤더 블록으로 전달하기 위해 사용된다. SOAP 1.1은 실패 코드를 제공한다, 하지만 그 사용에 대한 상세는 없다. 
+SOAP 1.2 infoset 기반 명세에서, 헤더 엘리먼트들에 env:mustUnderstand 속성은 (논리) 값 "true" 또는 "false"를 취한다, 반면 SOAP 1.1에서는 각각 문자 값 "1" 또는 "0"이었다. 
+SOAP 1.2는 새로운 실패 코드 DataEncodingUnknown을 제공한다. 
+두 프로토콜들에서 정의된 여러 가지 namespace들 또한 물론 다르다. 
+SOAP 1.2는 env:actor 속성을 env:role로 대체하지만 의미는 완전히 동일하다. 
+SOAP 1.2는 처리되지 않은 헤더 블록이 전달되어야 하는 지를 명시하기 위해 새로운 속성 env:relay를 도입한다. 
+SOAP 1.2는 "none"과 "ultimateReceiver"라는 두 가지 새로운 역할들을 이것들이 어떻게 동작해야 하는 지에 관한 상세 처리 모델과 함께 정의한다. 
+SOAP 1.2는 실패 코드들에 "dot" 표시를 제거했다, 지금은 단지 namespace 접두어가 SOAP envelope namespace인 XML Qualified Name이다. 
+SOAP 1.2는 "client"와 "server" 실패 코드들을 "Sender"와 "Receiver"로 대체한다. 
+SOAP 1.2는 SOAP 1.1에서 faultcode와 faultstring으로 불리던 것에 대해, 각각 env:Code와 env:Reason 엘리먼트들를 사용한다. SOAP 1.2는 또한 실패 원인을 다수의 언어로 표현할 수 있도록, xml:lang을 지정한 다수의 env:Text 차일드 엘리먼트들을 env:Reason 하위에 둘 수 있도록 했다. 
+SOAP 1.2는 env:Fault 엘리먼트 내에, 필수 SOAP env:Code 서브-엘리먼트를 위한 계층적 구조를 제공한다, 그리고 두 가지 새로운 서브 엘리먼트들, env:Node와 env:Role을 도입한다. 
+SOAP 1.2는, SOAP 1.1에서 env:Fault 내에 env:Details 엘리먼트의 존재 유무로 명시되던 헤더와 body 실패 간의 구분을 제거한다. SOAP 1.2에서, env:Details 엘리먼트의 존재는 실패 SOAP 메시지를 처리하는 데 있어서 아무런 의미가 없다. 
+SOAP 1.2는 상대 URI 참조자들의 기본 URI를 결정하는 데 XML Base [XML Base]를 사용한다, 반면 SOAP 1.1은 언급하지 않는다. 
+
+SOAP HTTP 바인딩
+SOAP 1.2 HTTP 바인딩에서, SOAP 1.1에서 정의된 SOAPAction HTTP 헤더는 제거된다, 그리고 서버 어플리케이션이 재량에 따라 그것이 필요하다는 것을 명시하기 위한 새로운 HTTP 상태 코드 427이 IANA로부터 추진되었다. 이전의 SOAPAction HTTP 헤더의 컨텐츠는 HTTP 바인딩으로 알려지는 "application/soap+xml" 미디어 형식의 "action" (선택) 파라미터의 값으로써 표현된다. 
+SOAP 1.2 HTTP 바인딩에서, Content-type 헤더는 SOAP 1.1에서의 "text/xml" 대신에 "application/soap+xml"이어야 한다. 이 새로운 미디어 형식에 대한 IETF 등록은 진행 중에 있다 [SOAP MediaType]. 
+SOAP 1.2는 여러 가지 2xx, 3xx, 4xx HTTP 상태 코드들의 사용에 대한 훨씬 더 자세한 단위의 설명을 제공한다. 
+HTTP 확장 프레임워크의 지원은 SOAP 1.2에서 제거되었다. 
+SOAP 1.2는 안전하고 변함없는 정보 획득을 위해 HTTP GET을 사용할 수 있도록 하는, HTTP 바인딩의 일부로써 사용될 수도 있는, 부가적인 메시지 교환 패턴을 제공한다. 
+
+RPC
+SOAP 1.2는 RPC에 대해 rpc:result 엘리먼트 accessor를 제공한다. 
+SOAP 1.2는 RPC namespace에 몇 가지 실패 코드들을 추가 제공한다. 
+SOAP 1.2는, procedure의 목적이 단순히 "안전한" 정보 획득인 RPC들을 웹 친화적으로 정의하는 접근법을 안내한다. 
+
+SOAP 인코딩들
+directed edge labeled 그래프에 기초한 추상 데이터 모델이 SOAP 1.2에서 공식화되었다. SOAP 1.2 인코딩들은 이 데이터 모델에 의존한다. SOAP RPC 규정들은 이 데이터 모델에 의존하지만, SOAP 인코딩과는 상관없다. SOAP 1.2 인코딩들과 SOAP 1.2 RPC 규정들에 대한 지원은 선택사항이다. 
+SOAP 1.2에서 배열의 직열화에 대한 문법은 SOAP 1.1과 다르다. 
+SOAP 1.1에서 제공된, 부분적으로 전달되어 산재된 배열들에 대한 지원은 SOAP 1.2에서 가용하지 않다. 
+SOAP 1.2는 multiref 값들에 대한 inline (임베드된) 직열화를 허용한다. 
+SOAP 1.1에서 (xs:anyURI 형식의) href 속성은 SOAP 1.2에서는 enc:ref이고 IDREF 형식이다. 
+SOAP 1.2에서, 복합 형식의 생략된 accessor들은 NIL과 같게 만들었다. 
+SOAP 1.2는 인코딩 에러들을 명시하는 몇 가지 실패 서브-코드들을 제공한다. 
+SOAP 1.2에서 노드들에 Type들은 선택 사항으로 만들었다. 
+SOAP 1.2는 SOAP 데이터 모델에서 generic compound value들은 없어졌다. 
+SOAP 1.2는 구조(즉, simple value, struct 또는 array)를 명시하기 위해, SOAP 인코딩을 사용해서 인코딩된 엘리먼트로 선택 속성 enc:nodeType를 추가한다. 
+
+SOAP Part 1 Appendix A는, SOAP 노드가 [SOAP 1.1]에서 SOAP 버전 1.2로 전환하는 것을 지원할 수 있는, 버전 관리 규칙을 제공한다. 특히, SOAP 1.2 노드에서 [SOAP 1.1] 메시지를 받았을 때, 자신이 지원하는 버전을 알리는 SOAP 실패 메시지를 송신자에게 보내는 데 사용될 수 있는 env:Upgrade 헤더 블록을 정의한다.
+
+
+
+
+
+
+
+SOAP 버전에서의 차이점
+
+
+SOAP 버전 1.1과 SOAP 버전 1.2는 모두 W3C(World Wide Web Consortium) 표준입니다. SOAP 1.1뿐만 아니라 SOAP 1.2도 지원하는 웹 서비스를 전개할 수 있습니다. SOAP 1.2 스펙에 수행된 SOAP 1.1의 일부 변경사항은 사소한 것이지만, 다른 변경사항은 중요합니다.
+
+SOAP 1.2 스펙은 SOAP 1.1에 대한 여러 변경사항을 도입했습니다. 이 정보는 SOAP 1.1 및 SOAP 1.2의 모든 새 기능 또는 변경된 기능의 상세한 설명으로 사용할 예정은 아닙니다. 대신, 이 정보는 현재 SOAP 버전 사이에서 보다 중요한 몇 가지 차이점을 강조표시합니다.
+
+중요한 SOAP 1.2 스펙의 변경사항은 다음 갱신사항을 포함합니다.?SOAP 1.1은 XML 1.0을 기반으로 합니다. SOAP 1.2는 XML 정보 세트(XML Infoset)를 기반으로 합니다.
+XML 정보 세트(infoset)는 XSD 스키마를 사용하여 XML 문서를 설명하는 방법을 제공합니다. 그러나 정보 세트가 반드시 SOAP 1.1이 기반하는 XML 1.0 직렬화를 사용하여 문서를 직렬화하는 것은 아닙니다. XML 문서를 설명하는 이 새 방법은 2진 프로토콜 형식과 같은 기타 직렬화 형식을 나타내는 데 도움을 줍니다. 2진 프로토콜 형식을 사용하여 일부 자세한 태그 정보가 필요하지 않은 최소 형식으로 메시지를 압축할 수 있습니다.
+
+SOAP 1.2에서 기본 프로토콜에 대한 바인딩의 스펙을 사용하여 기본 프로토콜 데이터 단위에 XML 직렬화가 사용되는지를 판별할 수 있습니다. SOAP 1.2 - 파트 2에 지정된 HTTP 바인딩은 XML 1.0을 SOAP 메시지 정보 세트의 직렬화로 사용합니다.
+
+?SOAP 1.2는 벤더가 SOAP 1.2에 정의된 바인딩 프레임워크를 준수하는 한, HTTP를 사용하지 않고 공식적으로 전송 프로토콜을 정의하는 기능을 제공합니다. HTTP가 널리 사용되면, HTTP는 TCP/IP와 MQ 등의 다른 전송처럼 안정적이지 않습니다.
+?SOAP 1.2는 SOAP 처리 모델에 대한 더욱 구체적인 정의를 제공합니다. 그러면 WS-I(Web Services-Interoperability) 프로파일이 없을 때 상호운영성 오류를 일으킬 수 있는 많은 모호함이 해결됩니다. 이 기능의 목적은 SOAP 1.2 구현을 사용하는 서로 다른 벤더 간에 문제가 발생할 가능성을 대폭 줄이는 것입니다.
+?또한 SAAJ(SOAP with Attachments API for Java)는 SOAP 요청을 발행하는 단순 메커니즘으로 독립적으로 작동할 수도 있습니다. SAAJ 스펙의 주요 변경사항은 SOAP 1.1 메시지 및 추가 SOAP 1.2 형식 메시지를 나타내는 기능입니다. 예를 들어, SAAJ 버전 1.3은 SOAP 헤더 요소에서 SOAP 1.2에 더욱 적합한 새로운 상수 및 메소드 세트(예: getRole(), getRelay())를 제공합니다. SAAJ 팩토리에도 적합한 SOAP 1.1 또는 SOAP 1.2 메시지를 작성하기 위한 추가 메소드가 있습니다.
+?엔벨로프(envelope) 및 인코딩 스키마를 위한 XML 네임 스페이스가 SOAP 1.2에 대해 변경되었습니다. 이러한 변경사항은 SOAP 1.1 및 SOAP 1.2 메시지에서 SOAP 프로세서를 구분하고 기존의 구현에 영향을 주지 않으면서 SOAP 스키마의 변경사항을 지원합니다.
+?JAX-WS(Java Architecture for XML Web Service)는 SOAP 1.1과 SOAP 1.2를 모두 지원하는 기능을 제공합니다. JAX-RPC에 SOAP 메시지가 런타임을 통해 이동할 때 조작하기 위한 요구사항이 도입되었으므로, 이 메시지를 적합한 SOAP 컨텍스트로 표시해야 합니다. JAX-WS에서 대부분의 기능 향상은 SAAJ 1.3 지원을 통해 이루어졌습니다.
+?WSDL(Web Services Description Language) 버전 1.1 스펙은 SOAP 1.2에 대해 다루지 않습니다. SOAP 1.2는 WSDL 2.0의 초안 버전에 설명되어 있습니다. WSDL 버전 1.1은 WSDL 1.1 문서에서 SOAP 1.1 페이로드를 렌더링하는 방법만 정의합니다. SOAP 1.2 기반 서비스를 나타내는 방법을 해석하기 위해, WSDL 1.1 문서에서 SOAP 1.2 페이로드를 정의하는 방법을 정의하는 다른 W3C 문서가 있습니다. SOAP 1.2의 WSDL 1.1 바인딩 확장에 대해 읽으십시오.
+?SOAP 1.1은 단일 문서입니다. SOAP 1.2 스펙은 다음 파트로 구성됩니다.?파트 0은 SOAP에 대한 표준이 아닌 소개입니다.
+?파트 1은 SOAP 메시지의 구조, SOAP 처리 모델 및 SOAP를 기본 프로토콜로 바인딩하는 프레임워크에 대해 설명합니다. 규정을 준수하는 SOAP 구현은 파트 1에 있는 모든 내용을 구현해야 합니다.
+?파트 2는 데이터 모델 및 인코딩 등 SOAP 코어에 대한 선택적 추가 기능, RPC 규칙 및 HTTP로의 바인딩에 대해 설명합니다. 해당 SOAP 구현은 파트 2에 있는 추가 기능 중 아무 것이나 구현할 수도 있습니다. 그러나 추가 기능이 구현된 경우, 관련된 스펙 파트를 준수해야 합니다.
+네 번째 문서는 스펙 신뢰 및 테스트 콜렉션입니다.
+
+SOAP 1.2에는 많은 구문 변경사항이 있으며, SOAP 1.1에 설명된 구문의 추가의 명백한 시멘틱을 제공합니다. SOAP 1.2 Primer 문서는 이러한 구문 변경사항을 나열하고 설명합니다.
+
+[출처] SOAP 1.1과 SOAP 1.2의 차이점은? (수정중)|작성자 섭이
+
+

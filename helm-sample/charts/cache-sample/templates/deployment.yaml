@@ -1,0 +1,82 @@
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: {{ template "cache-sample.fullname" . }}
+  labels:
+    app: {{ template "cache-sample.name" . }}
+    chart: {{ template "cache-sample.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ template "cache-sample.name" . }}
+      release: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ template "cache-sample.name" . }}
+        release: {{ .Release.Name }}
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+
+           {{- if .Values.dev.enabled }}
+          env:
+            {{- range $k, $v := .Values.dev }}
+            {{- if ne $k "enabled" }}
+            - name: {{ $k }}
+              value: {{ quote $v }}
+            {{- end }}
+            {{- end }}
+          {{- end }}
+
+          {{- if .Values.stage.enabled }}
+          env:
+            {{- range $k, $v := .Values.stage }}
+            {{- if ne $k "enabled" }}
+            - name: {{ $k }}
+              value: {{ quote $v }}
+            {{- end }}
+            {{- end }}
+          {{- end }}
+
+          {{- if .Values.production.enabled }}
+          env:
+            {{- range $k, $v := .Values.production }}
+            {{- if ne $k "enabled" }}
+            - name: {{ $k }}
+              value: {{ quote $v }}
+            {{- end }}
+            {{- end }}
+          {{- end }}
+
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /actuator/health
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /actuator/health
+              port: http
+          resources:
+{{ toYaml .Values.resources | indent 12 }}
+    {{- with .Values.nodeSelector }}
+      nodeSelector:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.affinity }}
+      affinity:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+{{ toYaml . | indent 8 }}
+    {{- end }}

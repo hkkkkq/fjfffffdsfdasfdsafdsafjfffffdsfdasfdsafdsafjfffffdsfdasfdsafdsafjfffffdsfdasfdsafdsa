@@ -1,0 +1,30 @@
+<PPAS DB 归诀>
+-- 1. 家胶 DB 归诀
+./pg_dump -f /data/backup/kkosdb_20180825.sql -d kkosdb
+
+-- 2. 家胶 DB dump 颇老 捞悼
+ scp enterprisedb@10.217.47.189:/data/backup/kkosdb_20180801.sql ./
+
+-- 3. 鸥百 DB 立加 力芭
+./pqsl
+--revoke connect on database kkosdb from public, kkosown, kkosapp, appiron, eaiown;
+revoke connect on database kkosdb from public, kkosown, kkosapp, appiron, eaiown;
+
+-- 4. 鸥百 DB 立加 技记 力芭
+select * from pg_stat_activity
+where datname = 'kkosdb';
+
+-- pid kill
+select pg_terminate_backend(pid);
+
+-- 5. 鸥百 DB DROP
+--drop database kkosdb;
+
+-- 6. 鸥百 DB CREATE
+sh /postgres/9.6AS/kt_extension/pg_config_script/01_kt_createdb.sh kkosdb
+
+-- 7. 鸥百 DB 汗盔
+./psql -f /data/backup/kkosdb_20180820.sql -d kkosdb
+
+-- 8. 鸥百 DB 立加 汗盔
+grant connect on database kkosdb to public, kkosown, kkosapp, appiron, eaiown;

@@ -1,0 +1,14 @@
+-- 1. LOGIN ROLE에 GROUP ROLE 넣고 빼기
+
+select * from DBA_ROLE_PRIVS
+select * from USER_ROLE_PRIVS
+
+grant KKOSOWN_DML to EAIOWN;
+revoke KKOSOWN_DML from EAIOWN;
+
+
+-- 2. 기타
+./psql --help
+
+edb-# \?
+edb-# \q

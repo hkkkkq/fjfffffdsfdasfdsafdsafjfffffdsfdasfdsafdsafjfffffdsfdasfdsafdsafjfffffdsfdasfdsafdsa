@@ -1,0 +1,9 @@
+-+
+-DCCI
+-D_IDA_XL
+-DWINNT
+-ID:\05.checksum\01.Script\CheckSum_ESB_loopback
+-IC:\Program Files\HP\LoadRunner\include
+-ed:\05.checksum\01.script\checksum_esb_loopback\\logfile.log
+d:\05.checksum\01.script\checksum_esb_loopback\\combined_CheckSum_ESB_loopback.c
+d:\05.checksum\01.script\checksum_esb_loopback\\pre_cci.c

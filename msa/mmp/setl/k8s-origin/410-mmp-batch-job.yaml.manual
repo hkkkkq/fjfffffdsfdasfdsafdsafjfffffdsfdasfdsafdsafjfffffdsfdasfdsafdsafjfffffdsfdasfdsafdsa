@@ -1,0 +1,38 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: job-setl
+  labels:
+    appName: mmp
+    svcName: setl
+    version: v1
+spec:
+  #ttlSecondsAfterFinished: 50
+  backoffLimit: 2
+  #completions: 5
+  #parallelism: 2
+  template:
+    metadata:
+      name: batch
+      labels:
+        appName: mmp
+        svcName: setl
+        version: 1.0.0
+    spec:
+      containers:
+        - name: setl
+          image: docker-registry.default.svc.cluster.local:5000/mmp/batch:latest
+          envFrom:
+          - configMapRef:
+              name: configmap-setl
+          args: ["java","-Djava.security.egd=file:/dev/./urandom","-Dspring.profiles.active=$(spring.profiles.active)","-jar","/app.jar"]
+          volumeMounts:
+          - mountPath: /etc/localtime
+            name: timezone-config
+      restartPolicy: Never
+      nodeSelector:
+        ktis-node: "true"
+      volumes:
+      - hostPath:
+          path: /usr/share/zoneinfo/Asia/Seoul
+        name: timezone-config

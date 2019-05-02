@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: configmap-micro-svc-2
+  labels:
+    appName: herasoo
+    svcName: micro-svc-2
+    version: v1
+data:
+  SVC1HOST: "service-micro-svc-1.millet.svc.cluster.local"
+  SVC2HOST: "service-micro-svc-2.millet.svc.cluster.local"
+  #SVC2HOST: "10.217.59.20"
+  SVC1PORT: "80"
+  SVC2PORT: "80"
+  #SVC2PORT: "8090"
+  DB_HOST: "10.217.59.20"
+  DB_PORT: "5432"
+  DB_DBNAME: "postgres"
+  DB_USER: "postgres"
+  DB_PASSWD: "postgres"

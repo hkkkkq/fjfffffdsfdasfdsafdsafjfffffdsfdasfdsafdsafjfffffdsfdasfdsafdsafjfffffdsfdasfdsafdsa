@@ -1,0 +1,12 @@
+#FROM ktis-bastion01.container.ipc.kt.com:5000/admin/openjdk:8-jre-alpine
+#FROM ktis-bastion01.container.ipc.kt.com:5000/admin/alpine-jre8-millet:1.1
+FROM ktis-bastion01.container.ipc.kt.com:5000/admin/openjdk-millet:8-jdk-alpine
+
+LABEL author=herasoo
+#VOLUME /tmp
+#COPY runApp.sh /
+COPY target/microSvc1-0.0.1-SNAPSHOT.jar app.jar
+#ENTRYPOINT ["/runApp.sh"]
+#ENTRYPOINT ["java","-jar","app.jar"]
+#CMD ["-DSVC1HOST=service-micro-svc-1 -DSVC2HOST=service-micro-svc-2 -DDB_HOST=10.217.59.20 -DDB_PORT=5432 -DDB_DBNAME=postgres -DDB_USER=postgres -DDB_PASSWD=postgres"]
+CMD ["java","-jar","app.jar"]

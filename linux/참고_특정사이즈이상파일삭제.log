@@ -1,0 +1,78 @@
+#!/bin/sh
+
+LOG_HOME="/logs001/tctadm/tomcat6/sspgpDomain/debug"
+prefix="debug.log."
+
+#압축되지 않은 파일중 debug.log.YYmmddHH 형식 파일만을 배열에 넣는다.
+files=(`ls $LOG_HOME|grep $prefix|grep -v .gz`)
+#echo "${files[@]}"
+files_count=${#files[@]}
+echo "$files_count files got found"
+
+#이틀 미만 로그는 압축한다.
+dday="$prefix`date +%Y%m%d --date 2' day ago'`00"
+echo $dday
+
+for (( i = 0; i < `expr $files_count`; i++))
+do
+ if [ ${files[i]:${#prefix}:8} -lt ${dday:${#prefix}:8} ]
+ then
+  command="gzip $LOG_HOME/${files[i]}"
+  echo "$command"
+  `$command`
+ fi
+done
+
+lkbs=`expr 1600 \* 1000`
+ckbs=`du $LOG_HOME|awk '{print $1}'`
+
+echo "kbytes of log limit size = $lkbs"
+echo "kbytes of $LOG_HOME = $ckbs"
+
+#.gz 확장자 파일을 배열에 넣고 1.6G 초과되는 과거로그 삭제한다.
+files=(`ls $LOG_HOME|grep .gz`)
+#echo "${files[@]}"
+files_count=${#files[@]}
+echo "$files_count files got found"
+
+for (( i = 0; i < $files_count; i++ ))
+do
+ if [ $ckbs -gt $lkbs ] 
+ then
+ 
+  command="rm -f $LOG_HOME/${files[i]}"
+   echo "$command"
+   `$command`
+   ckbs=`du $LOG_HOME|awk '{print $1}'`
+   
+ else
+ 
+   echo "Deleting by log size stopped because log size($ckbs) got being less than limit($lkbs)"
+  break
+  
+ fi
+done
+
+#.gz 확장자 파일을 배열에 넣고 30일 이전 데이터는 삭제한다.
+files=(`ls $LOG_HOME|grep .gz`)
+#echo "${files[@]}"
+files_count=${#files[@]}
+echo "$files_count files got found"
+
+dday="$prefix`date +%Y%m%d --date 30' day ago'`00"
+echo $dday
+
+for (( i = 0; i < $files_count; i++ ))
+do
+# echo ${#prefix}
+# echo ${files[i]:${#prefix}:8}
+ if [ ${files[i]:${#prefix}:8} -lt ${dday:${#prefix}:8} ]
+ then
+  command="rm -f $LOG_HOME/${files[i]}"
+  echo "$command"
+   `$command`
+ else
+  echo "Deleting by date stopped because date(${files[i]}) is recent or identical than criterior date($dday)"
+  break
+ fi
+done 

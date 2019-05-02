@@ -1,0 +1,27 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: destionationrule-micro-svc-2
+  labels:
+    appName: herasoo
+    svcName: micro-svc-2
+    version: v1
+spec:
+  host: service-micro-svc-2
+  trafficPolicy:
+    connectionPool:
+      tcp:
+        maxConnections: 50
+        connectTimeout: 1s
+      http:
+        #http1MaxPendingRequests: 1 # default 1024
+        #http2MaxRequests: 1 # default 1024
+        #maxRequestsPerConnection: 1
+        #maxRetries: 3  # default 3
+    outlierDetection:
+      consecutiveErrors: 20
+      interval: 10s
+      baseEjectionTime: 15s
+      maxEjectionPercent: 100
+    tls:
+      mode: ISTIO_MUTUAL  

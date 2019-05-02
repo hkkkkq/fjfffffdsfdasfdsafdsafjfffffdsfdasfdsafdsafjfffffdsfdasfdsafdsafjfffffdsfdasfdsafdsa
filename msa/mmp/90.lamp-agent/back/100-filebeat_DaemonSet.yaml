@@ -1,0 +1,39 @@
+apiVersion: extensions/v1beta1
+kind: DaemonSet
+metadata:
+  name: filebeat
+  #namespace: mmp
+  labels:
+    appName: mmp
+    svcName: filebeat
+    version: 1.0.0
+spec:
+  template:
+    metadata:
+      labels:
+        app: filebeat
+    spec:
+      #nodeSelector:
+        #kubernetes.io/hostname: "ktis-node01.container.ipc.kt.com"
+        #node-role.kubernetes.io/infra: "true"
+        #dmz-node: "true"
+        #node-role.kubernetes.io/node: "true"
+        #logging: "true"
+        #app: frontend-webserver
+      #serviceAccountName: filebeat
+      containers:
+      - name: filebeat
+        image: ktis-bastion01.container.ipc.kt.com:5000/elastic/filebeat_msa:v1
+        volumeMounts:
+        - name: lamp-volume
+          mountPath: /var/log/LAMP/
+          readOnly: true
+          #subPath: filebeat.yml
+        securityContext:
+          privileged: true
+          #runAsUser: 0
+      volumes:
+      - name: lamp-volume
+        hostPath:
+          path: /var/log/mmp/LAMP/
+          type: DirectoryOrCreate

@@ -1,0 +1,111 @@
+/*
+*
+*	실행부
+*
+*/
+$(document).ready(function() {
+	
+	//quick_request placeholder
+  var frm_main = document.frm_main;
+  $('#quick_request_wrapper').on('focus','.placeholder',function(){
+  	$(this).keydown(function(){
+       $(this).removeClass("placeholder");
+     });
+  });
+ 	$('#quick_request_wrapper').on('focusout','input[type=text]',function(){
+  	if($(this).val().length == 0)  $(this).addClass("placeholder");
+  });
+  
+
+  //로딩시 Quick Request 열어놓기
+
+
+	//#go 클릭시 Quick Request 열기
+	$('#quick_request_wrapper').on('click','#go',function(){
+		$("#bk").animate({
+	    width: "toggle", 
+	    left: 0 
+	  }, {
+	    duration: 500,
+	    complete: function() {
+	      
+	    }
+	  }); 
+	  
+	  $(this).children().toggleClass("slide_close");
+	});
+    
+    //# topnoticeclose클릭시 topnotice 닫기
+	$('#topnotice').on('click','#topnoticeclose',function(){
+		$("#topnotice").animate({
+	    hight: "toggle", 
+	   top: -93 
+	  }, {
+	    duration: 200,
+	    complete: function() {
+	      
+	    }
+	  }); 
+	  
+
+	});
+
+
+
+
+	
+});//End $(document).ready();
+
+
+/*
+*function get_quick_request_form
+* quick_request.asp에서 폼을 가져온 후 레이어로 띄운다.
+*/
+function get_quick_request_form(){
+	var pathname = encodeURIComponent($(location).attr('pathname'));
+	$.ajax({
+		type: "POST",
+		url: ""+pathname,
+		data: {}
+	}).done(function(data) {
+		$('#quick_request_wrapper').prepend(data);
+		var request_action = $(data).find('form').attr('action');
+		request_action = request_action+"?method=quick_request&from="+pathname
+		$('#quick_request_wrapper').find('form').attr('action',request_action);
+	}).fail(function(xhr, err) {
+		
+	});
+}
+
+
+function LayerPopup(options){
+	options = options || {};
+  var layerID = options.layerID || '';
+  var closeID = options.closeID || '';
+  $layerObj = $("#"+layerID);
+  $closeObj = $("#"+closeID);
+
+  var speed = options.speed || 300;
+  if($layerObj.length > 0 ) blind_background();
+	$layerObj.on('click',"#"+closeID,function(){
+		close_layer($layerObj);
+	});
+  //document.getElementById('movSrc').src = "";
+  $layerObj.fadeIn(speed);
+  $layerObj.css('z-index', '1001');
+  if( typeof options.callback === "function" ){
+		options.callback();
+	}
+	//레이어의 바깥 배경의 블라인드 처리
+	function blind_background(){
+		if($('#blind_box').length === 0)	$('<div id="blind_box"></div>').css('opacity',0.85).appendTo('body');
+		$('#blind_box').fadeIn(300);
+	}
+	//레이어 끄기
+	function close_layer (obj) {
+		$(obj).hide();
+		$("#blind_box").hide();
+		$(obj).children().remove();
+	}
+}
+

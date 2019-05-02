@@ -1,0 +1,45 @@
+#include "lrs.h"
+
+Action()
+{
+
+  //Tools-General Options Parameter Braces: {, }로 변경
+	int rc=-9;
+
+	lr_start_transaction("03_TCPTOSOAP");
+
+	lrs_create_socket("socket1", "TCP", "LocalHost=0", "RemoteHost=10.217.232.101:9002",  LrsLastArg); //EGI AP 10.220.212.164~167   
+
+	lrs_send("socket1", "buf1", LrsLastArg);
+
+    //lrs_receive("socket7", "buf2", LrsLastArg);
+
+	rc = lrs_receive_ex("socket1", "buf2", "NumberOfBytesToRecv=73", LrsLastArg); //buf2 에서 300 bite 받아서
+
+	if (rc==0) {
+
+		//lr_output_message ("@@lrs_receive_ex error code: %d", rc);
+
+		lrs_save_searched_string("socket1", NULL, "success_flag", NULL, NULL, -1,20,14); //21번째에서 14 length를 success_flag 에 저장
+		lr_output_message ("success_flag: %s", lr_eval_string("{success_flag}"));
+
+        if (strcmp(lr_eval_string("{success_flag}"),"20150714164200") ==0) {
+
+			lrs_close_socket("socket1");
+		    lr_end_transaction("03_TCPTOSOAP", LR_PASS);
+
+	    } else {
+		
+			lrs_close_socket("socket1");
+		    lr_end_transaction("03_TCPTOSOAP", LR_FAIL);
+	        lr_error_message ("success_flag: %s", lr_eval_string("{success_flag}"));
+	    }
+    } else {
+		lrs_close_socket("socket1");
+	    lr_end_transaction("03_TCPTOSOAP", LR_FAIL);
+        lr_error_message ("rc Fail");
+    }
+
+
+    return 0;
+}

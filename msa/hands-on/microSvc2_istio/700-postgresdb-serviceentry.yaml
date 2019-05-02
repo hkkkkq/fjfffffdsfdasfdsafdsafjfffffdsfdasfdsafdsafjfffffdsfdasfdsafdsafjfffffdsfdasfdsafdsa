@@ -1,0 +1,20 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: ServiceEntry
+metadata:
+  name: serviceentry-postgresdb
+  labels:
+    appName: herasoo
+    svcName: micro-svc
+    version: v1
+spec:
+  hosts:
+  - ktis-bastion01.container.ipc.kt.com
+  #- service-postgresdb
+  addresses:
+  - 10.217.59.20/32
+  ports:
+  - name: tcp
+    number: 5432
+    protocol: tcp
+  location: MESH_EXTERNAL
+  #resolution: DNS

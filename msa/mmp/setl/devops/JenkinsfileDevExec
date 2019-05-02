@@ -1,0 +1,91 @@
+def label = "mmp_setl-${UUID.randomUUID().toString()}"
+
+def notifyStarted() {
+    //slackSend (color: '#FFFF00', message: "STARTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+}
+
+def notifySuccessful() {
+    //slackSend (color: '#00FF00', message: "SUCCESSFUL: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+}
+
+def notifyFailed() {
+  //slackSend (color: '#FF0000', message: "FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+}
+
+podTemplate(label: label, 
+	containers: [
+	  containerTemplate(name: 'oc', image: 'ktis-bastion01.container.ipc.kt.com:5000/openshift3/ose-cli:latest', command: 'cat', ttyEnabled: true),
+	  containerTemplate(name: 'jnlp', image: 'ktis-bastion01.container.ipc.kt.com:5000/jenkins/jnlp-slave:alpine', args: '${computer.jnlpmac} ${computer.name}')
+	],
+	volumes: [hostPathVolume(hostPath: '/var/run/docker.sock', mountPath: '/var/run/docker.sock')]
+	) {
+	
+	node(label) {
+	try {
+	
+	  stage('Get Source') {
+		git url: "http://10.217.59.20/imp/setl.git",
+		    credentialsId: 'git-credentials',
+		    branch: 'master'
+	  }
+	  def props = readProperties  file:'devops/pipelineDevExec.properties'
+	  def image = props['image']
+	  def namespace = props['namespace']
+	  def deployenv = props['deployenv']
+	
+	  stage( 'Deploy to Cluster' ) {
+		container('oc') {
+	          dir("k8s"){
+		     /* rolling update */
+      	             sh "echo ${env.STAGE_NAME}>current_stage"
+		     buildStart= sh returnStdout: true, script: 'date'
+
+			//parameter String setting
+		     def commandArgument=""
+		     
+		     if ( params.jobName != null && params.jobName != "" )
+		     {
+				commandArgument=commandArgument + "--job.name=" + params.jobName
+		     }
+		     if ( params.tgtYm != null && params.tgtYm != "" )
+		     {
+		     	commandArgument=commandArgument + " " +  "setlTgtYm=" + params.tgtYm
+		     }
+		     echo "commandArgument = "+commandArgument
+		     if ( commandArgument != null && commandArgument != "" )
+		     {
+			sh '''sed -i 's#command:.*#command: ["sh","-c","java $JAVA_OPTS -Djava.security.egd=file:/dev/./urandom -jar /app.jar '''+ commandArgument + '''"]#g' ./410*'''
+		     }
+
+		     //rename manual.${deployenv}
+		     sh "rename manual.${deployenv} manual *${deployenv}"
+		     
+		     //rename yaml.manual
+		     sh "rename yaml.manual yaml *manual"
+     		     sh "rename yml.manual yml *manual"
+
+		     // replace image image: -> image:latest
+		     sh "sed -i 's#image:.*#image: ${image}:latest#g' ./410*"
+		     
+
+		     sh "cat ./410*"
+		     sh returnStatus: true, script: "oc -n ${namespace} delete -f ./410*"
+		     sh "oc -n ${namespace} apply -f ./410*"
+		     
+		     buildEnd= sh returnStdout: true, script: 'date'
+		     sh '''echo "====================================================">>notification.temp'''
+		     sh "echo ${env.STAGE_NAME}>>notification.temp"
+		     sh "echo 'Start Time: ${buildStart}'>>notification.temp"
+		     sh "echo 'End Time: ${buildEnd}'>>notification.temp"
+		   }
+		}
+	  }
+		
+	  notifySuccessful()
+	  } catch(e) {
+        currentBuild.result = "FAILED"
+        notifyFailed()
+    }
+    
+  }
+}

@@ -1,0 +1,30 @@
+﻿1. sftp -oPort=22 infadm@10.217.159.22
+
+2. lpwd
+   pwd
+   
+3. lls -al
+   ls -al
+   
+4. put a.txt
+   mput *.txt
+   mput a.txt b.txt
+   
+5. get a.txt
+   mget *.txt
+   mget a.txt b.txt
+   
+
+6. 
+sftp ${USR}@${DEST_HOST} << EOF
+mput *.txt
+!rm *.txt               // !command: Excute 'command' in local shell
+EOF
+
+7. rename a.txt b.txt
+
+
+8. For openssh,
+   -l limits the used bandwidth, specified in Kbit/s
+   ex) sftp -oPort=20022 -l 96 infadm@10.217.136.55
+   

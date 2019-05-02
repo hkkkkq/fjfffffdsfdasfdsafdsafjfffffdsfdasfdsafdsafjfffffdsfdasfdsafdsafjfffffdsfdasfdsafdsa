@@ -1,0 +1,45 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: setl
+  labels:
+    app: setl
+    version: 1.0.0
+    release: mmp
+spec:
+  #schedule: '@daily'
+  schedule: "0 5 1 * *"
+  concurrencyPolicy: Forbid   # Allow, Forbid, Replace, default Allow
+  successfulJobsHistoryLimit: 3 # default 3
+  failedJobsHistoryLimit: 1   # default 1
+  jobTemplate:
+    spec:
+      #ttlSecondsAfterFinished: 50
+      backoffLimit: 2
+      #completions: 5
+      #parallelism: 2  # default 1
+      template:
+        spec:
+          containers:
+            - name: setl
+              image: docker-registry.default.svc.cluster.local:5000/mmp/setl:latest
+              envFrom:
+              - configMapRef:
+                  name: setl
+              #args: ["java","-Djava.security.egd=file:/dev/./urandom","-Dspring.profiles.active=$(spring.profiles.active)","-jar","/app.jar"]
+              resources:
+                requests:
+                  memory: "1250Mi"
+                limits:
+                  cpu: "2000m"
+                  memory: "1250Mi"
+              volumeMounts:
+              - mountPath: /etc/localtime
+                name: timezone-config
+          restartPolicy: Never
+          nodeSelector:
+            ktis-node: "true"
+          volumes:
+          - hostPath:
+              path: /usr/share/zoneinfo/Asia/Seoul
+            name: timezone-config

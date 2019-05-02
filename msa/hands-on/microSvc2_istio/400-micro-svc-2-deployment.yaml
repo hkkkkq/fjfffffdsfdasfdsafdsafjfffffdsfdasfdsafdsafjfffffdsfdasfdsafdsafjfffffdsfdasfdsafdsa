@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deployment-micro-svc-2
+  labels:
+    appName: herasoo
+    svcName: micro-svc-2
+    version: v1
+spec:
+  selector:
+    matchLabels:
+      appName: herasoo
+      svcName: micro-svc-2
+      version: v1
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        appName: herasoo
+        svcName: micro-svc-2
+        version: v1
+      annotations:
+        sidecar.istio.io/inject: "true"
+    spec:
+      containers:
+      - name: micro-svc-2
+        image: docker-registry.default.svc.cluster.local:5000/millet/micro-svc-2:0.1
+        imagePullPolicy: Always
+        #args: ["-DSVC1HOST=service-micro-svc-1 -DSVC2HOST=service-micro-svc-2 -DDB_HOST=10.217.59.20 -DDB_PORT=5432 -DDB_DBNAME=postgres -DDB_USER=postgres -DDB_PASSWD=postgres"]
+        ports:
+        - containerPort: 8090
+        envFrom:
+        - configMapRef:
+            name: configmap-micro-svc-2
+        volumeMounts:
+        - mountPath: /etc/localtime
+          name: timezone-config
+        livenessProbe:
+          tcpSocket:
+            port: 8090
+          initialDelaySeconds: 10
+          periodSeconds: 10
+        readinessProbe:
+          tcpSocket:
+            port: 8090
+          initialDelaySeconds: 10
+          periodSeconds: 10
+      nodeSelector:
+        ktis-node: "true"
+      volumes:
+      - hostPath:
+          path: /usr/share/zoneinfo/Asia/Seoul
+        name: timezone-config

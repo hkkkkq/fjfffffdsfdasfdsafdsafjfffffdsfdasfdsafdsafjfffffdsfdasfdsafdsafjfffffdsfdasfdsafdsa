@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: service-athn
+  labels:
+    appName: mmp
+    svcName: athn
+    version: v1
+spec:
+  #type: NodePort
+  type: ClusterIP
+  ports:
+  - name: http
+    port: 80
+    targetPort: 80
+  #clusterIP: None
+  selector:
+    appName: mmp
+    svcName: athn
+    version: v1

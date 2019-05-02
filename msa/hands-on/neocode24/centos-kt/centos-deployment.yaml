@@ -1,0 +1,38 @@
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: centos
+  labels:
+    app: centos
+    version: latest
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: centos
+      version: 1.0.0
+  template:
+    metadata:
+      labels:
+        app: centos
+        version: 1.0.0
+    spec:
+      containers:
+        - name: centos
+          image: "centos-kt:latest"
+          imagePullPolicy: Always
+          command: ["/bin/sh"]
+          args: ["-c", "while true; do echo hello; sleep 10; done"]
+          ports:
+            - containerPort: 8080
+              name: http
+              protocol: TCP
+          resources:
+            {}
+      nodeSelector:
+        {}
+      affinity:
+        {}
+      tolerations:
+        []
+

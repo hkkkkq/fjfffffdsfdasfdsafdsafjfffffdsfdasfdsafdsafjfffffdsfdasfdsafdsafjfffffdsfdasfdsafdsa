@@ -1,0 +1,21 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: ServiceEntry
+metadata:
+  name: onm-postgresdb
+  labels:
+    app: onm
+    version: 1.0.0
+    release: mmp
+spec:
+  hosts:
+  - 10.220.184.171
+  addresses:
+  - 10.220.184.171/32
+  ports:
+  - number: 5432
+    name: tcp
+    protocol: TCP
+  location: MESH_INTERNAL
+  resolution: STATIC
+  endpoints:
+    - address: 10.220.184.171

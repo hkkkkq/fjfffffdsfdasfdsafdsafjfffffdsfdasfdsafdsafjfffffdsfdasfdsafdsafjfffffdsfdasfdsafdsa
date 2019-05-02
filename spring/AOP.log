@@ -1,0 +1,63 @@
+[AOP]
+: 기존 OOP를 보완한 개념으로 핵심사항(primary concern)과 공통 관심 사항(cross-cutting concern)을 분리하여 구현하고
+  최종적으로 이를 조합해서 완성하는 개념이다.
+  
+ * 용어정리 
+ - 핵심관심사항(primary(core) concern) : 비지니스 로직 (주 업무)
+ - 공통관심사항(cross-cutting concern) : 부가적인 기능 (보조 업무)
+  ※ 비지니스 로직은 primary concern + cross-cutting concern 될 수 있다.
+ - Code: primary concern을 구현한 코드
+ - Advice: cross-cutting concern을 구현한 코드
+ - JointPoint: Code와 Advice를 연결해 주는 설정 정보
+ - Point-cut: JointPoint의 부분 집합으로 실제 Advice가 적용되는 JointPoint
+ - Weaving: Code, Advice, JointPoint, Point-cut 등을 조합해서 어플리케이션을 만들어 가는 과정
+ - Target: 핵심사항(Core)이 구현된 객체
+ 
+ * AOP의 Aspect는 Advice와 Point-cut을 함께 지칭하는 단어
+ 
+ * 스프링은 자체적인 프록시 기반의 AOP를 지원
+   - 필드값 변경과 같은 JointPoint를 사용할 수 없다.
+   - 메소드 호출 JointPoint를 지원한다.
+   스프링 AOP는 완전한 AOP 지원 목적이 아니라 엔터프라이즈 어플리케이션을 구현하는데 필요한 정도의 기능 제공에 목적이 있다.
+   
+ * AOP 구현
+   - 설정파일을 이용하는 방법(xml 스키마 기반)
+   - 어노테이션을 이용하는 방법(@AspectJ 어노테이션 기반)
+   
+ * 스프링에서 AOP 구현은 Proxy를 이용한다.
+   client ----------------> proxy -----------------> target
+  (Advice)                                           (Code)
+  
+ * [xml 기반 AOP 구현]
+  . pom.xml
+  <dependency>
+	    <groupId>org.aspectj</groupId>
+	    <artifactId>aspectjweaver</artifactId>
+	    <version>1.6.11</version>
+	</dependency>
+	. 공통기능 클래스 제작 - Advice
+	. XML 파일에 Aspect
+	
+	* Advice 실행 종류
+	<aop:before>            : 핵심기능이 실행되기 전에 advice 실행한다.
+	<aop:after-returning>   : 정상적으로 핵심기능 실행 후 advice 실행한다.
+	<aop:after-throwing>    : 핵심기능 실행 중에 exception 발생 시 advice 실행한다.
+	<aop:afer>              : 핵심기능 실행 후 advice 실행한다. <aop:after-returning> + <aop:after-throwing>
+	<aop:around>            : 핵심기능 실행 전/후 및 exception이 발생해도 advice 실행한다.
+	
+	* AspectJ Point-cut 표현식
+	- * : 모든
+	- . : 현재
+	- .. : 0개 이상
+	
+	execution : "execution(public void get*(..))" // public void의 get으로 시작하는 0개 이상의 메소드
+	            "execution(* com.test.aop.*.*())" // com.test.aop 패키지의 인자없는 모든 메소드
+	            "execution(* com.test.aop..*.*())" // com.test.aop 패키지 & 하위 패키지의 인자없는 모든 메소드
+	            "execution(* com.test.aop.Staff.*())" // com.test.aop.Staff 인자없는 모든 메소드
+	
+	within : "within(com.test.aop.*)" // com.test.aop.* 패키지 안의 모든 메소드
+	       : "within(com.test.aop..*)" // com.test.aop.* 패키지 및 하위 패키지 안의 모든 메소드
+	       : "within(com.test.aop.Staff)" // com.test.aop.Staff  모든 메소드
+	
+	
+ 

@@ -1,0 +1,81 @@
+---
+# Source: elasticsearch/templates/client-serviceaccount.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  labels:
+    appName: mmp
+    svcName: filebeat
+    version: 1.0.0
+  name: filebeat
+  namespace: mmp
+---
+kind: ClusterRole
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: role-filebeat
+rules:
+- apiGroups: ['extensions']
+  resources: ['podsecuritypolicies']
+  verbs:     ['use']
+  resouceNames: ['psp-filebeat']
+#rules:
+#- apiGroups: [""]
+#  resources: ["*"]
+#  verbs: ["*"]
+---
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: rbd-filebeat
+  namespace: mmp
+subjects:
+- kind: ServiceAccount
+  name: filebeat
+  namespace: mmp
+roleRef:
+  kind: ClusterRole
+  name: role-filebeat
+  apiGroup: rbac.authorization.k8s.io
+---
+# Source: elasticsearch/templates/podsecuritypolicy.yaml
+apiVersion: extensions/v1beta1
+kind: PodSecurityPolicy
+metadata:
+  name: psp-filebeat
+spec:
+  privileged: true
+  allowPrivilegeEscalation: true
+  allowedHostPaths: 
+    - pathPrefix: "/var/log/LAMP"
+      readOnly: true
+  volumes:
+    - 'configMap'
+    - 'secret'
+    - 'emptyDir'
+    - 'persistentVolumeClaim'
+  hostNetwork: false
+  hostPID: false
+  hostIPC: false
+  runAsUser:
+    rule: 'RunAsAny'
+  runAsGroup:
+    rule: 'RunAsAny'
+  seLinux:
+    rule: 'RunAsAny'
+  supplementalGroups:
+    rule: 'RunAsAny'
+  fsGroup:
+    rule: 'MustRunAs'
+    ranges:
+      - min: 1000
+        max: 1000
+  readOnlyRootFilesystem: false
+  hostPorts:
+    - min: 1
+      max: 65535
+---
+
+
+
+

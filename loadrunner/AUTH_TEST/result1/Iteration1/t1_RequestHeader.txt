@@ -1,0 +1,6 @@
+GET /main.csr HTTP/1.1
+User-Agent: nexacroplatform14-Win32/2014 (compatible; Mozilla/4.0; MSIE 7.0)
+Accept: */*
+Connection: Keep-Alive
+Host: 10.219.6.96
+

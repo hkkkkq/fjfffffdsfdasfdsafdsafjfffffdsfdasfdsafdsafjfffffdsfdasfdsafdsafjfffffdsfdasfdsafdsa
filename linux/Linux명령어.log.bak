@@ -1,0 +1,403 @@
+ <1>
+ while true; do echo "================9006==============="; netstat -an | grep 9006 | grep ESTABLISHED |wc -l; sleep 1;  done;
+ while true; do echo "================9010==============="; netstat -an | grep 9010 | grep ESTABLISHED |wc -l; sleep 1;  done;
+ while true; do echo "================38088==============="; netstat -an | grep 38088 | grep ESTABLISHED |wc -l; sleep 1;  done;
+ while true; do echo "================58088==============="; netstat -an | grep 58088 | grep ESTABLISHED |wc -l; sleep 1;  done;
+ while true; do netstat -an | grep 9002 | grep ESTABLISHED |wc -l; sleep 1; echo "================9997==============="; done;
+ while true; do netstat -an | grep 9030 | grep ESTABLISHED |wc -l; sleep 1; echo "================9030==============="; done;
+ while true; do echo "================57777==============="; netstat -an | grep 57777; sleep 1; clear; done;
+ 
+ while true; do echo "================9006==============="; netstat -an | grep 9006 | grep ESTABLISHED; sleep 1;  done;
+ while true; do echo "================9009==============="; netstat -an | grep 10.217.157.136:9009 | grep ESTABLISHED; sleep 1;  done;
+ while true; do echo "================9010==============="; netstat -an | grep 9010 | grep ESTABLISHED; sleep 1;  done;
+ while true; do echo "================5400==============="; date; netstat -an | grep 5400;  usleep 500000;  done;
+ while true; do echo "================50001==============="; date; netstat -an | grep 50001; usleep 500000;  done;
+ 
+ while true; do echo "================Deploy Processing==============="; ps -ef | grep 'sh /app/infinilink/cm_deploy/' | grep -v grep; ps -ef | grep 'sh /app/infinilink/cm_undeploy/' | grep -v grep; echo "======================================"; echo ""; sleep 3;  done;
+ 
+ ※ Deploy
+ sh /app/infinilink/cm_deploy/bizsys/cm-deploy-bizsys.sh /home/infadm/rundeck/NBSS-GWEAP-INFI/EO_NAC1 EO_NAC1
+ sh /app/infinilink/cm_deploy/comlib/cm-deploy-comlib.sh /home/infadm/rundeck/NBSS-GWEAP-INFI/E_COMMONLIB E_COMMONLIB
+ sh /app/infinilink/cm_deploy/prop/cm-deploy-prop.sh /home/infadm/rundeck/R1.0.s160826R_20160823_1804/E_PROPERTIES EB_BAT1
+ 
+ ※ Undeploy
+ sh /app/infinilink/cm_undeploy/cm-undeploy.sh /home/infadm/rundeck/NBSS-GWEAP-INFI/delete_list.txt
+ 
+ ※ 로그복호화
+ sh /home/infadm/monitoring_chk_sh/LogFileZipEncrypt/logFileDecUnzip.sh /GW_REPO/applog_bak/infinilink/rte_log/eo_cdrm1/eo_cdrm1_svr1/20160505 all
+ 
+ ※ EP 기동/중지
+ sh /app/infinilink/properties/rolling_deploy/epControl.sh "start" "/app/infinilink/properties/rolling_deploy/EO_GRP1_TCP_EP_LIST.txt" "EO_GRP1"
+ 
+ <2>
+ nc -z [local pc ip] [port_number]
+ ex) nc -z 10.225.137.132 9001
+
+ <3> sh a.sh 100
+ for ((i=1;i<=$1;i++))
+ do
+ cat file_500M.log >> file_2G.log
+ done
+ 
+ for day in sun mon tue; do echo $day; done;
+ for((i=0;i<10;i++)); do echo $i; done;
+ 
+
+ <4> window
+ echo "전원호님짱인듯전원호님짱인듯전원호님짱인듯전원호님짱인듯!전원호님짱인듯전원호님짱인듯전원호님짱인듯전원호님짱인듯전원호님짱인듯전원호님짱인듯!전원호님짱인듯" > testdummy.txt 
+ for /L %i in (1,1,19) do type testdummy.txt >> testdummy.txt
+ 
+ <5>
+ 
+복사하기: scp -r * repoadm@devdns02:/repo_osimg/repo/Infinilink/
+가져오기: scp -r repoadm@devdns02:/repo_osimg/repo/Infinilink/ ./
+ 
+ 옵션: 
+  -v 진행상황을 상세히 보여줌 
+
+  -r 지정한 디렉토리의 하위 디렉토리까지 재귀적으로 실행 
+
+  -p 버전속성 보존 
+
+  -z 데이터압축 전송 
+
+  -u 추가된 파일만 전송 
+
+  -b 낡은 파일은 ~가 붙음 
+  
+  -q Quiet mode, diables the progress meter as well as warning and diagnostic messages from ssh
+  
+ <6> 웹커넥션 쓰레드 조회
+dsa (alias dsa='jeusadmin -host 10.217.232.101 -port 9010 -u administrator -p infinilink')
+ti -server eo_cdrm1_svr1 -li http1 -s active -repeat 9999 -interval 1
+ti -server eo_cdrm1_svr1 -s active -repeat 9999 -interval 1
+ti -server eo_cdrm1_svr2 -li http1 -s active -repeat 9999 -interval 1
+ti -server io_cdrm1_svr1 -li http1 -s active -repeat 9999 -interval 1
+ti -server io_cdrm1b_svr2 -li http1 -s active -repeat 9999 -interval 1
+ti -server io_cdrm1b_svr1 -li http1 -s active -repeat 9999 -interval 1
+ti -server eo_grp1b_svr2 -li http1 -s active -repeat 9999 -interval 1
+
+connect -u administrator -p infinilink -h 10.217.232.102 -port 9736
+ti -server server2 -li http1 -s active -repeat 9999 -interval 1
+
+
+while true; do echo "===9001 EST=="; netstat -an | grep 9001 | grep EST |wc -l ; sleep 1; done;
+while true; do echo "===9002 EST=="; netstat -an | grep 9002 | grep EST |wc -l ; sleep 1; done;
+while true; do echo "===9997 EST=="; netstat -an | grep 9997 | grep EST |wc -l ; sleep 1; done;
+while true; do echo "===9988 EST=="; netstat -an | grep 9988 | grep EST |wc -l ; sleep 1; done;
+
+ <7> cat -n eo_cdrm1_svr1_rte_20151205.log_bak | grep Exception
+
+
+ <8> 특정라인 출력
+cat io_cdrm1_svr1_rte_20160114.log | grep "JDBC-11048"
+sed -n '385900,386500p' eo_cdrm1_svr1_rte_20160115.log
+
+ <9> find . -size +100000k -exec ls -l {} \; | more
+
+ <10> top -d 1
+     free -mts 1
+     
+※ SWAP: 실제메모리 + 캐쉬메모리 모두 사용해서 부족할 때 하드 일부분을 메모리처럼 사용하는 메모리 영역
+
+--------------------------------------------------------------------------------------
+top - 09:57:34 up 9 days, 16:58, 4 users, load average: 0.10, 0.11, 0.15
+Tasks: 516 total, 1 running, 515 sleeping, 0 stopped, 0 zombie
+Cpu(s): 0.0%us, 0.1%sy, 0.0%ni, 99.9%id, 0.0%wa, 0.0%hi, 0.0%si, 0.0%st
+Mem: 68799712k total, 59522264k used, 9277448k free, 728644k buffers
+Swap: 20971516k total, 0k used, 20971516k free, 52340468k cached
+--------------------------------------------------------------------------------------
+
+1) load average: 0.10, 0.11, 0.15 => 1분, 5분, 15분간 시스템 부하율 (평균적으로 실행된 프로세스 수)
+2) 0.0%us: 사용자가 사용중인 CPU 사용률
+3) 0.1%sy: 시스템이 사용중인 CPU 사용률
+4) 0.0%ni: Nice 정책에 의해 사용되는 CPU 사용률
+5) 99.9%id: 사용되지 않는 CPU
+6) 0.0%wa: 입출력 대기상태의 사용률
+7) 0.0%hi: 하드웨어 인터럽트 CPU 사용률
+8) 0.0%si: 소프트웨어 인터럽트 CPU 사용률
+9) 0.0%st: 가상화 환경에서 CPU 손실률
+
+--------------------------------------------------------------------------------------
+											total 				used 			free 			shared 	buffers 	cached
+	Mem:  							67187(A)  		50850(B) 	16336(C) 	0(D) 		71(E) 		49273(F)
+	-/+ buffers/cache: 								1505(G) 	65681(H)
+	Swap: 							20479 				0 				20479
+	Total: 							87667 				50850 		36816
+--------------------------------------------------------------------------------------	
+	A = B+C = G+H
+	G = B-E-F
+	H(사용가능메모리) = C+E+F
+--------------------------------------------------------------------------------------
+
+ <11> 실제 사용하는 thread 개수
+grep -s '^Threads' /proc/[0-9]*/status  | awk '{ sum += $2; } END { print sum; }'
+
+ <12> OS 파라미터
+ulimit -a
+cat /etc/sysctl.conf
+cat /etc/security/limits.conf
+cat /proc/sys/kernel/threads-max
+
+ <13> 패키지 설치 확인
+rpm -qa | grep ftp
+ftp-0.17-54.el6.x86_64 (ftp client)
+
+ <14>
+ netstat -an | grep 10.220.175.23:9001 | wc -l
+ netstat -an | grep 10.219.1.176:9091 | wc -l
+ netstat -an | grep 10.219.1.177:9091 | wc -l
+ 
+ <15> DB Connection Pool 정보
+ dsa
+ connection-pool-info -server eo_mnp1_svr1 -repeat 9999 -interval 1
+ connection-pool-info -server io_cdrm1_svr1 -jndi -repeat 9999 -interval 1
+ connection-pool-info -server io_cdrm1_svr1 -jdbc -repeat 9999 -interval 1
+ connection-pool-info -server eo_mnp1_svr1 -jdbc -repeat 9999 -interval 1
+ connection-pool-info -server ib_cdrm1_svr2 -id ora_jdbc_ngtw_01_ORDDB -repeat 9999 -interval 1
+ 
+ <16> 로그 초기화 
+ cp eo_cdrm1_svr1_rte_20160207.log eo_cdrm1_svr1_rte_20160207.log_bak_시간적음(10시40분)
+ echo '' > eo_cdrm1_svr1_rte_20160207.log
+ 
+ <17> wget
+  wget http://10.219.3.94:7001/http/ktmhows/httpInbound?TRID=1&RCODE=2&RMSG=3
+  wget --post-data='TRID=1&RCODE=2&RMSG=3' http://10.219.3.94:7001/http/ktmhows/httpInbound
+  wget -O 'download_filename' http://10.217.159.222:8005/ESKY/NIFE_ESKY_NORD_I_2278_00?wsdl
+  wget --post-file=req_test.xml --header="Content-Type: application/soap+xml" --header="SOAPAction: \"http://bizhub.kt.com/setSendSMSResult\"" http://10.217.155.190:5000/SoapGateway
+
+ <18> vi창 dos type => unix type
+ :set ff=unixdsa
+ 
+ <19> 
+ ls -l *.log.gz | awk '{totalsize += $5} END {print totalsize/1024/1024/1024}'
+ find . -type f -name 'io_cdrm1_svr1_rte_20160222*.log' -o -name 'io_cdrm1_svr1_rte_20160223*.log' | xargs ls -l | awk '{totalsize += $5} END {print totalsize/1024/1024/1024}'
+ 
+ <20>
+ grep -a "active connection count\[50:50\]" eo_cdrm1_svr1_rte_20160414*.log
+ grep -c "active connection count\[50:50\]" eo_cdrm1_svr1_rte_20160414*.log : 파일별 count
+ grep -l "active connection count\[50:50\]" eo_cdrm1_svr1_rte_20160414*.log : 파일명만
+ 
+ <21> TCP DUMP
+ tcpdump -i eth0 -w tcpdump_54433_1.pcap tcp port 54433
+ tcpdump -i eth0 -w tcpdump_KNOTE2.pcap tcp port 58888 and host 10.217.41.54
+ tcpdump -i any -w tcpdump_5400_1_sit2.pcap tcp port 5400
+ tcpdump -r tcpdump_14445.pcap
+ tcpdump -i any -w tcpdump_LINA_6700.pcap tcp port 6700 and host 192.168.250.70
+ tcpdump -i any -w tcpdump_ESMR_31074.pcap tcp port 31074 and host 10.5.5.238
+ tcpdump -i eth6 -w tcpdump_KBcard_21.pcap tcp port 21 and host 203.229.169.152
+ tcpdump -nnvXx -i eth6 -w tcpdump_KBcard_21.pcap tcp port 21 and host 203.229.169.152
+ 
+ TCP Header 의 Seq (32bit) => 데이터의 순서를 나타내며 분할된 패킷의 경우 데이터 재 조합에 사용
+ TCP Header 의 Ack (32bit) => 다음에 수신 기대하는 데이터 번호이며 해당 번호를 통해 전체 데이터 중 몇 번째 데이터인지를 파악
+ 
+ <22> alias date="date +'%Y-%m-%d %H:%M:%S'"
+ 
+ <23> tar -zcvf jeus7.20170410.tar.gz jeus7
+ 			tar -zcf jeus7.20171114.tar.gz jeus7
+      tar -ztvf jeus7.20170410.tar.gz jeus7
+      tar -zxvf jeus7.20170410.tar.gz -C /app/infinilink
+      
+ <24> dsa 
+      connection-pool-info -server io_cdrm1_svr1 -repeat 9999 -interval 3
+ 
+ <25> find /GW_REPO/applog_bak/infinilink/rte_log -type f -mtime +30 | xargs rm -rf
+      find . -maxdepth 1 -type f -mtime +30 | xargs ls -alrt
+      find . -type f -mtime +30 | xargs ls -alrt
+      find . -type f -mtime +30 | xargs rm -rf
+      
+      
+ <26> sed -e ':a;N;$!ba;s/\n//g' -e 's/\[\#/\r\n\[\#/g' io_cdrm1_message_2016082214.log | grep -a herasoo
+ 
+ <27> du -hS .
+      du -hs */ | sort -nr
+      du -hs ./*
+ 
+ <28> sftp -oport=22 infadm@10.217.159.221
+ 
+ <29> vi창 euc-kr => utf-8
+ :set fenc =utf-8
+ 
+ <30> jstack /home/infadm/jdk1.7.0_75/jre/bin/java core.6818 > jstack.core.6818
+ 
+ <31> jmap /home/infadm/jdk1.7.0_75/jre/bin/java core.6818 > jmap.core.6818
+ 
+ <32> grep -aPzo '(?s)\[#\|(?:(?!\[#).)*?10.217.186.250(?:(?!#\]).)*?\|#\]' filename
+     : message_log에서 10.217.186.250 검색
+
+ <33> chage -l infadm
+     : password aging info
+     : chage -E -1 root
+     
+ <34> tbsql -s infinilink/infinilink
+ 
+ <35> 
+ How to remove BOM(Byte Order Mark) from UTF-8
+ : tail --bytes=+4 text.txt > text1.txt
+ : awk 'NR==1{sub(/^\xef\xbb\xbf/,"")}1' NLYT.properties > NLYT.properties.re
+ : sed -i '1 s/^\xef\xbb\xbf//' *.properties
+     
+ Remove CR (^M: ctrl+v => ctrl+m)
+ : sed -i 's/^M//g' *.properties
+ 
+ Remove LF
+ : sed -i ':a;N;$!ba;s/\n//g' *.properties
+     
+ <36> 문자열 치환
+ 	   sed -e '/^#/d' /etc/services | more            => sed는 "//"를 만나면 정규표현식으로 간주해서 해석을 한다. #로 시작하는 주석 삭제
+ 	   sed -n ‘/[Ll]ove/p’ datafile                   => datafile에서 Love나 love를 포함하는 행만 출력한다.hk
+ 	   sed -e s/prd2gweap02/gweap02/g -e s/prd2gweap04/gweap04/g domain.xml.20161125 > domain.xml    => 동일한 파일명으로 하면 0byte 된다.
+ 	   sed -e s@prd2gweap02@gweap02@g domain.xml.20161125 		=> sed can take any char as delimeter
+
+ <37> traceroute -n -p 22 -T 172.29.213.115
+ 
+ <38> iconv -f ASCII -t UTF-8 userId.properties
+ 
+ <39> yum list | grep ftp
+ 
+ <40> lsof | grep deleted
+ 
+ <50>
+ i=1; while [ $i -le 10 ]; do echo "================ $i ==============="; i=$(($i+1)); done;
+ i=1; while [ $i -le 10 ]; do echo "================ $i ==============="; i=`expr $i + 1`; done;
+ i=1; while [ $i -le 10 ]; do echo "================ $i ==============="; i=$(expr $i + 1); done;
+   
+ for i in 1 2 3 4 5 6 7 8 9 10; do echo "================ $i ==============="; done;
+ 
+ i=1; while [ $i -le 40329 ]; do echo "================ $i ==============="; cat a.log >> c.log; i=$(($i+1)); done;
+ 
+ <51> Heap Memory
+ dsa
+ memory-info -servers io_test1_svr1 -repeat 9999 -interval 1
+ memory-info -servers ib_bat1_svr1 -repeat 9999 -interval 1
+ 
+ <52>
+ ps -ef
+ ps aux
+ ps -efL | grep java | wc -l
+ 
+ <53> vi
+ v: Visual
+ ctrl+v: Visual Block
+ y: 복사
+ c: 잘라내기
+ d: 삭제
+ yy: 한줄 복사
+ cc: 한줄 잘라내기
+ dd: 한줄 삭제
+ p: 붙여넣기(커서 다음 line)
+ P: 붙여넣기(커서 위치)
+ 
+ <53> 프로세스 Thread 개수
+ ps -eLf | grep 18528 | grep -v grep | cut -c1-100 | wc -l
+ ps -eLf | grep 15900 | grep -v grep | cut -c1-100 | wc -l
+ ps -eLf | grep 31776 | grep -v grep | wc -l
+ 
+ <54> ps -ef | grep httpd | grep -v grep | awk '{print $NF}' | uniq -c
+      ps -ef | grep httpd | grep -v grep | awk '{print $NF}' | uniq -c | wc -l
+ 
+ <55> java -XX:+PringFlagsFinal -version | grep Thread
+ 
+ <56> cpu 개수 확인
+ 
+ 	processor => 논리적 CPU 일련번호
+	physical id => 소켓ID
+	siblings => 한 소켓 안에 있는 논리적 CPU 개수
+	cpu cores => 한 소켓 안 물리적 코어 개수
+ 
+ 1) 물리적 cpu 개수
+ grep 'physical id' /proc/cpuinfo | sort | uniq | wc -l
+ 
+ 2) cpu 당 core 개수
+ grep 'cpu cores' /proc/cpuinfo | tail -1
+ 
+ 3) cpu core 전체 개수 (논리/가상)
+ grep ^processor /proc/cpuinfo | wc -l
+ 
+ ※ flags 항목에 ht (Hyper threading) 존재하면 *2로 processor 개수가 보인다.
+    Hyper threading인 경우 processor 개수/2하면 DEDI, VM 동일하게 CPU core 수로 계산하면 된다.
+    siblings = cpu cores * 2 이면 Hyper threading 되어다고 보면 된다.
+ ※ 실제 VM 장비의 경우 processor 개수/2가 core 개수이다. DEDI는 그대로 processor 개수가 core 개수
+ 
+ <57>
+ jar -cvf infinilink-distribution-agent.jar infinilink-distribution-agent
+ jar -cf infinilink-distribution-agent.jar infinilink-distribution-agent
+ jar -tvf infinilink-distribution-agent.jar
+ jar -xvf infinilink-distribution-agent.jar
+ 풀 폴더를 만들고, jar -xvf ../infinilink-distribution-agent.jar
+
+ <58> 파일비교
+ 다른점: diff -rq /home/infadm/20170322_TASK/20170303/infinilink-distribution-agent /home/infadm/20170322_TASK/20170317/infinilink-distribution-agent
+ 				 diff 파일1 파일2
+ 같은점: diff -rs /home/infadm/20170322_TASK/20170303/infinilink-distribution-agent /home/infadm/20170322_TASK/20170317/infinilink-distribution-agent | grep identical
+ 
+ <59> apache web port
+ ps -ef | grep httpd | grep -v grep | awk '{print $NF}' | uniq -c
+ 
+ <60>
+ 1) ulimit -a
+ 2) cat /proc/sys/kernel/threads-max
+ 3) cat /etc/sysctl.conf
+ 4) cat /etc/security/limits.conf
+
+ <61> rename .properties.PRD .properties *.properties.PRD
+ 
+ <62> export LANG=ko_KR.euckr
+ 			export LANG=en_US.utf8
+ 
+ <63> ps -eo pid,lwp,etime,comm,args --sort=-etime
+ 
+ <64>
+ while true; do date '+%Y%m%d %T.%N'; netstat -an | grep 203.229.169.152:21; sleep 1; done;
+ while true; do date '+%Y%m%d %T.%N'; netstat -an | grep 203.229.169.152:20; sleep 1; done; 
+ 
+ while true; do date '+%Y%m%d %T.%N' >> LPRT_21session.log_20170802_2 ; netstat -an | grep 192.168.34.95:21 >> LPRT_21session.log_20170802_2; sleep 1; done;
+ while true; do date '+%Y%m%d %T.%N' >> LPRT_20session.log_20170802_2 ; netstat -an | grep 192.168.34.95:20 >> LPRT_20session.log_20170802_2; sleep 1; done;
+ 
+ <65> vi에서 하이라이트 초기화
+ :noh
+ 
+ <66> vi에서 첫라인 :1
+      vi에서 마지막라인 :$
+
+ <67> nohup: run a command immune to hangups, with output to a non-tty => 데몬 형태로 실행
+ 
+  1) nohup으로 실행시킬 쉘스크립트 파일은(*.sh) 755 이상
+  2) nohup shell.sh & => nohup 명령어에 의해 수행된 작업은 자동으로 nohup.out이 자동 생성
+  3) kill -9 pid
+  :Q
+ <68> > /dev/null 2 > &1
+ : 표준출력 버리고 표준에러를 표준출력으로
+ 
+ <69>
+ ls -l stopWeb*.sh|grep -v 58378| grep -v template | awk '{print $NF}'
+ ls -l stopWeb*.sh|grep -v 58378| grep -v template | awk '{print $1, $2}'
+ 
+ <70> eval: to execute that command stored in the string
+ 
+ COMMAND="ls -alrt"
+ eval $COMMAND
+ 
+ <80> lsof -i :59906
+      lsof -i @IP:PORT
+ : 특정 포트를 사용하는 프로세스 찾기
+ : 유사 netstat -anp | grep 59906
+ 
+ <81> 1) cd /proc/"pid"/fd
+      2) > "fd"
+        ex) > 1
+ 			==> 프로세스 재기동 없이 lsof | grep deleted 파일에 대해 점유0으로 만들 수 있다.
+ 			
+ <82> link
+   1) hard link: ln /data/file1 ~/file1
+    => 파일만 가능하고 다른 disk, volume 파일 참고할 수 없다. inode(ls -i) 값이 동일. 소스가 삭제되어도 link는 남아있고 사용 가능하다.
+   2) symbolic link: ln -s /data/file2 ~/file2
+    => 파일 및 디렉토리 가능하고 다른 disk, volume 파일, 디렉토리  참고할 수 있다. inode 값이 다르다. 소스가 삭제되면 link는 남아있지만 사용 불가능하다.
+    
+ <83> find . -type f -name "*.log" | tail -3 | xargs -I{} mv {} ./mov
+ : 정해진 파일 개수만큼만 찾아서 이동
+ 
+ <84> rtail1 | grep 'Exception\|SEVERE\|WARNING'
+ 
+ <85> curl http://10.217.81.120:8000/index.html
+			<html><body><h1>It works!</h1></body></html>[apache@c-akos-dd1-w01 www]

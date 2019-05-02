@@ -1,0 +1,24 @@
+Virtual User Script started at : 2015-07-27 14:32:43
+Starting action vuser_init.
+Web Services replay version 11.0.0 for Windows 2008; Toolkit: ".Net"; build 9409
+Run-Time Settings file: "D:\BSS차세대\01.infiniLink_POC\01.Scripts\01_SOAPTOTCP\\default.cfg"
+Vuser directory: "D:\BSS차세대\01.infiniLink_POC\01.Scripts\01_SOAPTOTCP"
+Vuser output directory: "D:\BSS차세대\01.infiniLink_POC\01.Scripts\01_SOAPTOTCP\"
+LOCAL start date/time:  2015-07-27 14:32:43
+Ending action vuser_init.
+Running Vuser...
+Starting iteration 1.
+Starting action Action.
+Action.c(4): Notify: Transaction "01_SOAPTOTCP" started.
+Action.c(6): SOAP request "SOAP Request" started
+Action.c(6): Notify: Parameter Substitution: parameter "IP" =  "10.217.232.101"
+Action.c(6): Warning -26000: Empty or no response for URL="http://10.217.232.101:9030/NCDM/NIFE_NCDM_EKAI_O_0002_00"  	[MsgId: MWAR-26000]
+Action.c(6): Error: Failed to connect to server "10.217.232.101:9030": [10061] Connection refused
+Action.c(6): Error: SOAP request "SOAP Request" execution failed
+Action.c(6): Notify: Transaction "01_SOAPTOTCP" ended with "Fail" status (Duration: 1.2571 Wasted Time: 0.0730).
+Ending action Action.
+Ending iteration 1.
+Ending Vuser...
+Starting action vuser_end.
+Ending action vuser_end.
+Vuser Terminated.

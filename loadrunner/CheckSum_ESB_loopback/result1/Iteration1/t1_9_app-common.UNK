@@ -1,0 +1,277 @@
+
+var notAllowChars = "&<>\'\"#%\\|;^";
+
+function sessionTimeOut(){
+	alert('세션이 만료가 되었습니다.\n다시 로그인 하시기 바랍니다.');
+	window.location.href="/";
+	
+}
+
+function popSessionTimeOut(){
+	alert('세션이 만료가 되었습니다.\n다시 로그인 하시기 바랍니다.');
+	
+	if( window.opener ) {
+		window.opener.location.href="/";
+		window.close();
+	} else {
+		window.location.href = "/";
+	}
+	
+}
+
+function makeMessage(message, val1, val2) {
+	message = message.replace('{0}',val1);
+	message = message.replace('{1}',val2);
+	return message;
+}
+
+function check_special_word(str) {
+	// var m_Sp = '/[$\\\#%\^\&\*\<\>\[\]\+\_\{\}\`\~\=\|]/';
+	if( str == null || str == ''){
+		return true;
+	}
+	var specialWord = '&<>\'\"()';
+	for ( var i = 0; i < specialWord.length; i++) {
+		if (str.indexOf(specialWord.substring(i, i + 1)) >= 0) {
+			alert("검색어에 허용되지 않는 문자가 입력되었습니다.");
+			return false;
+		}
+	}
+	return true;
+}
+
+
+
+function check_special_word_noalert(str) {
+	
+	if( str == null || str == ''){
+		return true;
+	}
+	
+	var specialWord = new Array("<", ">", "#", "&", "\\", "'", "%", "\"");
+
+	for ( var i = 0; i < str.length; i++) {
+		if (str.indexOf(specialWord[i]) != -1) {
+			return false;
+		}
+	}
+	
+	return true;
+}
+
+function check_special_word_noalert(str, specialWord) {
+	// var m_Sp = '/[$\\\#%\^\&\*\<\>\[\]\+\_\{\}\`\~\=\|]/';
+	if( str == null || str == ''){
+		return true;
+	}
+	
+	if( specialWord == null || specialWord == ""){
+		specialWord = '&<>\'\"#%\\|;';
+	}
+	
+	for ( var i = 0; i < specialWord.length; i++) {
+		if (str.indexOf(specialWord.substring(i, i + 1)) >= 0) {
+			return false;
+		}
+	}
+	return true;
+}
+
+/**
+ * 설문조사, 평가관리에서 사용
+ * @param str
+ * @returns {Boolean}
+ */
+function checkNotAllowChars(str){
+	
+	if( str == null || str == ''){
+		return true;
+	}
+	
+	for ( var i = 0; i < notAllowChars.length; i++) {
+		if (str.indexOf(notAllowChars.substring(i, i + 1)) >= 0) {
+			return false;
+		}
+	}
+	return true;
+	
+}
+
+
+function isEmpty(str) {
+	if (str == null || cmmTrim(str) == "" || typeof str == 'undefined') {
+		return true;
+	}
+	return false;
+}
+
+function cmmTrim(text) {
+	if (text == "") {
+		return text;
+	}
+	var len = text.length;
+	var st = 0;
+	while ((st < len) && (text.charAt(st) <= ' ')) {
+		st++;
+	}
+	while ((st < len) && (text.charAt(len - 1) <= ' ')) {
+		len--;
+	}
+	return ((st > 0) || (len < text.length)) ? text.substring(st, len) : text;
+}
+
+function formFileUpload(e){
+	
+	var selectSize = $("#multiFile").attr("size");
+	var emptyIndex = $("#multiFile").attr("size");
+
+	$("#multiFile option").each(function (i) {
+		var value = $(this).val();
+		if(value== ''){
+			emptyIndex = i;
+			return false;
+		}
+	});
+
+	var maxUploadFiles = parseInt(selectSize) - parseInt(emptyIndex);
+	
+	if( maxUploadFiles > 0 ) {
+		opencenter04("formUpload",365,314);
+		$("input[name=maxUploadFiles]").val(maxUploadFiles);
+		$("#filefrm").attr("target", "formUpload");
+		$("#filefrm").submit();
+	} else {
+		alert("파일첨부는 " + selectSize + "개 까지 가능합니다")
+	}
+}
+
+function deleteFileUpload(e){
+	
+	var count = $("select#multiFile option:selected").length;
+	if(count == 0){
+		alert("삭제할 파일을 선택해 주세요.");
+		return;
+	}
+	
+	// 선택한 파일들을 셀렉트박스에서 삭제
+	$('select#multiFile option:selected').remove();
+	// 삭제한 개수만큼 공백 옵션 추가
+	for(var i = 0; i < count; i++){
+		$('select#multiFile').append($('<option>').attr({'fsize': '', 'faddr': '', 'value': ''}).text(''));
+	}
+	
+	// 전체 셀렉트박스 개수 만큼 루프
+	$("select#multiFile option").each(function (i) {
+		var value = $("select#multiFile option").eq(i).val();
+		
+		if(value != ''){
+			$("input[name='fileNm']").eq(i).val(value);
+			$("input[name='realFileNm']").eq(i).val($("select#multiFile option").eq(i).text());
+			$("input[name='fileSize']").eq(i).val($("select#multiFile option").eq(i).attr('fsize'));
+			$("input[name='fileAdrsSbst']").eq(i).val($("select#multiFile option").eq(i).attr('faddr'));
+		}
+		else{
+			$("input[name='fileNm']").eq(i).val('');
+			$("input[name='realFileNm']").eq(i).val('');
+			$("input[name='fileSize']").eq(i).val('');
+			$("input[name='fileAdrsSbst']").eq(i).val('');
+		}
+	});
+	
+}
+
+function datepickValidate(e){
+	var value = $(this).val();
+	var valid = false;
+
+	if( value.length == 0 ){
+		valid = true;
+	}
+	
+	if( value.length == 8 || value.length == 10) {
+		var format = 'yyyymmdd';
+		if( value.length == 10) {
+			format = 'yyyy-mm-dd' ;
+		}
+		
+		try{
+			$.datepick.parseDate(format, value);
+			if( value.length == 10){
+				var match = value.match(/(\d{4})-(\d{2})-(\d{2})/);
+				valid = true;
+			}else {
+				var match = value.match(/(\d{4})(\d{2})(\d{2})/);
+				$(this).val(match[1] + '-' + match[2] + '-' + match[3]);
+				valid = true;
+			}
+		}catch(e){}
+	}
+
+	if( !valid ){
+		$(this).val('');
+		alert('날짜 형식이 올바르지 않습니다.');
+	//	$(this).focus();
+	}
+}
+
+function datepickRemoveHyphen(e){
+	var value = $(this).val();
+	$(this).val(function(i, v){return v.replace(/-/gi,'');});
+	$(this).select();
+}
+
+function showDate(date) {
+	alert('The date chosen is ' + date);
+}
+
+function intgFindMain(){
+	if( !check_special_word($("#findWrd").val()) ){
+		return ;
+	}
+	$("#frmHeaderIntgFind").submit();
+}
+/*
+ * ajaxJson("frm", "/notice/notice/saveNotice.csr", INSERT_OK, INSERT_FAIL, redirectList);
+ * ajaxJson("frm", "/notice/notice/saveNotice.csr", null, null, redirectList);
+function ajaxJson(formId, url, successMessage, errorMessage, successCallback, errorCallback) {
+
+	$.ajax({
+		type : "POST",
+		url  : url, 
+		dataType : "json",
+		data : $("#" + formId).serialize(),
+		success : function(data, status) {
+			try{
+				if( data.result == '1'){
+					if( successMessage ){
+						alert(makeMessage(successMessage));
+					}
+					if( successCallback ){
+						successCallback(data);
+					}
+				} else {
+					if( errorMessage ){
+						alert(makeMessage(errorMessage, '<br>' + 'RETURN CODE : ' + data.result + '<br>' + 'RETURN MESSAGE : ' + data.message));
+					}
+					if( errorCallback ){
+						errorCallback();
+					}
+				}
+			}catch(e) {	
+				alert('서비스에 문제가 발생되었습니다. 관리자에게 문의 하시기 바랍니다.');
+			}
+		},
+		error : function(XMLHttpRequest, textStatus, errorThrown) {
+			if(XMLHttpRequest.status == '901'){
+				sessionTimeOut();			
+			} else {
+				alert('서비스에 문제가 있습니다. 관리자에게 문의 하세요.');
+				if( errorCallback ){
+					errorCallback();
+				}
+			}
+			return;
+		}
+	});
+
+}*/

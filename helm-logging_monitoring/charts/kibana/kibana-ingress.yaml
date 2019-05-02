@@ -1,0 +1,21 @@
+# Source: kibana/templates/ingress.yaml
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  labels:
+    app: kibana
+    chart: "kibana-2.0.0"
+    heritage: Tiller
+    release: kibana
+  name: kibana
+  annotations:
+spec:
+  rules:
+    - host: kibana-song.ipc.kt.com
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: elasticsearch-client
+              servicePort: 80
+

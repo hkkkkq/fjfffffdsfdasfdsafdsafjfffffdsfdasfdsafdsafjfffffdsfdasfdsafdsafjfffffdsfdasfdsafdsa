@@ -1,0 +1,122 @@
+<!doctype html>
+<html>
+
+
+
+<head>
+	<title>Arsenal-Dev : 2019.04.16</title><meta charset="utf-8">
+	<meta http-equiv="Content-Script-Type" content="text/javascript">
+	<meta http-equiv="Content-Style-Type" content="text/css">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	
+	
+	<link rel="stylesheet" href="/resources/css/base.css">
+	<link rel="stylesheet" href="/resources/css/jquery-ui.css" />
+	<link rel="stylesheet" href="/resources/css/common.css">
+	<link rel="stylesheet" href="/resources/css/content.css">
+	
+	<script src="/resources/js/lib/jquery-2.1.3.js"></script>
+	<script src="/resources/js/lib/jquery-ui.js"></script>
+	
+<style id="poshytip-css-view--tip-common" type="text/css">div.view--tip-common{visibility:hidden;position:absolute;top:0;left:0;}div.view--tip-common table.tip-table, div.view--tip-common table.tip-table td{margin:0;font-family:inherit;font-size:inherit;font-weight:inherit;font-style:inherit;font-variant:inherit;vertical-align:middle;}div.view--tip-common td.tip-bg-image span{display:block;font:1px/1px sans-serif;height:10px;width:10px;overflow:hidden;}div.view--tip-common td.tip-right{background-position:100% 0;}div.view--tip-common td.tip-bottom{background-position:100% 100%;}div.view--tip-common td.tip-left{background-position:0 100%;}div.view--tip-common div.tip-inner{background-position:-10px -10px;}div.view--tip-common div.tip-arrow{visibility:hidden;position:absolute;overflow:hidden;font:1px/1px sans-serif;}</style>
+</head>
+
+
+
+<script type="text/javascript">
+$(document).ready(function(){
+
+	// 초기 간단 애니메이션 180726
+	$(function() { 
+		$('hgroup h1').delay(0).animate({
+			top: -20,
+			opacity: 1,
+			},450, function(){
+		});
+
+		$('hgroup h2').delay(130).animate({
+			top: -20,
+			opacity: 1,
+			},450, function(){
+		});
+	});
+});
+</script>
+
+
+<body class="login">
+
+
+<div id="wrap">
+<div class="wrap__login" style="height: 978px;">
+	
+	<hgroup>
+		<h1 style="top: 0px; opacity: 1;"><img src="/resources/img/sta-login.png" alt="kt"></h1>
+		<h2 style="top: 0px;opacity: 1;">Arsenal-Dev : 2019.04.17</h2>
+	</hgroup>
+	
+	<div class="box__login">
+		<form action="/login" method="post" id="actionForm">
+		<div class="input__login">
+			<label>ID (사번)</label>
+			<input id="username" name="username" type="text" value="" placeholder="사번" maxlength="30">
+		</div>
+		<div class="input__login">
+			<label>비밀번호</label>
+			<input id="password" name="password" type="password" value="" autocomplete="name">
+		</div>
+		<button type="button" id="btnlogin" class="btn__login">로그인</button>
+		</form>
+	</div>
+    
+	<footer>
+		Copyrightⓒ 2019 kt. All Rights Reserved.
+	</footer>
+
+
+<div>
+
+
+
+    
+    <div align="center">
+    	
+    	<!-- 공통 알림 창 --> 
+		<div class="pop--fixed pop--common" style="left:50%; width:360px; margin:-107px 0 0 -180px;">
+			<div class="header__pop">
+				<h2 id="table__message--title">안내메세지</h2>
+				<a class="btn--close pop--common-close"></a>
+			</div>
+			<div class="content__pop">
+				
+				<div class="alert__msg" id="table__message--message">
+					받은 알림메세지가 없습니다.
+				</div>
+				
+				<div class="content__pop__btn--wrap content__pop__btn--center message--btn__ok">
+					<a class="btn__pop--common pop--common-close">확인</a>
+				</div>
+				
+				<div class="content__pop__btn--wrap content__pop__btn--center message--btn__confirm">
+					<a class="btn__pop--common pop--common-close">확인</a>
+					<a class="btn__pop--common pop--common-cancle">취소</a>
+				</div>
+		
+			</div>
+		</div>
+    </div>
+    <div class="pop--overlay"></div>
+
+
+</div>
+
+
+</div>
+
+</div>
+
+</body>
+
+
+
+</html>

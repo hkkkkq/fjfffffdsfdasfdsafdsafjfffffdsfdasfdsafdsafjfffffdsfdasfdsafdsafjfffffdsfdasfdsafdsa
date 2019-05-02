@@ -1,0 +1,19 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: ServiceEntry
+metadata:
+  name: medat-kbins
+  labels:
+    app: medat
+    version: 1.0.0
+    release: mmp
+spec:
+  hosts:
+  - 10.221.30.3
+  addresses:
+  - 10.221.30.3/32
+  ports:
+  - number: 37503
+    name: tcp
+    protocol: TCP
+  location: MESH_EXTERNAL
+  resolution: NONE

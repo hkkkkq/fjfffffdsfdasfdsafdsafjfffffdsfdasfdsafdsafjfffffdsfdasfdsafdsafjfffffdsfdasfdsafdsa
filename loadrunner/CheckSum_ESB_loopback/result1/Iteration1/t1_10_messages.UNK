@@ -1,0 +1,47 @@
+/*
+ * Translated default messages for the jQuery validation plugin.
+ * Language: KO
+ * Author: Fayland Lam <fayland at gmail dot com>
+ */
+var MSG_NO_BLANK = "{0}은/는 필수 입력 항목입니다.";
+var MSG_E_MAIL = "{0}은/는 이메일 형식으로 입력해야 합니다.";
+var MSG_URL = "{0}은/는 URL 형식으로 입력해야 합니다.";
+var MSG_DATE = "{0}은/는 날짜 형식으로 입력해야 합니다.";
+var MSG_NUMBER = "{0}은/는 숫자만 입력할 수 있습니다.";
+var MSG_MAXLENG = "{0}은/는 {1}글자 이상 입력할 수 없습니다..";
+var MSG_MINLENG = "{0}은/는 {1}글자 이상 입력해야 합니다.";
+var MSG_MAX = "{0}은/는 {1}글자 이상 입력할 수 없습니다.";
+var MSG_MIN = "{0}은/는 {1}글자 이상 입력해야 합니다.";
+var MSG_MINBYTE = "{0}은/는 {1} 바이트 이상 입력해야 합니다.";
+var MSG_MAXBYTE = "{0}은/는 {1} 바이트 이상 입력할 수 없습니다.";
+var MSG_MATCHLENG = "{0}은/는 {1} 자리수로 입력해야 합니다.";
+var MSG_HANGUL = "{0}은/는 한글로만 입력해야 합니다.";
+var MSG_ENGONLY = "{0}은/는 영문으로만 입력해야 합니다.";
+
+var MSG_DEL_CMT = "사용자 코멘트를 삭제하시겠습니까? 삭제한 코멘트는 복구할 수 없습니다.";
+var MSG_MOD_CMT = "사용자 코멘트를 수정하시겠습니까? 수정한 코멘트는 복구할 수 없습니다.";
+var MSG_CRT_CMT = "사용자 코멘트를 생성하시겠습니까?";
+
+var INSERT_OK = "등록되었습니다.";
+var UPDATE_OK = "수정되었습니다.";
+var DELETE_OK = "삭제되었습니다.";
+var SAVE_OK = "저장되었습니다.";
+var LOCK_OK = "잠금되었습니다.";
+var UNLOCK_OK = "잠금해제되었습니다.";
+var APPROVAL_OK = "승인되었습니다.";
+var REJECT_OK = "거부되었습니다.";
+var DESTROY_OK = "파기되었습니다.";
+
+
+var SELECT_FAIL= "조회 실패!{0}";
+var INSERT_FAIL= "등록 실패!{0}";
+var UPDATE_FAIL= "수정 실패!{0}";
+var DELETE_FAIL= "삭제 실패!{0}";
+var SAVE_FAIL= "저장 실패!{0}";
+var LOCK_FAIL= "잠금 실패!{0}";
+var UNLOCK_FAIL= "잠금해제 실패!{0}";
+var APPROVAL_FAIL = "승인 실패!{0}";
+var REJECT_FAIL = "거부 실패!{0}";
+var DESTROY_FAIL = "파기 실패!{0}";
+
+var FAIL= "연결이 종료되었습니다. 필요시 작성하신 글을 저장하시고 다시 로그인 하십시오.";

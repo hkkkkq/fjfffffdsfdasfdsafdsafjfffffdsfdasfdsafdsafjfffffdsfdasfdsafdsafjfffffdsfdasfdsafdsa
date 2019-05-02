@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: medat
+  labels:
+    app: medat
+    version: 1.0.0
+    release: mmp
+data:
+  spring.profiles.active: "prd"

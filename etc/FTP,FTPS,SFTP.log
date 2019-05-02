@@ -1,0 +1,62 @@
+[[[FTP]]]
+
+1. 제어 세션(control sesssion)
+- 클라이언트가 서버에 접속할때부터 종료될때까지 유지됩니다.
+- command 를 서버에 보내거나 데이타 포트를 전달하는 채널입니다.
+
+2. 데이터 세션(data session)
+- 데이터(ex, dir 명령시 디렉토리 목록)를 주고받을때 사용되는 채널입니다.
+- 데이터 전송후, 연결이 종료됩니다. 즉, 클라이언트에서 매번 명령입력시 새로운 채널이 생성됩니다.
+- active 모드와 passive 모드에 따라 데이터 세션을 위한 포트 생성이 틀려집니다.
+
+3. active 모드
+- 클라이언트에서 데이터 세션을 위한 포트를 생성하고, 클라이언트가 서버로 포트번호를 전달하면 서버에서 클라이언트으로 접속을 하게됩니다.
+- 제어 세션(C:XXX번 -> S:21번)
+- 데이터 세션(C:YYY번 <- S:20번)
+[active 모드 문제점] 일반적인 TCP/IP 특징인 클라이언트가 서버에 접속을 시도하는 것이 아닌 서버가 클라이언트에 접속을 시도한다는 것.
+이 때문에 만약 클라이언트에 방화벽이 설치되어 있는 경우 데이터 세션에 문제가 발생
+
+
+4. passive 모드
+- active 모드의 문제점을 해결하기 위한 대안으로 디자인
+- 서버에서 데이터 세션을 위한 포트를 생성하고, 서버가 클라이언트로 포트번호를 전달하면 클라이언트에서 서버로 접속합니다.
+- 제어 세션(C:XXX번 -> S:21번)
+- 데이터 세션(C:YYY번 -> S:ZZZ번)
+[passive 모드 문제점] passive 모드에서는 서버에서 데이터 세션을 위한 1024 이후의 임의의 비 특권 포트를 사용한다.
+active 모드의 서버에서 클라이언트로 연결의 문제점을 해결했지만, 서버의 비 특권포트(1024 ~ 65535)를 방화벽에서 모두 열어 두어야 한다.
+그러나 대부분의 ftp 서버 데몬에서는 passive port 범위를 제한 설정 할 수 있는 기능을 지원하므로 어느 정도 해결할 수 있다.
+
+
+ex) client : 192.168.100.2, server : 192.168.100.1
+
++ active 모드
+- 클라이언트에서 dir 명령을 실행하면, 서버에 "PORT 192.168.100.2,9,43" 와 "LIST" 를 제어 채널을 통해 전달합니다.
+- 서버는 192.168.100.2,9,43 를 파싱하고 IP 부분 뒤의 9, 43 을 데이터 포트로 보고  클라이언트 2346(9*256+43)번 포트으로 데이타 연결을 합니다.
+
++ passive 모드
+- 클라이언트에서 dir 명령을 실행하면, 서버에서 "227 Entering Passive Mode (192,168,100,1,6,249)" 가 제어 채널을 통해 전달됩니다.
+- 클라이언트에서 서버로 1785번 포트로 데이터 연결을 합니다.
+
+
+* ftp 클라이언트중에서 unix 계열 클라이언트는 ftp 프롬프트에서 passive 혹은 pasv 명령으로 passive 모드로 변경이 가능한데, 윈도우 ftp 클라이언트 프로그램은 passive 관련 명령이 없습니다. 그런 경우, "quote pasv" 으로 passive 모드로 변경할 수 있습니다.
+
+
+
+
+[[[FTP/S (File Transfer Protocol over Secure Sockets Layers)]]]
+
+While generic FTP is not secure, extensions have been added over the years to allow for the securing of FTP conversations.
+FTP over SSL (FTP/S, as it’s commonly known) allows for the encryption of both the Control and Data Connections either concurrently or independently.
+This is important because the negotiation of the SSL connection is time-consuming, and having to do it twice - once for the Data Connection and once for the Control Connection - can be expensive if a client plans to transfer a large number of small files.
+FTP/S commonly runs on port 990 and sometimes on port 21, the primary difference being that port 990 is an Implicit FTP/S, and port 21 is an Explicit FTP/S.
+
+
+[[SFTP (Secure File Transfer Protocol)]]
+
+SFTP (Secure File Transfer Protocol) is a relatively new protocol developed in the 1990s, which allows for the transfer of files and other data over a connection that has previously been secured using the Secure Shell (SSH) protocol.
+Unlike FTP, the SFTP protocol is packet-based instead of text-based.
+Another difference is that with SFTP, file transfers are performed in-line over the main Control Connection, 
+thus eliminating the need to open a separate Data Connection for transfers.
+This has many benefits. First, by re-using the main connection, no other connections are opened between the client and the server, resulting in a single secure, efficient connection through firewalls.
+
+

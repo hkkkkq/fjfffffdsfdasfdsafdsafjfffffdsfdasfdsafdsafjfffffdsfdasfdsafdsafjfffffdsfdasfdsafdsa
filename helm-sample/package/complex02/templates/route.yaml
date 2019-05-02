@@ -1,0 +1,32 @@
+{{- if .Values.route.enabled -}}
+{{- $fullName := include "simple02.fullname" . -}}
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: {{ $fullName }}
+  labels: 
+    app: {{ template "simple02.name" . }}
+    chart: {{ template "simple02.chart" . }}
+    release: {{ .Release.Name }}
+  namespace: istio-system
+{{- with .Values.route.annotations }}
+  annotations:
+{{ toYaml . | indent 4 }}
+{{- end }}
+spec:
+  host: {{ .Values.route.host }}
+  path: {{ .Values.route.path }}
+  port: 
+    targetPort: http2
+{{- if .Values.route.tls }}
+  tls:
+  {{- range .Values.route.tls }}
+      secretName: {{ .secretName }}
+  {{- end }}
+{{- end }}
+  to:
+    kind: Service
+    name: istio-ingressgateway
+    weight: 100
+  wildcardPolicy: None
+{{- end }}

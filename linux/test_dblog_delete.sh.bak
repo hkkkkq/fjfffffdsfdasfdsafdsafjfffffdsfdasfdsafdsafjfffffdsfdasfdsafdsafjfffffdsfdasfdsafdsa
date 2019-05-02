@@ -1,0 +1,22 @@
+#!/bin/bash
+
+DAY_TOMORROW=$(date -d "1 day" +%d)
+FORTY_DAYS_BEFORE=$(date -d "-40 day" +%Y%m%d)
+
+echo "*** day of tomorrow: " $DAY_TOMORROW
+echo "*** 40 days ago: " $FORTY_DAYS_BEFORE
+echo "*** db scrips are as below"
+echo "*** 1) delete from il_trace_log_"$DAY_TOMORROW" where datetime < '"$FORTY_DAYS_BEFORE"'; commit;"
+echo "*** 2) delete from il_transaction_log_"$DAY_TOMORROW" where starttime < '"$FORTY_DAYS_BEFORE"'; commit;"
+echo "*** 3) delete from infl_custom_log_txn where reg_dt < '"$FORTY_DAYS_BEFORE"'; commit;"
+
+
+tbsql -s infinilink/infinilink <<EOF
+	delete from il_trace_log_${DAY_TOMORROW} where datetime < '${FORTY_DAYS_BEFORE}';
+	commit;
+	delete from il_transaction_log_${DAY_TOMORROW} where starttime < '${FORTY_DAYS_BEFORE}';
+	commit;
+	delete from infl_custom_log_txn where reg_dt < '${FORTY_DAYS_BEFORE}';
+	commit;
+exit;
+EOF

@@ -1,0 +1,52 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: onm
+  labels:
+    app: onm
+    version: 1.0.0
+    release: mmp
+spec:
+  selector:
+    istio: ingressgateway # use istio default controller
+  servers:
+  - port:
+      number: 80
+      name: http
+      protocol: HTTP
+    hosts:
+    #- "*"
+    - "test.insuretech.kt.com"
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: gateway-onm
+  labels:
+    app: onm
+    version: 1.0.0
+    release: mmp
+spec:
+  hosts:
+  #- "*"
+  - "test.insuretech.kt.com"
+  gateways:
+  - onm
+  http:
+  - match:
+    - uri:
+        prefix: /onm
+    route:
+    - destination:
+        host: onm
+        port:
+          number: 80
+        subset: v1
+      weight: 100
+    - destination:
+        host: onm
+        port:
+          number: 80
+        subset: v2
+      weight: 0
+    timeout: 10s

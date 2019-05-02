@@ -1,0 +1,119 @@
+ -- 개인키 생성
+ openssl genrsa -des3 -out server_akos_dev_test.key 1024
+ 
+ openssl genrsa -des3 -passout pass:'New1234!' -out server_akos_dev_test.key 1024
+ openssl genrsa -des3 -passout pass:'New1234!' -out server_kkos_dev_test.key 1024
+ openssl genrsa -des3 -passout pass:'New1234!' -out server_kkos_prd.key 1024
+ openssl genrsa -des3 -passout pass:'New1234!' -out server_kkos_test.key 1024
+ openssl genrsa -des3 -passout pass:'New1234!' -out server_kkos_dev.key 1024
+
+ 
+ (암호화안함)
+ openssl genrsa -out server_akos_dev.key 1024
+ openssl genrsa -out server_akos_test.key 1024
+ openssl genrsa -out server_kkos_dev.key 1024
+ openssl genrsa -out server_kkos_test.key 1024
+
+ -- CSR 생성[사용안함]
+ openssl req -new -key sever.key -out server.csr
+ 
+ -- 자체 서명 인증서 생성
+ 1) [사용안함] openssl req -new -x509 -sha1 -in server.csr -key server.key -out server.crt -days 7300
+ 
+ 2-1) 
+    openssl req -new -x509 -sha1 -key server_akos_dev_test.key -out server_akos_dev_test.crt -days 7300 -passin pass:'New1234!'
+    openssl req -new -x509 -sha1 -key server_kkos_dev_test.key -out server_kkos_dev_test.crt -days 7300 -passin pass:'New1234!'
+    openssl req -new -x509 -sha1 -key server_kkos_prd.key -out server_kkos_prd.crt -days 7300 -passin pass:'New1234!'
+    openssl req -new -x509 -sha1 -key server_kkos_test.key -out server_kkos_test.crt -days 7300 -passin pass:'New1234!'
+    openssl req -new -x509 -sha1 -key server_kkos_dev.key -out server_kkos_dev.crt -days 7300 -passin pass:'New1234!'
+ 
+  ex. 10.217.81.120 => Issuer: C=KR, ST=SEOUL, L=SEOUL, O=KT, CN=*.a-kos.kt.com
+                       Issuer: C=KR, ST=SEOUL, L=SEOUL, O=KT, CN=*.k-kos.kt.co.kr
+                       Issuer: C=KR, ST=SEOUL, L=SEOUL, O=KT, CN=a-kos.kt.com
+                       Issuer: C=KR, ST=SEOUL, L=SEOUL, O=KT, CN=k-kos.kt.co.kr
+                       Issuer: C=KR, ST=SEOUL, L=SEOUL, O=KT, CN=test.k-kos.kt.co.kr
+
+                      
+  2-2) 복수 도메인 설정[사용안함]
+  
+     a) vi server_akos_dev_test.cfg
+[req]
+default_bits=1024
+prompt=no
+default_md=sha256
+req_extensions=req_ext
+distinguished_name=dn
+
+[dn]
+C=KR
+ST=Seoul
+L=Seoul
+O=KT
+CN=dev.a-kos.kt.com
+
+[req_ext]
+subjectAltName=@alt_names
+
+[alt_names]
+DNS.1=dev.a-kos.kt.com
+DNS.2=test.a-kos.kt.com
+
+ 
+     b)
+     openssl req -new -key server_akos_dev_test.key -out server_akos_dev_test.csr -config ./server_akos_dev_test.cfg -passin pass:'New1234!'
+     openssl x509 -req -days 7300 -in server_akos_dev_test.csr -signkey server_akos_dev_test.key -out server_akos_dev_test.crt -extensions req_ext -extfile ./server_akos_dev_test.cfg -passin pass:'New1234!'
+      
+
+          
+ 
+ -- 개인키 보기
+ openssl rsa -noout -text -in server_akos_dev_test.key
+ 
+ -- CSR 보기
+ openssl req -noout -text -in server_akos_dev_test.csr
+ 
+ -- 인증서 보기
+ openssl x509 -noout -text -in server_kkos_dev_test.crt
+ 
+  -- 기존 개인키 패스워드 추가 
+ openssl rsa -in server_akos_dev.key -passout pass:'New1234!' -des3 -out server_akos_dev.key
+ openssl rsa -in server_akos_test.key -passout pass:'New1234!' -des3 -out server_akos_test.key
+ openssl rsa -in server_kkos_dev.key -passout pass:'New1234!' -des3 -out server_kkos_dev.key
+ openssl rsa -in server_kkos_test.key -passout pass:'New1234!' -des3 -out server_kkos_test.key
+ openssl rsa -in server.key -passout pass:'New1234!' -des3 -out server.key
+ 
+ -- 기존 개인키 패스워드 삭제
+ openssl rsa -in server.key -out server.key
+ 
+ -- DER 포맷으로 변경
+ openssl x509 -in server_kkos_dev_test.crt -out server_kkos_dev_test.der -outform DER
+ 
+ -- DER->CRT 포맷으로 변경
+ openssl x509 -inform DER -in kt.der -out kt.crt
+ 
+ -- pfx 파일을 crt 파일로 분리
+ openssl pkcs12 -in eyeslight.kr.pfx -clcerts -nokeys -out pfx.eyeslight.kr.crt
+ 
+ -- pfx 파일을 key 파일로 분리
+ openssl pkcs12 -in eyeslight.kr.pfx -nocerts -nodes -out pfx.eyeslight.kr.key
+ 
+ 
+ -- import crt 인증서 서버 to make it trusted
+ 
+ 1) ca-certificates 패키지 설치
+    yum list ca-certificates
+    yum list available certificates
+    yum update ca-certificates
+    yum install ca-certificates
+    
+ 2) update-ca-trust force-enable 또는 update-ca-trust enable => 활성화
+ 
+ 3) cp /apache/apache/ssl_private/akos/server_akos_*.crt /etc/pki/ca-trust/source/anchors
+    cp /apache/apache/ssl_private/kkos/server_kkos_*.crt /etc/pki/ca-trust/source/anchors
+ 
+ 4) update-ca-trust extract
+ 
+ 
+ -- 서버의 인증서 정보 확인
+ openssl s_client -connect www.kmcert.com:443 -showcerts
+ openssl s_client -connect www.kmcert.com:443 -state

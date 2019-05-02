@@ -1,0 +1,69 @@
+apiVersion: extensions/v1beta1
+kind: DaemonSet
+metadata:
+  name: filebeat
+  #namespace: mmp
+  labels:
+    appName: mmp
+    svcName: filebeat
+    version: 1.0.0
+spec:
+  template:
+    metadata:
+      labels:
+        app: filebeat
+    spec:
+      #nodeSelector:
+        #kubernetes.io/hostname: "ktis-node01.container.ipc.kt.com"
+        #node-role.kubernetes.io/infra: "true"
+        #dmz-node: "true"
+        #node-role.kubernetes.io/node: "true"
+        #logging: "true"
+        #app: frontend-webserver
+      #serviceAccountName: filebeat
+      containers:
+      - name: filebeat
+        image: ktis-bastion01.container.ipc.kt.com:5000/elastic/filebeat-oss:6.6.2
+        imagePullPolicy: IfNotPresent
+        args:
+        - "-e"
+        ports:
+          - containerPort: 5066
+        securityContext:
+          privileged: true
+          runAsUser: 0
+          #fsGroup: 1000
+        volumeMounts:
+        - name: filebeat-config
+          mountPath: /usr/share/filebeat/filebeat.yml
+          subPath: filebeat.yml
+          readOnly: true
+        - name: lampkafka-ssl
+          mountPath: /usr/share/filebeat/ssl/
+          readOnly: true
+        - name: lamp-volume
+          mountPath: /var/log/LAMP/
+          readOnly: true
+      - name: filebeat-clean
+        image: ktis-bastion01.container.ipc.kt.com:5000/busybox:latest
+        imagePullPolicy: IfNotPresent
+        args:
+        - /bin/sh
+        - -c
+        - "mkdir -p /var/spool/cron/crontabs; crond; echo '* 1 * * * find /var/log/LAMP/ -type f -mtime +3 -delete >> /crontab-date.log' | crontab -; while true;do echo busybox autodelete system - $(date); sleep 3600; done;"
+        volumeMounts:
+        - name: lamp-volume
+          mountPath: /var/log/LAMP/
+          # readOnly: true
+      volumes:
+      - name: lamp-volume
+        hostPath:
+          path: /var/log/mmp/LAMP/
+          type: DirectoryOrCreate
+      - name: filebeat-config
+        configMap:
+          name: filebeat
+      - name: lampkafka-ssl
+        configMap:
+          name: lampkafka-ssl
+

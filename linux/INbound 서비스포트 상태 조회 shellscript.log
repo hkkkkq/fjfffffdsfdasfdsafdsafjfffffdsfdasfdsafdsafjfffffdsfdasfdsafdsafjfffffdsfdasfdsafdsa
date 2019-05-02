@@ -1,0 +1,29 @@
+#!/bin/bash
+
+function testing()
+{
+
+local a=$(netstat -an | grep "$1" | grep "ESTABLISHED\|LISTEN" | wc -l);
+
+if [ "$a" -gt 0 ]
+then
+        echo "Sever port- $1 status is succeeded"
+        return 0
+else
+        echo "Sever port- $1 status is failed"
+        return 1
+fi
+
+}
+
+echo "======================= Start: " `date +'%Y/%m/%d %T'` " =======================" >> inbound_result.out
+
+# INbound EP 대상 시스템 Port 정보 추가
+testing 39737 >> inbound_result.out
+testing 39736 >> inbound_result.out
+testing 38088 >> inbound_result.out
+testing 38188 >> inbound_result.out
+testing 38808 >> inbound_result.out
+
+echo "================================== END =====================================" >> inbound_result.out
+echo "" >> inbound_result.out

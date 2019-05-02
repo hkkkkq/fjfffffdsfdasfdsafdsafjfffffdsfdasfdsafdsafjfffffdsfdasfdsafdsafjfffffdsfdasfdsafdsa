@@ -1,0 +1,22 @@
+
+# shared_buffers = 128MB       # min 128kB
+- 디스크에서 필요한 데이터를 공유 버퍼로 먼저 읽어 들인 후 공유 버퍼에서 데이터를 읽고 쓰기를 처리한다.
+- 1G 메모리 이상의 전용서버의 경우 25% 정도가 적당하다.
+
+=> 패드개통시스템 경우, shared_buffers = 4GB
+
+# wal_buffers = -1            # min 32kB, -1 sets based on shared_buffers
+- 데이터를 업데이트 할 때 남기는 로그로 손실된 데이터 복원에 활용
+- 일반적으로 shared_buffers의 1/32 크기로 지정
+
+=> 패드개통시스템 경우, shared_buffers = 128MB
+
+# checkpoint_segments = 3
+- 아직 디스크에 기록 안 된 공유 버퍼의 페이지를 기록하는 부분 설정
+- 디폴드는 3 세그먼트로, 3*16MB, 즉 48MB가 쌓이면 디스크에 기록한다.
+
+# work_mem = 4MB
+- order by, distinct, merge join 할 때 사용
+
+# maintenance_work_mem = 64MB
+- vacuum, create index, alter table, add foreign key 할 때 사용

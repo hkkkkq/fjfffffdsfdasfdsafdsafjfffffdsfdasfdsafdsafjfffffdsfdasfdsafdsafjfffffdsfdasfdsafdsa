@@ -1,0 +1,33 @@
+
+<Thread.State>
+
+- NEW
+: The state for a thread that has not yet started in this state
+
+RUNNABLE
+: The state for a runnable thread. A thread executing in the Java virtual machine but it may be waiting for other resources from the operating system such as processor.
+
+BLOCKED
+: The state for a thread blocked waitng for a monitor lock. A thread in the blocked state is waiting for a monitor lock to enter a synchronized block/method or reenter a synchoronized block/method after calling Object.wait
+
+WAITING
+: The state for a waitng thread. A thread is in the waiting state due to calling one of the following methods,
+ - Object.wait with no timeout
+ - Thread.join with no timeout
+ - LockSupport.park
+ 
+ A thread in the waiting state is waiting for another thread to perform a particular action.
+ For example,
+ a thread that has called Object.wait() on an object is waitng for another thread to call Object.notify() or Object.notifyAll() on that object.
+ A thread that has called Thread.join() is waitng for a specified thread to terminate.
+ 
+TIMED WAITNG
+  Thread state for a waiting thread with a specified waitng time. A thread is in the timed waitng state due to alling one of the following methods with a specified positive waiting time,
+ - Thread.sleep
+ - Object.wait with timeout
+ - Thread.join with timeout
+ - LockSupport.parkNanos
+ - LockSupport.parkUntil
+ 
+TERMINATED
+  The state for a terminated thread. The thread has completed execution.

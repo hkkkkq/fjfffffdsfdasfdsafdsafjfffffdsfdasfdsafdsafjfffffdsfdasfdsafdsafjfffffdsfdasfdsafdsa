@@ -1,0 +1,34 @@
+--the UTL_RAW package provides SQL functions for manipulating RAW datatypes.
+
+--the DBMS_LOB package provides subprograms to operate on BLOBs, CLOBs, NCLOBs, BFILEs, and temporary LOBs. You can use DBMS_LOB to access and manipulation specific parts of a LOB or complete LOBs.
+--if the value is longer than 4000 it will throw errors since that's max value for strings in sql. you need to add substr(BLOB_FIELD, 4000, 1). If yo u need longer field support use PL/SQL (up to 32000 I believe)
+--in our case,GW DB, the max value for strings is 2000
+
+<ad hoc query>
+select dbms_lob.getlength(message)
+from il_trace_log_23
+where guid = '0AD99FDDOGDOGPGIFPNDLLLH0000523F' and sequence = 1;
+
+select utl_raw.cast_to_varchar2(dbms_lob.substr(message,2000,1))
+from il_trace_log_23
+where guid = '0AD99FDDOGDOGPGIFPNDLLLH0000523F' and sequence = 1;
+
+select utl_raw.cast_to_varchar2(dbms_lob.substr(message,2000,1))
+from il_trace_log_23
+where dbms_lob.instr(message, utl_raw.cast_to_raw('soap'))>0
+and guid = '0AD99FDDOGDOGPGIFPNDLLLH0000523F';
+
+<PL/SQL>
+
+declare
+  blob_value blob;
+  result raw(3200);
+  offset integer := 1;
+  len integer;
+begin
+  select dbms_lob.getlength(message) into len from il_trace_log_23 where guid = '0AD99FDDOGDOGPGIFPNDLLLH0000523F' and sequence = 1;
+  select message into blob_value from il_trace_log_23 where guid = '0AD99FDDOGDOGPGIFPNDLLLH0000523F' and sequence = 1;
+  dbms_lob.read(blob_value, len, offset, result);
+  dbms_output.put_line('result = ' || utl_raw.cast_to_varchar2(result));
+  dbms_output.put_line('length = ' || len);
+end;

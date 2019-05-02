@@ -1,0 +1,43 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: gateway-micro-svc-1
+  labels:
+    appName: herasoo
+    svcName: micro-svc-1
+    version: v1
+spec:
+  selector:
+    istio: ingressgateway # use istio default controller
+  servers:
+  - port:
+      number: 80
+      name: http
+      protocol: HTTP
+    hosts:
+    #- "*"
+    - "sample1-millet.container.ipc.kt.com"
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: virtualservice-gateway-micro-svc-1
+  labels:
+    appName: herasoo
+    svcName: micro-svc-1
+    version: v1
+spec:
+  hosts:
+  #- "*"
+  - "sample1-millet.container.ipc.kt.com"
+  gateways:
+  - gateway-micro-svc-1
+  http:
+  - match:
+    - uri:
+        prefix: /svc1
+    route:
+    - destination:
+        host: service-micro-svc-1
+        port:
+          number: 80

@@ -1,0 +1,27 @@
+rpm -qa | grep telnet*
+yum list telnet-server
+yum list installed telnet-server
+
+-- 설치
+yum -y install telnet-server
+
+-- 설정
+vi /etc/xinetd.d/telnet
+=> disable         = no
+
+-- 확인1
+service xinetd status
+
+-- 기동
+service xinetd restart
+service xinetd start
+
+-- 확인1
+netstat -an | grep 23
+
+-- 유저생성
+useradd -d /home/loadrunner -s /bin/bash -m loadrunner
+passwd loadrunner
+New1234!
+
+chage -E -1 -I -1 -m 0 -M 99999 loadrunner

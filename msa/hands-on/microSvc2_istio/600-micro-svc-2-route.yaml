@@ -1,0 +1,20 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: route-micro-svc-2
+  labels:
+    appName: herasoo
+    svcName: micro-svc-2
+    version: v1
+  namespace: istio-system
+spec:
+  host: sample1-millet.container.ipc.kt.com
+  port:
+    #targetPort: 80 # service port name!!!
+    targetPort: http2
+  path: "/svc2"
+  to:
+    kind: Service
+    name: istio-ingressgateway
+    weight: 100
+  wildcardPolicy: None

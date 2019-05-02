@@ -1,0 +1,131 @@
+Virtual User Script started at : 2015-07-27 15:49:16
+Starting action vuser_init.
+vuser_init.c(6): lrs_startup(257)
+Ending action vuser_init.
+Running Vuser...
+Starting iteration 1.
+Starting action Action.
+Action.c(8): Notify: Transaction "03_TCPTOSOAP" started.
+Action.c(10): lrs_create_socket(socket1, TCP, ...)
+Action.c(10): callSocket: name: 42926668, socket type: 1
+
+Action.c(10): callBind: socket: socket1 (920), local host: (null), local port: 0
+Action.c(10): Notify: Parameter Substitution: parameter "IP" =  "10.217.232.101"
+Action.c(10): callConnect: socket: socket1 (920), remote host: 10.217.232.101  remote port: 9002
+Action.c(10): callConnect: getting host address from the host name (10.217.232.101).
+Action.c(10): callConnect: Mon Jul 27 15:49:16.174: Waiting for writable socket 10 secs, 0 usecs
+Action.c(12): lrs_send(socket1, buf1)
+Action.c(12): callSend: socket: socket1 (920), buffer: buf1
+Action.c(12): callSend: Mon Jul 27 15:49:16.174: reading buffer buf1
+Action.c(12): callSend: Mon Jul 27 15:49:16.174: calling parameterization routines
+Action.c(12): callSend: Mon Jul 27 15:49:16.174: translate buffer to binary
+Action.c(12): callSend: Mon Jul 27 15:49:16.174: Translate data for printing
+=================================SENT BUFFER=================================
+	"AAAA             20150709164200   CUST_NUM   SYS     0074SUBGROUP_NON0102S"
+
+===============================================================================
+Action.c(12): callSend: Mon Jul 27 15:49:16.189: About to send 74 bytes to socket1 (920)
+Action.c(12): callSend: Mon Jul 27 15:49:16.189: Waiting for writable socket 10 secs, 0 usecs
+Action.c(12): callSend: Mon Jul 27 15:49:16.189: Trying to send 74 bytes
+Action.c(12): callSend: Mon Jul 27 15:49:16.189: Sent in this iteration 74 bytes (total in all iterations 74 bytes)
+Action.c(14): lrs_set_recv_timeout(60, 0)
+Action.c(14): Set receive timeout: secs: 10 ==> 60, usecs: 0 ==> 0
+
+Action.c(16): lrs_receive(socket1, buf2)
+Action.c(16): fiInitRecv: socket: socket1 (920), buffer: buf2, expected size: 73
+Action.c(16): callRecv: Mon Jul 27 15:49:16.205: About to read 73 bytes from socket1 (920)
+Action.c(16): fiPerformReceive: Mon Jul 27 15:49:16.205: Waiting for readable socket 60 secs, 0 usecs
+Action.c(16): fiPerformReceive: Mon Jul 27 15:49:16.205: Trying to read 8192 bytes
+Action.c(16): fiPerformReceive: Mon Jul 27 15:49:16.205: store received data , 73 bytes
+Action.c(16): getAsciiReceivedBuffer: Mon Jul 27 15:49:16.205: Translate data for printing
+Action.c(16): getAsciiReceivedBuffer: Mon Jul 27 15:49:16.205: Binary to ascii
+================================RECEIVED BUFFER================================
+	"                    20150714164200           ABCABCAV0073N0001Y2         "
+
+===============================================================================
+Action.c(16): callRecv:73 bytes were received
+Action.c(24): lrs_save_searched_string(socket1, null, success_flag, null, null, -1, 20, 14)
+Action.c(24): callSaveParam: whence: received, socket: socket1, offset: 20, length: 14
+Action.c(24): callGetReceivedBuffer: socket: socket1 (920), offset: 20, length: 14
+Action.c(24): callGetReceivedBuffer: reading last received buffer
+Action.c(24): callGetReceivedBuffer: translate buffer to ascii
+Action.c(24): Notify: Saving Parameter "success_flag = 20150714164200".
+Action.c(25): lrs_save_searched_string(socket1, null, Rec_Data, null, null, -1, 0, 73)
+Action.c(25): callSaveParam: whence: received, socket: socket1, offset: 0, length: 73
+Action.c(25): callGetReceivedBuffer: socket: socket1 (920), offset: 0, length: 73
+Action.c(25): callGetReceivedBuffer: reading last received buffer
+Action.c(25): callGetReceivedBuffer: translate buffer to ascii
+Action.c(25): Notify: Saving Parameter "Rec_Data =                     20150714164200           ABCABCAV0073N0001Y2         ".
+Action.c(28): Notify: Parameter Substitution: parameter "success_flag" =  "20150714164200"
+Action.c(30): lrs_close_socket(socket1)
+Action.c(30): callCloseSocket: socket: socket1 (920)
+Action.c(31): Notify: Transaction "03_TCPTOSOAP" ended with "Pass" status (Duration: 0.0942).
+Ending action Action.
+Ending iteration 1.
+Starting iteration 2.
+Notify: Next row for parameter IP = 2 [table  = IP].
+Notify: Getting new value for parameter 'IP': table = 'IP.dat' column = '0' row = '2'.
+Starting action Action.
+Action.c(8): Notify: Transaction "03_TCPTOSOAP" started.
+Action.c(10): lrs_create_socket(socket1, TCP, ...)
+Action.c(10): callSocket: name: 42927004, socket type: 1
+
+Action.c(10): callBind: socket: socket1 (920), local host: (null), local port: 0
+Action.c(10): Notify: Parameter Substitution: parameter "IP" =  "10.217.232.102"
+Action.c(10): callConnect: socket: socket1 (920), remote host: 10.217.232.102  remote port: 9002
+Action.c(10): callConnect: getting host address from the host name (10.217.232.102).
+Action.c(10): callConnect: Mon Jul 27 15:49:16.298: Waiting for writable socket 10 secs, 0 usecs
+Action.c(12): lrs_send(socket1, buf1)
+Action.c(12): callSend: socket: socket1 (920), buffer: buf1
+Action.c(12): callSend: Mon Jul 27 15:49:16.298: reading buffer buf1
+Action.c(12): callSend: Mon Jul 27 15:49:16.298: calling parameterization routines
+Action.c(12): callSend: Mon Jul 27 15:49:16.298: translate buffer to binary
+Action.c(12): callSend: Mon Jul 27 15:49:16.298: Translate data for printing
+=================================SENT BUFFER=================================
+	"AAAA             20150709164200   CUST_NUM   SYS     0074SUBGROUP_NON0102S"
+
+===============================================================================
+Action.c(12): callSend: Mon Jul 27 15:49:16.314: About to send 74 bytes to socket1 (920)
+Action.c(12): callSend: Mon Jul 27 15:49:16.314: Waiting for writable socket 10 secs, 0 usecs
+Action.c(12): callSend: Mon Jul 27 15:49:16.314: Trying to send 74 bytes
+Action.c(12): callSend: Mon Jul 27 15:49:16.314: Sent in this iteration 74 bytes (total in all iterations 74 bytes)
+Action.c(14): lrs_set_recv_timeout(60, 0)
+Action.c(14): Set receive timeout: secs: 60 ==> 60, usecs: 0 ==> 0
+
+Action.c(16): lrs_receive(socket1, buf2)
+Action.c(16): fiInitRecv: socket: socket1 (920), buffer: buf2, expected size: 73
+Action.c(16): callRecv: Mon Jul 27 15:49:16.330: About to read 73 bytes from socket1 (920)
+Action.c(16): fiPerformReceive: Mon Jul 27 15:49:16.330: Waiting for readable socket 60 secs, 0 usecs
+Action.c(16): fiPerformReceive: Mon Jul 27 15:49:16.330: Trying to read 8192 bytes
+Action.c(16): fiPerformReceive: Mon Jul 27 15:49:16.330: store received data , 73 bytes
+Action.c(16): getAsciiReceivedBuffer: Mon Jul 27 15:49:16.330: Translate data for printing
+Action.c(16): getAsciiReceivedBuffer: Mon Jul 27 15:49:16.345: Binary to ascii
+================================RECEIVED BUFFER================================
+	"                    20150714164200           ABCABCAV0073N0001Y2         "
+
+===============================================================================
+Action.c(16): callRecv:73 bytes were received
+Action.c(24): lrs_save_searched_string(socket1, null, success_flag, null, null, -1, 20, 14)
+Action.c(24): callSaveParam: whence: received, socket: socket1, offset: 20, length: 14
+Action.c(24): callGetReceivedBuffer: socket: socket1 (920), offset: 20, length: 14
+Action.c(24): callGetReceivedBuffer: reading last received buffer
+Action.c(24): callGetReceivedBuffer: translate buffer to ascii
+Action.c(24): Notify: Saving Parameter "success_flag = 20150714164200".
+Action.c(25): lrs_save_searched_string(socket1, null, Rec_Data, null, null, -1, 0, 73)
+Action.c(25): callSaveParam: whence: received, socket: socket1, offset: 0, length: 73
+Action.c(25): callGetReceivedBuffer: socket: socket1 (920), offset: 0, length: 73
+Action.c(25): callGetReceivedBuffer: reading last received buffer
+Action.c(25): callGetReceivedBuffer: translate buffer to ascii
+Action.c(25): Notify: Saving Parameter "Rec_Data =                     20150714164200           ABCABCAV0073N0001Y2         ".
+Action.c(28): Notify: Parameter Substitution: parameter "success_flag" =  "20150714164200"
+Action.c(30): lrs_close_socket(socket1)
+Action.c(30): callCloseSocket: socket: socket1 (920)
+Action.c(31): Notify: Transaction "03_TCPTOSOAP" ended with "Pass" status (Duration: 0.1019).
+Ending action Action.
+Ending iteration 2.
+Ending Vuser...
+Starting action vuser_end.
+vuser_end.c(6): lrs_cleanup()
+Ending action vuser_end.
+Vuser Terminated.
+Vuser 0 (thread 14664), ended OK."

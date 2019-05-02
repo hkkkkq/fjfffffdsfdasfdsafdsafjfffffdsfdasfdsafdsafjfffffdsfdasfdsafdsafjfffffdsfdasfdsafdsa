@@ -1,0 +1,18 @@
+
+-- 분당 처리량
+grep "19/May/2018:05" access_log.2018-05-19 | cut -d [ -f2 | cut -d ] -f1 | awk -F: '{print $2":"$3}' | sort -nk1 -nk2 | uniq -c
+
+grep "19/May/2018:05" access_log.2018-05-19 | cut -d " " -f 2,7 | cut -c 17-18,22-25 | sort -nk1 -nk2 | uniq -c
+
+-- 10분당 처리 량
+(respohnse code 포함)
+grep "19/May/2018:17" access_log.2018-05-19 | cut -d " " -f 2,7 | cut -c 17,22-25 |  awk -F " " '{print $1"0 "$2}' | sort -nk1 -nk2 | uniq -c
+grep "19/May/2018:18" access_log.2018-05-19 | cut -d " " -f 2,7 | cut -c 17,22-25 |  awk -F " " '{print $1"0 "$2}' | sort -nk1 -nk2 | uniq -c
+grep "19/May/2018:19" access_log.2018-05-19 | cut -d " " -f 2,7 | cut -c 17,22-25 |  awk -F " " '{print $1"0 "$2}' | sort -nk1 -nk2 | uniq -c
+grep "19/May/2018:20" access_log.2018-05-19 | cut -d " " -f 2,7 | cut -c 17,22-25 |  awk -F " " '{print $1"0 "$2}' | sort -nk1 -nk2 | uniq -c
+grep "19/May/2018:21" access_log.2018-05-19 | cut -d " " -f 2,7 | cut -c 17,22-25 |  awk -F " " '{print $1"0 "$2}' | sort -nk1 -nk2 | uniq -c
+grep "19/May/2018:22" access_log.2018-05-19 | cut -d " " -f 2,7 | cut -c 17,22-25 |  awk -F " " '{print $1"0 "$2}' | sort -nk1 -nk2 | uniq -c
+ 
+(respohnse code 미포함) 
+grep "19/May/2018:15"  access_log.2018-05-19 | cut -d " " -f 2,7 | cut -c 17 |  awk '{print $1"0"}' | sort -nk1 | uniq -c
+  

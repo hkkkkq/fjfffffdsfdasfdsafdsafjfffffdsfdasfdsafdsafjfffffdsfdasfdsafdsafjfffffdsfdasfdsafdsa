@@ -1,0 +1,47 @@
+./pg_dump --help
+
+pg_dump - extract a PostgreSQL database into a script file or other archive file
+
+[Synopsis]
+: pg_dump [connection-option...] [option...] [dbname]
+
+-a
+--data-only
+
+-s
+--schema-only
+
+-f file
+--file=file
+
+-F format
+--format=format
+
+-n schema
+--schema=schema
+
+-t table
+--table=table
+
+-d dbname
+--dbname=dbname
+
+-?
+--help
+
+
+- pg_dump does not block other users accecssing the database
+- pg_dump only dumps a single database. To backup global objects that are common to all database, such as roles and tablespaces, use pg_dumpall.
+
+
+<Dump>
+./pg_dump -a -f /data/backup/kmosdb.sql -d kmosdb
+./pg_dump -f /data/backup/kkosdb_20180712.sql -d kkosdb
+./pg_dump -f /data/backup/kkosdb_20180712.sql -d kkosdb | gzip > /data/backup/kkosdb_20180709.sql.gz
+./pg_dumpall -f /data/backup/kkosdb_20180711.sql -l kkosdb
+
+<Restore>
+./psql -d kkosdb -f /data/backup/kkosdb_20180712.sql
+./psql -f /data/backup/kkosdb_20180711.sql
+gunzip -c /data/backup/kkosdb_20180709.sql.gz | psql -d kkosdb
+

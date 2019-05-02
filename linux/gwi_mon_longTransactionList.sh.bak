@@ -1,0 +1,36 @@
+#!/bin/bash
+
+#gwi_mon_longTransactionIF_list.sh
+
+#### Tibero RDBMS Env ####
+export TB_HOME=/tibero/tibero5
+export TB_SID=SITGWE01
+export TB_PROF_DIR=$TB_HOME/bin/prof
+export PATH=$TB_HOME/bin:$TB_HOME/client/bin:$PATH
+export LD_LIBRARY_PATH=$TB_HOME/lib:$TB_HOME/client/lib:$LD_LIBRARY_PATH
+
+DAY_TODAY=$(date +%d)
+
+tbsql -s infinilink/infinilink <<EOF
+	/* KOS-GW Internal GW*/
+	SELECT 
+	SUBSTR(A.BIZTXID,INSTR(A.BIZTXID,'.',-1)+3,LENGTH(A.BIZTXID)) AS IF_ID
+	,COUNT(A.GUID) AS DELAY_CNT
+	FROM INFINILINK.IL_TRANSACTION_LOG_${DAY_TODAY} A
+	WHERE 1=1
+	/* setup time interval: 30 minutes */
+	AND A.STARTTIME > (sysdate-30/1440)
+	/* add rows below what biztx you want to monitor */
+	AND (
+	(A.STARTNODEID LIKE 'io_cdrm1%' AND A.BIZTXID = 'nbss.crm.ifi.r_LNMM_TCP_IN_01_EP_001.l_NIFE_LNMM_NCRC_S_0001_00' AND A.ELAPSEDTIME > 3000)
+	OR
+	(A.STARTNODEID LIKE 'io_grp1%' AND A.BIZTXID = 'nbss.bcc.ifi.r_NIFE_NBCC_LLBS_O_2922_00.l_NIFE_NBCC_LLBS_O_2922_00' AND A.ELAPSEDTIME > 2000) 
+	OR
+	(A.STARTNODEID LIKE 'io_grp1%' AND A.BIZTXID = 'nbss.bcc.ifi.r_LIPI_TCP_IN_01_EP_003.l_NIFE_LIPI_NBCC_S_3448_00' AND A.ELAPSEDTIME > 10000) 
+	OR
+	(A.STARTNODEID LIKE 'io_cdrm1%' AND A.BIZTXID = 'nbss.crm.ifi.r_LIPI_TCP_IN_01_EP_001.l_NIFE_LIPI_NCRC_S_0040_00' AND A.ELAPSEDTIME > 3000) 
+	)
+	GROUP BY SUBSTR(A.BIZTXID,INSTR(A.BIZTXID,'.',-1)+3,LENGTH(A.BIZTXID))
+	ORDER BY DELAY_CNT DES;
+exit;
+EOF

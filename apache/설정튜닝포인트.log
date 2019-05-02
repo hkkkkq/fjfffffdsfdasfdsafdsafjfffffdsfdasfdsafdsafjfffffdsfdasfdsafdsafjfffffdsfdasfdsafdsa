@@ -1,0 +1,25 @@
+<1>
+
+<IfModule mpm_prefork_module>
+    StartServers            16
+    MinSpareServers         32
+    MaxSpareServers       1024
+    MaxRequestWorkers      250
+    MaxConnectionsPerChild   0
+</IfModule>
+
+=>
+
+<IfModule mpm_prefork_module>
+    StartServers         16
+    ServerLimit        2048
+    MinSpareServers      32
+    MaxSpareServers    1024
+    MaxClients         2048
+    MaxRequestsPerChild   0
+</IfModule>
+
+
+<2>
+
+LogFormat "%h %A %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-Agent}i\" %T" combined

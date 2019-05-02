@@ -1,0 +1,48 @@
+1.현상
+- JVM 기동 중 WAS에서 사용하는 tibero5-jdbc.jar 파일 업데이트
+- 일정 시점 이후 SQLException 발생 후 DB 로깅이 되지 않고 프로세스를 기동했던 파일 DIR에 core.PID, hs_err_pidPID.log WAS coredump와 jvm hotspot crash 에러로그가 떨어짐.
+
+2. 분석
+- jstack /home/infadm/jdk1.7.0_75/jre/bin/java core.6818 a stack_core.6818
+ : jstack: java processor의 thread dump 생성 및 thread 분석 가능
+- jmap /home/infadm/jdk1.7.0_75/jre/bin/java core.6818 a jmap_core.6818
+ : jmap: JVM heap dump 생성 및 heap 분석 가능
+
+3. 결과
+- java.util.zip.ZipFile.getEntry(long, byte[], boolean) @bci=0 (Compiled frame; information may be imprecise)
+   java.net.URLClassLoader.findClass(java.lang.String) @bci=13, line=354 (Compiled frame)
+   jeus.jdbc.datasource.DataSourceGenerator.getDataSource(jeus.jdbc.info.JDBCConnectionPoolInfo) @bci=89, line=44 (Interpreted frame)
+ : jdbc jar 라이브러리 로딩 중 에러 발생 확인
+- http://www.websphere.pe.kr/xe/was_problem/36530 참고
+ : JVM 의 java.util.zip.Zipfile 구현의 mmap 사용 구현의 버그
+
+4. 시사점
+- JVM 기동 시 -Dsun.zip.disableMemoryMapping=true 추가하여 mmap 사용 disable
+- jar 파일 교체 시 해당 프로세스를 내리고 진행
+
+---------------------------------------------------------------------
+
+http://www.websphere.pe.kr/xe/was_problem/36530
+
+1. WAS 버전 : WAS v7.0 이상
+2. OS : Solaris, Linux (Oracle JVM 6.0 사용시)
+3. Error 발생 시점 : 운영중에 애플리케이션 jar 파일이 교체/업데이트 되는 경우 WAS 에서 crash 발생
+4. Error message :
+
+core 에서 하단의 과이 java.util.zip.ZipFile 관련 stack 확인 가능
+
+Stack: [0xb0c00000,0xb0c80000],  sp=0xb0c7c890,  free space=498k
+Native frames: (J=compiled Java code, j=interpreted, Vv=VM code, C=native code)
+C  [libc_psr.so.1+0x700]  memcpy+0x2f8
+C  [libzip.so+0xd19c]
+C  [libzip.so+0x2380]  ZIP_GetEntry+0xe4
+C  [libzip.so+0x2800]  Java_java_util_zip_ZipFile_getEntry+0xc4
+j  java.util.zip.ZipFile.getEntry(JLjava/lang/String;Z)J+0
+j  java.util.zip.ZipFile.getEntry(JLjava/lang/String;Z)J+0
+j  java.util.zip.ZipFile.getEntry(Ljava/lang/String;)Ljava/util/zip/ZipEntry;+31
+j  java.util.jar.JarFile.getEntry(Ljava/lang/String;)Ljava/util/zip/ZipEntry;+2
+j  java.util.jar.JarFile.getJarEntry(Ljava/lang/String;)Ljava/util/jar/JarEntry;+2
+
+5. 예상 이유 :  Oracle JVM 의 java.util.zip.Zipfile 구현의 mmap 사용 구현의 버그
+
+6. 조치 방안 : "-Dsun.zip.disableMemoryMapping=true" 옵션을 추가하여 mmap 사용을 diable

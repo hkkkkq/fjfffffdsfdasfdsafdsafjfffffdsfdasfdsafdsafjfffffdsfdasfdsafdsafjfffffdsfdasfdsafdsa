@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deployment-micro-svc-1
+  labels:
+    appName: herasoo
+    svcName: micro-svc-1
+    version: v1
+spec:
+  selector:
+    matchLabels:
+      appName: herasoo
+      svcName: micro-svc-1
+      version: v1
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        appName: herasoo
+        svcName: micro-svc-1
+        version: v1
+      #annotations:
+        #sidecar.istio.io/inject: "true"
+    spec:
+      containers:
+      - name: micro-svc-1
+        image: ktis-bastion01.container.ipc.kt.com:5000/herasoo/micro-svc-1:0.3
+        #imagePullPolicy: IfNotPresent
+        imagePullPolicy: Always
+        #args: ["-DSVC1HOST=service-micro-svc-1 -DSVC2HOST=service-micro-svc-2 -DDB_HOST=10.217.59.20 -DDB_PORT=5432 -DDB_DBNAME=postgres -DDB_USER=postgres -DDB_PASSWD=postgres"]
+        ports:
+        - containerPort: 8080
+        envFrom:
+        - configMapRef:
+            name: configmap-micro-svc-1
+        volumeMounts:
+        - mountPath: /etc/localtime
+          name: timezone-config
+        livenessProbe:
+          tcpSocket:
+            port: 8080
+          initialDelaySeconds: 10
+          periodSeconds: 10
+        readinessProbe:
+          tcpSocket:
+            port: 8080
+          initialDelaySeconds: 10
+          periodSeconds: 10
+      nodeSelector:
+        ktis-node: "true"
+      volumes:
+      - hostPath:
+          path: /usr/share/zoneinfo/Asia/Seoul
+        name: timezone-config 

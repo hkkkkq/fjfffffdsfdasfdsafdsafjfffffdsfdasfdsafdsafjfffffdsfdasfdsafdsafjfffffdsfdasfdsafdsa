@@ -1,0 +1,40 @@
+ps -ef | grep edb-postgres
+
+<중지>
+pg_ctl -mf stop
+/usr/bin/pg_ctl stop -m fast -D /var/lib/pgsql/data 
+
+<기동>
+pg_ctl start -w -D /data/AKOS
+/usr/bin/pg_ctl start -w -D /var/lib/pgsql/data  -o "-p 5432" 
+sudo -U enterprisedb /postgres/9.6AS/bin/pg_ctl start -w -D /data/AKOS
+ 
+<재기동>
+pg_ctl restart -w -D /data/AKOS
+/usr/bin/pg_ctl restart -w -D /var/lib/pgsql/data 
+
+
+<LifeKeeper 절체>
+Standby서버에서
+perform_action -t pgsql-5444 -a restore
+
+
+<LifeKeeper 상태>
+
+/opt/LifeKeeper/bin/lcdstatus -q
+
+ISP: In Service Protected (서비스중)
+OSF: Out of Service Failed (서비스 중지 실패)
+OSU: Out of Service Unimpair (서비스 중지됨)
+
+기동
+/opt/LifeKeeper/bin/lkGUIserver start
+
+중지
+/opt/LifeKeeper/bin/lkGUIserver stop
+
+프로세스 확인
+ps -ef | grep LifeKeeper | grep steeleye
+
+로그확인
+tail -f /var/log/lifekeeper.log

@@ -1,0 +1,28 @@
+apiVersion: route.openshift.io/v1
+#apiVersion: v1
+kind: Route
+metadata:
+  annotations:
+    openshift.io/host.generated: 'true'
+
+    ##### sticky session
+    # haproxy.router.openshift.io/balance: sticky
+    # haproxy.router.openshift.io/disable_cookies: 'false'
+
+    ##### roundrobin session
+    # haproxy.router.openshift.io/balance: roundrobin
+    # haproxy.router.openshift.io/disable_cookies: 'true'
+  labels:
+  name: kibana-song-route
+  # namespace: istio-system
+spec:
+  host: kibana-song.ipc.kt.com
+  #path: /
+  #port:
+  #  targetPort: http
+  to:
+    kind: Service
+    # name: istio-ingressgateway
+    name: kibana
+    #weight: 100
+  #wildcardPolicy: None

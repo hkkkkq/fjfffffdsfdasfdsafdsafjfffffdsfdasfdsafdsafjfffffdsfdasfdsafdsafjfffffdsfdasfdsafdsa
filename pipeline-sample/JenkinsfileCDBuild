@@ -1,0 +1,108 @@
+def label = "mmp_athn-${UUID.randomUUID().toString()}"
+
+def notifyStarted() {
+    //slackSend (color: '#FFFF00', message: "STARTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+}
+
+def notifySuccessful() {
+    //slackSend (color: '#00FF00', message: "SUCCESSFUL: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+}
+
+def notifyFailed() {
+  //slackSend (color: '#FF0000', message: "FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+}
+
+podTemplate(label: label, 
+	containers: [
+	  containerTemplate(name: 'maven', image: 'ktis-bastion01.container.ipc.kt.com:5000/admin/maven:3.3.9-jdk-8-alpine', ttyEnabled: true, command: 'cat'),
+	  containerTemplate(name: 'docker', image: 'ktis-bastion01.container.ipc.kt.com:5000/admin/docker:stable', ttyEnabled: true, command: 'cat'),
+	  containerTemplate(name: 'curl-jq', image: 'ktis-bastion01.container.ipc.kt.com:5000/admin/alpine-curl-jq-millet:1.0', command: 'cat', ttyEnabled: true),
+	  containerTemplate(name: 'jnlp', image: 'ktis-bastion01.container.ipc.kt.com:5000/jenkins/jnlp-slave:alpine', args: '${computer.jnlpmac} ${computer.name}')
+	],
+	volumes: [hostPathVolume(hostPath: '/var/run/docker.sock', mountPath: '/var/run/docker.sock')]
+	) {
+	
+	node(label) {
+	try {
+	  def autoCancelled = false
+	  //groovy shell is not applicabable pipe execution, so need temp file
+	  def tempFile="${UUID.randomUUID().toString()}.out"
+	  def tempFile2="${UUID.randomUUID().toString()}.out"
+	  
+	  sh "echo ${params.branchName}>${tempFile}"
+
+	  def branchName
+	  sh "sed -i s#origin/##g ${tempFile}"
+	  branchName=readFile("${tempFile}")
+	  branchName=branchName.trim()
+
+	  def milestone
+	  sh "sed -i s#release-##g ${tempFile}"
+	
+	  milestone=readFile("${tempFile}")
+	  milestone=milestone.trim()
+	  
+          stage('Get Source') {
+		git url: "http://10.217.59.20/imp/athn.git",
+		    credentialsId: 'git-credentials',
+		    branch: "${branchName}"
+	  }
+	  def props = readProperties  file:'devops/pipelineCDBuild.properties'
+	  def dockerRegistry = props['dockerRegistry']
+	  def image = props['image']
+	  def gitMilestoneUrl = props['gitMilestoneUrl']
+	  
+        stage('Check Milestone'){
+	    container('curl-jq'){
+		withCredentials([string(credentialsId: 'gitlab-secret-token', variable: 'TOKEN')]){
+        		sh """
+        	        curl --header PRIVATE-TOKEN:$TOKEN ${gitMilestoneUrl}?state=active > ${tempFile}
+        		jq -r '.[].title' ${tempFile} > ${tempFile2}
+        		"""
+        		result=sh returnStatus: true, script: """grep ${milestone} ${tempFile2}"""
+        	           if ( result != 0 ){
+        		   autoCancelled = true
+        		   error('Error MileStone(version) is not opend')
+        		}
+		}
+	    }
+	}
+	 stage('Unit Test') {
+	       container('maven') {
+		        def mvnSettings = 'devops/settings.xml'
+		    	sh "mvn test --settings ${mvnSettings}"
+		}
+	}
+
+	 stage('maven build project') {
+	       container('maven') {
+		        def mvnSettings = 'devops/settings.xml'
+		    	sh "mvn clean install -DskipTests --settings ${mvnSettings}"
+		}
+	}
+	  
+	  stage('Build Docker image') {
+		container('docker') {
+		  	docker.withRegistry("${dockerRegistry}", 'cluster-registry-credentials'){
+				//sh "mvn clean package --settings ${mvnSettings} -DskipTests docker:build"
+				sh "docker build -t ${image}:${milestone} ."
+				sh "docker push ${image}:${milestone}"
+				sh "docker tag ${image}:${milestone} ${image}:latest"
+				sh "docker push ${image}:latest"
+			}
+		}
+
+	  }
+	stage('Image Inspection') {
+		sh "echo 'Will be implement / VA || Fortify'"
+	}
+
+		
+	  notifySuccessful()
+	  } catch(e) {
+        currentBuild.result = "FAILED"
+        notifyFailed()
+    }
+    
+  }
+}

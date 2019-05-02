@@ -1,0 +1,52 @@
+<Maven dependency scope 엘리먼트>
+
+- compile : 기본 scope이다. 이 옵션은 프로젝트의 모든 class에서 사용 가능. (테스트 중이건 런타임 중이건 상관없이).
+- provided : 컴파일 또는 테스트시에는 필요하지만 실행시에는 필요하지 않을 때 사용한다. compile과 유사하나 패키지에는 포함되지 않는다. 배포 시 제외된다.
+- runtime : 컴파일 시에는 필요하지 않지만 실행시에 사용되는 경우 사용한다. 이 옵션은 런타임, 테스트 시 classpath에 추가 되지만, 컴파일시에는 추가 되지 않는다.
+- test : 일반적인 경우에는 필요하지 않고 테스트시에만 필요한 경우 사용한다.
+- system : 해당 jar를 포함해야 한다고 명시적으로 입력 하는 것을 제외하고는 provided와 유사하다. 선언된 artifact들은 항상 사용가능하지만 Maven의 central repository에서 찾아서 가져오는 것은 아니다.
+- import : Maven 2.0.9 이상의 버전에서 지원하는 scope로서, 이 scope는 <dependencyManagement> 섹션에서 pom의 의존관계에 대해 사용된다. 지정된 pom이 해당 pom의 <dependencyManagement> 영역에 있는 의존관계로 대체됨을 뜻한다.
+
+
+<Maven 설정 파일>
+- MAVEN_HOME/settings.xml : 모든 사용자에 적용되는 전역적인 메이븐 설정 정보
+- USER_HOME/.m2/setting.xml : 특정 사용자에 적용되는 메이븐 설정 정보
+- pom.xml : 메이븐 프로젝트 설정 파일
+  + 메이븐은 프로젝트와 관련된 정보를 Project Object Model (이하 POM)이라는 이름으로 정의하고 있으며, POM의 이름을 따서 기본 설정 파일은 "pom.xml" 파일이다. (다른 이름도 사용할 수 있지만... 일반적인 관례를 따르는게 편하고 협업하기도 좋다고 생각함.)
+
+<Maver Lifecycle>
+- 메이븐은 미리 정의하고 있는 빌드 순서를 라이프사이클 이라고 하며, 라이프사이클의 각 빌드 단계를 페이즈라고 한다.
+- 라이프사이클은 여러 단계(페이즈)로 나뉘어져 있으며, 각 페이즈는 의존 관계를 갖는다.
+- 기본 라이프 사이클
+ + compile : 소스 코드를 컴파일한다
+ + test : 단위 테스트 실행 (기본설정은 단위 테스트가 실패하면 빌드 실패로 간주함)
+ + package : 컴파일된 클래스 파일과 리소스 파일들을 war 혹은 jar와 같은 파일로 패키징
+ + install : 패키징한 파일을 로컬 저장소에 배포 (USER_HOEM/.m2/)
+ + deploy : 패키징한 파일을 원격 저장소에 배포 (nexus 혹은 maven central 저장소)
+ - clean 라이프 사이클
+  + clean : 메이븐 빌드를 통하여 생성된 모든 산출물을 삭제한다.
+ - site 라이프 사이클
+  + site : 메이븐 설정파일 정보를 활용하여 프로젝트에 대한 문서 사이트를 생성한다.
+  + site-deploy : 생성한 문서 사이트를 설정되어 있는 서버에 배포
+
+<Maver Properties>
+
+${ and }
+
+project.* : Maven Project Object Model (POM). You can use the project.* prefix to reference values in a Maven POM.
+settings.* : Maven Settings. You use the settings.* prefix to reference values from your Maven Settings in ~/.m2/settings.xml.
+env.* : Environment variables like PATH and M2_HOME can be referenced using the env.* prefix.
+System Properties : Any property which can be retrieved from the System.getProperty() method can be referenced as a Maven property.
+
+project.groupId
+project.version
+project.artifactId
+project.name
+project.description
+project.basedir
+project.build.sourceDirectory
+project.build.scriptSourceDirectory
+project.build.testSourceDirectory
+project.build.outputDirectory
+project.build.testOutputDirectory
+project.build.directory

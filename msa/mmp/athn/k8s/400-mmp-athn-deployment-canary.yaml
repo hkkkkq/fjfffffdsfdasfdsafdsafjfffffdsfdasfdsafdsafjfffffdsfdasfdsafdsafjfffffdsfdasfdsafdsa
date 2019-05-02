@@ -1,0 +1,73 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: athn-canary
+  labels:
+    app: athn
+    version: 1.1.0 
+    release: mmp
+spec:
+  selector:
+    matchLabels:
+      app: athn
+      version: 1.1.0
+      release: mmp
+  replicas: 0
+  template:
+    metadata:
+      labels:
+        app: athn
+        version: 1.1.0
+        release: mmp
+      annotations:
+        sidecar.istio.io/inject: "true"
+    spec:
+      containers:
+      - name: athn
+        image: docker-registry.default.svc.cluster.local:5000/mmp/athn:latest
+        #imagePullPolicy: IfNotPresent
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 80
+        envFrom:
+        - configMapRef:
+            name: athn
+        #args: ["java","-Djava.security.egd=file:/dev/./urandom","-Dspring.profiles.active=$(spring.profiles.active)","-jar","/app.jar"] 
+        volumeMounts:
+        - mountPath: /var/log/LAMP/
+          name: lamp-volume
+        - mountPath: /etc/localtime
+          name: timezone-config
+        securityContext:
+          privileged: true
+        livenessProbe:
+          httpGet:
+            path: /athn/actuator/health
+            port: 80
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /athn/actuator/health
+            port: 80
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        resources:
+          requests:
+            memory: "1250Mi"
+          limits:
+            cpu: "2000m"
+            memory: "1250Mi"
+      nodeSelector:
+        ktis-node: "true"
+        #node-role.kubernetes.io/infra: "true"
+      volumes:
+      - name: lamp-volume
+        hostPath:
+          # directory location on host
+          path: /var/log/mmp/LAMP/
+          # this field is optional
+          type: DirectoryOrCreate
+      - hostPath:
+          path: /usr/share/zoneinfo/Asia/Seoul
+        name: timezone-config

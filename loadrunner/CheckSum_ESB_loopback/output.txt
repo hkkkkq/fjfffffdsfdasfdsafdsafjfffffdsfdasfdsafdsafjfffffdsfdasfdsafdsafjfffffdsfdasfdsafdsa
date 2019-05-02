@@ -1,0 +1,271 @@
+Virtual User Script started at : 2016-06-17 13:31:08
+Starting action vuser_init.
+vuser_init.c(64): WIN-DEIMWP6RXRA
+vuser_init.c(90): web_set_max_html_param_len was successful  	[MsgId: MMSG-26392]
+vuser_init.c(92): Registering web_reg_save_param was successful  	[MsgId: MMSG-26390]
+vuser_init.c(95): Redirecting "http://10.219.6.94/main.csr" (redirection depth is 0)  	[MsgId: MMSG-26694]
+vuser_init.c(95): To location "http://10.219.6.94/login/formLogin.csr"  	[MsgId: MMSG-26693]
+vuser_init.c(95): Found resource "http://10.219.6.94/css/master.css" in HTML "http://10.219.6.94/login/formLogin.csr"  	[MsgId: MMSG-26659]
+vuser_init.c(95): Found resource "http://10.219.6.94/js/jquery/jquery-1.10.2.min.js" in HTML "http://10.219.6.94/login/formLogin.csr"  	[MsgId: MMSG-26659]
+vuser_init.c(95): Found resource "http://10.219.6.94/js/jquery/jquery.common-core.js" in HTML "http://10.219.6.94/login/formLogin.csr"  	[MsgId: MMSG-26659]
+vuser_init.c(95): Found resource "http://10.219.6.94/js/ui/ui-common.js" in HTML "http://10.219.6.94/login/formLogin.csr"  	[MsgId: MMSG-26659]
+vuser_init.c(95): Found resource "http://10.219.6.94/js/jquery/jquery.plugin.js" in HTML "http://10.219.6.94/login/formLogin.csr"  	[MsgId: MMSG-26659]
+vuser_init.c(95): Found resource "http://10.219.6.94/js/jquery/jquery.datepick.js" in HTML "http://10.219.6.94/login/formLogin.csr"  	[MsgId: MMSG-26659]
+vuser_init.c(95): Found resource "http://10.219.6.94/js/ui/quickmenu.js" in HTML "http://10.219.6.94/login/formLogin.csr"  	[MsgId: MMSG-26659]
+vuser_init.c(95): Found resource "http://10.219.6.94/js/jquery/plug-in/shortcut.js" in HTML "http://10.219.6.94/login/formLogin.csr"  	[MsgId: MMSG-26659]
+vuser_init.c(95): Found resource "http://10.219.6.94/js/application/app-init.js" in HTML "http://10.219.6.94/login/formLogin.csr"  	[MsgId: MMSG-26659]
+vuser_init.c(95): Found resource "http://10.219.6.94/js/application/app-common.js" in HTML "http://10.219.6.94/login/formLogin.csr"  	[MsgId: MMSG-26659]
+vuser_init.c(95): Found resource "http://10.219.6.94/js/message/messages.js" in HTML "http://10.219.6.94/login/formLogin.csr"  	[MsgId: MMSG-26659]
+vuser_init.c(95): Found resource "http://10.219.6.94/js/ui/etcinfomenu.js" in HTML "http://10.219.6.94/login/formLogin.csr"  	[MsgId: MMSG-26659]
+vuser_init.c(95): Found resource "http://10.219.6.94/images/common/logo_login.png" in HTML "http://10.219.6.94/login/formLogin.csr"  	[MsgId: MMSG-26659]
+vuser_init.c(95): Found resource "http://10.219.6.94/images/common/img_loginlogo_login.png" in HTML "http://10.219.6.94/login/formLogin.csr"  	[MsgId: MMSG-26659]
+vuser_init.c(95): Found resource "http://10.219.6.94/images/common/img_footerlogo_login.png" in HTML "http://10.219.6.94/login/formLogin.csr"  	[MsgId: MMSG-26659]
+vuser_init.c(95): web_url("main.csr") was successful, 371562 body bytes, 5075 header bytes, 28 chunking overhead bytes  	[MsgId: MMSG-26385]
+vuser_init.c(116): Redirecting "http://10.219.6.94/login/login.csr" (redirection depth is 0)  	[MsgId: MMSG-26694]
+vuser_init.c(116): To location "http://10.219.6.94/main.csr"  	[MsgId: MMSG-26693]
+vuser_init.c(116): Found resource "http://10.219.6.94/css/master.css" in HTML "http://10.219.6.94/main.csr"  	[MsgId: MMSG-26659]
+vuser_init.c(116): Found resource "http://10.219.6.94/js/jquery/jquery-1.10.2.min.js" in HTML "http://10.219.6.94/main.csr"  	[MsgId: MMSG-26659]
+vuser_init.c(116): Found resource "http://10.219.6.94/js/jquery/jquery.common-core.js" in HTML "http://10.219.6.94/main.csr"  	[MsgId: MMSG-26659]
+vuser_init.c(116): Found resource "http://10.219.6.94/js/ui/ui-common.js" in HTML "http://10.219.6.94/main.csr"  	[MsgId: MMSG-26659]
+vuser_init.c(116): Found resource "http://10.219.6.94/js/jquery/jquery.plugin.js" in HTML "http://10.219.6.94/main.csr"  	[MsgId: MMSG-26659]
+vuser_init.c(116): Found resource "http://10.219.6.94/js/jquery/jquery.datepick.js" in HTML "http://10.219.6.94/main.csr"  	[MsgId: MMSG-26659]
+vuser_init.c(116): Found resource "http://10.219.6.94/js/ui/quickmenu.js" in HTML "http://10.219.6.94/main.csr"  	[MsgId: MMSG-26659]
+vuser_init.c(116): Found resource "http://10.219.6.94/js/jquery/plug-in/shortcut.js" in HTML "http://10.219.6.94/main.csr"  	[MsgId: MMSG-26659]
+vuser_init.c(116): Found resource "http://10.219.6.94/js/application/app-init.js" in HTML "http://10.219.6.94/main.csr"  	[MsgId: MMSG-26659]
+vuser_init.c(116): Found resource "http://10.219.6.94/js/application/app-common.js" in HTML "http://10.219.6.94/main.csr"  	[MsgId: MMSG-26659]
+vuser_init.c(116): Found resource "http://10.219.6.94/js/message/messages.js" in HTML "http://10.219.6.94/main.csr"  	[MsgId: MMSG-26659]
+vuser_init.c(116): Found resource "http://10.219.6.94/js/ui/maintoplol.js" in HTML "http://10.219.6.94/main.csr"  	[MsgId: MMSG-26659]
+vuser_init.c(116): Found resource "http://10.219.6.94/js/ui/mainconlol.js" in HTML "http://10.219.6.94/main.csr"  	[MsgId: MMSG-26659]
+vuser_init.c(116): Found resource "http://10.219.6.94/images/common/logo.png" in HTML "http://10.219.6.94/main.csr"  	[MsgId: MMSG-26659]
+vuser_init.c(116): Found resource "http://10.219.6.94/images/common/btn_input_search.png" in HTML "http://10.219.6.94/main.csr"  	[MsgId: MMSG-26659]
+vuser_init.c(116): Found resource "http://10.219.6.94/images/common/ico_sitemap_open.png" in HTML "http://10.219.6.94/main.csr"  	[MsgId: MMSG-26659]
+vuser_init.c(116): Found resource "http://10.219.6.94/images/common/main_left_ico06.png" in HTML "http://10.219.6.94/main.csr"  	[MsgId: MMSG-26659]
+vuser_init.c(116): Found resource "http://10.219.6.94/images/common/main_right_more.png" in HTML "http://10.219.6.94/main.csr"  	[MsgId: MMSG-26659]
+vuser_init.c(116): Found resource "http://10.219.6.94/images/common/img_footerlogo.png" in HTML "http://10.219.6.94/main.csr"  	[MsgId: MMSG-26659]
+vuser_init.c(116): web_submit_data("login.csr") was successful, 447304 body bytes, 6180 header bytes, 45 chunking overhead bytes  	[MsgId: MMSG-26385]
+vuser_init.c(140): Registering web_reg_save_param was successful  	[MsgId: MMSG-26390]
+vuser_init.c(143): web_submit_data("systemLinkAuth.csr") was successful, 545 body bytes, 518 header bytes, 12 chunking overhead bytes  	[MsgId: MMSG-26385]
+vuser_init.c(160): Error: C interpreter run time error: vuser_init.c (160):  Error -- File error : LoadLibrary(C:\nexaNbssAdp.dll) failed : 지정된 모듈을 찾을 수 없습니다.
+.
+vuser_init.c(160): Notify: CCI trace: vuser_init.c(160): ci_load_dll(0x02faf078, 0x031034bd "C:\nexaNbssAdp.dll")
+.
+vuser_init.c(160): Notify: CCI trace: Compiled_code(0): vuser_init()
+.
+Ending action vuser_init.
+Running Vuser...
+Starting iteration 1.
+Starting action Action1.
+Action1.c(208): web_set_max_html_param_len was successful  	[MsgId: MMSG-26392]
+Action1.c(210): Notify: Transaction "ESBFW_SATest_ETC_PL_LoopBack1" started.
+Action1.c(216): Registering web_reg_find was successful  	[MsgId: MMSG-26390]
+Action1.c(224): <?xml version="1.0" encoding="UTF-8"?>
+<Root xmlns="http://www.nexacroplatform.com/platform/dataset">
+	<Parameters>
+<Parameter id="PHAROSVISITOR">00004f3f0154e03263c62cdd0adb0756</Parameter>	</Parameters>
+	<Dataset id="commonHeader">
+		<ColumnInfo>
+			<Column id="appName" type="STRING" size="256"  />
+			<Column id="svcName" type="STRING" size="256"  />
+			<Column id="fnName" type="STRING" size="256"  />
+			<Column id="fnCd" type="STRING" size="256"  />
+			<Column id="globalNo" type="STRING" size="256"  />
+			<Column id="chnlType" type="STRING" size="256"  />
+			<Column id="envrFlag" type="STRING" size="256"  />
+			<Column id="trFlag" type="STRING" size="256"  />
+			<Column id="trDate" type="STRING" size="256"  />
+			<Column id="trTime" type="STRING" size="256"  />
+			<Column id="clntIp" type="STRING" size="256"  />
+			<Column id="responseType" type="STRING" size="256"  />
+			<Column id="responseCode" type="STRING" size="256"  />
+			<Column id="responseLogcd" type="STRING" size="256"  />
+			<Column id="responseTitle" type="STRING" size="256"  />
+			<Column id="responseBasc" type="STRING" size="256"  />
+			<Column id="responseDtal" type="STRING" size="256"  />
+			<Column id="responseSystem" type="STRING" size="256"  />
+			<Column id="userId" type="STRING" size="256"  />
+			<Column id="realUserId" type="STRING" size="256"  />
+			<Column id="filler" type="STRING" size="256"  />
+			<Column id="langCode" type="STRING" size="256"  />
+			<Column id="orgId" type="STRING" size="256"  />
+			<Column id="srcId" type="STRING" size="256"  />
+			<Column id="curHostId" type="STRING" size="256"  />
+			<Column id="lgDateTime" type="STRING" size="256"  />
+			<Column id="tokenId" type="STRING" size="256"  />
+			<Column id="cmpnCd" type="STRING" size="256"  />
+			<Column id="lockType" type="STRING" size="256"  />
+			<Column id="lockId" type="STRING" size="256"  />
+			<Column id="lockTimeSt" type="STRING" size="256"  />
+			<Column id="businessKey" type="STRING" size="256"  />
+			<Column id="arbitraryKey" type="STRING" size="256"  />
+			<Column id="resendFlag" type="STRING" size="256"  />
+			<Column id="phase" type="STRING" size="256"  />
+		</ColumnInfo>
+		<Rows>
+			<Row type="insert">
+				<Col id="appName">NBSS_CST</Col>
+				<Col id="svcName">/ESBFW/SATest/ETC/PL_LoopBack1</Col>
+				<Col id="fnName">service</Col>
+				<Col id="fnCd" />
+				<Col id="globalNo">00000940512452016061713310811109</Col>
+				<Col id="chnlType">UI</Col>
+				<Col id="envrFlag" />
+				<Col id="trFlag">T</Col>
+				<Col id="trDate">20160617</Col>
+				<Col id="trTime">133108</Col>
+				<Col id="clntIp">10.217.157.128</Col>
+				<Col id="responseType" />
+				<Col id="responseCode" />
+				<Col id="responseLogcd" />
+				<Col id="responseTitle" />
+				<Col id="responseBasc" />
+				<Col id="responseDtal" />
+				<Col id="responseSystem" />
+				<Col id="userId">94051245</Col>
+				<Col id="realUserId">94051245</Col>
+				<Col id="filler">E</Col>
+				<Col id="langCode" />
+				<Col id="orgId">SPT8050</Col>
+				<Col id="srcId">DNIUI1000LY</Col>
+				<Col id="curHostId" />
+				<Col id="lgDateTime">20160617133108</Col>
+				<Col id="tokenId">6452cc38e20a1d14a3a6ce5f65c3d6576f0b8b0b1cf5cce2fc1111580624396b</Col>
+				<Col id="cmpnCd">KT</Col>
+				<Col id="lockType" />
+				<Col id="lockId" />
+				<Col id="lockTimeSt" />
+				<Col id="businessKey" />
+				<Col id="arbitraryKey">{}</Col>
+				<Col id="resendFlag" />
+				<Col id="phase">PA3</Col>
+			</Row>
+		</Rows>
+	</Dataset>
+	<Dataset id="bizHeader">
+		<ColumnInfo>
+			<Column id="orderId" type="STRING" size="256"  />
+			<Column id="cbSvcName" type="STRING" size="256"  />
+			<Column id="cbFnName" type="STRING" size="256"  />
+		</ColumnInfo>
+		<Rows>
+			<Row type="insert">
+				<Col id="orderId">orderId</Col>
+				<Col id="cbSvcName">/ESBFW/SATest/ETC/PL_LoopBack1</Col>
+				<Col id="cbFnName">service</Col>
+			</Row>
+		</Rows>
+	</Dataset>
+<Dataset id="EchoInDTO"><ColumnInfo><Column id="loopCnt" type="STRING" size="32"  /></ColumnInfo><Rows><Row><Col id="loopCnt">10</Col></Row></Rows></Dataset></Root>
+Action1.c(226): Registered web_reg_find successful for "Text=<Parameter id="ErrorCode" type="string">0</Parameter>" (count=1)  	[MsgId: MMSG-26364]
+Action1.c(226): web_custom_request("UiGateway") was successful, 7055 body bytes, 376 header bytes  	[MsgId: MMSG-26386]
+Action1.c(281): Notify: Transaction "ESBFW_SATest_ETC_PL_LoopBack1" ended with "Pass" status (Duration: 0.3555 Wasted Time: 0.0008).
+Ending action Action1.
+Starting action Action2.
+Action2.c(208): web_set_max_html_param_len was successful  	[MsgId: MMSG-26392]
+Action2.c(210): Notify: Transaction "ESBFW_SATest_ETC_PL_LoopBack2" started.
+Action2.c(216): Registering web_reg_find was successful  	[MsgId: MMSG-26390]
+Action2.c(224): <?xml version="1.0" encoding="UTF-8"?>
+<Root xmlns="http://www.nexacroplatform.com/platform/dataset">
+	<Parameters>
+<Parameter id="PHAROSVISITOR">00004f3f0154e03263c62cdd0adb0756</Parameter>	</Parameters>
+	<Dataset id="commonHeader">
+		<ColumnInfo>
+			<Column id="appName" type="STRING" size="256"  />
+			<Column id="svcName" type="STRING" size="256"  />
+			<Column id="fnName" type="STRING" size="256"  />
+			<Column id="fnCd" type="STRING" size="256"  />
+			<Column id="globalNo" type="STRING" size="256"  />
+			<Column id="chnlType" type="STRING" size="256"  />
+			<Column id="envrFlag" type="STRING" size="256"  />
+			<Column id="trFlag" type="STRING" size="256"  />
+			<Column id="trDate" type="STRING" size="256"  />
+			<Column id="trTime" type="STRING" size="256"  />
+			<Column id="clntIp" type="STRING" size="256"  />
+			<Column id="responseType" type="STRING" size="256"  />
+			<Column id="responseCode" type="STRING" size="256"  />
+			<Column id="responseLogcd" type="STRING" size="256"  />
+			<Column id="responseTitle" type="STRING" size="256"  />
+			<Column id="responseBasc" type="STRING" size="256"  />
+			<Column id="responseDtal" type="STRING" size="256"  />
+			<Column id="responseSystem" type="STRING" size="256"  />
+			<Column id="userId" type="STRING" size="256"  />
+			<Column id="realUserId" type="STRING" size="256"  />
+			<Column id="filler" type="STRING" size="256"  />
+			<Column id="langCode" type="STRING" size="256"  />
+			<Column id="orgId" type="STRING" size="256"  />
+			<Column id="srcId" type="STRING" size="256"  />
+			<Column id="curHostId" type="STRING" size="256"  />
+			<Column id="lgDateTime" type="STRING" size="256"  />
+			<Column id="tokenId" type="STRING" size="256"  />
+			<Column id="cmpnCd" type="STRING" size="256"  />
+			<Column id="lockType" type="STRING" size="256"  />
+			<Column id="lockId" type="STRING" size="256"  />
+			<Column id="lockTimeSt" type="STRING" size="256"  />
+			<Column id="businessKey" type="STRING" size="256"  />
+			<Column id="arbitraryKey" type="STRING" size="256"  />
+			<Column id="resendFlag" type="STRING" size="256"  />
+			<Column id="phase" type="STRING" size="256"  />
+		</ColumnInfo>
+		<Rows>
+			<Row type="insert">
+				<Col id="appName">NBSS_CST</Col>
+				<Col id="svcName">/ESBFW/SATest/ETC/PL_LoopBack2</Col>
+				<Col id="fnName">service</Col>
+				<Col id="fnCd" />
+				<Col id="globalNo">00000940512452016061713310811109</Col>
+				<Col id="chnlType">UI</Col>
+				<Col id="envrFlag" />
+				<Col id="trFlag">T</Col>
+				<Col id="trDate">20160617</Col>
+				<Col id="trTime">133108</Col>
+				<Col id="clntIp">10.217.157.128</Col>
+				<Col id="responseType" />
+				<Col id="responseCode" />
+				<Col id="responseLogcd" />
+				<Col id="responseTitle" />
+				<Col id="responseBasc" />
+				<Col id="responseDtal" />
+				<Col id="responseSystem" />
+				<Col id="userId">94051245</Col>
+				<Col id="realUserId">94051245</Col>
+				<Col id="filler">E</Col>
+				<Col id="langCode" />
+				<Col id="orgId">SPT8050</Col>
+				<Col id="srcId">DNIUI1000LY</Col>
+				<Col id="curHostId" />
+				<Col id="lgDateTime">20160617133108</Col>
+				<Col id="tokenId">6452cc38e20a1d14a3a6ce5f65c3d6576f0b8b0b1cf5cce2fc1111580624396b</Col>
+				<Col id="cmpnCd">KT</Col>
+				<Col id="lockType" />
+				<Col id="lockId" />
+				<Col id="lockTimeSt" />
+				<Col id="businessKey" />
+				<Col id="arbitraryKey">{}</Col>
+				<Col id="resendFlag" />
+				<Col id="phase">PA3</Col>
+			</Row>
+		</Rows>
+	</Dataset>
+	<Dataset id="bizHeader">
+		<ColumnInfo>
+			<Column id="orderId" type="STRING" size="256"  />
+			<Column id="cbSvcName" type="STRING" size="256"  />
+			<Column id="cbFnName" type="STRING" size="256"  />
+		</ColumnInfo>
+		<Rows>
+			<Row type="insert">
+				<Col id="orderId">orderId</Col>
+				<Col id="cbSvcName">/ESBFW/SATest/ETC/PL_LoopBack2</Col>
+				<Col id="cbFnName">service</Col>
+			</Row>
+		</Rows>
+	</Dataset>
+<Dataset id="EchoInDTO"><ColumnInfo><Column id="loopCnt" type="STRING" size="32"  /></ColumnInfo><Rows><Row><Col id="loopCnt">10</Col></Row></Rows></Dataset></Root>
+Action2.c(226): Registered web_reg_find successful for "Text=<Parameter id="ErrorCode" type="string">0</Parameter>" (count=1)  	[MsgId: MMSG-26364]
+Action2.c(226): web_custom_request("UiGateway") was successful, 7055 body bytes, 306 header bytes  	[MsgId: MMSG-26386]
+Action2.c(281): Notify: Transaction "ESBFW_SATest_ETC_PL_LoopBack2" ended with "Pass" status (Duration: 0.2112 Wasted Time: 0.0008).
+Ending action Action2.
+Ending iteration 1.
+Ending Vuser...
+Starting action vuser_end.
+Ending action vuser_end.
+Vuser Terminated.

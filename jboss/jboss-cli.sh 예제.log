@@ -1,0 +1,81 @@
+[jboss@c-akos-dk1-a02 bin]$ ./jboss-cli.sh
+================================================
+JBOSS_HOME=/jboss/jboss-eap-6.4
+DOMAIN_BASE=/jboss/domains
+SERVER_NAME=kkosSvr11
+CONFIG_FILE=standalone-ha.xml
+BIND_ADDR=10.217.47.145
+DOMAIN_IP=10.217.47.145
+PORT_OFFSET=10
+CONTROLLER=10.217.47.145:10009
+================================================
+
+
+[standalone@10.217.47.145:10009 /] ls
+core-service                           interface                              system-property                        management-minor-version=8             product-name=EAP                       release-version=7.5.18.Final-redhat-1
+deployment                             path                                   launch-type=STANDALONE                 name=c-akos-dk1-a02                    product-version=6.4.18.GA              running-mode=NORMAL
+deployment-overlay                     socket-binding-group                   management-major-version=1             namespaces=[]                          profile-name=undefined                 schema-locations=[]
+extension                              subsystem                              management-micro-version=0             process-type=Server                    release-codename=Janus                 server-state=running
+[standalone@10.217.47.145:10009 /] /subsystem=
+datasources         ejb3                jca                 jmx                 logging             naming              resource-adapters   threads             webservices
+deployment-scanner  infinispan          jdr                 jpa                 mail                pojo                sar                 transactions        weld
+ee                  jaxrs               jgroups             jsf                 modcluster          remoting            security            web
+[standalone@10.217.47.145:10009 /] /subsystem=
+datasources         ejb3                jca                 jmx                 logging             naming              resource-adapters   threads             webservices
+deployment-scanner  infinispan          jdr                 jpa                 mail                pojo                sar                 transactions        weld
+ee                  jaxrs               jgroups             jsf                 modcluster          remoting            security            web
+[standalone@10.217.47.145:10009 /] /subsystem=datasources
+:  /
+[standalone@10.217.47.145:10009 /] /subsystem=datasources
+:  /
+[standalone@10.217.47.145:10009 /] /subsystem=datasources/data-source=
+ExampleDS   kmosDsJNDI
+[standalone@10.217.47.145:10009 /] /subsystem=datasources/data-source=kmosDsJNDI
+:  /
+[standalone@10.217.47.145:10009 /] /subsystem=datasources/data-source=kmosDsJNDI
+:  /
+[standalone@10.217.47.145:10009 /] /subsystem=datasources/data-source=kmosDsJNDI
+:  /
+[standalone@10.217.47.145:10009 /] /subsystem=datasources/data-source=kmosDsJNDI
+:  /
+[standalone@10.217.47.145:10009 /] /subsystem=datasources/data-source=kmosDsJNDI
+:  /
+[standalone@10.217.47.145:10009 /] /subsystem=datasources/data-source=kmosDsJNDI
+:  /
+[standalone@10.217.47.145:10009 /] /subsystem=datasources/data-source=kmosDsJNDI:write-attribute(name=
+share-prepared-statements            url-delimiter                        jta                                  stale-connection-checker-class-name  use-ccm                              valid-connection-checker-properties
+driver-class                         enabled                              valid-connection-checker-class-name  exception-sorter-class-name          reauth-plugin-properties             min-pool-size
+prepared-statements-cache-size       connectable                          allocation-retry-wait-millis         background-validation                driver-name                          allocation-retry
+spy                                  blocking-timeout-wait-millis         exception-sorter-properties          check-valid-connection-sql           stale-connection-checker-properties  security-domain
+password                             statistics-enabled                   background-validation-millis         reauth-plugin-class-name             datasource-class                     new-connection-sql
+max-pool-size                        pool-use-strict-min                  track-statements                     allow-multiple-users                 idle-timeout-minutes                 connection-url
+set-tx-query-timeout                 validate-on-match                    use-fast-fail                        url-selector-strategy-class-name     query-timeout                        use-try-lock
+jndi-name                            transaction-isolation                flush-strategy                       user-name                            use-java-context                     pool-prefill
+[standalone@10.217.47.145:10009 /] /subsystem=datasources/data-source=kmosDsJNDI:write-attribute(name=
+share-prepared-statements            url-delimiter                        jta                                  stale-connection-checker-class-name  use-ccm                              valid-connection-checker-properties
+driver-class                         enabled                              valid-connection-checker-class-name  exception-sorter-class-name          reauth-plugin-properties             min-pool-size
+prepared-statements-cache-size       connectable                          allocation-retry-wait-millis         background-validation                driver-name                          allocation-retry
+spy                                  blocking-timeout-wait-millis         exception-sorter-properties          check-valid-connection-sql           stale-connection-checker-properties  security-domain
+password                             statistics-enabled                   background-validation-millis         reauth-plugin-class-name             datasource-class                     new-connection-sql
+max-pool-size                        pool-use-strict-min                  track-statements                     allow-multiple-users                 idle-timeout-minutes                 connection-url
+set-tx-query-timeout                 validate-on-match                    use-fast-fail                        url-selector-strategy-class-name     query-timeout                        use-try-lock
+jndi-name                            transaction-isolation                flush-strategy                       user-name                            use-java-context                     pool-prefill
+[standalone@10.217.47.145:10009 /] /subsystem=datasources/data-source=kmosDsJNDI:write-attribute(name=
+share-prepared-statements            url-delimiter                        jta                                  stale-connection-checker-class-name  use-ccm                              valid-connection-checker-properties
+driver-class                         enabled                              valid-connection-checker-class-name  exception-sorter-class-name          reauth-plugin-properties             min-pool-size
+prepared-statements-cache-size       connectable                          allocation-retry-wait-millis         background-validation                driver-name                          allocation-retry
+spy                                  blocking-timeout-wait-millis         exception-sorter-properties          check-valid-connection-sql           stale-connection-checker-properties  security-domain
+password                             statistics-enabled                   background-validation-millis         reauth-plugin-class-name             datasource-class                     new-connection-sql
+max-pool-size                        pool-use-strict-min                  track-statements                     allow-multiple-users                 idle-timeout-minutes                 connection-url
+set-tx-query-timeout                 validate-on-match                    use-fast-fail                        url-selector-strategy-class-name     query-timeout                        use-try-lock
+jndi-name                            transaction-isolation                flush-strategy                       user-name                            use-java-context                     pool-prefill
+[standalone@10.217.47.145:10009 /] /subsystem=datasources/data-source=kmosDsJNDI:write-attribute(name=min-pool-size,value=20)
+{"outcome" => "success"}
+[standalone@10.217.47.145:10009 /] /subsystem=datasources/data-source=kmosDsJNDI:write-attribute(name=max-pool-size,value=20)
+{"outcome" => "success"}
+[standalone@10.217.47.145:10009 /] :reload
+{
+    "outcome" => "success",
+    "result" => undefined
+}
+[standalone@10.217.47.145:10009 /]

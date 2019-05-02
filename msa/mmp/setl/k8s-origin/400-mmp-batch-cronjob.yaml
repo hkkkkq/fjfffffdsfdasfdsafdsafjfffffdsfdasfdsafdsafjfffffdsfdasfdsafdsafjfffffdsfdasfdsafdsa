@@ -1,0 +1,39 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: cronjob-setl
+  labels:
+    appName: mmp
+    svcName: setl
+    version: v1
+spec:
+  #schedule: '@daily'
+  schedule: "0 */1 * * *"
+  concurrencyPolicy: Forbid   # Allow, Forbid, Replace, default Allow
+  successfulJobsHistoryLimit: 3 # default 3
+  failedJobsHistoryLimit: 1   # default 1
+  jobTemplate:
+    spec:
+      #ttlSecondsAfterFinished: 50
+      backoffLimit: 2
+      #completions: 5
+      #parallelism: 2  # default 1
+      template:
+        spec:
+          containers:
+            - name: setl
+              image: docker-registry.default.svc.cluster.local:5000/mmp/batch:latest
+              envFrom:
+              - configMapRef:
+                  name: configmap-setl
+              args: ["java","-Djava.security.egd=file:/dev/./urandom","-Dspring.profiles.active=$(spring.profiles.active)","-jar","/app.jar"]
+              volumeMounts:
+              - mountPath: /etc/localtime
+                name: timezone-config
+          restartPolicy: Never
+          nodeSelector:
+            ktis-node: "true"
+          volumes:
+          - hostPath:
+              path: /usr/share/zoneinfo/Asia/Seoul
+            name: timezone-config

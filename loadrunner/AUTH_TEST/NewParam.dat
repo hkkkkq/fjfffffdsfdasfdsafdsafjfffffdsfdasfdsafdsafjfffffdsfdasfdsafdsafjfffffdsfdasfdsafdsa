@@ -1,0 +1,2 @@
+cert_RequestXml2
+<Root xmlns="http://www.nexacroplatform.com/platform/dataset"><Parameters><Parameter id="command">request_cert</Parameter></Parameters></Root>

@@ -1,0 +1,32 @@
+$(document).ready(function(){
+
+	$(".number").bind("keydown", function (event) {
+	             
+	    if ( event.keyCode == 46 || event.keyCode == 8 || event.keyCode == 9 || event.keyCode == 27 || event.keyCode == 13 || 
+	         // Allow: Ctrl+A
+	        (event.keyCode == 65 && event.ctrlKey === true) || 
+	         
+	        // Allow: Ctrl+C
+	        (event.keyCode == 67 && event.ctrlKey === true) || 
+	         
+	        // Allow: Ctrl+V
+	        (event.keyCode == 86 && event.ctrlKey === true) || 
+	         
+	        // Allow: home, end, left, right
+	        (event.keyCode >= 35 && event.keyCode <= 39)) {
+	          // let it happen, don't do anything
+	          return;
+	    } else {
+	        // Ensure that it is a number and stop the keypress
+	        if (event.shiftKey || (event.keyCode < 48 || event.keyCode > 57) && (event.keyCode < 96 || event.keyCode > 105 )) {
+	            event.preventDefault(); 
+	        }   
+	    }
+	});
+	
+	//  우측 마우스 클릭 disable
+	$(document)[0].oncontextmenu = function() { return false; }
+	
+	shortcut.add("F12", function(){return false;});
+	shortcut.add("Ctrl+u", function(){return false;});
+});

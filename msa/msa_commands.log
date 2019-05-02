@@ -1,0 +1,152 @@
+# Dockerfile =======================
+
+ktis-bastion01.container.ipc.kt.com:5000/admin/alpine-jre8-millet:1.0
+CMD ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/app.jar"]
+
+# Docker build =======================
+
+docker build --no-cache -t docker-registry.default.svc.cluster.local:5000/mmp/athn:0.1 -f Dockerfile-athn .
+docker push docker-registry.default.svc.cluster.local:5000/mmp/athn:0.1
+docker tag docker-registry.default.svc.cluster.local:5000/mmp/athn:0.1 docker-registry.default.svc.cluster.local:5000/mmp/athn:latest
+docker push docker-registry.default.svc.cluster.local:5000/mmp/athn:latest
+
+# curl =======================
+
+curl -X POST -H "Content-Type: application/json" \
+-d " \
+{ \
+ \"title\":\"c++\", \
+ \"author\":\"steven\",\
+ \"description\":\"wow\",\
+ \"published\":777\
+}\
+" \
+http://10.106.65.91/api/books/create
+
+curl -HHost:sample1-millet.container.ipc.kt.com http://172.30.158.41/svc1/hello
+
+# openshift 권한 관련 설정 =======================
+
+oc adm policy add-scc-to-user anyuid -z default -n millet
+oc adm policy add-scc-to-user privileged -z default -n millet
+
+# annotation =======================
+
+oc annotate ns mmp openshift.io/node-selector-
+oc annotate ns mmp openshift.io/node-selector=""
+
+# 계정 생성 =======================
+
+[root 계정으로, passwd: Ktcl@ud12# ]
+
+vi ~/.bash_profile
+export TMOUT=0
+alias ll='ls -al'
+. ~/.bash_profile
+
+chage -l root
+chage -E -1 -I -1 -m 0 -M 99999 root
+
+groupadd bsscoe
+useradd -d /home/bsscoe -s /bin/bash -m -g bsscoe bsscoe
+
+passwd bsscoe
+Dtserver1234!
+chage -E -1 -I -1 -m 0 -M 99999 bsscoe
+chage -l bsscoe
+
+-- su 권한 추가
+vi /etc/group
+wheel:x:10:cloud-user,bsscoe
+
+-- Master Node 대상 bsscoe계정에 대한 kubectl 작업
+mkdir -p /home/bsscoe/.kube
+cp ~/.kube/config /home/bsscoe/.kube
+chown bsscoe:bsscoe /home/bsscoe/.kube/config
+
+su -l bsscoe
+
+[bsscoe 계정으로]
+
+vi ~/.bash_profile
+export TMOUT=0
+alias ll='ls -al'
+# motd
+/home/bsscoe/motd
+
+vi motd
+#!/bin/bash
+
+echo "
+==========================================================================
+ Hello~! Somebody to love!
+==========================================================================
+ - Hostname...........: `uname -n`
+ - Release............: `cat /etc/redhat-release`
+ - Users..............: Currently `users | wc -w` user(s) logged on
+ - Currnet user.......: `whoami`
+==========================================================================
+"
+
+. ~/.bash_profile
+
+-- Master Node 대상 kubectl 작업
+vi ~/.bash_profile
+# Enable kubectl alias and autocompletion
+alias k='kubectl'
+source <(kubectl completion bash | sed s/kubectl/k/g)
+. ~/.bash_profile
+
+# docker registry browser =======================
+
+docker run -d -p 8000:8080 --restart="on-failure:5" --name registry-browser -e DOCKER_REGISTRY_URL=https://ktis-bastion01.container.ipc.kt.com:5000 -e NO_SSL_VERIFICATION=true -e ENABLE_DELETE_IMAGES=true ktis-bastion01.container.ipc.kt.com:5000/herasoo/registry-browser:v20190208
+
+# docker registry web =======================
+
+docker run -d -p 8001:8080 --restart="on-failure:5" --name registry-web -e REGISTRY_URL=https://ktis-bastion01.container.ipc.kt.com:5000/v2 -e REGISTRY_TRUST_ANY_SSL=true -e REGISTRY_READONLY=false -e REGISTRY_NAME=ktis-bastion01.container.ipc.kt.com:5000 ktis-bastion01.container.ipc.kt.com:5000/herasoo/registry-web:v20190208
+
+# docker save/load =======================
+
+docker save -o nginx.tar nginx:latest
+
+docker load -i nginx.tar
+
+# kubectl patch =======================
+
+kubectl patch cronjob cronjob-batch --type=json -p='[{"op":"replace", "path": "/spec/jobTemplate/spec/template/spec/containers/0/image", "value":"docker-registry.default.svc.cluster.local:5000/mmp/batch:0.1"}]' -n herasoo
+
+# oc route =======================
+
+annotations:
+    haproxy.router.openshift.io/balance: "roundrobin"
+    haproxy.router.openshift.io/disable_cookies: "true"
+    
+# oc login =======================
+
+oc config current-context
+
+# oc istio-proxy injection 활성화 =======================
+
+master-config.yaml에 추가
+
+admissionConfig:
+  pluginConfig:
+    MutatingAdmissionWebhook:
+      configuration:
+        apiVersion: apiserver.config.k8s.io/v1alpha1
+        kind: WebhookAdmission
+        kubeConfigFile: /dev/null
+    ValidatingAdmissionWebhook:
+      configuration:
+        apiVersion: apiserver.config.k8s.io/v1alpha1
+        kind: WebhookAdmission
+        kubeConfigFile: /dev/null
+
+그리고 master node 재기동
+$ /usr/local/bin/master-restart api && /usr/local/bin/master-restart controllers
+
+# curl 반복문 =======================
+
+while true; do echo "================TEST==============="; curl -k -HHost:test.insuretech.kt.com https://10.217.59.30:443/athn/actuator/health; sleep 1; echo ""; done;
+while true; do echo "================TEST==============="; curl -k -H "Host: test.insuretech.kt.com" -H "end-user: canary" https://10.217.59.30:443/athn/actuator/health; sleep 1; echo ""; done;
+while true; do echo "================TEST==============="; curl -k --header "Host: test.insuretech.kt.com" --header "end-user: canary" https://10.217.59.30:443/athn/actuator/health; sleep 1; echo ""; done;

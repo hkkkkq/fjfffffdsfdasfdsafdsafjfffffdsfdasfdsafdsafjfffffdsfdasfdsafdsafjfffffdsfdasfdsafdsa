@@ -1,0 +1,526 @@
+<!-- 
+   NBSS (New Business Support System)  version 1.0
+   
+   Copyright ⓒ 2015 kt corp. All rights reserved.
+   
+   This is a proprietary software of kt corp, and you may not use this file except in 
+   compliance with license agreement with kt corp. Any redistribution or use of this 
+   software, with or without modification shall be strictly prohibited without prior written 
+   approval of kt corp, and the copyright notice above does not evidence any actual or 
+   intended publication of such software. 
+
+   @Creator 91003296
+   @CreateDate 2015. 6. 24
+   @LastModifier 91003296
+   @LastModifyDate 2015. 6. 24
+   @Version 1.0
+   @Outline 로그인 페이지
+   @Desction 
+  
+
+   ************* 소스 수정 이력 *************************************************
+       date          Modifier                  Description
+   ******************************************************************************
+     2015. 6. 24         91003296             화면 최초 생성
+   ******************************************************************************
+-->
+
+
+
+
+
+
+
+
+<!doctype html>
+
+<html lang="ko">
+<head>
+
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=9,chrome=1" />
+<meta content="IE=11.0000" http-equiv="X-UA-Compatible">
+<meta content="IE=10.0000" http-equiv="X-UA-Compatible">
+<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+<meta http-equiv="Cache-Control" content="No-Cache" />
+<meta http-equiv="Pragma" content="No-Cache" />
+<link href="/images/common/favicon.ico" rel="shortcut icon" type="image/x-icon"> 
+<link href="/css/master.css" rel="stylesheet" type="text/css" media="all"> 
+<title>KOS PORTAL</title>
+<script type="text/javascript" src="/js/jquery/jquery-1.10.2.min.js" charset="utf-8"></script>
+<script src="/js/jquery/jquery.common-core.js"></script>
+<script src="/js/ui/ui-common.js" charset="utf-8"></script>
+<script src="/js/jquery/jquery.plugin.js"></script>
+<script src="/js/jquery/jquery.datepick.js"></script>
+<script src="/js/ui/quickmenu.js"></script>
+<script src="/js/jquery/plug-in/shortcut.js"></script>
+<script src="/js/application/app-init.js" type="text/javascript"></script>
+<script src="/js/application/app-common.js" type="text/javascript"></script>
+<script src="/js/message/messages.js"></script>
+<script>
+$(function() {
+	$('#popupDatepicker01').datepick({showOnFocus:false, showTrigger:'#date1'});
+	$('#popupDatepicker02').datepick({showOnFocus:false, showTrigger:'#date2'});
+	$('#popupDatepicker01').on('blur', datepickValidate);
+	$('#popupDatepicker02').on('blur', datepickValidate);
+	$('#popupDatepicker01').on('click', datepickRemoveHyphen);
+	$('#popupDatepicker02').on('click', datepickRemoveHyphen);
+
+});
+</script>
+<SCRIPT src="/js/ui/etcinfomenu.js"></SCRIPT>
+
+<script type="text/javascript">
+	if(window.dialogArguments) {
+		alert('세션이 만료가 되었습니다.\n다시 로그인 하시기 바랍니다.');
+		window.close();
+	}
+
+	/*  */
+	
+	/* if (window.opener && window.opener != window) {
+		alert('세션이 만료가 되었습니다.\n다시 로그인 하시기 바랍니다.');
+		window.opener.location.href = "/";
+		window.close();
+	} */
+	
+	$(document).ready(function(){
+		/* 아코디언 관련 스크립트 */
+		$('ul').accordion();
+		/* 아코디언 관련 스크립트 */
+		
+		$("#login").on("click", function(e) {
+			e.preventDefault();
+			fnLogin();
+		});
+
+		$("#pwd").keydown(function(key) {
+			if (key.keyCode == 13) {
+				fnLogin();
+			}
+		});
+
+		$("#btnSecSwDownload").on("click",function(e) {
+			var securityDownUrl = "http://itsm.ktds.co.kr/kt/link/boardmessage_list.pop?selectedMnuID=OPR00104&brdOid=1376371277395&mnuIndex=10";
+
+			
+			
+			window.open(securityDownUrl, 'ITSM','width=1080,height=380,scrollbars=yes');
+			
+		});
+
+		$("#btnIdms").on("click", function(e) {
+			e.preventDefault();
+			window.open("https://idms.kt.com", 'IDMS', '');
+		});
+
+		$("#btnMyIp").on("click", function(e) {
+			e.preventDefault();
+			window.open("http://myip.kt.com", 'IDMS', '');
+		});
+
+		$("#idConfirm").on("click", function(e) {
+			e.preventDefault();
+			opencenter01('/login/formIdConfirm.csr', 425, 370);
+
+		});
+
+		$("#pwInit").on("click", function(e) {
+			e.preventDefault();
+			opencenter01('/login/formPwdInit.csr', 425, 370);
+		});
+
+		$(".btnNoticeClose").on("click",function(e) {
+			e.preventDefault();
+			var noticeInfo = $(this).attr('id').split(",");
+			var layerId = noticeInfo[0];
+			var mngmNo = noticeInfo[1];
+
+			MM_showHideLayers2(layerId, '', 'hide');
+
+			if($("input[name=checkboxNo" + mngmNo + "]:checkbox").is(":checked") ){
+				var todayDate = new Date();
+			    todayDate.setDate( todayDate.getDate() + 1 );
+			    todayDate.setHours(0,0,0,0);
+			    document.cookie = layerId + '=' + escape( 'done' ) + '; path=/; expires=' + todayDate.toGMTString() + ';'
+			}
+			var retUlNodes = document.getElementsByTagName("ul");
+			var displayCd = false;
+			
+			for(i=0; retUlNodes.length; i++ ){
+				with (document) 
+				
+				if (retUlNodes[i] == null) return;
+				
+				if (retUlNodes[i].id != null && retUlNodes[i].id != ""){
+					if (layerId != retUlNodes[i].id && retUlNodes[i].style.display == "none"){
+						retUlNodes[i].style.display = '';
+				  		return;
+			  		}
+			 	}
+				
+			}
+		});
+
+		$(".atchFile").on("click", function(e) {
+			e.preventDefault();
+			var noticeFileInfo = $(this).attr('id').split(",");
+			var mngmNo = noticeFileInfo[0];
+			var fileNo = noticeFileInfo[1];
+
+			$("#filefrm input[name=mngmNo]").val(mngmNo);
+			$("#filefrm input[name=atchFileNo]").val(fileNo);
+			$("#filefrm").submit();
+
+		});
+
+	});
+	
+	function fnInitCheck() {
+		
+			fnGetUserAgent();
+			$("#frm input[name=macAdrsNm]").val("FF-FF-FF-FF-FF-FF"); 
+			$("#frm input[name=userLocalIp]").val('10.217.233.11');
+			return true;
+
+		
+		
+		if (!fnGetUserAgent()) {
+			alert("PC용 Internet Explorer만 접근 가능합니다.");
+			fnLoginDisabled();
+			return false;
+		}
+
+		if (!fnGetIePlatform()){
+			alert("Internet Explorer 32Bit 에서만 접근 가능합니다.");
+			fnLoginDisabled();
+			return false;
+		}
+
+		if (!kt_bssportal.object) {
+			alert("본 사이트에서 제공하는 인증 모듈이 설치되지 않았습니다.\n\n" + 
+			      "확인을 누르시고 본 사이트에서 제공하는 인증 모듈을 설치하여\n주시길 바랍니다.");
+			location.href = "/plugIn/KOS_Portal_Plugin_setup.exe";
+			fnLoginDisabled();
+			return false;
+		} else {
+			var result = kt_bssportal.GetMacIPAddr('Virtual');
+			
+			if(!result){
+				alert("맥 정보가 정확하지 않습니다. PC를 재부팅후 다시 로그인을 시도하십시오.\n\n" + 
+					  "부팅 후에도 로그인이 되지 않으면 고객센터(1588-3391)로 문의하여 주십시오.");
+				fnLoginDisabled();
+				return false;
+			}
+
+			/* var ipAddrs = kt_bssportal.IpAddr.split('@'); 
+			var fixIpAddr = "";
+			
+			for(var i = 0; i < ipAddrs.length; i++) {	
+				fixIpAddr = ipAddrs[i];
+				break;
+			} */
+
+			
+				$("#frm input[name=userLocalIp]").val('10.217.233.11');
+			
+
+			/*  */
+		
+			if (isEmpty($("#frm input[name=userLocalIp]").val())){
+				alert("IP 정보가 정확하지 않습니다. PC를 재부팅후 다시 로그인을 시도하십시오.\n\n" + 
+				      "부팅 후에도 로그인이 되지 않으면 고객센터(1588-3391)로 문의하여 주십시오.");
+				fnLoginDisabled();
+				return false;
+			} 
+			
+			$("#frm input[name=macAdrsNm]").val(kt_bssportal.MacAddr);
+		}
+
+		
+			if (!fnIsProgRunning('*v3svc*.exe;*asdsvc*.exe;smc.exe')) {
+				alert("V3 에이전트 및 클라이언트 서비스가 실행중이 아닙니다.")
+				$("#frm").attr("action", "/login/resultSecurityModule.csr");
+				$("#frm").submit();
+				return false;
+			}
+		
+
+		
+			if (!fnIsProgRunning('kcdsvc*.exe;cdsaclt*.exe')) {
+				alert("PC 보안 프로그램, DLP 프로그램이 설치되지 않았습니다. 둘중 하나의 프로그램 설치는 필수입니다.")
+				$("#frm").attr("action", "/login/resultSecurityModule.csr");
+				$("#frm").submit();
+				return false;
+			}
+		
+	
+		if ("Y" == "Y"){
+			if (!fnIsDrmRunning()) return false;
+		}
+		
+		return true;
+	}
+
+	function fnLoginDisabled() {
+		$("#frm input[name=plainUserId]").attr("disabled", true);
+		$("#frm input[name=plainScrtNo]").attr("disabled", true);
+		$("#login").attr("disabled", true);
+	}
+
+	function fnLogin() {
+		if (isEmpty($("#frm input[name=plainUserId]").val()) || 
+				($("#frm input[name=plainUserId]").attr("placeholder") == $("#frm input[name=plainUserId]").val())) {
+			alert("ID를 입력하여 주세요");
+			$("#frm input[name=plainUserId]").focus();
+			return;
+		}
+
+		if (isEmpty($("input[name=plainScrtNo]").val()) || 
+				($("input[name=plainScrtNo]").attr("placeholder") == $("#frm input[name=plainScrtNo]").val())) {
+			alert("비밀번호를 입력하여 주세요");
+			$("#frm input[name=plainScrtNo]").focus();
+			return;
+		}
+
+		
+		
+		$("#frm input[name=login]").attr("disabled", "disabled");
+		$("#frm").attr("action", "/login/login.csr");
+		$("#frm").submit();
+	}
+
+	function fnIsProgRunning(program) {
+		var arrprogram = program.split(';');
+		var progRunCd = false;
+		for (var i = 0, c; c = arrprogram[i]; i++) {
+			if (kt_bssportal.IsProgRunning(arrprogram[i]) == true)
+				progRunCd = true;
+		}
+
+		if (progRunCd == true) {
+			return true;
+		}
+		return false;
+	}
+
+	function fnIsDrmRunning(){
+		var drmCheckObject = false;
+		var versionCheck = false;
+		//var drmUserId = "";
+		
+		try {
+	        if (SCGetGrade.object){
+	        	//drmUserId = SCGetGrade.GetUserID();
+		        drmCheckObject = true;
+	        }
+		} 
+	    catch (ex) {
+	    	drmCheckObject = false;
+	    }
+
+	    if (!drmCheckObject) {
+			alert("DRM이 설치되지 않았거나 DRM ActiveX를 설치 하지 않았습니다.");
+			$("#frm").attr("action", "/login/resultSecurityModule.csr");
+			$("#frm").submit();
+    		return false;
+    		
+		/* }else if(isEmpty(drmUserId)){
+			alert("DRM을 로그인 하지 않았습니다.");
+			fnLoginDisabled();
+			return false; */
+			
+		}	
+
+		return true;
+	}
+		
+	function fnGetUserAgent() {
+		var ua = window.navigator.userAgent;
+		if (ua.indexOf("MSIE") > 0 || ua.indexOf("Trident") > 0){
+			var ie6 = navigator.userAgent.toLowerCase().indexOf('msie 6') != -1;
+			var ie7 = navigator.userAgent.toLowerCase().indexOf('msie 7') != -1;
+			var ie8 = navigator.userAgent.toLowerCase().indexOf('msie 8') != -1;
+			
+			if (ie6 || ie7 || ie8){
+				$("#frm input[name=plainUserId]").attr("placeholder", "");
+				$("#frm input[name=plainScrtNo]").attr("placeholder", "");
+			}
+		
+			return true;
+		}
+		return false;
+	}
+
+	function fnGetIePlatform(){
+		if (window.navigator.platform == 'Win32'){
+			return true;
+		}
+		return false;
+	}
+	
+	function fnLoginNoticeGetCookie(name) {
+		var nameOfCookie = name + "=";
+		var x = 0;
+		while (x <= document.cookie.length) {
+			var y = (x + nameOfCookie.length);
+			if (document.cookie.substring(x, y) == nameOfCookie) {
+				if ((endOfCookie = document.cookie.indexOf(";", y)) == -1)
+					endOfCookie = document.cookie.length;
+				return unescape(document.cookie.substring(y, endOfCookie));
+			}
+			x = document.cookie.indexOf(" ", x) + 1;
+			if (x == 0)
+				break;
+		}
+		return "";
+	}
+</script>
+</head>
+<body onload="fnInitCheck();">
+	<OBJECT id="kt_bssportal" name="kt_bssportal" width="0" height="0" classid="CLSID:FFD5C398-315E-4E65-870B-B98831A36375" codebase="#version=1,0,0,5"></OBJECT>
+	<OBJECT id="SCGetGrade"   width="0" height="0" classid="CLSID:95DE89E9-ED44-4C87-A57B-C76FC42532EA"></OBJECT>
+	<!-- <OBJECT ID="DSCOMCSLINK"  width="0" height="0" classid="CLSID:C432875D-EBFD-4E58-957F-454ECA20A354"></OBJECT> -->
+
+	<div id="wrap" class="loginbg">
+		<!--// wrap   -->
+		<!-- //body -->
+		<div id="body" class="loginbody01">
+			<table style="width: 0; border: 0px; margin: 0px auto;">
+				<tr>
+					
+						<td width="0" style="vertical-align: top;">
+							<!-- 공지가있다면 아래 div가 생성된다 시작 -->
+							<div class="login_l mt_30 mr_30">
+								<!-- //공지시작 div -->
+								<div id="loging_wrap">
+									<!-- //공지 아코디언 시작 -->
+									<div class="loging_menu_wrap">
+										<ul class="loging_menu">
+											
+											
+												
+												
+												
+													
+												
+												
+													
+													<!-- 공지 셋트 시작 -->
+													<li id="loggong111"><a href="#" class="title_bar">■ BSS 포탈 공지사항</a>
+														<!-- ul에   style="display: none;" 이 들어가면 닫혀있는상태로 시작돠고 없으면 열려있는상태로 시작됨 -->
+														<ul id="loggong111"
+															>
+															<li>
+																<input type="button" id="loggong111,111" class="button_close_re2 btnNoticeClose" alt="닫기" /> <!-- 공지내용시작 -->
+																<div id="contents" class="mainpop_w6603">
+																	<span style="font-family:맑은 고딕,맑은고딕체"><strong>■ BSS 포탈 공지사항</strong></span><br />
+<br />
+&nbsp;
+																</div> 
+															<!-- 공지내용끝 --> 
+															 
+
+																<div class="pop_topdaych33">
+																	<label class="ml_10">
+																		<input type="checkbox" id="checkboxNo111" name="checkboxNo111" />확인하였으며 오늘 하루 더 이상 보지 않기
+																	</label> 
+																	<input type="button" id="loggong111,111" class="button_close_re btnNoticeClose" alt="닫기" />
+																</div>
+															</li>
+														</ul>
+													</li>
+													<!-- 공지 셋트 끝 -->
+												
+
+											
+										</ul>
+									</div>
+									<!-- 공지 아코디언 끝-->
+								</div>
+								<!-- 공지시작 div//  -->
+								<form id="filefrm" action="/login/file/downloadFile.csr" method="post">
+				        			<input type="hidden" name="mngmNo" value=""/>
+									<input type="hidden" name="atchFileNo" value="" />
+								<input type="hidden" name="CSRFToken" value="142da45f-0a83-4663-bdb0-329bac5e400e"></input>
+</form>
+							</div> <!--  공지가있다면 아래 div가 생성된다 끝 -->
+						</td>
+					
+
+
+					<td width="0" style="vertical-align: top;">
+						<div class="login_r mt_30">
+							<p class="login_rlogo">
+								<img src="/images/common/logo_login.png" alt="KT logo" />
+							</p>
+							<p class="login_rtop">개인정보와 영업정보 보호를 생활화 합니다.!!</p>
+							<!--로그인시작-->
+							<div id="login_search_wrap">
+								<p class="login_rullogo"><img src="/images/common/img_loginlogo_login.png"alt="login logo" /></p>
+								<form id="frm" action="/login/formLogin.csr" method="post">
+									<div class="loging_search">
+								 		<input type="text" name="plainUserId" id="id" class="input2" tabindex=1 maxlength="30" autocomplete="off" placeholder="ID를 입력하여 주십시오." />
+								 		<input type="password" name="plainScrtNo" id="pwd" class="input3" tabindex=2 maxlength="30" autocomplete="off" placeholder="비밀번호를 입력하여 주십시오."/>
+									</div>
+									
+									<input type="button" name="login" id="login" class="button_innerlog_redico" alt="로그인" value="로그인" />
+									
+									
+										
+										
+											<br/>
+											<input type="hidden" name="userLocalIp" value="" />
+											<input type="hidden" name="macAdrsNm" value="" />	
+										
+									
+								<input type="hidden" name="CSRFToken" value="142da45f-0a83-4663-bdb0-329bac5e400e"></input>
+</form>
+							</div>
+							<!--로그인끝-->
+		                	
+		                	
+								
+								
+									<p class="login_r_bu01">
+										<a id="idConfirm">ID확인</a> ㅣ <a id="pwInit">비밀번호 초기화</a>
+									</p>
+									<div class="sun"></div>										
+								
+							
+							
+							
+							
+								
+								
+									<p class="login_r_bu02">문의: KT 만족센터(국번없이) 1588-3391</p>
+								
+							
+							
+							<p class="login_r_bu03">
+								<input type="button" id="btnIdms" class="button_innerh29"alt="아이디 신청" value="아이디 신청" /> 
+								<input type="button" id="btnSecSwDownload" class="button_innerh29" alt="보안프로그램설치" value="보안프로그램설치" /> 
+								<input type="button" id="btnMyIp" class="button_innerh29"  alt="IP문의" value="IP문의" />
+							</p>
+						</div>
+					</td>
+				</tr>
+			</table>
+		</div>
+		<!-- body// -->
+		<!-- //footer -->
+		<div id="foot_login">
+			<div class="footer_wrap_login">
+				<div class="footer_logo_login">
+					<img src="/images/common/img_footerlogo_login.png" alt="KT" />
+				</div>
+				<div class="adress_login">463-711 경기도 성남시 분당구 불정로 90 (정자동206번지) / 사업자등록번호 102-81-42945</div>
+				<div class="copyright_login">COPYRIGHT(c)2013 KT CORP. ALL RIGHTS RESERVED.</div>
+			</div>
+		</div>
+		<!-- footer// -->
+
+		<!--wrap // -->
+	</div>
+</body>
+</html>

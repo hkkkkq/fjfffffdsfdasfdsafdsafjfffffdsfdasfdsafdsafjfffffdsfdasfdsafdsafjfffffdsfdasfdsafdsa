@@ -1,0 +1,706 @@
+Virtual User Script started at : 2016-06-17 16:43:41
+Starting action vuser_init.
+Web Turbo Replay of LoadRunner 11.0.0 for Windows 2008; build 9409 (Jan 11 2012 11:34:16)  	[MsgId: MMSG-27143]
+Run Mode: HTML  	[MsgId: MMSG-26000]
+Run-Time Settings file: "D:\05.checksum\01.Script\AUTH_TEST\\default.cfg"  	[MsgId: MMSG-27141]
+Vuser directory: "D:\05.checksum\01.Script\AUTH_TEST"  	[MsgId: MMSG-27052]
+Vuser output directory: "D:\05.checksum\01.Script\AUTH_TEST"  	[MsgId: MMSG-27050]
+Operating system's current working directory: "D:\05.checksum\01.Script\AUTH_TEST"  	[MsgId: MMSG-27048]
+UTC (GMT) start date/time   : 2016-06-17 07:43:41  	[MsgId: MMSG-26000]
+LOCAL start date/time       : 2016-06-17 16:43:41  	[MsgId: MMSG-26000]
+Local daylight-Savings-Time : No  	[MsgId: MMSG-26000]
+Some of the Run-Time Settings:  	[MsgId: MMSG-27142]
+    Download non-HTML resources: No  	[MsgId: MMSG-26845]
+    Verification checks: No  	[MsgId: MMSG-26845]
+    Convert from/to UTF-8: Yes  	[MsgId: MMSG-26845]
+    Simulate a new user each iteration: No  	[MsgId: MMSG-26845]
+    Non-critical item errors as warnings: Yes  	[MsgId: MMSG-26845]
+    HTTP errors as warnings: No  	[MsgId: MMSG-26845]
+    WinInet replay instead of Sockets: No  	[MsgId: MMSG-26845]
+    HTTP version: 1.1  	[MsgId: MMSG-26845]
+    Keep-Alive HTTP connections: Yes  	[MsgId: MMSG-26845]
+    Max self Meta refresh updates: 2  	[MsgId: MMSG-26844]
+    No proxy is used (direct connection to the Internet)  	[MsgId: MMSG-27171]
+    DNS caching: Yes  	[MsgId: MMSG-26845]
+    Simulate browser cache: No  	[MsgId: MMSG-26845]
+        Cache URLs requiring content (e.g., HTMLs): Yes  	[MsgId: MMSG-26845]
+            Additional URLs requiring content: None  	[MsgId: MMSG-26845]
+        Check for newer versions every visit to the page: No  	[MsgId: MMSG-26845]
+    Page download timeout (sec): 120  	[MsgId: MMSG-26844]
+    Resource Page Timeout is a Warning: No  	[MsgId: MMSG-26845]
+    ContentCheck enabled: Yes  	[MsgId: MMSG-26845]
+    ContentCheck script-level file: "D:\05.checksum\01.Script\AUTH_TEST\LrwiAedScript.xml"  	[MsgId: MMSG-26842]
+    Enable Web Page Breakdown: No  	[MsgId: MMSG-26845]
+    Enable connection data points: Yes  	[MsgId: MMSG-26845]
+    Process socket after reschedule: Yes  	[MsgId: MMSG-26845]
+    Snapshot on error: No  	[MsgId: MMSG-26845]
+    Define each step as a transaction: No  	[MsgId: MMSG-26845]
+    Read beyond Content-Length: No  	[MsgId: MMSG-26845]
+    Parse HTML Content-Type: TEXT  	[MsgId: MMSG-26845]
+    Graph hits per second and HTTP status codes: Yes  	[MsgId: MMSG-26845]
+    Graph response bytes per second: Yes  	[MsgId: MMSG-26845]
+    Graph pages per second: No  	[MsgId: MMSG-26845]
+    Web recorder version ID: 10  	[MsgId: MMSG-26844]
+vuser_init.c(64): WIN-DEIMWP6RXRA
+vuser_init.c(85): Notify: Saving Parameter "IP_Param = 10.217.233.11".
+vuser_init.c(90): web_set_max_html_param_len started  	[MsgId: MMSG-26355]
+vuser_init.c(90): web_set_max_html_param_len was successful  	[MsgId: MMSG-26392]
+vuser_init.c(92): web_reg_save_param started  	[MsgId: MMSG-26355]
+vuser_init.c(92): Registering web_reg_save_param was successful  	[MsgId: MMSG-26390]
+vuser_init.c(95): web_url("main.csr") started  	[MsgId: MMSG-26355]
+vuser_init.c(95): Notify: Parameter Substitution: parameter "배포IP" =  "10.219.6.96"
+vuser_init.c(95): t=442ms: Connecting [0] to host 10.219.6.96:80  	[MsgId: MMSG-26000]
+vuser_init.c(95): t=464ms: Connected socket [0] from 10.217.233.11:15177 to 10.219.6.96:80 in 7 ms  	[MsgId: MMSG-26000]
+vuser_init.c(95): t=465ms: 160-byte request headers for "http://10.219.6.96/main.csr" (RelFrameId=1, Internal ID=1)
+vuser_init.c(95):     GET /main.csr HTTP/1.1\r\n
+vuser_init.c(95):     User-Agent: nexacroplatform14-Win32/2014 (compatible; Mozilla/4.0; MSIE 7.0)\r\n
+vuser_init.c(95):     Accept: */*\r\n
+vuser_init.c(95):     Connection: Keep-Alive\r\n
+vuser_init.c(95):     Host: 10.219.6.96\r\n
+vuser_init.c(95):     \r\n
+vuser_init.c(95): t=493ms: 366-byte response headers for "http://10.219.6.96/main.csr" (RelFrameId=1, Internal ID=1)
+vuser_init.c(95):     HTTP/1.1 302 Moved Temporarily\r\n
+vuser_init.c(95):     Date: Fri, 17 Jun 2016 07:45:01 GMT\r\n
+vuser_init.c(95):     Server: Apache\r\n
+vuser_init.c(95):     X-Powered-By: Servlet 2.5; JBoss-5.0/JBossWeb-2.1\r\n
+vuser_init.c(95):     Set-Cookie: JSESSIONID=hxymK+Dbvpm70tKKNKXgMw__.portSvr31; Path=/; HttpOnly\r\n
+vuser_init.c(95):     Location: http://10.219.6.96/login/formLogin.csr\r\n
+vuser_init.c(95):     Content-Length: 0\r\n
+vuser_init.c(95):     Keep-Alive: timeout=5, max=100\r\n
+vuser_init.c(95):     Connection: Keep-Alive\r\n
+vuser_init.c(95):     Content-Type: text/plain\r\n
+vuser_init.c(95):     \r\n
+vuser_init.c(95): Redirecting "http://10.219.6.96/main.csr" (redirection depth is 0)  	[MsgId: MMSG-26694]
+vuser_init.c(95): To location "http://10.219.6.96/login/formLogin.csr"  	[MsgId: MMSG-26693]
+vuser_init.c(95): t=519ms: Request done "http://10.219.6.96/main.csr"  	[MsgId: MMSG-26000]
+vuser_init.c(95): t=523ms: Connecting [1] to host 10.219.6.96:80  	[MsgId: MMSG-26000]
+vuser_init.c(95): t=532ms: Connected socket [1] from 10.217.233.11:15178 to 10.219.6.96:80 in 8 ms  	[MsgId: MMSG-26000]
+vuser_init.c(95): t=534ms: 226-byte request headers for "http://10.219.6.96/login/formLogin.csr" (RelFrameId=1, Internal ID=2)
+vuser_init.c(95):     GET /login/formLogin.csr HTTP/1.1\r\n
+vuser_init.c(95):     User-Agent: nexacroplatform14-Win32/2014 (compatible; Mozilla/4.0; MSIE 7.0)\r\n
+vuser_init.c(95):     Accept: */*\r\n
+vuser_init.c(95):     Connection: Keep-Alive\r\n
+vuser_init.c(95):     Host: 10.219.6.96\r\n
+vuser_init.c(95):     Cookie: JSESSIONID=hxymK+Dbvpm70tKKNKXgMw__.portSvr31\r\n
+vuser_init.c(95):     \r\n
+vuser_init.c(95): t=775ms: 408-byte response headers for "http://10.219.6.96/login/formLogin.csr" (RelFrameId=1, Internal ID=2)
+vuser_init.c(95):     HTTP/1.1 200 OK\r\n
+vuser_init.c(95):     Date: Fri, 17 Jun 2016 07:45:01 GMT\r\n
+vuser_init.c(95):     Server: Apache\r\n
+vuser_init.c(95):     X-Powered-By: Servlet 2.5; JBoss-5.0/JBossWeb-2.1\r\n
+vuser_init.c(95):     Cache-Control: no-cache\r\n
+vuser_init.c(95):     Cache-Control: no-store\r\n
+vuser_init.c(95):     Pragma: no-cache\r\n
+vuser_init.c(95):     Expires: Thu, 01 Jan 1970 00:00:00 GMT\r\n
+vuser_init.c(95):     X-Frame-Options: SAMEORIGIN\r\n
+vuser_init.c(95):     Content-Language: en-US\r\n
+vuser_init.c(95):     Keep-Alive: timeout=5, max=100\r\n
+vuser_init.c(95):     Connection: Keep-Alive\r\n
+vuser_init.c(95):     Transfer-Encoding: chunked\r\n
+vuser_init.c(95):     Content-Type: text/html;charset=UTF-8\r\n
+vuser_init.c(95):     \r\n
+vuser_init.c(95): t=796ms: 6-byte chunked response overhead for "http://10.219.6.96/login/formLogin.csr" (RelFrameId=1, Internal ID=2)
+vuser_init.c(95):     1ff8\r\n
+vuser_init.c(95): Conversion from "utf-8" (code page 65001, preferred charset=utf-8, Unicode converter name="utf-8") will be performed for response of URL="http://10.219.6.96/login/formLogin.csr"  	[MsgId: MMSG-35184]
+vuser_init.c(95): t=803ms: 2487-byte chunked response body for "http://10.219.6.96/login/formLogin.csr" (RelFrameId=1, Internal ID=2)
+vuser_init.c(95):     <!-- \r\n
+vuser_init.c(95):        NBSS (New Business Support System)  version 1.0\r\n
+vuser_init.c(95):        \r\n
+vuser_init.c(95):        Copyright ⓒ 2015 kt corp. All rights reserved.\r\n
+vuser_init.c(95):        \r\n
+vuser_init.c(95):        This is a proprietary software of kt corp, and you may not use this file except in \r\n
+vuser_init.c(95):        compliance with license agreement with kt corp. Any redistribution or use of this \r\n
+vuser_init.c(95):        software, with or without modification shall be strictly prohibited without prior writt
+vuser_init.c(95):     en \r\n
+vuser_init.c(95):        approval of kt corp, and the copyright notice above does not evidence any actual or \r\n
+vuser_init.c(95):        intended publication of such software. \r\n
+vuser_init.c(95):     \r\n
+vuser_init.c(95):        @Creator 91003296\r\n
+vuser_init.c(95):        @CreateDate 2015. 6. 24\r\n
+vuser_init.c(95):        @LastModifier 91003296\r\n
+vuser_init.c(95):        @LastModifyDate 2015. 6. 24\r\n
+vuser_init.c(95):        @Version 1.0\r\n
+vuser_init.c(95):        @Outline 로그인 페이지\r\n
+vuser_init.c(95):        @Desction \r\n
+vuser_init.c(95):       \r\n
+vuser_init.c(95):     \r\n
+vuser_init.c(95):        ************* 소스 수정 이력 *************************************************\r\n
+vuser_init.c(95):            date          Modifier                  Description\r\n
+vuser_init.c(95):        ******************************************************************************\r\n
+vuser_init.c(95):          2015. 6. 24         91003296             화면 최초 생성\r\n
+vuser_init.c(95):        ******************************************************************************\r\n
+vuser_init.c(95):     -->\r\n
+vuser_init.c(95):     \r\n
+vuser_init.c(95):     \r\n
+vuser_init.c(95):     \r\n
+vuser_init.c(95):     \r\n
+vuser_init.c(95):     \r\n
+vuser_init.c(95):     \r\n
+vuser_init.c(95):     \r\n
+vuser_init.c(95):     \r\n
+vuser_init.c(95):     <!doctype html>\r\n
+vuser_init.c(95):     \r\n
+vuser_init.c(95):     <html lang="ko">\r\n
+vuser_init.c(95):     <head>\r\n
+vuser_init.c(95):     \r\n
+vuser_init.c(95):     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">\r\n
+vuser_init.c(95):     <meta http-equiv="X-UA-Compatible" content="IE=9,chrome=1" />\r\n
+vuser_init.c(95):     <meta content="IE=11.0000" http-equiv="X-UA-Compatible">\r\n
+vuser_init.c(95):     <meta content="IE=10.0000" http-equiv="X-UA-Compatible">\r\n
+vuser_init.c(95):     <meta http-equiv="X-UA-Compatible" content="IE=Edge">\r\n
+vuser_init.c(95):     <meta http-equiv="Cache-Control" content="No-Cache" />\r\n
+vuser_init.c(95):     <meta http-equiv="Pragma" content="No-Cache" />\r\n
+vuser_init.c(95):     <link href="/images/common/favicon.ico" rel="shortcut icon" type="image/x-icon"> \r\n
+vuser_init.c(95):     <link href="/css/master.css" rel="stylesheet" type="text/css" media="all"> \r\n
+vuser_init.c(95):     <title>KOS PORTAL</title>\r\n
+vuser_init.c(95):     <script type="text/javascript" src="/js/jquery/jquery-1.10.2.min.js" charset="utf-8"></scr
+vuser_init.c(95):     ipt>\r\n
+vuser_init.c(95):     <script src="/js/jquery/jquery.common-core.js"></script>\r\n
+vuser_init.c(95):     <script src="/js/ui/ui-common.js" charset="utf-8"></script>\r\n
+vuser_init.c(95):     <script src="/js/jquery/jquery.plugin.js"></script>\r\n
+vuser_init.c(95):     <script src="/js/jquery/jquery.datepick.js"></script>\r\n
+vuser_init.c(95):     <script src="/js/ui/quickmenu.js"></script>\r\n
+vuser_init.c(95):     <script src="/js/jquery/plug-in/shortcut.js"></script>\r\n
+vuser_init.c(95):     <script src="/js/application/app-init.js" type="text/javascript"></script>\r\n
+vuser_init.c(95):     <script src="/js/application/app-common.js" type="text/javascript"></script>\r\n
+vuser_init.c(95):     <script src="/js/message/messages.js"></script>\r\n
+vuser_init.c(95):     <script>\r\n
+vuser_init.c(95):     $(function() {\r\n
+vuser_init.c(95):     \t$('#popupDatepicker01').datepick({showOnFocus:false, showTrigger:'#date1'});\r\n
+vuser_init.c(95):     \t$('#popupDatepicker0
+vuser_init.c(95): t=874ms: 8-byte chunked response overhead for "http://10.219.6.96/login/formLogin.csr" (RelFrameId=1, Internal ID=2)
+vuser_init.c(95):     \r\n
+vuser_init.c(95):     1ff8\r\n
+vuser_init.c(95): t=878ms: 8230-byte chunked response body for "http://10.219.6.96/login/formLogin.csr" (RelFrameId=1, Internal ID=2)
+vuser_init.c(95):     2').datepick({showOnFocus:false, showTrigger:'#date2'});\r\n
+vuser_init.c(95):     \t$('#popupDatepicker01').on('blur', datepickValidate);\r\n
+vuser_init.c(95):     \t$('#popupDatepicker02').on('blur', datepickValidate);\r\n
+vuser_init.c(95):     \t$('#popupDatepicker01').on('click', datepickRemoveHyphen);\r\n
+vuser_init.c(95):     \t$('#popupDatepicker02').on('click', datepickRemoveHyphen);\r\n
+vuser_init.c(95):     \r\n
+vuser_init.c(95):     });\r\n
+vuser_init.c(95):     </script>\r\n
+vuser_init.c(95):     <SCRIPT src="/js/ui/etcinfomenu.js"></SCRIPT>\r\n
+vuser_init.c(95):     \r\n
+vuser_init.c(95):     <script type="text/javascript">\r\n
+vuser_init.c(95):     \tif(window.dialogArguments) {\r\n
+vuser_init.c(95):     \t\talert('세션이 만료가 되었습니다.\\n다시 로그인 하시기 바랍니다.');\r\n
+vuser_init.c(95):     \t\twindow.close();\r\n
+vuser_init.c(95):     \t}\r\n
+vuser_init.c(95):     \r\n
+vuser_init.c(95):     \t/*  */\r\n
+vuser_init.c(95):     \t\r\n
+vuser_init.c(95):     \t/* if (window.opener && window.opener != window) {\r\n
+vuser_init.c(95):     \t\talert('세션이 만료가 되었습니다.\\n다시 로그인 하시기 바랍니다.');\r\n
+vuser_init.c(95):     \t\twindow.opener.location.href = "/";\r\n
+vuser_init.c(95):     \t\twindow.close();\r\n
+vuser_init.c(95):     \t} */\r\n
+vuser_init.c(95):     \t\r\n
+vuser_init.c(95):     \t$(document).ready(function(){\r\n
+vuser_init.c(95):     \t\t/* 아코디언 관련 스크립트 */\r\n
+vuser_init.c(95):     \t\t$('ul').accordion();\r\n
+vuser_init.c(95):     \t\t/* 아코디언 관련 스크립트 */\r\n
+vuser_init.c(95):     \t\t\r\n
+vuser_init.c(95):     \t\t$("#login").on("click", function(e) {\r\n
+vuser_init.c(95):     \t\t\te.preventDefault();\r\n
+vuser_init.c(95):     \t\t\tfnLogin();\r\n
+vuser_init.c(95):     \t\t});\r\n
+vuser_init.c(95):     \r\n
+vuser_init.c(95):     \t\t$("#pwd").keydown(function(key) {\r\n
+vuser_init.c(95):     \t\t\tif (key.keyCode == 13) {\r\n
+vuser_init.c(95):     \t\t\t\tfnLogin();\r\n
+vuser_init.c(95):     \t\t\t}\r\n
+vuser_init.c(95):     \t\t});\r\n
+vuser_init.c(95):     \r\n
+vuser_init.c(95):     \t\t$("#btnSecSwDownload").on("click",function(e) {\r\n
+vuser_init.c(95):     \t\t\tvar securityDownUrl = "http://itsm.ktds.co.kr/kt/link/boardmessage_list.pop?selected
+vuser_init.c(95):     MnuID=OPR00104&brdOid=1376371277395&mnuIndex=10";\r\n
+vuser_init.c(95):     \r\n
+vuser_init.c(95):     \t\t\t\r\n
+vuser_init.c(95):     \t\t\t\r\n
+vuser_init.c(95):     \t\t\twindow.open(securityDownUrl, 'ITSM','width=1080,height=380,scrollbars=yes');\r\n
+vuser_init.c(95):     \t\t\t\r\n
+vuser_init.c(95):     \t\t});\r\n
+vuser_init.c(95):     \r\n
+vuser_init.c(95):     \t\t$("#btnIdms").on("click", function(e) {\r\n
+vuser_init.c(95):     \t\t\te.preventDefault();\r\n
+vuser_init.c(95):     \t\t\twindow.open("https://idms.kt.com", 'IDMS', '');\r\n
+vuser_init.c(95):     \t\t});\r\n
+vuser_init.c(95):     \r\n
+vuser_init.c(95):     \t\t$("#btnMyIp").on("click", function(e) {\r\n
+vuser_init.c(95):     \t\t\te.preventDefault();\r\n
+vuser_init.c(95):     \t\t\twindow.open("http://myip.kt.com", 'IDMS', '');\r\n
+vuser_init.c(95):     \t\t});\r\n
+vuser_init.c(95):     \r\n
+vuser_init.c(95):     \t\t$("#idConfirm").on("click", function(e) {\r\n
+vuser_init.c(95):     \t\t\te.preventDefault();\r\n
+vuser_init.c(95):     \t\t\topencenter01('/login/formIdConfirm.csr', 425, 370);\r\n
+vuser_init.c(95):     \r\n
+vuser_init.c(95):     \t\t});\r\n
+vuser_init.c(95):     \r\n
+vuser_init.c(95):     \t\t$("#pwInit").on("click", function(e) {\r\n
+vuser_init.c(95):     \t\t\te.preventDefault();\r\n
+vuser_init.c(95):     \t\t\topencenter01('/login/formPwdInit.csr', 425, 370);\r\n
+vuser_init.c(95):     \t\t});\r\n
+vuser_init.c(95):     \r\n
+vuser_init.c(95):     \t\t$(".btnNoticeClose").on("click",function(e) {\r\n
+vuser_init.c(95):     \t\t\te.preventDefault();\r\n
+vuser_init.c(95):     \t\t\tvar noticeInfo = $(this).attr('id').split(",");\r\n
+vuser_init.c(95):     \t\t\tvar layerId = noticeInfo[0];\r\n
+vuser_init.c(95):     \t\t\tvar mngmNo = noticeInfo[1];\r\n
+vuser_init.c(95):     \r\n
+vuser_init.c(95):     \t\t\tMM_showHideLayers2(layerId, '', 'hide');\r\n
+vuser_init.c(95):     \r\n
+vuser_init.c(95):     \t\t\tif($("input[name=checkboxNo" + mngmNo + "]:checkbox").is(":checked") ){\r\n
+vuser_init.c(95):     \t\t\t\tvar todayDate = new Date();\r\n
+vuser_init.c(95):     \t\t\t    todayDate.setDate( todayDate.getDate() + 1 );\r\n
+vuser_init.c(95):     \t\t\t    todayDate.setHours(0,0,0,0);\r\n
+vuser_init.c(95):     \t\t\t    document.cookie = layerId + '=' + escape( 'done' ) + '; path=/; expires=' + toda
+vuser_init.c(95):     yDate.toGMTString() + ';'\r\n
+vuser_init.c(95):     \t\t\t}\r\n
+vuser_init.c(95):     \t\t\tvar retUlNodes = document.getElementsByTagName("ul");\r\n
+vuser_init.c(95):     \t\t\tvar displayCd = false;\r\n
+vuser_init.c(95):     \t\t\t\r\n
+vuser_init.c(95):     \t\t\tfor(i=0; retUlNodes.length; i++ ){\r\n
+vuser_init.c(95):     \t\t\t\twith (document) \r\n
+vuser_init.c(95):     \t\t\t\t\r\n
+vuser_init.c(95):     \t\t\t\tif (retUlNodes[i] == null) return;\r\n
+vuser_init.c(95):     \t\t\t\t\r\n
+vuser_init.c(95):     \t\t\t\tif (retUlNodes[i].id != null && retUlNodes[i].id != ""){\r\n
+vuser_init.c(95):     \t\t\t\t\tif (layerId != retUlNodes[i].id && retUlNodes[i].style.display == "none"){\r\n
+vuser_init.c(95):     \t\t\t\t\t\tretUlNodes[i].style.display = '';\r\n
+vuser_init.c(95):     \t\t\t\t  \t\treturn;\r\n
+vuser_init.c(95):     \t\t\t  \t\t}\r\n
+vuser_init.c(95):     \t\t\t \t}\r\n
+vuser_init.c(95):     \t\t\t\t\r\n
+vuser_init.c(95):     \t\t\t}\r\n
+vuser_init.c(95):     \t\t});\r\n
+vuser_init.c(95):     \r\n
+vuser_init.c(95):     \t\t$(".atchFile").on("click", function(e) {\r\n
+vuser_init.c(95):     \t\t\te.preventDefault();\r\n
+vuser_init.c(95):     \t\t\tvar noticeFileInfo = $(this).attr('id').split(",");\r\n
+vuser_init.c(95):     \t\t\tvar mngmNo = noticeFileInfo[0];\r\n
+vuser_init.c(95):     \t\t\tvar fileNo = noticeFileInfo[1];\r\n
+vuser_init.c(95):     \r\n
+vuser_init.c(95):     \t\t\t$("#filefrm input[name=mngmNo]").val(mngmNo);\r\n
+vuser_init.c(95):     \t\t\t$("#filefrm input[name=atchFileNo]").val(fileNo);\r\n
+vuser_init.c(95):     \t\t\t$("#filefrm").submit();\r\n
+vuser_init.c(95):     \r\n
+vuser_init.c(95):     \t\t});\r\n
+vuser_init.c(95):     \r\n
+vuser_init.c(95):     \t});\r\n
+vuser_init.c(95):     \t\r\n
+vuser_init.c(95):     \tfunction fnInitCheck() {\r\n
+vuser_init.c(95):     \t\t\r\n
+vuser_init.c(95):     \t\t\tfnGetUserAgent();\r\n
+vuser_init.c(95):     \t\t\t$("#frm input[name=macAdrsNm]").val("FF-FF-FF-FF-FF-FF"); \r\n
+vuser_init.c(95):     \t\t\t$("#frm input[name=userLocalIp]").val('10.217.233.11');\r\n
+vuser_init.c(95):     \t\t\treturn true;\r\n
+vuser_init.c(95):     \r\n
+vuser_init.c(95):     \t\t\r\n
+vuser_init.c(95):     \t\t\r\n
+vuser_init.c(95):     \t\tif (!fnGetUserAgent()) {\r\n
+vuser_init.c(95):     \t\t\talert("PC용 Internet Explorer만 접근 가능합니다.");\r\n
+vuser_init.c(95):     \t\t\tfnLoginDisabled();\r\n
+vuser_init.c(95):     \t\t\treturn false;\r\n
+vuser_init.c(95):     \t\t}\r\n
+vuser_init.c(95):     \r\n
+vuser_init.c(95):     \t\tif (!fnGetIePlatform()){\r\n
+vuser_init.c(95):     \t\t\talert("Internet Explorer 32Bit 에서만 접근 가능합니다.");\r\n
+vuser_init.c(95):     \t\t\tfnLoginDisabled();\r\n
+vuser_init.c(95):     \t\t\treturn false;\r\n
+vuser_init.c(95):     \t\t}\r\n
+vuser_init.c(95):     \r\n
+vuser_init.c(95):     \t\tif (!kt_bssportal.object) {\r\n
+vuser_init.c(95):     \t\t\talert("본 사이트에서 제공하는 인증 모듈이 설치되지 않았습니다.\\n\\n" + \r\n
+vuser_init.c(95):     \t\t\t      "확인을 누르시고 본 사이트에서 제공하는 인증 모듈을 설치하여\\n주시길 바랍니다
+vuser_init.c(95):     .");\r\n
+vuser_init.c(95):     \t\t\tlocation.href = "/plugIn/KOS_Portal_Plugin_setup.exe";\r\n
+vuser_init.c(95):     \t\t\tfnLoginDisabled();\r\n
+vuser_init.c(95):     \t\t\treturn false;\r\n
+vuser_init.c(95):     \t\t} else {\r\n
+vuser_init.c(95):     \t\t\tvar result = kt_bssportal.GetMacIPAddr('Virtual');\r\n
+vuser_init.c(95):     \t\t\t\r\n
+vuser_init.c(95):     \t\t\tif(!result){\r\n
+vuser_init.c(95):     \t\t\t\talert("맥 정보가 정확하지 않습니다. PC를 재부팅후 다시 로그인을 시도하십시오.\\n\\
+vuser_init.c(95):     n" + \r\n
+vuser_init.c(95):     \t\t\t\t\t  "부팅 후에도 로그인이 되지 않으면 고객센터(1588-3391)로 문의하여 주십시오.");\r
+vuser_init.c(95):     \n
+vuser_init.c(95):     \t\t\t\tfnLoginDisabled();\r\n
+vuser_init.c(95):     \t\t\t\treturn false;\r\n
+vuser_init.c(95):     \t\t\t}\r\n
+vuser_init.c(95):     \r\n
+vuser_init.c(95):     \t\t\t/* var ipAddrs = kt_bssportal.IpAddr.split('@'); \r\n
+vuser_init.c(95):     \t\t\tvar fixIpAddr = "";\r\n
+vuser_init.c(95):     \t\t\t\r\n
+vuser_init.c(95):     \t\t\tfor(var i = 0; i < ipAddrs.length; i++) {\t\r\n
+vuser_init.c(95):     \t\t\t\tfixIpAddr = ipAddrs[i];\r\n
+vuser_init.c(95):     \t\t\t\tbreak;\r\n
+vuser_init.c(95):     \t\t\t} */\r\n
+vuser_init.c(95):     \r\n
+vuser_init.c(95):     \t\t\t\r\n
+vuser_init.c(95):     \t\t\t\t$("#frm input[name=userLocalIp]").val('10.217.233.11');\r\n
+vuser_init.c(95):     \t\t\t\r\n
+vuser_init.c(95):     \r\n
+vuser_init.c(95):     \t\t\t/*  */\r\n
+vuser_init.c(95):     \t\t\r\n
+vuser_init.c(95):     \t\t\tif (isEmpty($("#frm input[name=userLocalIp]").val())){\r\n
+vuser_init.c(95):     \t\t\t\talert("IP 정보가 정확하지 않습니다. PC를 재부팅후 다시 로그인을 시도하십시오.\\n\\
+vuser_init.c(95):     n" + \r\n
+vuser_init.c(95):     \t\t\t\t      "부팅 후에도 로그인이 되지 않으면 고객센터(1588-3391)로 문의하여 주십시오.")
+vuser_init.c(95):     ;\r\n
+vuser_init.c(95):     \t\t\t\tfnLoginDisabled();\r\n
+vuser_init.c(95):     \t\t\t\treturn false;\r\n
+vuser_init.c(95):     \t\t\t} \r\n
+vuser_init.c(95):     \t\t\t\r\n
+vuser_init.c(95):     \t\t\t$("#frm input[name=macAdrsNm]").val(kt_bssportal.MacAddr);\r\n
+vuser_init.c(95):     \t\t}\r\n
+vuser_init.c(95):     \r\n
+vuser_init.c(95):     \t\t\r\n
+vuser_init.c(95):     \t\t\tif (!fnIsProgRunning('*v3svc*.exe;*asdsvc*.exe;smc.exe')) {\r\n
+vuser_init.c(95):     \t\t\t\talert("V3 에이전트 및 클라이언트 서비스가 실행중이 아닙니다.")\r\n
+vuser_init.c(95):     \t\t\t\t$("#frm").attr("action", "/login/resultSecurityModule.csr");\r\n
+vuser_init.c(95):     \t\t\t\t$("#frm").submit();\r\n
+vuser_init.c(95):     \t\t\t\treturn false;\r\n
+vuser_init.c(95):     \t\t\t}\r\n
+vuser_init.c(95):     \t\t\r\n
+vuser_init.c(95):     \r\n
+vuser_init.c(95):     \t\t\r\n
+vuser_init.c(95):     \t\t\tif (!fnIsProgRunning('kcdsvc*.exe;cdsaclt*.exe')) {\r\n
+vuser_init.c(95):     \t\t\t\talert("PC 보안 프로그램, DLP 프로그램이 설치되지 않았습니다. 둘중 하나의 프로그램 
+vuser_init.c(95):     설치는 필수입니다.")\r\n
+vuser_init.c(95):     \t\t\t\t$("#frm").attr("action", "/login/resultSecurityModule.csr");\r\n
+vuser_init.c(95):     \t\t\t\t$("#frm").submit();\r\n
+vuser_init.c(95):     \t\t\t\treturn false;\r\n
+vuser_init.c(95):     \t\t\t}\r\n
+vuser_init.c(95):     \t\t\r\n
+vuser_init.c(95):     \t\r\n
+vuser_init.c(95):     \t\tif ("Y" == "Y"){\r\n
+vuser_init.c(95):     \t\t\tif (!fnIsDrmRunning()) return false;\r\n
+vuser_init.c(95):     \t\t}\r\n
+vuser_init.c(95):     \t\t\r\n
+vuser_init.c(95):     \t\treturn true;\r\n
+vuser_init.c(95):     \t}\r\n
+vuser_init.c(95):     \r\n
+vuser_init.c(95):     \tfunction fnLoginDisabled() {\r\n
+vuser_init.c(95):     \t\t$("#frm input[name=plainUserId]").attr("disabled", true);\r\n
+vuser_init.c(95):     \t\t$("#frm input[name=plainScrtNo]").attr("disabled", true);\r\n
+vuser_init.c(95):     \t\t$("#login").attr("disabled", true);\r\n
+vuser_init.c(95):     \t}\r\n
+vuser_init.c(95):     \r\n
+vuser_init.c(95):     \tfunction fnLogin() {\r\n
+vuser_init.c(95):     \t\tif (isEmpty($("#frm input[name=plainUserId]").val()) || \r\n
+vuser_init.c(95):     \t\t\t\t($("#frm input[name=plainUserId]").attr("placeholder") == $("#frm input[name=plain
+vuser_init.c(95):     UserId]").val())) {\r\n
+vuser_init.c(95):     \t\t\talert("ID를 입력하여 주세요");\r\n
+vuser_init.c(95):     \t\t\t$("#frm input[name=plainUserId]").focus();\r\n
+vuser_init.c(95):     \t\t\treturn;\r\n
+vuser_init.c(95):     \t\t}\r\n
+vuser_init.c(95):     \r\n
+vuser_init.c(95):     \t\tif (isEmpty($("input[name=plainScrtNo]").val()) || \r\n
+vuser_init.c(95):     \t\t\t\t($("input[name=plainScrtNo]").attr("placeholder") == $("#frm input[name=plainScrtN
+vuser_init.c(95):     o]").val())) {\r\n
+vuser_init.c(95):     \t\t\talert("비밀번호를 입력하여 주세요");\r\n
+vuser_init.c(95):     \t\t\t$("#frm input[name=plainScrtNo]").focus();\r\n
+vuser_init.c(95):     \t\t\treturn;\r\n
+vuser_init.c(95):     \t\t}\r\n
+vuser_init.c(95):     \r\n
+vuser_init.c(95):     \t\t\r\n
+vuser_init.c(95):     \t\t\r\n
+vuser_init.c(95):     \t\t$("#frm input[name=login]").attr("disabled", "disabled");\r\n
+vuser_init.c(95):     \t\t$("#frm").attr("action", "/login/login.csr");\r\n
+vuser_init.c(95):     \t\t$("#frm").submit();\r\n
+vuser_init.c(95):     \t}\r\n
+vuser_init.c(95):     \r\n
+vuser_init.c(95):     \tfunction fnIsProgRunning(program) {\r\n
+vuser_init.c(95):     \t\tvar arrprogram = program.split(';');\r\n
+vuser_init.c(95):     \t\tvar progRunCd = false;\r\n
+vuser_init.c(95):     \t\tfor (var i = 0, c; c = arrprogram[i]; i++) {\r\n
+vuser_init.c(95):     \t\t\tif (kt_bssportal.IsProgRunning(arrprogram[i]) == true)\r\n
+vuser_init.c(95):     \t\t\t\tprogRunCd = true;\r\n
+vuser_init.c(95):     \t\t}\r\n
+vuser_init.c(95):     \r\n
+vuser_init.c(95):     \t\tif (progRunCd == true) {\r\n
+vuser_init.c(95):     \t\t\treturn true;\r\n
+vuser_init.c(95):     \t\t}\r\n
+vuser_init.c(95):     \t\treturn false;\r\n
+vuser_init.c(95):     \t}\r\n
+vuser_init.c(95):     \r\n
+vuser_init.c(95):     \tfunction fnIsDrmRunning(){\r\n
+vuser_init.c(95):     \t\tvar drmCheckObject = false;\r\n
+vuser_init.c(95):     \t\tvar versionCheck = false;\r\n
+vuser_init.c(95):     \t\t//var drmUserId = "";\r\n
+vuser_init.c(95):     \t\t\r\n
+vuser_init.c(95):     \t\ttry {\r\n
+vuser_init.c(95):     \t        if (SCGetGrade.object){\r\n
+vuser_init.c(95):     \t        \t//drmUserId = SCGetGrade.GetUserID();\r\n
+vuser_init.c(95):     \t\t        drmCheckObject = true;\r\n
+vuser_init.c(95):     \t        }\r\n
+vuser_init.c(95):     \t\t} \r\n
+vuser_init.c(95):     \t    catch (ex) {\r\n
+vuser_init.c(95):     \t    \tdrmCheckObject = false;\r\n
+vuser_init.c(95):     \t    }\r\n
+vuser_init.c(95):     \r\n
+vuser_init.c(95):     \t    if (!drmCheckObject) {\r\n
+vuser_init.c(95):     \t\t\talert("DRM이 설치되지 않았거나 DRM ActiveX를 설치 하지 않았습니다.");\r\n
+vuser_init.c(95):     \t\t\t$("#frm").attr("action", "/login/resultSecurityModule.csr");\r\n
+vuser_init.c(95):     \t\t\t$("#frm").submit();\r\n
+vuser_init.c(95):         \t\treturn false;\r\n
+vuser_init.c(95):         \t\t\r\n
+vuser_init.c(95):     \t\t/* }else if(isEmpty(drmUserId)){\r\n
+vuser_init.c(95):     \t\t\talert("DRM을 로그인 하지 않았습니다.");\r\n
+vuser_init.c(95):     \t\t\tfnLoginDisabled();\r\n
+vuser_init.c(95):     \t\t\treturn false; */\r\n
+vuser_init.c(95):     \t\t\t\r\n
+vuser_init.c(95):     \t\t}\t\r\n
+vuser_init.c(95):     \r\n
+vuser_init.c(95):     \t\treturn true;\r\n
+vuser_init.c(95):     \t}\r\n
+vuser_init.c(95):     \t\t\r\n
+vuser_init.c(95):     \tfunction fnGetUserAgent() {\r\n
+vuser_init.c(95):     \t\tvar ua = window.navigator.userAgent;\r\n
+vuser_init.c(95):     \t\tif (ua.indexOf("MSIE") > 0 || ua.indexOf("Trident") > 0){\r\n
+vuser_init.c(95):     \t\t\tvar ie6 = navigator.userAgent.toLowerCase().indexOf('msie 6') != -1;\r\n
+vuser_init.c(95):     \t\t\tvar ie7 = navigator.userAgent.toLowerCase().indexOf('msie 7') != -1;\r\n
+vuser_init.c(95):     \t\t\tvar ie8 = navigator.userAgent.toLowerCase().indexOf('msie 8') != -1;\r\n
+vuser_init.c(95):     \t\t\t\r\n
+vuser_init.c(95):     \t\t\tif (ie6 || ie7 || ie8){\r\n
+vuser_init.c(95):     \t\t\t\t$("#frm input[name=plainUserId]").attr("placeholder", "");\r\n
+vuser_init.c(95):     \t\t\t\t$("#frm input[name=plainScrtNo]").attr("placeholder", "");\r\n
+vuser_init.c(95):     \t\t\t}\r\n
+vuser_init.c(95):     \t\t\r\n
+vuser_init.c(95):     \t\t\treturn true;\r\n
+vuser_init.c(95):     \t\t}\r\n
+vuser_init.c(95):     \t\treturn false;\r\n
+vuser_init.c(95):     \t}\r\n
+vuser_init.c(95):     \r\n
+vuser_init.c(95):     \tfunction fnGetIePlatform(){\r\n
+vuser_init.c(95):     \t\tif (window.navigator.platform == 'Win32'){\r\n
+vuser_init.c(95):     \t\t\treturn true;\r\n
+vuser_init.c(95):     \t\t}\r\n
+vuser_init.c(95):     \t\treturn false;\r\n
+vuser_init.c(95):     \t}\r\n
+vuser_init.c(95):     \t\r\n
+vuser_init.c(95):     \tfunction fnLoginNoticeGetCookie(name) {\r\n
+vuser_init.c(95):     \t\tvar nameOfCookie = na
+vuser_init.c(95): t=1190ms: 7-byte chunked response overhead for "http://10.219.6.96/login/formLogin.csr" (RelFrameId=1, Internal ID=2)
+vuser_init.c(95):     \r\n
+vuser_init.c(95):     40d\r\n
+vuser_init.c(95): t=1193ms: 7-byte chunked response overhead for "http://10.219.6.96/login/formLogin.csr" (RelFrameId=1, Internal ID=2)
+vuser_init.c(95):     \r\n
+vuser_init.c(95):     0\r\n
+vuser_init.c(95):     \r\n
+vuser_init.c(95): t=1197ms: 6030-byte chunked response body for "http://10.219.6.96/login/formLogin.csr" (RelFrameId=1, Internal ID=2)
+vuser_init.c(95):     me + "=";\r\n
+vuser_init.c(95):     \t\tvar x = 0;\r\n
+vuser_init.c(95):     \t\twhile (x <= document.cookie.length) {\r\n
+vuser_init.c(95):     \t\t\tvar y = (x + nameOfCookie.length);\r\n
+vuser_init.c(95):     \t\t\tif (document.cookie.substring(x, y) == nameOfCookie) {\r\n
+vuser_init.c(95):     \t\t\t\tif ((endOfCookie = document.cookie.indexOf(";", y)) == -1)\r\n
+vuser_init.c(95):     \t\t\t\t\tendOfCookie = document.cookie.length;\r\n
+vuser_init.c(95):     \t\t\t\treturn unescape(document.cookie.substring(y, endOfCookie));\r\n
+vuser_init.c(95):     \t\t\t}\r\n
+vuser_init.c(95):     \t\t\tx = document.cookie.indexOf(" ", x) + 1;\r\n
+vuser_init.c(95):     \t\t\tif (x == 0)\r\n
+vuser_init.c(95):     \t\t\t\tbreak;\r\n
+vuser_init.c(95):     \t\t}\r\n
+vuser_init.c(95):     \t\treturn "";\r\n
+vuser_init.c(95):     \t}\r\n
+vuser_init.c(95):     </script>\r\n
+vuser_init.c(95):     </head>\r\n
+vuser_init.c(95):     <body onload="fnInitCheck();">\r\n
+vuser_init.c(95):     \t<OBJECT id="kt_bssportal" name="kt_bssportal" width="0" height="0" classid="CLSID:FFD5C3
+vuser_init.c(95):     98-315E-4E65-870B-B98831A36375" codebase="#version=1,0,0,5"></OBJECT>\r\n
+vuser_init.c(95):     \t<OBJECT id="SCGetGrade"   width="0" height="0" classid="CLSID:95DE89E9-ED44-4C87-A57B-C7
+vuser_init.c(95):     6FC42532EA"></OBJECT>\r\n
+vuser_init.c(95):     \t<!-- <OBJECT ID="DSCOMCSLINK"  width="0" height="0" classid="CLSID:C432875D-EBFD-4E58-95
+vuser_init.c(95):     7F-454ECA20A354"></OBJECT> -->\r\n
+vuser_init.c(95):     \r\n
+vuser_init.c(95):     \t<div id="wrap" class="loginbg">\r\n
+vuser_init.c(95):     \t\t<!--// wrap   -->\r\n
+vuser_init.c(95):     \t\t<!-- //body -->\r\n
+vuser_init.c(95):     \t\t<div id="body" class="loginbody01">\r\n
+vuser_init.c(95):     \t\t\t<table style="width: 0; border: 0px; margin: 0px auto;">\r\n
+vuser_init.c(95):     \t\t\t\t<tr>\r\n
+vuser_init.c(95):     \t\t\t\t\t\r\n
+vuser_init.c(95):     \t\t\t\t\t\t<td width="0" style="vertical-align: top;">\r\n
+vuser_init.c(95):     \t\t\t\t\t\t\t<!-- 공지가있다면 아래 div가 생성된다 시작 -->\r\n
+vuser_init.c(95):     \t\t\t\t\t\t\t<div class="login_l mt_30 mr_30">\r\n
+vuser_init.c(95):     \t\t\t\t\t\t\t\t<!-- //공지시작 div -->\r\n
+vuser_init.c(95):     \t\t\t\t\t\t\t\t<div id="loging_wrap">\r\n
+vuser_init.c(95):     \t\t\t\t\t\t\t\t\t<!-- //공지 아코디언 시작 -->\r\n
+vuser_init.c(95):     \t\t\t\t\t\t\t\t\t<div class="loging_menu_wrap">\r\n
+vuser_init.c(95):     \t\t\t\t\t\t\t\t\t\t<ul class="loging_menu">\r\n
+vuser_init.c(95):     \t\t\t\t\t\t\t\t\t\t\t\r\n
+vuser_init.c(95):     \t\t\t\t\t\t\t\t\t\t\t\r\n
+vuser_init.c(95):     \t\t\t\t\t\t\t\t\t\t\t\t\r\n
+vuser_init.c(95):     \t\t\t\t\t\t\t\t\t\t\t\t\r\n
+vuser_init.c(95):     \t\t\t\t\t\t\t\t\t\t\t\t\r\n
+vuser_init.c(95):     \t\t\t\t\t\t\t\t\t\t\t\t\t\r\n
+vuser_init.c(95):     \t\t\t\t\t\t\t\t\t\t\t\t\r\n
+vuser_init.c(95):     \t\t\t\t\t\t\t\t\t\t\t\t\r\n
+vuser_init.c(95):     \t\t\t\t\t\t\t\t\t\t\t\t\t\r\n
+vuser_init.c(95):     \t\t\t\t\t\t\t\t\t\t\t\t\t<!-- 공지 셋트 시작 -->\r\n
+vuser_init.c(95):     \t\t\t\t\t\t\t\t\t\t\t\t\t<li id="loggong111"><a href="#" class="title_bar">■ BSS 포탈 공
+vuser_init.c(95):     지사항</a>\r\n
+vuser_init.c(95):     \t\t\t\t\t\t\t\t\t\t\t\t\t\t<!-- ul에   style="display: none;" 이 들어가면 닫혀있는상태로 
+vuser_init.c(95):     시작돠고 없으면 열려있는상태로 시작됨 -->\r\n
+vuser_init.c(95):     \t\t\t\t\t\t\t\t\t\t\t\t\t\t<ul id="loggong111"\r\n
+vuser_init.c(95):     \t\t\t\t\t\t\t\t\t\t\t\t\t\t\t>\r\n
+vuser_init.c(95):     \t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<li>\r\n
+vuser_init.c(95):     \t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<input type="button" id="loggong111,111" class="button_clo
+vuser_init.c(95):     se_re2 btnNoticeClose" alt="닫기" /> <!-- 공지내용시작 -->\r\n
+vuser_init.c(95):     \t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<div id="contents" class="mainpop_w6603">\r\n
+vuser_init.c(95):     \t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<span style="font-family:맑은 고딕,맑은고딕체"><strong>■
+vuser_init.c(95):      BSS 포탈 공지사항</strong></span><br />\r\n
+vuser_init.c(95):     <br />\r\n
+vuser_init.c(95):     &nbsp;\r\n
+vuser_init.c(95):     \t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</div> \r\n
+vuser_init.c(95):     \t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<!-- 공지내용끝 --> \r\n
+vuser_init.c(95):     \t\t\t\t\t\t\t\t\t\t\t\t\t\t\t \r\n
+vuser_init.c(95):     \r\n
+vuser_init.c(95):     \t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<div class="pop_topdaych33">\r\n
+vuser_init.c(95):     \t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<label class="ml_10">\r\n
+vuser_init.c(95):     \t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<input type="checkbox" id="checkboxNo111" name="checkb
+vuser_init.c(95):     oxNo111" />확인하였으며 오늘 하루 더 이상 보지 않기\r\n
+vuser_init.c(95):     \t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</label> \r\n
+vuser_init.c(95):     \t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<input type="button" id="loggong111,111" class="button_c
+vuser_init.c(95):     lose_re btnNoticeClose" alt="닫기" />\r\n
+vuser_init.c(95):     \t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</div>\r\n
+vuser_init.c(95):     \t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</li>\r\n
+vuser_init.c(95):     \t\t\t\t\t\t\t\t\t\t\t\t\t\t</ul>\r\n
+vuser_init.c(95):     \t\t\t\t\t\t\t\t\t\t\t\t\t</li>\r\n
+vuser_init.c(95):     \t\t\t\t\t\t\t\t\t\t\t\t\t<!-- 공지 셋트 끝 -->\r\n
+vuser_init.c(95):     \t\t\t\t\t\t\t\t\t\t\t\t\r\n
+vuser_init.c(95):     \r\n
+vuser_init.c(95):     \t\t\t\t\t\t\t\t\t\t\t\r\n
+vuser_init.c(95):     \t\t\t\t\t\t\t\t\t\t</ul>\r\n
+vuser_init.c(95):     \t\t\t\t\t\t\t\t\t</div>\r\n
+vuser_init.c(95):     \t\t\t\t\t\t\t\t\t<!-- 공지 아코디언 끝-->\r\n
+vuser_init.c(95):     \t\t\t\t\t\t\t\t</div>\r\n
+vuser_init.c(95):     \t\t\t\t\t\t\t\t<!-- 공지시작 div//  -->\r\n
+vuser_init.c(95):     \t\t\t\t\t\t\t\t<form id="filefrm" action="/login/file/downloadFile.csr" method="post">\r\n
+vuser_init.c(95):     \t\t\t\t        \t\t\t<input type="hidden" name="mngmNo" value=""/>\r\n
+vuser_init.c(95):     \t\t\t\t\t\t\t\t\t<input type="hidden" name="atchFileNo" value="" />\r\n
+vuser_init.c(95):     \t\t\t\t\t\t\t\t<input type="hidden" name="CSRFToken" value="1c7ddf8f-7bd7-458e-b87b-de51d
+vuser_init.c(95):     cb68197"></input>\n
+vuser_init.c(95):     </form>\r\n
+vuser_init.c(95):     \t\t\t\t\t\t\t</div> <!--  공지가있다면 아래 div가 생성된다 끝 -->\r\n
+vuser_init.c(95):     \t\t\t\t\t\t</td>\r\n
+vuser_init.c(95):     \t\t\t\t\t\r\n
+vuser_init.c(95):     \r\n
+vuser_init.c(95):     \r\n
+vuser_init.c(95):     \t\t\t\t\t<td width="0" style="vertical-align: top;">\r\n
+vuser_init.c(95):     \t\t\t\t\t\t<div class="login_r mt_30">\r\n
+vuser_init.c(95):     \t\t\t\t\t\t\t<p class="login_rlogo">\r\n
+vuser_init.c(95):     \t\t\t\t\t\t\t\t<img src="/images/common/logo_login.png" alt="KT logo" />\r\n
+vuser_init.c(95):     \t\t\t\t\t\t\t</p>\r\n
+vuser_init.c(95):     \t\t\t\t\t\t\t<p class="login_rtop">개인정보와 영업정보 보호를 생활화 합니다.!!</p>\r\n
+vuser_init.c(95):     \t\t\t\t\t\t\t<!--로그인시작-->\r\n
+vuser_init.c(95):     \t\t\t\t\t\t\t<div id="login_search_wrap">\r\n
+vuser_init.c(95):     \t\t\t\t\t\t\t\t<p class="login_rullogo"><img src="/images/common/img_loginlogo_login.png"
+vuser_init.c(95):     alt="login logo" /></p>\r\n
+vuser_init.c(95):     \t\t\t\t\t\t\t\t<form id="frm" action="/login/formLogin.csr" method="post">\r\n
+vuser_init.c(95):     \t\t\t\t\t\t\t\t\t<div class="loging_search">\r\n
+vuser_init.c(95):     \t\t\t\t\t\t\t\t \t\t<input type="text" name="plainUserId" id="id" class="input2" tabindex
+vuser_init.c(95):     =1 maxlength="30" autocomplete="off" placeholder="ID를 입력하여 주십시오." />\r\n
+vuser_init.c(95):     \t\t\t\t\t\t\t\t \t\t<input type="password" name="plainScrtNo" id="pwd" class="input3" tab
+vuser_init.c(95):     index=2 maxlength="30" autocomplete="off" placeholder="비밀번호를 입력하여 주십시오."/>\r\n
+vuser_init.c(95):     \t\t\t\t\t\t\t\t\t</div>\r\n
+vuser_init.c(95):     \t\t\t\t\t\t\t\t\t\r\n
+vuser_init.c(95):     \t\t\t\t\t\t\t\t\t<input type="button" name="login" id="login" class="button_innerlog_redi
+vuser_init.c(95):     co" alt="로그인" value="로그인" />\r\n
+vuser_init.c(95):     \t\t\t\t\t\t\t\t\t\r\n
+vuser_init.c(95):     \t\t\t\t\t\t\t\t\t\r\n
+vuser_init.c(95):     \t\t\t\t\t\t\t\t\t\t\r\n
+vuser_init.c(95):     \t\t\t\t\t\t\t\t\t\t\r\n
+vuser_init.c(95):     \t\t\t\t\t\t\t\t\t\t\t<br/>\r\n
+vuser_init.c(95):     \t\t\t\t\t\t\t\t\t\t\t<input type="hidden" name="userLocalIp" value="" />\r\n
+vuser_init.c(95):     \t\t\t\t\t\t\t\t\t\t\t<input type="hidden" name="macAdrsNm" value="" />\t\r\n
+vuser_init.c(95):     \t\t\t\t\t\t\t\t\t\t\r\n
+vuser_init.c(95):     \t\t\t\t\t\t\t\t\t\r\n
+vuser_init.c(95):     \t\t\t\t\t\t\t\t<input type="hidden" name="CSRFToken" value="1c7ddf8f-7bd7-458e-b87b-de51d
+vuser_init.c(95):     cb68197"></input>\n
+vuser_init.c(95):     </form>\r\n
+vuser_init.c(95):     \t\t\t\t\t\t\t</div>\r\n
+vuser_init.c(95):     \t\t\t\t\t\t\t<!--로그인끝-->\r\n
+vuser_init.c(95):     \t\t                \t\r\n
+vuser_init.c(95):     \t\t                \t\r\n
+vuser_init.c(95):     \t\t\t\t\t\t\t\t\r\n
+vuser_init.c(95):     \t\t\t\t\t\t\t\t\r\n
+vuser_init.c(95):     \t\t\t\t\t\t\t\t\t<p class="login_r_bu01">\r\n
+vuser_init.c(95):     \t\t\t\t\t\t\t\t\t\t<a id="idConfirm">ID확인</a> ㅣ <a id="pwInit">비밀번호 초기화</a>\r\n
+vuser_init.c(95):     \t\t\t\t\t\t\t\t\t</p>\r\n
+vuser_init.c(95):     \t\t\t\t\t\t\t\t\t<div class="sun"></div>\t\t\t\t\t\t\t\t\t\t\r\n
+vuser_init.c(95):     \t\t\t\t\t\t\t\t\r\n
+vuser_init.c(95):     \t\t\t\t\t\t\t\r\n
+vuser_init.c(95):     \t\t\t\t\t\t\t\r\n
+vuser_init.c(95):     \t\t\t\t\t\t\t\r\n
+vuser_init.c(95):     \t\t\t\t\t\t\t\r\n
+vuser_init.c(95):     \t\t\t\t\t\t\t\t\r\n
+vuser_init.c(95):     \t\t\t\t\t\t\t\t\r\n
+vuser_init.c(95):     \t\t\t\t\t\t\t\t\t<p class="login_r_bu02">문의: KT 만족센터(국번없이) 1588-3391</p>\r\n
+vuser_init.c(95):     \t\t\t\t\t\t\t\t\r\n
+vuser_init.c(95):     \t\t\t\t\t\t\t\r\n
+vuser_init.c(95):     \t\t\t\t\t\t\t\r\n
+vuser_init.c(95):     \t\t\t\t\t\t\t<p class="login_r_bu03">\r\n
+vuser_init.c(95):     \t\t\t\t\t\t\t\t<input type="button" id="btnIdms" class="button_innerh29"alt="아이디 신청"
+vuser_init.c(95):      value="아이디 신청" /> \r\n
+vuser_init.c(95):     \t\t\t\t\t\t\t\t<input type="button" id="btnSecSwDownload" class="button_innerh29" alt="보
+vuser_init.c(95):     안프로그램설치" value="보안프로그램설치" /> \r\n
+vuser_init.c(95):     \t\t\t\t\t\t\t\t<input type="button" id="btnMyIp" class="button_innerh29"  alt="IP문의" va
+vuser_init.c(95):     lue="IP문의" />\r\n
+vuser_init.c(95):     \t\t\t\t\t\t\t</p>\r\n
+vuser_init.c(95):     \t\t\t\t\t\t</div>\r\n
+vuser_init.c(95):     \t\t\t\t\t</td>\r\n
+vuser_init.c(95):     \t\t\t\t</tr>\r\n
+vuser_init.c(95):     \t\t\t</table>\r\n
+vuser_init.c(95):     \t\t</div>\r\n
+vuser_init.c(95):     \t\t<!-- body// -->\r\n
+vuser_init.c(95):     \t\t<!-- //footer -->\r\n
+vuser_init.c(95):     \t\t<div id="foot_login">\r\n
+vuser_init.c(95):     \t\t\t<div class="footer_wrap_login">\r\n
+vuser_init.c(95):     \t\t\t\t<div class="footer_logo_login">\r\n
+vuser_init.c(95):     \t\t\t\t\t<img src="/images/common/img_footerlogo_login.png" alt="KT" />\r\n
+vuser_init.c(95):     \t\t\t\t</div>\r\n
+vuser_init.c(95):     \t\t\t\t<div class="adress_login">463-711 경기도 성남시 분당구 불정로 90 (정자동206번지) /
+vuser_init.c(95):      사업자등록번호 102-81-42945</div>\r\n
+vuser_init.c(95):     \t\t\t\t<div class="copyright_login">COPYRIGHT(c)2013 KT CORP. ALL RIGHTS RESERVED.</div>\r
+vuser_init.c(95):     \n
+vuser_init.c(95):     \t\t\t</div>\r\n
+vuser_init.c(95):     \t\t</div>\r\n
+vuser_init.c(95):     \t\t<!-- footer// -->\r\n
+vuser_init.c(95):     \r\n
+vuser_init.c(95):     \t\t<!--wrap // -->\r\n
+vuser_init.c(95):     \t</div>\r\n
+vuser_init.c(95):     </body>\r\n
+vuser_init.c(95):     </html>\r\n
+vuser_init.c(95): Notify: Saving Parameter "aaa = 1c7ddf8f-7bd7-458e-b87b-de51dcb68197".
+vuser_init.c(95): t=1396ms: Request done "http://10.219.6.96/login/formLogin.csr"  	[MsgId: MMSG-26000]
+vuser_init.c(95): web_url("main.csr") was successful, 17405 body bytes, 774 header bytes, 28 chunking overhead bytes  	[MsgId: MMSG-26385]
+vuser_init.c(116): web_submit_data("login.csr") started  	[MsgId: MMSG-26355]
+vuser_init.c(116): Notify: Parameter Substitution: parameter "배포IP" =  "10.219.6.96"
+vuser_init.c(116): Notify: Parameter Substitution: parameter "배포IP" =  "10.219.6.96"
+vuser_init.c(116): Notify: Parameter Substitution: parameter "login_ID" =  "94058992"
+vuser_init.c(116): Notify: Parameter Substitution: parameter "IP_Param" =  "10.217.233.11"
+vuser_init.c(116): Notify: Parameter Substitution: parameter "aaa" =  "1c7ddf8f-7bd7-458e-b87b-de51dcb68197"
+vuser_init.c(116): t=1527ms: Already connected [0] to 10.219.6.96:80  	[MsgId: MMSG-26000]
+vuser_init.c(116): t=1528ms: 342-byte request headers for "http://10.219.6.96/login/login.csr" (RelFrameId=1, Internal ID=3)
+vuser_init.c(116):     POST /login/login.csr HTTP/1.1\r\n
+vuser_init.c(116):     Content-Type: application/x-www-form-urlencoded\r\n
+vuser_init.c(116):     Referer: http://10.219.6.96/login/formLogin.csr\r\n
+vuser_init.c(116):     User-Agent: nexacroplatform14-Win32/2014 (compatible; Mozilla/4.0; MSIE 7.0)\r\n
+vuser_init.c(116):     Accept: */*\r\n
+vuser_init.c(116):     Connection: Keep-Alive\r\n
+vuser_init.c(116):     Host: 10.219.6.96\r\n
+vuser_init.c(116):     Cookie: JSESSIONID=hxymK+Dbvpm70tKKNKXgMw__.portSvr31\r\n
+vuser_init.c(116):     Content-Length: 144\r\n
+vuser_init.c(116):     \r\n
+vuser_init.c(116): t=1554ms: 144-byte request body for "http://10.219.6.96/login/login.csr" (RelFrameId=1, Internal ID=3)
+vuser_init.c(116):     plainUserId=94058992&plainScrtNo=New1234%21&userLocalIp=10.217.233.11&macAdrsNm=FF-FF-FF-F
+vuser_init.c(116):     F-FF-FF&CSRFToken=1c7ddf8f-7bd7-458e-b87b-de51dcb68197
+Abort was called from an action.
+vuser_init.c(116): t=1939ms: Closed connection [0] to 10.219.6.96:80 after completing 1 request  	[MsgId: MMSG-26000]
+vuser_init.c(116): t=1941ms: Closed connection [1] to 10.219.6.96:80 after completing 1 request  	[MsgId: MMSG-26000]
+HTML-Mode memory management statistics: Reusable=1, NonReusable=0, CsMemBlockSize=4096, checks disabled  	[MsgId: MMSG-26000]
+Vuser 0 (thread 3772), ended OK."

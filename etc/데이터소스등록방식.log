@@ -1,0 +1,32 @@
+<URL 등록 방식>
+1. 컨트롤 주체: DB
+2. 동작 방식
+- Fail-Over 가능
+- Load-balance 가능(특정 조건 필요, Oracle 권고하지 않음)
+- Transaction Fail-Over 는 TAF(Transparent Application Failover) 방식의 연결 방식만 가능(TAF 방식 구성 시 Oracle Client 구성 필요)
+- 일반적으로 CTF 방식을 주로 사용함(Thin 드라이브만 있으면 됨)
+- URL list에 등록한 순서대로 DB를 사용. 주로 fail-over 구성 시에 사용되며 여러 대의 AP 서버가 DB 접속 시 URL list 중 첫번째 DB 로 접속 이 몰릴 수 있음
+- 이를 방지하기 위해 AP 서버 별로 URL list 순서를 섞어서 설정해야 DB 부하를 분산 시킬 수 있으며 이럴 경우 AP 서버별로 환경 설정이 상이한 단점이 있음
+3. DB 이름
+- Global Service 명 설정
+
+<Cluster-DS(JEUS),Multi datasource (WebLogic),명칭 까먹음(JBOSS)>
+1. 컨트롤 주체: WAS
+2. 동작 방식
+- Fail-Over 가능
+- Load-balance 가능
+- TAF 구성 없이 CTF 방식으로도 Transaction Fail-Over 가능
+- DB Connection pool의 관리를 WAS에서 해주기 때문에 부하 분산, Fail-Over를 좀 더 안정적으로 구성 가능
+- DB Connection pool 관리 기능을 WAS 벤더 사에서 구현하기 때문에 Oracle에서 제공하는 기능 이외에 부가적인 기능 활용 가능
+- URL List 등록 순이 아닌 WAS 벤더사에서 구현한 로드밸런싱 기능을 선택 가능
+3. DB 이름
+- 각 DB 서버별 인스턴스 명 또는 SID 설정
+
+
+==> 결론
+URL 방식의 경우 CTF(Connect Time Failover)로 커넥션 별로 Failover하지만, Cluster-DS 경우 데이터소스 단위로 Failover하기 때문에 더 효율적이다.
+그러기 위해서는 RAC(TAC) 인스턴스의 FAIL을 감지하기 위해서 check-query와 check-query-period를 설정이 필수적이다.
+Load Balancing 여부 true로 설정하면 Use Failback 설정은 아무런 기능을 하지 않는다.
+즉, Cluster-DS RAC(TAC) 인스턴스를 고루 사용한다는 이점과 (DB <= AP 개수가 많은 게 일반적이라 크게 차이 없고)
+데이터소스 단위로 Failover하기 때문에 더 효율적이지만,
+한번 Failback된 데이터소스는 WAS 기동 전까지 사용할 수 없는 단점이 있다. 

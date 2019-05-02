@@ -1,0 +1,25 @@
+select now();
+select current_timestamp;
+select current_date;
+
+
+alter table tb_img_reg_info
+add column test_field_dt timestamp null
+
+alter table tb_img_reg_info
+alter column test_field_dt set default current_timestamp;
+
+alter table tb_img_reg_info
+add column test_field_dt2 timestamp not null default current_timestamp;
+
+alter table tb_img_reg_info
+drop column test_field_dt2;
+
+alter table tb_img_reg_info
+drop CONSTRAINT pk_tb_img_reg_info;
+
+alter table tb_img_reg_info
+add CONSTRAINT pk_tb_img_reg_info PRIMARY KEY (odr_seq_no, user_id, img_id);
+
+alter table tb_img_reg_info
+add CONSTRAINT pk_tb_img_reg_info_001 FOREIGN KEY (id) REFERENCES tb_parent (id); 
