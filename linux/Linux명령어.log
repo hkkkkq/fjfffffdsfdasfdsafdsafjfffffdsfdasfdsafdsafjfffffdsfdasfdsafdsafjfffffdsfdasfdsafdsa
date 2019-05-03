@@ -207,6 +207,8 @@ ftp-0.17-54.el6.x86_64 (ftp client)
       tar -ztvf jeus7.20170410.tar.gz jeus7
       tar -zxvf jeus7.20170410.tar.gz
       tar -zxvf jeus7.20170410.tar.gz -C /app/infinilink
+ 
+      implausibly old timestamp 1970-01-01 09:00:00 ==> --warning=no-timestamp 옵션 추가
       
  <24> dsa 
       connection-pool-info -server io_cdrm1_svr1 -repeat 9999 -interval 3
@@ -423,6 +425,7 @@ ftp-0.17-54.el6.x86_64 (ftp client)
 			
 			curl -k https://dev.a-kos.kt.com/KMOS/resources/html/apptest.html
 			-k: turn off curl's verification of the certificate of https
+			-LO: -L은 redirect 주소로 재수행 설정, -O는 output을 로컬 파일로 저장
 			
 			curl --cacert ./server.crt  https://test.a-kos.kt.com:8443
 
@@ -506,5 +509,9 @@ ftp-0.17-54.el6.x86_64 (ftp client)
   cd /home/zabbix/sbin
   sh /home/zabbix/sbin/start.sh
   
-  
- 
+  <104> history 에 timestamp 추가
+
+  # vi /etc/bashrc
+  export HISTTIMEFORMAT='%F %T  '
+
+  # history | sort -n 
