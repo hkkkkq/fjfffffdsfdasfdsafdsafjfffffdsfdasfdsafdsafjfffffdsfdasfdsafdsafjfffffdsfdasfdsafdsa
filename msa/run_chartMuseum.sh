@@ -1,9 +1,10 @@
 #!/bin/bash
 
-docker run -d -p 8002:8080 \
+sudo docker run -d -p 8002:8080 \
   --restart="on-failure:5" \
   --name chartmuseum \
-  -v /charts:/charts:z \
+  --user root \
+  -v /charts:/charts \
   -e DEBUG=true \
   -e STORAGE=local \
   -e STORAGE_LOCAL_ROOTDIR=/charts \
