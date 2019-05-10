@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mes:umessage xmlns:mes="http://www.tmaxsoft.com/promapper/message">
+  <mes:structure physicalName="MSG_Body2" logicalName="MSG_Body2" resourceType="STRUCTURE" resourcePath="nbss.ngw.root_tx.mid_tx" resourceId="nbss.ngw.root_tx.mid_tx:MSG_Body2.umsg" resourceGroup="" versionNo="27">
+    <str:structureField physicalName="data4" logicalName="data4" fieldType="string" decimal="0" xmlns:str="http://www.tmaxsoft.com/promapper/structure"/>
+    <str:messageInfo messagePath="nbss.ngw.root_tx.mid_tx" messagePhysicalName="MSG_Body2FixedLength" messageType="FixedLength" messageId="nbss.ngw.root_tx.mid_tx:MSG_Body2FixedLength.msg" xmlns:str="http://www.tmaxsoft.com/promapper/structure"/>
+  </mes:structure>
+  <mes:message physicalName="MSG_Body2FixedLength" logicalName="MSG_Body2" structureId="nbss.ngw.root_tx.mid_tx:MSG_Body2.umsg" structureName="MSG_Body2" structurePath="nbss.ngw.root_tx.mid_tx" resourcePath="nbss.ngw.root_tx.mid_tx" resourceType="MESSAGE" resourceGroup="" resourceId="nbss.ngw.root_tx.mid_tx:MSG_Body2FixedLength.msg" messageType="FixedLength" trimFlag="rtrim">
+    <mes:messageField physicalName="data4" logicalName="data4" fieldType="string" length="10" array="" align="None" fill="" decimal="0" point="false" sign="false" encodeOption="Char" trailer="" pattern="yyyy-MM-dd" endian="Little" EOD="false"/>
+  </mes:message>
+</mes:umessage>

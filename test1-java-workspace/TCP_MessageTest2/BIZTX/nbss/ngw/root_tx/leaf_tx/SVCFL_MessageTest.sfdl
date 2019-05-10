@@ -1,0 +1,299 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xpdl:Package xmlns:tmax="http://www.tmaxsoft.com/infinilink/XPDL20/" xmlns:xpdl="http://www.wfmc.org/2004/XPDL2.0alpha" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <xpdl:Pools>
+    <xpdl:Pool Id="Pool84A532" Process="SVCFL_MessageTest" Orientation="VERTICAL">
+      <xpdl:Lanes>
+        <xpdl:Lane Id="Lane849B33" Name="Lane" ParentPool="Pool84A532">
+          <xpdl:NodeGraphicsInfos>
+            <xpdl:NodeGraphicsInfo Height="800.0" Width="300.0" BorderColor="c5ccfc"/>
+          </xpdl:NodeGraphicsInfos>
+        </xpdl:Lane>
+      </xpdl:Lanes>
+    </xpdl:Pool>
+  </xpdl:Pools>
+  <xpdl:WorkflowProcesses>
+    <xpdl:WorkflowProcess Id="SVCFL_MessageTest" Name="SVCFL_MessageTest" tmax:Package="nbss.ngw.root_tx.leaf_tx">
+      <xpdl:ProcessHeader>
+        <xpdl:Created>2015-05-26T19:49:13+09:00</xpdl:Created>
+        <xpdl:Description>This is a serviceflow process</xpdl:Description>
+      </xpdl:ProcessHeader>
+      <xpdl:RedefinableHeader>
+        <xpdl:Author>admin</xpdl:Author>
+        <xpdl:Version>2.0.0</xpdl:Version>
+      </xpdl:RedefinableHeader>
+      <xpdl:FormalParameters/>
+      <xpdl:DataFields>
+        <xpdl:DataField Id="VAR_Header" Name="VAR_Header" tmax:visible="true">
+          <xpdl:DataType/>
+          <xpdl:ExtendedAttributes>
+            <xpdl:ExtendedAttribute Name="VariableExtendedAttribute">
+              <tmax:VariableExtendedAttribute scope="instance" messageID="nbss.ngw.root_tx:MSG_Header.umsg" messageClassName="nbss.ngw.root_tx.MSG_Header" type="DataObject"/>
+            </xpdl:ExtendedAttribute>
+          </xpdl:ExtendedAttributes>
+        </xpdl:DataField>
+        <xpdl:DataField Id="VAR_Body" Name="VAR_Body" tmax:visible="true">
+          <xpdl:DataType/>
+          <xpdl:ExtendedAttributes>
+            <xpdl:ExtendedAttribute Name="VariableExtendedAttribute">
+              <tmax:VariableExtendedAttribute scope="instance" messageID="nbss.ngw.root_tx.leaf_tx:MSG_Body.umsg" messageClassName="nbss.ngw.root_tx.leaf_tx.MSG_Body" type="DataObject"/>
+            </xpdl:ExtendedAttribute>
+          </xpdl:ExtendedAttributes>
+        </xpdl:DataField>
+      </xpdl:DataFields>
+      <xpdl:Activities>
+        <xpdl:Activity Id="START_00000000000000000000001" Name="START_00000000000000000000001">
+          <xpdl:Description>START_00000000000000000000001</xpdl:Description>
+          <xpdl:Event>
+            <xpdl:StartEvent Trigger="Message">
+              <xpdl:TriggerResultMessage/>
+            </xpdl:StartEvent>
+          </xpdl:Event>
+          <xpdl:ExtendedAttributes>
+            <xpdl:ExtendedAttribute Name="ServiceExtendedAttribute">
+              <tmax:ServiceExtendedAttribute>
+                <tmax:inputVariableList>
+                  <tmax:variableId>VAR_Header</tmax:variableId>
+                  <tmax:variableId>VAR_Body</tmax:variableId>
+                </tmax:inputVariableList>
+                <tmax:outputVariableList>
+                  <tmax:variableId>VAR_Header</tmax:variableId>
+                  <tmax:variableId>VAR_Body</tmax:variableId>
+                </tmax:outputVariableList>
+              </tmax:ServiceExtendedAttribute>
+            </xpdl:ExtendedAttribute>
+            <xpdl:ExtendedAttribute Name="MessageEventExtendedAttribute">
+              <tmax:EventExtendedAttribute serviceId="nbss.ngw.root_tx.leaf_tx:SVCFL_MessageTest:START_00000000000000000000001" noLogging="false" checkPoint="false" savePoint="false" type="internal" autoUnregister="false" customLogId="nbss.ngw.root_tx.leaf_tx:OBRL_CustomLog.orule">
+                <tmax:mappingInfo>
+                  <tmax:inputVariableList>
+                    <tmax:variableId>VAR_Header</tmax:variableId>
+                    <tmax:variableId>VAR_Body</tmax:variableId>
+                  </tmax:inputVariableList>
+                  <tmax:outputVariableList>
+                    <tmax:variableId>VAR_Header</tmax:variableId>
+                    <tmax:variableId>VAR_Body</tmax:variableId>
+                  </tmax:outputVariableList>
+                </tmax:mappingInfo>
+                <tmax:customLogMapping>
+                  <tmax:resourceClassName>START_00000000000000000000001CUSTOM</tmax:resourceClassName>
+                  <tmax:resourceId>nbss.ngw.root_tx.leaf_tx:START_00000000000000000000001CUSTOM.map</tmax:resourceId>
+                  <tmax:resourcePath>nbss.ngw.root_tx.leaf_tx</tmax:resourcePath>
+                  <tmax:resourceContent>
+                    <map resourceType="MAP" creator="" owner="" resourcePath="nbss.ngw.root_tx.leaf_tx" physicalName="START_00000000000000000000001CUSTOM" logicalName="" resourceId="nbss.ngw.root_tx.leaf_tx:START_00000000000000000000001CUSTOM.map" resourceGroup="" xmlns="http://www.tmaxsoft.com/promapper/map">
+                      <output alias="contextMSG_CustomLog_TGT" comments="" logicalName="MSG_CustomLog" physicalName="MSG_CustomLog" referenceId="nbss.ngw.root_tx.leaf_tx:MSG_CustomLog.umsg" resourcePath="nbss.ngw.root_tx.leaf_tx" arraySize="0">
+                        <variable name="MSG_CustomLog" scope="context">
+                          <structure resourceId="nbss.ngw.root_tx.leaf_tx:MSG_CustomLog.umsg" resourcePath="nbss.ngw.root_tx.leaf_tx" versionNo="33" logicalName="MSG_CustomLog" physicalName="MSG_CustomLog"/>
+                        </variable>
+                      </output>
+                      <assign comments="TO 논리명-GLOBAL_NO;" fromExpression="&quot;111&quot;" toExpression="contextMSG_CustomLog_TGT.GLOBAL_NO">
+                        <toField physicalName="GLOBAL_NO" logicalName="GLOBAL_NO" fieldType="string" decimal="0" xmlns:str="http://www.tmaxsoft.com/promapper/structure" xmlns:mes="http://www.tmaxsoft.com/promapper/message"/>
+                      </assign>
+                      <assign comments="TO 논리명-REG_DATE;" fromExpression="&quot;20150605&quot;" toExpression="contextMSG_CustomLog_TGT.REG_DATE">
+                        <toField physicalName="REG_DATE" logicalName="REG_DATE" fieldType="string" decimal="0" array="" xmlns:str="http://www.tmaxsoft.com/promapper/structure" xmlns:mes="http://www.tmaxsoft.com/promapper/message"/>
+                      </assign>
+                      <assign comments="TO 논리명-REG_DT;" fromExpression="&quot;2015-06-05 17:04:05.000333&quot;" toExpression="contextMSG_CustomLog_TGT.REG_DT">
+                        <toField physicalName="REG_DT" logicalName="REG_DT" fieldType="string" decimal="0" xmlns:str="http://www.tmaxsoft.com/promapper/structure" xmlns:mes="http://www.tmaxsoft.com/promapper/message"/>
+                      </assign>
+                      <postProcessCode/>
+                      <userClassName/>
+                    </map>
+                  </tmax:resourceContent>
+                </tmax:customLogMapping>
+              </tmax:EventExtendedAttribute>
+            </xpdl:ExtendedAttribute>
+          </xpdl:ExtendedAttributes>
+          <xpdl:NodeGraphicsInfos>
+            <xpdl:NodeGraphicsInfo>
+              <xpdl:Coordinates YCoordinate="105.0" XCoordinate="97.0"/>
+            </xpdl:NodeGraphicsInfo>
+          </xpdl:NodeGraphicsInfos>
+        </xpdl:Activity>
+        <xpdl:Activity Id="END_00000000000000000000001" Name="END_00000000000000000000001">
+          <xpdl:Description>END_00000000000000000000001</xpdl:Description>
+          <xpdl:Event>
+            <xpdl:EndEvent Result="None"/>
+          </xpdl:Event>
+          <xpdl:ExtendedAttributes>
+            <xpdl:ExtendedAttribute Name="EventExtendedAttribute">
+              <tmax:EventExtendedAttribute noLogging="false" checkPoint="false" savePoint="false" type="internal" autoUnregister="false"/>
+            </xpdl:ExtendedAttribute>
+          </xpdl:ExtendedAttributes>
+          <xpdl:NodeGraphicsInfos>
+            <xpdl:NodeGraphicsInfo>
+              <xpdl:Coordinates YCoordinate="123.0" XCoordinate="698.0"/>
+            </xpdl:NodeGraphicsInfo>
+          </xpdl:NodeGraphicsInfos>
+        </xpdl:Activity>
+        <xpdl:Activity Id="TCP_00000000000000000000001" Name="TCP_00000000000000000000001" StartMode="Automatic" FinishMode="Automatic">
+          <xpdl:Description>TCP_00000000000000000000001</xpdl:Description>
+          <xpdl:Implementation>
+            <xpdl:Task>
+              <xpdl:TaskManual/>
+            </xpdl:Task>
+          </xpdl:Implementation>
+          <xpdl:Priority>50</xpdl:Priority>
+          <xpdl:ExtendedAttributes>
+            <xpdl:ExtendedAttribute Name="TaskActivityExtendedAttribute">
+              <tmax:TaskActivityExtendedAttribute serviceId="nbss.ngw.root_tx.leaf_tx:OBRL_MessageTest.orule" noLogging="false" checkPoint="false" savePoint="false" type="TCP" taskMode="Service" transMode="Request">
+                <tmax:inputVariableList>
+                  <tmax:variableId>VAR_Header</tmax:variableId>
+                  <tmax:variableId>VAR_Body</tmax:variableId>
+                </tmax:inputVariableList>
+                <tmax:outputVariableList>
+                  <tmax:variableId>VAR_Header</tmax:variableId>
+                  <tmax:variableId>VAR_Body</tmax:variableId>
+                </tmax:outputVariableList>
+                <tmax:inputMapping>
+                  <tmax:resourceClassName>TCP_00000000000000000000001IN</tmax:resourceClassName>
+                  <tmax:resourceId>nbss.ngw.root_tx.leaf_tx:TCP_00000000000000000000001IN.map</tmax:resourceId>
+                  <tmax:resourcePath>nbss.ngw.root_tx.leaf_tx</tmax:resourcePath>
+                  <tmax:resourceContent>
+                    <map resourceType="MAP" creator="" owner="" resourcePath="nbss.ngw.root_tx.leaf_tx" physicalName="TCP_00000000000000000000001IN" logicalName="" resourceId="nbss.ngw.root_tx.leaf_tx:TCP_00000000000000000000001IN.map" resourceGroup="" xmlns="http://www.tmaxsoft.com/promapper/map">
+                      <input alias="contextVAR_Header_SRC" comments="" arraySize="0" logicalName="MSG_Header" physicalName="MSG_Header" referenceId="nbss.ngw.root_tx:MSG_Header.umsg" resourcePath="nbss.ngw.root_tx">
+                        <variable name="VAR_Header" scope="context" size="0">
+                          <structure resourceId="nbss.ngw.root_tx:MSG_Header.umsg" physicalName="MSG_Header" logicalName="MSG_Header" resourcePath="nbss.ngw.root_tx"/>
+                        </variable>
+                      </input>
+                      <input alias="contextVAR_Body_SRC" comments="" arraySize="0" logicalName="MSG_Body" physicalName="MSG_Body" referenceId="nbss.ngw.root_tx.leaf_tx:MSG_Body.umsg" resourcePath="nbss.ngw.root_tx.leaf_tx">
+                        <variable name="VAR_Body" scope="context" size="0">
+                          <structure resourceId="nbss.ngw.root_tx.leaf_tx:MSG_Body.umsg" physicalName="MSG_Body" logicalName="MSG_Body" resourcePath="nbss.ngw.root_tx.leaf_tx"/>
+                        </variable>
+                      </input>
+                      <output alias="contextMSG_Header_TGT" comments="" logicalName="MSG_Header" physicalName="MSG_Header" referenceId="nbss.ngw.root_tx:MSG_Header.umsg" resourcePath="nbss.ngw.root_tx" arraySize="0">
+                        <variable name="MSG_Header" scope="context">
+                          <structure resourceId="nbss.ngw.root_tx:MSG_Header.umsg" resourcePath="nbss.ngw.root_tx" versionNo="11" logicalName="MSG_Header" physicalName="MSG_Header"/>
+                        </variable>
+                      </output>
+                      <output alias="contextMSG_Body_TGT" comments="" logicalName="MSG_Body" physicalName="MSG_Body" referenceId="nbss.ngw.root_tx.leaf_tx:MSG_Body.umsg" resourcePath="nbss.ngw.root_tx.leaf_tx" arraySize="0">
+                        <variable name="MSG_Body" scope="context">
+                          <structure resourceId="nbss.ngw.root_tx.leaf_tx:MSG_Body.umsg" resourcePath="nbss.ngw.root_tx.leaf_tx" versionNo="13" logicalName="MSG_Body" physicalName="MSG_Body"/>
+                        </variable>
+                      </output>
+                      <assign comments="FROM 논리명-data1;TO 논리명-data1;" fromExpression="contextVAR_Header_SRC.data1" toExpression="contextMSG_Header_TGT.data1">
+                        <fromField physicalName="data1" logicalName="data1" fieldType="string" decimal="0" length="4" xmlns:str="http://www.tmaxsoft.com/promapper/structure" xmlns:mes="http://www.tmaxsoft.com/promapper/message"/>
+                        <toField physicalName="data1" logicalName="data1" fieldType="string" decimal="0" length="4" xmlns:str="http://www.tmaxsoft.com/promapper/structure" xmlns:mes="http://www.tmaxsoft.com/promapper/message"/>
+                      </assign>
+                      <assign comments="FROM 논리명-data2;TO 논리명-data2;" fromExpression="contextVAR_Body_SRC.data2" toExpression="contextMSG_Body_TGT.data2">
+                        <fromField physicalName="data2" logicalName="data2" fieldType="string" decimal="0" xmlns:str="http://www.tmaxsoft.com/promapper/structure" xmlns:mes="http://www.tmaxsoft.com/promapper/message"/>
+                        <toField physicalName="data2" logicalName="data2" fieldType="string" decimal="0" xmlns:str="http://www.tmaxsoft.com/promapper/structure" xmlns:mes="http://www.tmaxsoft.com/promapper/message"/>
+                      </assign>
+                      <assign comments="FROM 논리명-data3;TO 논리명-data3;" fromExpression="contextVAR_Body_SRC.data3" toExpression="contextMSG_Body_TGT.data3">
+                        <fromField physicalName="data3" logicalName="data3" fieldType="string" decimal="0" xmlns:str="http://www.tmaxsoft.com/promapper/structure" xmlns:mes="http://www.tmaxsoft.com/promapper/message"/>
+                        <toField physicalName="data3" logicalName="data3" fieldType="string" decimal="0" xmlns:str="http://www.tmaxsoft.com/promapper/structure" xmlns:mes="http://www.tmaxsoft.com/promapper/message"/>
+                      </assign>
+                      <postProcessCode>logger.info("############INBOUND REQUEST#################");
+ logger.info("#####data1: " +  contextVAR_Header_SRC.getData1() );
+ logger.info("#####data2: " +  contextVAR_Body_SRC.getData2()  ); 
+ logger.info("#####data3: " +  contextVAR_Body_SRC.getData3()  ); 
+ logger.info("############OUTBOUND REQUEST#################");
+ logger.info("#####data1: " +  contextMSG_Header_TGT.getData1() );
+ logger.info("#####data2: " +  contextMSG_Body_TGT.getData2()  ); 
+ logger.info("#####data3: " +  contextMSG_Body_TGT.getData3()  );</postProcessCode>
+                      <userClassName/>
+                    </map>
+                  </tmax:resourceContent>
+                </tmax:inputMapping>
+                <tmax:outputMapping>
+                  <tmax:resourceClassName>TCP_00000000000000000000001OUT</tmax:resourceClassName>
+                  <tmax:resourceId>nbss.ngw.root_tx.leaf_tx:TCP_00000000000000000000001OUT.map</tmax:resourceId>
+                  <tmax:resourcePath>nbss.ngw.root_tx.leaf_tx</tmax:resourcePath>
+                  <tmax:resourceContent>
+                    <map resourceType="MAP" creator="" owner="" resourcePath="nbss.ngw.root_tx.leaf_tx" physicalName="TCP_00000000000000000000001OUT" logicalName="" resourceId="nbss.ngw.root_tx.leaf_tx:TCP_00000000000000000000001OUT.map" resourceGroup="" xmlns="http://www.tmaxsoft.com/promapper/map">
+                      <input alias="contextMSG_Header_SRC" comments="" arraySize="0" logicalName="MSG_Header" physicalName="MSG_Header" referenceId="nbss.ngw.root_tx:MSG_Header.umsg" resourcePath="nbss.ngw.root_tx">
+                        <variable name="MSG_Header" scope="context">
+                          <structure resourceId="nbss.ngw.root_tx:MSG_Header.umsg" resourcePath="nbss.ngw.root_tx" versionNo="5" logicalName="MSG_Header" physicalName="MSG_Header"/>
+                        </variable>
+                      </input>
+                      <input alias="contextMSG_Body_SRC" comments="" arraySize="0" logicalName="MSG_Body" physicalName="MSG_Body" referenceId="nbss.ngw.root_tx.leaf_tx:MSG_Body.umsg" resourcePath="nbss.ngw.root_tx.leaf_tx">
+                        <variable name="MSG_Body" scope="context">
+                          <structure resourceId="nbss.ngw.root_tx.leaf_tx:MSG_Body.umsg" resourcePath="nbss.ngw.root_tx.leaf_tx" versionNo="7" logicalName="MSG_Body" physicalName="MSG_Body"/>
+                        </variable>
+                      </input>
+                      <output alias="contextVAR_Header_TGT" comments="" logicalName="MSG_Header" physicalName="MSG_Header" referenceId="nbss.ngw.root_tx:MSG_Header.umsg" resourcePath="nbss.ngw.root_tx" arraySize="0">
+                        <variable name="VAR_Header" scope="context" size="0">
+                          <structure resourceId="nbss.ngw.root_tx:MSG_Header.umsg" physicalName="MSG_Header" logicalName="MSG_Header" resourcePath="nbss.ngw.root_tx"/>
+                        </variable>
+                      </output>
+                      <output alias="contextVAR_Body_TGT" comments="" logicalName="MSG_Body" physicalName="MSG_Body" referenceId="nbss.ngw.root_tx.leaf_tx:MSG_Body.umsg" resourcePath="nbss.ngw.root_tx.leaf_tx" arraySize="0">
+                        <variable name="VAR_Body" scope="context" size="0">
+                          <structure resourceId="nbss.ngw.root_tx.leaf_tx:MSG_Body.umsg" physicalName="MSG_Body" logicalName="MSG_Body" resourcePath="nbss.ngw.root_tx.leaf_tx"/>
+                        </variable>
+                      </output>
+                      <assign comments="FROM 논리명-data1;TO 논리명-data1;" fromExpression="contextMSG_Header_SRC.data1" toExpression="contextVAR_Header_TGT.data1">
+                        <fromField physicalName="data1" logicalName="data1" fieldType="string" decimal="0" length="4" xmlns:str="http://www.tmaxsoft.com/promapper/structure" xmlns:mes="http://www.tmaxsoft.com/promapper/message"/>
+                        <toField physicalName="data1" logicalName="data1" fieldType="string" decimal="0" length="4" xmlns:str="http://www.tmaxsoft.com/promapper/structure" xmlns:mes="http://www.tmaxsoft.com/promapper/message"/>
+                      </assign>
+                      <assign comments="FROM 논리명-data2;TO 논리명-data2;" fromExpression="contextMSG_Body_SRC.data2" toExpression="contextVAR_Body_TGT.data2">
+                        <fromField physicalName="data2" logicalName="data2" fieldType="string" decimal="0" xmlns:str="http://www.tmaxsoft.com/promapper/structure" xmlns:mes="http://www.tmaxsoft.com/promapper/message"/>
+                        <toField physicalName="data2" logicalName="data2" fieldType="string" decimal="0" xmlns:str="http://www.tmaxsoft.com/promapper/structure" xmlns:mes="http://www.tmaxsoft.com/promapper/message"/>
+                      </assign>
+                      <assign comments="FROM 논리명-data3;TO 논리명-data3;" fromExpression="contextMSG_Body_SRC.data3" toExpression="contextVAR_Body_TGT.data3">
+                        <fromField physicalName="data3" logicalName="data3" fieldType="string" decimal="0" xmlns:str="http://www.tmaxsoft.com/promapper/structure" xmlns:mes="http://www.tmaxsoft.com/promapper/message"/>
+                        <toField physicalName="data3" logicalName="data3" fieldType="string" decimal="0" xmlns:str="http://www.tmaxsoft.com/promapper/structure" xmlns:mes="http://www.tmaxsoft.com/promapper/message"/>
+                      </assign>
+                      <postProcessCode>logger.info("############OUTBOUND RESPONSE#################");
+ logger.info("#####data1: " +  contextMSG_Header_SRC.getData1() );
+ logger.info("#####data2: " +  contextMSG_Body_SRC.getData2()  ); 
+ logger.info("#####data3: " +  contextMSG_Body_SRC.getData3()  ); 
+ logger.info("############INBOUND RESPONSE#################");
+ logger.info("#####data1: " +  contextVAR_Header_TGT.getData1() );
+ logger.info("#####data2: " +  contextVAR_Body_TGT.getData2()  ); 
+ logger.info("#####data3: " +  contextVAR_Body_TGT.getData3()  );</postProcessCode>
+                      <userClassName/>
+                    </map>
+                  </tmax:resourceContent>
+                </tmax:outputMapping>
+              </tmax:TaskActivityExtendedAttribute>
+            </xpdl:ExtendedAttribute>
+          </xpdl:ExtendedAttributes>
+          <xpdl:NodeGraphicsInfos>
+            <xpdl:NodeGraphicsInfo tmax:fontColor="3e3f40" Height="60.0" Width="150.0" FillColor="6384bb">
+              <xpdl:Coordinates YCoordinate="99.0" XCoordinate="225.0"/>
+            </xpdl:NodeGraphicsInfo>
+          </xpdl:NodeGraphicsInfos>
+        </xpdl:Activity>
+        <xpdl:Activity Id="REPL_00000000000000000000001" Name="REPL_00000000000000000000001" StartMode="Automatic" FinishMode="Automatic">
+          <xpdl:Description>REPL_00000000000000000000001</xpdl:Description>
+          <xpdl:Implementation>
+            <xpdl:Task>
+              <xpdl:TaskManual/>
+            </xpdl:Task>
+          </xpdl:Implementation>
+          <xpdl:Priority>50</xpdl:Priority>
+          <xpdl:ExtendedAttributes>
+            <xpdl:ExtendedAttribute Name="TaskActivityExtendedAttribute">
+              <tmax:TaskActivityExtendedAttribute noLogging="false" checkPoint="false" savePoint="false" type="SENDMESSAGE" taskMode="Service" transMode="Response" requestNodeId="START_00000000000000000000001">
+                <tmax:inputVariableList>
+                  <tmax:variableId>VAR_Header</tmax:variableId>
+                  <tmax:variableId>VAR_Body</tmax:variableId>
+                </tmax:inputVariableList>
+              </tmax:TaskActivityExtendedAttribute>
+            </xpdl:ExtendedAttribute>
+          </xpdl:ExtendedAttributes>
+          <xpdl:NodeGraphicsInfos>
+            <xpdl:NodeGraphicsInfo tmax:fontColor="3e3f40" Height="60.0" Width="150.0" FillColor="6384bb">
+              <xpdl:Coordinates YCoordinate="101.0" XCoordinate="501.0"/>
+            </xpdl:NodeGraphicsInfo>
+          </xpdl:NodeGraphicsInfos>
+        </xpdl:Activity>
+      </xpdl:Activities>
+      <xpdl:Transitions>
+        <xpdl:Transition Id="SVCFL_MessageTest_Transition_84B336" Name="Transition" tmax:priority="0" From="START_00000000000000000000001" To="TCP_00000000000000000000001">
+          <xpdl:Description>Transition</xpdl:Description>
+        </xpdl:Transition>
+        <xpdl:Transition Id="Transition840242" Name="Transition" tmax:priority="0" From="TCP_00000000000000000000001" To="REPL_00000000000000000000001">
+          <xpdl:Description>Transition</xpdl:Description>
+        </xpdl:Transition>
+        <xpdl:Transition Id="Transition845345" Name="Transition" tmax:priority="0" From="REPL_00000000000000000000001" To="END_00000000000000000000001">
+          <xpdl:Description>Transition</xpdl:Description>
+        </xpdl:Transition>
+      </xpdl:Transitions>
+      <xpdl:ExtendedAttributes>
+        <xpdl:ExtendedAttribute Name="ProcessExtendedAttribute">
+          <tmax:ProcessExtendedAttribute lastModifiedTime="2015-06-12T17:36:20.788+09:00" backgroundColor="ffffff" serviceMake="true">
+            <tmax:errorCodeMapper xsi:nil="true"/>
+          </tmax:ProcessExtendedAttribute>
+        </xpdl:ExtendedAttribute>
+      </xpdl:ExtendedAttributes>
+    </xpdl:WorkflowProcess>
+  </xpdl:WorkflowProcesses>
+</xpdl:Package>

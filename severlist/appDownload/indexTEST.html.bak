@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head lang="ko">
+   <meta charset="UTF-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=2.0, minimum-scale=1.0, user-scalable=no"/>
+   <title>[TEST] KKOS App Download</title>
+   <link rel="stylesheet" href="css/bootstrap.min.css">
+   
+   <script src="js/jquery-1.11.0.min.js"></script>
+   <script src="js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<div class="container">
+   <h1 style="padding-bottom:15px; border-bottom:2px solid #333333; color:#666666;">K-MOS(패드개통시스템) TEST App Download Page</h1>
+	 <br>
+	 <h4 style="padding-bottom:15px; solid #333333; color:#666666;">c-kmos-pk1-w01[10.220.167.43], c-kmos-pk1-w02[10.220.167.44]</h4>
+	 <h6 style="padding-bottom:15px; solid #333333; color:#666666;">다운로드 페이지 위치: /apache/apache24/www_kkos/appDownload/index.html(PRD) indexTEST.html(DEV,TEST)</h6>
+	 <h6 style="padding-bottom:15px; solid #333333; color:#666666;">앱 업로드 위치: /apache/apache24/www_kkos/appDownload/ios/dev test prd</h6>
+	 <h6 style="padding-bottom:15px; solid #333333; color:#666666;">앱 업로드 위치: /apache/apache24/www_kkos/appDownload/android/dev test prd</h6>
+	 <br>
+	 <div class="row">
+	 		<div class="col-sm-4">
+	 				<div><a href="itms-services://?action=download-manifest&url=https://k-kos.kt.co.kr/appDownload/ios/dev/manifest.plist" class="btn btn-primary">[개발] iOS (to MOBILE)</a></div>
+   				<br>
+   		</div>
+   		<div class="col-sm-4">
+	 				<div><a href="itms-services://?action=download-manifest&url=https://k-kos.kt.co.kr/appDownload/ios/test/manifest.plist" class="btn btn-success">[테스트] iOS (to MOBILE)</a></div>
+   				<br>
+   		</div>
+	 </div>
+	 <div>&nbsp;&nbsp;&nbsp;※ [MOBILE]설정-일반-기기관리-앱 확인</div>
+	 <br>
+	 <div class="row">
+	 		<div class="col-sm-4">
+	 				<div><a href="https://k-kos.kt.co.kr/appDownload/ios/dev/kmos.ipa" download class="btn btn-primary">[개발] iOS (to PC)</a></div>
+   				<br>
+   		</div>
+   		<div class="col-sm-4">
+	 				<div><a href="https://k-kos.kt.co.kr/appDownload/ios/test/kmos.ipa" download class="btn btn-success">[테스트] iOS (to PC)</a></div>
+   				<br>
+   		</div>
+	 </div>
+	 <div class="row">
+	 		<div class="col-sm-4">
+	 				<div><a href="https://k-kos.kt.co.kr/appDownload/android/dev/kmos.apk" download class="btn btn-primary">[개발] Android (to PC or MOBILE)</a></div>
+   				<br>
+   		</div>
+   		<div class="col-sm-4">
+	 				<div><a href="https://k-kos.kt.co.kr/appDownload/android/test/kmos.apk" download class="btn btn-success">[테스트] Android (to PC or MOBILE)</a></div>
+   				<br>
+   		</div>
+	 </div>
+	 <div>&nbsp;&nbsp;&nbsp;※ [MOBILE]설정-보안-알수없는소스출처-체크</div>
+	 <br>
+</div>
+
+
+</body>
+</html>

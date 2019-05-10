@@ -1,0 +1,12 @@
+JVM Option
+
+<adminServer>
+-Xms4096m -Xmx4096m -XX:MaxPermSize=512m -Djmx.remote.x.request.timeout=600000 -verbose:gc -XX:+PrintGCDetails -XX:+PrintGCTimeStamps -Xloggc:/applog/infinilink/gc_log/adminSever_gc.log -XX:+PrintHeapAtGC -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/applog/infinilink/heapdump_log/ -XX:G1ConcRefinementThreads=32 -XX:ParallelGCThreads=32 -XX:ConcGCThreads=32 -XX:+UseG1GC -XX:+PrintFlagsFinal -XX:+PrintReferenceGC -XX:+PrintGCDetails -XX:+PrintAdaptiveSizePolicy -XX:+UnlockDiagnosticVMOptions -XX:+G1SummarizeConcMark
+
+<MS>
+-Xms4096m -Xmx4096m -XX:MaxPermSize=512m -XX:-UseSplitVerifier -Dpharos.home=/app/pharos/agent50 -Dpharos.agent=eo_cdrm1_Svr1 -javaagent:/app/pharos/agent50/lib/pharos-loader.jar -verbose:gc -XX:+PrintGCDetails -XX:+PrintGCTimeStamps -Xloggc:/applog/infinilink/gc_log/eo_cdrm1_svr1_gc.log -XX:+PrintHeapAtGC -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/applog/infinilink/heapdump_log/ -XX:G1ConcRefinementThreads=32 -XX:ParallelGCThreads=32 -XX:ConcGCThreads=32 -XX:+UseG1GC -XX:+PrintFlagsFinal -XX:+PrintReferenceGC -XX:+PrintGCDetails -XX:+PrintAdaptiveSizePolicy -XX:+UnlockDiagnosticVMOptions -XX:+G1SummarizeConcMark
+※ -XX:-UseSplitVerifier -Dpharos.home=/app/pharos/agent50 -Dpharos.agent=eo_cdrm1_Svr1 -javaagent:/app/pharos/agent50/lib/pharos-loader.jar (SIT/PRD환경 기준)
+※ -Xloggc:/applog/infinilink/gc_log/서버명_gc.log
+※ -XX:HeapDumpPath=/applog/infinilink/heapdump_log/
+※ -XX:G1ConcRefinementThreads=32 -XX:ParallelGCThreads=32 -XX:ConcGCThreads=32 (32=ncpu*2)
+※ -Djavax.net.debug=ssl: SBX 경우

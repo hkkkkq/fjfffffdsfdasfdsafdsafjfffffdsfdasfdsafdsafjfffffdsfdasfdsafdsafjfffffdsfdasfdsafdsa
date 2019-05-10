@@ -1,0 +1,31 @@
+worker.list=wlb
+worker.wlb.type=lb
+worker.wlb.balance_workers=kkosSvr11, kkosSvr21
+#worker.list=kkosSvr11
+
+# Node Configure
+worker.template.type=ajp13
+worker.template.socket_timeout=300
+worker.template.socket_keepalive=true
+worker.template.recovery_options=7
+worker.template.ping_mode=A
+worker.template.ping_timeout=10000
+worker.template.connection_pool_size=500
+worker.template.connection_pool_minsize=300
+worker.template.connection_pool_timeout=60     
+
+# Node Configure START
+worker.kkosSvr11.reference=worker.template
+worker.kkosSvr11.port=8019 
+worker.kkosSvr11.host=10.220.172.33
+worker.kkosSvr11.lbfactor=1   
+
+worker.kkosSvr21.reference=worker.template
+worker.kkosSvr21.port=8019 
+worker.kkosSvr21.host=10.220.172.31
+worker.kkosSvr21.lbfactor=1   
+
+
+# Session Cluster Configure
+worker.wlb.method=Session
+worker.wlb.sticky_session=True

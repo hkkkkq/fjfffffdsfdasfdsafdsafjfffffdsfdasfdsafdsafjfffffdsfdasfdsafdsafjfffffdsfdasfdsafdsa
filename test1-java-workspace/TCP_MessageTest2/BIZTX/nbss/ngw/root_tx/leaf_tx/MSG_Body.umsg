@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mes:umessage xmlns:mes="http://www.tmaxsoft.com/promapper/message">
+  <mes:structure physicalName="MSG_Body" logicalName="MSG_Body" resourceType="STRUCTURE" resourcePath="nbss.ngw.root_tx.leaf_tx" resourceId="nbss.ngw.root_tx.leaf_tx:MSG_Body.umsg" resourceGroup="" versionNo="34">
+    <str:structureField physicalName="data2" logicalName="data2" fieldType="string" decimal="0" xmlns:str="http://www.tmaxsoft.com/promapper/structure"/>
+    <str:structureField physicalName="data3" logicalName="data3" fieldType="string" decimal="0" xmlns:str="http://www.tmaxsoft.com/promapper/structure"/>
+    <str:messageInfo messagePath="nbss.ngw.root_tx.leaf_tx" messagePhysicalName="MSG_BodyFixedLength" messageType="FixedLength" messageId="nbss.ngw.root_tx.leaf_tx:MSG_BodyFixedLength.msg" xmlns:str="http://www.tmaxsoft.com/promapper/structure"/>
+  </mes:structure>
+  <mes:message physicalName="MSG_BodyFixedLength" logicalName="MSG_Body" structureId="nbss.ngw.root_tx.leaf_tx:MSG_Body.umsg" structureName="MSG_Body" structurePath="nbss.ngw.root_tx.leaf_tx" resourcePath="nbss.ngw.root_tx.leaf_tx" resourceType="MESSAGE" resourceGroup="" resourceId="nbss.ngw.root_tx.leaf_tx:MSG_BodyFixedLength.msg" messageType="FixedLength" trimFlag="rtrim" complexTypeName="urn:MSG_Body" xmlns:urn="urn:infinilink:nbss.ngw.root_tx.leaf_tx">
+    <mes:messageField physicalName="data2" logicalName="data2" fieldType="string" length="10" array="" align="None" fill="0" decimal="0" point="false" sign="false" encodeOption="Char" trailer="" pattern="yyyy-MM-dd" endian="Little" EOD="false"/>
+    <mes:messageField physicalName="data3" logicalName="data3" fieldType="string" length="10" array="" align="None" fill="" decimal="0" point="false" sign="false" encodeOption="Char" trailer="" pattern="yyyy-MM-dd" endian="Little" EOD="false" comments=""/>
+  </mes:message>
+</mes:umessage>

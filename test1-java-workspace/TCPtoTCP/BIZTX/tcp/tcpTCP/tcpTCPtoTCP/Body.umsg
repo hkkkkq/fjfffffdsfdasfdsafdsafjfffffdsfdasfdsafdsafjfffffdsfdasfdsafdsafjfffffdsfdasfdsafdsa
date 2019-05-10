@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mes:umessage xmlns:mes="http://www.tmaxsoft.com/promapper/message">
+  <mes:structure physicalName="Body" logicalName="Body" resourceType="STRUCTURE" resourcePath="tcp.tcpTCP.tcpTCPtoTCP" resourceId="tcp.tcpTCP.tcpTCPtoTCP:Body.umsg" resourceGroup="" versionNo="18">
+    <str:structureField physicalName="data1" logicalName="data1" fieldType="string" decimal="0" length="4" xmlns:str="http://www.tmaxsoft.com/promapper/structure"/>
+    <str:structureField physicalName="data2" logicalName="data2" fieldType="string" decimal="0" length="4" xmlns:str="http://www.tmaxsoft.com/promapper/structure"/>
+    <str:messageInfo messagePath="tcp.tcpTCP.tcpTCPtoTCP" messagePhysicalName="BodyFixedLength" messageType="FixedLength" messageId="tcp.tcpTCP.tcpTCPtoTCP:BodyFixedLength.msg" xmlns:str="http://www.tmaxsoft.com/promapper/structure"/>
+  </mes:structure>
+  <mes:message physicalName="BodyFixedLength" logicalName="Body" structureId="tcp.tcpTCP.tcpTCPtoTCP:Body.umsg" structureName="Body" structurePath="tcp.tcpTCP.tcpTCPtoTCP" resourcePath="tcp.tcpTCP.tcpTCPtoTCP" resourceType="MESSAGE" resourceGroup="" resourceId="tcp.tcpTCP.tcpTCPtoTCP:BodyFixedLength.msg" messageType="FixedLength" trimFlag="none">
+    <mes:messageField physicalName="data1" logicalName="data1" fieldType="string" length="4" array="" align="None" fill="" decimal="0" point="false" sign="false" encodeOption="Char" trailer="" pattern="yyyy-MM-dd" endian="Little" EOD="false" comments=""/>
+    <mes:messageField physicalName="data2" logicalName="data2" fieldType="string" length="4" array="" align="None" fill="" decimal="0" point="false" sign="false" encodeOption="Char" trailer="" pattern="yyyy-MM-dd" endian="Little" EOD="false" comments=""/>
+  </mes:message>
+</mes:umessage>

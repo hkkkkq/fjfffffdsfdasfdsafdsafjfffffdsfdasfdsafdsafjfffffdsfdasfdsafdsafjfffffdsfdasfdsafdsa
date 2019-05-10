@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xpdl:Package xmlns:tmax="http://www.tmaxsoft.com/infinilink/XPDL20/" xmlns:flow="http://www.tmaxsoft.co.kr/proframe/flowModule" xmlns:xpdl="http://www.wfmc.org/2004/XPDL2.0alpha" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <xpdl:Pools>
+    <xpdl:Pool Id="Pool84E5CB" Process="TcptoTcp_flow3" Orientation="VERTICAL">
+      <xpdl:Lanes>
+        <xpdl:Lane Id="Lane843FCC" Name="Lane" ParentPool="Pool84E5CB">
+          <xpdl:NodeGraphicsInfos>
+            <xpdl:NodeGraphicsInfo Height="800.0" Width="300.0" BorderColor="c5ccfc"/>
+          </xpdl:NodeGraphicsInfos>
+        </xpdl:Lane>
+      </xpdl:Lanes>
+    </xpdl:Pool>
+  </xpdl:Pools>
+  <xpdl:WorkflowProcesses>
+    <xpdl:WorkflowProcess Id="TcptoTcp_flow3" Name="TcptoTcp_flow3" tmax:Package="tcp.tcpTCP.tcpTCPtoTCP">
+      <xpdl:ProcessHeader>
+        <xpdl:Created>2014-11-14T14:22:28+09:00</xpdl:Created>
+        <xpdl:Description>This is a serviceflow process</xpdl:Description>
+      </xpdl:ProcessHeader>
+      <xpdl:RedefinableHeader>
+        <xpdl:Author>admin</xpdl:Author>
+        <xpdl:Version>2.0.0</xpdl:Version>
+      </xpdl:RedefinableHeader>
+      <xpdl:FormalParameters/>
+      <xpdl:DataFields>
+        <xpdl:DataField Id="CHeader" Name="CHeader" tmax:visible="true">
+          <xpdl:DataType/>
+          <xpdl:Description>CHeader</xpdl:Description>
+          <xpdl:ExtendedAttributes>
+            <xpdl:ExtendedAttribute Name="VariableExtendedAttribute">
+              <tmax:VariableExtendedAttribute scope="instance" messageID="tcp.tcpTCP:CommonHeader.umsg" messageClassName="tcp.tcpTCP.CommonHeader" type="DataObject"/>
+            </xpdl:ExtendedAttribute>
+          </xpdl:ExtendedAttributes>
+        </xpdl:DataField>
+        <xpdl:DataField Id="header" Name="header" tmax:visible="true">
+          <xpdl:DataType/>
+          <xpdl:Description>header</xpdl:Description>
+          <xpdl:ExtendedAttributes>
+            <xpdl:ExtendedAttribute Name="VariableExtendedAttribute">
+              <tmax:VariableExtendedAttribute scope="instance" messageID="tcp.tcpTCP.tcpTCPtoTCP:Header.umsg" messageClassName="tcp.tcpTCP.tcpTCPtoTCP.Header" type="DataObject"/>
+            </xpdl:ExtendedAttribute>
+          </xpdl:ExtendedAttributes>
+        </xpdl:DataField>
+        <xpdl:DataField Id="body" Name="body" tmax:visible="true">
+          <xpdl:DataType/>
+          <xpdl:Description>body</xpdl:Description>
+          <xpdl:ExtendedAttributes>
+            <xpdl:ExtendedAttribute Name="VariableExtendedAttribute">
+              <tmax:VariableExtendedAttribute scope="instance" messageID="tcp.tcpTCP.tcpTCPtoTCP:Body.umsg" messageClassName="tcp.tcpTCP.tcpTCPtoTCP.Body" type="DataObject"/>
+            </xpdl:ExtendedAttribute>
+          </xpdl:ExtendedAttributes>
+        </xpdl:DataField>
+      </xpdl:DataFields>
+      <xpdl:Activities>
+        <xpdl:Activity Id="Event84EED1" Name="Message">
+          <xpdl:Description>Message</xpdl:Description>
+          <xpdl:Event>
+            <xpdl:StartEvent Trigger="Message">
+              <xpdl:TriggerResultMessage/>
+            </xpdl:StartEvent>
+          </xpdl:Event>
+          <xpdl:ExtendedAttributes>
+            <xpdl:ExtendedAttribute Name="ServiceExtendedAttribute">
+              <tmax:ServiceExtendedAttribute>
+                <tmax:inputVariableList>
+                  <tmax:variableId>CHeader</tmax:variableId>
+                  <tmax:variableId>header</tmax:variableId>
+                  <tmax:variableId>body</tmax:variableId>
+                </tmax:inputVariableList>
+                <tmax:outputVariableList>
+                  <tmax:variableId>CHeader</tmax:variableId>
+                  <tmax:variableId>header</tmax:variableId>
+                  <tmax:variableId>body</tmax:variableId>
+                </tmax:outputVariableList>
+              </tmax:ServiceExtendedAttribute>
+            </xpdl:ExtendedAttribute>
+            <xpdl:ExtendedAttribute Name="MessageEventExtendedAttribute">
+              <tmax:EventExtendedAttribute serviceId="tcp.tcpTCP.tcpTCPtoTCP:TcptoTcp_flow3:Event84EED1" noLogging="false" checkPoint="false" savePoint="false" type="internal" autoUnregister="false">
+                <tmax:mappingInfo>
+                  <tmax:inputVariableList>
+                    <tmax:variableId>CHeader</tmax:variableId>
+                    <tmax:variableId>header</tmax:variableId>
+                    <tmax:variableId>body</tmax:variableId>
+                  </tmax:inputVariableList>
+                  <tmax:outputVariableList>
+                    <tmax:variableId>CHeader</tmax:variableId>
+                    <tmax:variableId>header</tmax:variableId>
+                    <tmax:variableId>body</tmax:variableId>
+                  </tmax:outputVariableList>
+                </tmax:mappingInfo>
+              </tmax:EventExtendedAttribute>
+            </xpdl:ExtendedAttribute>
+          </xpdl:ExtendedAttributes>
+          <xpdl:NodeGraphicsInfos>
+            <xpdl:NodeGraphicsInfo>
+              <xpdl:Coordinates YCoordinate="188.0" XCoordinate="79.0"/>
+            </xpdl:NodeGraphicsInfo>
+          </xpdl:NodeGraphicsInfos>
+        </xpdl:Activity>
+        <xpdl:Activity Id="Event8431D2" Name="None">
+          <xpdl:Description>None</xpdl:Description>
+          <xpdl:Event>
+            <xpdl:EndEvent Result="None"/>
+          </xpdl:Event>
+          <xpdl:ExtendedAttributes>
+            <xpdl:ExtendedAttribute Name="EventExtendedAttribute">
+              <tmax:EventExtendedAttribute noLogging="false" checkPoint="false" savePoint="false" type="internal" autoUnregister="false"/>
+            </xpdl:ExtendedAttribute>
+          </xpdl:ExtendedAttributes>
+          <xpdl:NodeGraphicsInfos>
+            <xpdl:NodeGraphicsInfo>
+              <xpdl:Coordinates YCoordinate="197.0" XCoordinate="407.0"/>
+            </xpdl:NodeGraphicsInfo>
+          </xpdl:NodeGraphicsInfos>
+        </xpdl:Activity>
+        <xpdl:Activity Id="ReplyMessage849DD4" Name="ReplyMessage" StartMode="Automatic" FinishMode="Automatic">
+          <xpdl:Description>Activity</xpdl:Description>
+          <xpdl:Implementation>
+            <xpdl:Task>
+              <xpdl:TaskManual/>
+            </xpdl:Task>
+          </xpdl:Implementation>
+          <xpdl:Priority>50</xpdl:Priority>
+          <xpdl:ExtendedAttributes>
+            <xpdl:ExtendedAttribute Name="TaskActivityExtendedAttribute">
+              <tmax:TaskActivityExtendedAttribute noLogging="false" checkPoint="false" savePoint="false" type="SENDMESSAGE" taskMode="Service" transMode="Response" requestNodeId="Event84EED1">
+                <tmax:inputVariableList>
+                  <tmax:variableId>CHeader</tmax:variableId>
+                  <tmax:variableId>header</tmax:variableId>
+                  <tmax:variableId>body</tmax:variableId>
+                </tmax:inputVariableList>
+              </tmax:TaskActivityExtendedAttribute>
+            </xpdl:ExtendedAttribute>
+          </xpdl:ExtendedAttributes>
+          <xpdl:NodeGraphicsInfos>
+            <xpdl:NodeGraphicsInfo tmax:fontColor="3e3f40" Height="60.0" Width="150.0" FillColor="6384bb">
+              <xpdl:Coordinates YCoordinate="198.0" XCoordinate="197.0"/>
+            </xpdl:NodeGraphicsInfo>
+          </xpdl:NodeGraphicsInfos>
+        </xpdl:Activity>
+        <xpdl:Activity Id="TCP8471DC" Name="TCP" StartMode="Automatic" FinishMode="Automatic">
+          <xpdl:Description>TCP Adapter 서비스를 호출</xpdl:Description>
+          <xpdl:Implementation>
+            <xpdl:Task>
+              <xpdl:TaskManual/>
+            </xpdl:Task>
+          </xpdl:Implementation>
+          <xpdl:Priority>50</xpdl:Priority>
+          <xpdl:ExtendedAttributes>
+            <xpdl:ExtendedAttribute Name="TaskActivityExtendedAttribute">
+              <tmax:TaskActivityExtendedAttribute serviceId="tcp.tcpTCP.tcpTCPtoTCP:TcpOut02.orule" noLogging="false" checkPoint="false" savePoint="false" type="TCP" taskMode="Service" transMode="Request">
+                <tmax:inputVariableList>
+                  <tmax:variableId>header</tmax:variableId>
+                  <tmax:variableId>body</tmax:variableId>
+                </tmax:inputVariableList>
+                <tmax:outputVariableList>
+                  <tmax:variableId>header</tmax:variableId>
+                  <tmax:variableId>body</tmax:variableId>
+                </tmax:outputVariableList>
+                <tmax:errorResponseVariableList>
+                  <tmax:variableId>header</tmax:variableId>
+                  <tmax:variableId>body</tmax:variableId>
+                </tmax:errorResponseVariableList>
+                <tmax:inputMapping>
+                  <tmax:resourceClassName>TCP8471DCIN</tmax:resourceClassName>
+                  <tmax:resourceId>tcp.tcpTCP.tcpTCPtoTCP:TCP8471DCIN.map</tmax:resourceId>
+                  <tmax:resourcePath>tcp.tcpTCP.tcpTCPtoTCP</tmax:resourcePath>
+                  <tmax:resourceContent>
+                    <map resourceType="MAP" creator="" owner="" resourcePath="tcp.tcpTCP.tcpTCPtoTCP" physicalName="TCP8471DCIN" logicalName="" resourceId="tcp.tcpTCP.tcpTCPtoTCP:TCP8471DCIN.map" resourceGroup="" xmlns="http://www.tmaxsoft.com/promapper/map">
+                      <input alias="contextHeader_SRC" comments="" arraySize="0" logicalName="Header" physicalName="Header" referenceId="tcp.tcpTCP.tcpTCPtoTCP:Header.umsg" resourcePath="tcp.tcpTCP.tcpTCPtoTCP">
+                        <variable name="header" scope="context" size="0">
+                          <structure resourceId="tcp.tcpTCP.tcpTCPtoTCP:Header.umsg" physicalName="Header" logicalName="Header" resourcePath="tcp.tcpTCP.tcpTCPtoTCP"/>
+                        </variable>
+                      </input>
+                      <input alias="contextBody_SRC" comments="" arraySize="0" logicalName="Body" physicalName="Body" referenceId="tcp.tcpTCP.tcpTCPtoTCP:Body.umsg" resourcePath="tcp.tcpTCP.tcpTCPtoTCP">
+                        <variable name="body" scope="context" size="0">
+                          <structure resourceId="tcp.tcpTCP.tcpTCPtoTCP:Body.umsg" physicalName="Body" logicalName="Body" resourcePath="tcp.tcpTCP.tcpTCPtoTCP"/>
+                        </variable>
+                      </input>
+                      <output alias="contextHeader_TGT" comments="" logicalName="Header" physicalName="Header" referenceId="tcp.tcpTCP.tcpTCPtoTCP:Header.umsg" resourcePath="tcp.tcpTCP.tcpTCPtoTCP" arraySize="0">
+                        <variable name="Header" scope="context">
+                          <structure resourceId="tcp.tcpTCP.tcpTCPtoTCP:Header.umsg" resourcePath="tcp.tcpTCP.tcpTCPtoTCP" versionNo="17" logicalName="Header" physicalName="Header"/>
+                        </variable>
+                      </output>
+                      <output alias="contextBody_TGT" comments="" logicalName="Body" physicalName="Body" referenceId="tcp.tcpTCP.tcpTCPtoTCP:Body.umsg" resourcePath="tcp.tcpTCP.tcpTCPtoTCP" arraySize="0">
+                        <variable name="Body" scope="context">
+                          <structure resourceId="tcp.tcpTCP.tcpTCPtoTCP:Body.umsg" resourcePath="tcp.tcpTCP.tcpTCPtoTCP" versionNo="17" logicalName="Body" physicalName="Body"/>
+                        </variable>
+                      </output>
+                      <assign comments="FROM 논리명-serviceId;TO 논리명-serviceId;" fromExpression="contextHeader_SRC.serviceId" toExpression="contextHeader_TGT.serviceId">
+                        <fromField physicalName="serviceId" logicalName="serviceId" fieldType="string" decimal="0" length="4" xmlns:str="http://www.tmaxsoft.com/promapper/structure" xmlns:mes="http://www.tmaxsoft.com/promapper/message"/>
+                        <toField physicalName="serviceId" logicalName="serviceId" fieldType="string" decimal="0" length="4" xmlns:str="http://www.tmaxsoft.com/promapper/structure" xmlns:mes="http://www.tmaxsoft.com/promapper/message"/>
+                      </assign>
+                      <assign comments="FROM 논리명-serviceName;TO 논리명-serviceName;" fromExpression="contextHeader_SRC.serviceName" toExpression="contextHeader_TGT.serviceName">
+                        <fromField physicalName="serviceName" logicalName="serviceName" fieldType="string" decimal="0" length="4" xmlns:str="http://www.tmaxsoft.com/promapper/structure" xmlns:mes="http://www.tmaxsoft.com/promapper/message"/>
+                        <toField physicalName="serviceName" logicalName="serviceName" fieldType="string" decimal="0" length="4" xmlns:str="http://www.tmaxsoft.com/promapper/structure" xmlns:mes="http://www.tmaxsoft.com/promapper/message"/>
+                      </assign>
+                      <assign comments="FROM 논리명-data1;TO 논리명-data1;" fromExpression="contextBody_SRC.data1" toExpression="contextBody_TGT.data1">
+                        <fromField physicalName="data1" logicalName="data1" fieldType="string" decimal="0" length="4" xmlns:str="http://www.tmaxsoft.com/promapper/structure" xmlns:mes="http://www.tmaxsoft.com/promapper/message"/>
+                        <toField physicalName="data1" logicalName="data1" fieldType="string" decimal="0" length="4" xmlns:str="http://www.tmaxsoft.com/promapper/structure" xmlns:mes="http://www.tmaxsoft.com/promapper/message"/>
+                      </assign>
+                      <assign comments="FROM 논리명-data2;TO 논리명-data2;" fromExpression="contextBody_SRC.data2" toExpression="contextBody_TGT.data2">
+                        <fromField physicalName="data2" logicalName="data2" fieldType="string" decimal="0" length="4" xmlns:str="http://www.tmaxsoft.com/promapper/structure" xmlns:mes="http://www.tmaxsoft.com/promapper/message"/>
+                        <toField physicalName="data2" logicalName="data2" fieldType="string" decimal="0" length="4" xmlns:str="http://www.tmaxsoft.com/promapper/structure" xmlns:mes="http://www.tmaxsoft.com/promapper/message"/>
+                      </assign>
+                      <postProcessCode/>
+                      <userClassName/>
+                    </map>
+                  </tmax:resourceContent>
+                </tmax:inputMapping>
+                <tmax:outputMapping>
+                  <tmax:resourceClassName>TCP8471DCOUT</tmax:resourceClassName>
+                  <tmax:resourceId>tcp.tcpTCP.tcpTCPtoTCP:TCP8471DCOUT.map</tmax:resourceId>
+                  <tmax:resourcePath>tcp.tcpTCP.tcpTCPtoTCP</tmax:resourcePath>
+                  <tmax:resourceContent>
+                    <map resourceType="MAP" creator="" owner="" resourcePath="tcp.tcpTCP.tcpTCPtoTCP" physicalName="TCP8471DCOUT" logicalName="" resourceId="tcp.tcpTCP.tcpTCPtoTCP:TCP8471DCOUT.map" resourceGroup="" xmlns="http://www.tmaxsoft.com/promapper/map">
+                      <input alias="contextHeader_SRC" comments="" arraySize="0" logicalName="Header" physicalName="Header" referenceId="tcp.tcpTCP.tcpTCPtoTCP:Header.umsg" resourcePath="tcp.tcpTCP.tcpTCPtoTCP">
+                        <variable name="Header" scope="context">
+                          <structure resourceId="tcp.tcpTCP.tcpTCPtoTCP:Header.umsg" resourcePath="tcp.tcpTCP.tcpTCPtoTCP" versionNo="17" logicalName="Header" physicalName="Header"/>
+                        </variable>
+                      </input>
+                      <input alias="contextBody_SRC" comments="" arraySize="0" logicalName="Body" physicalName="Body" referenceId="tcp.tcpTCP.tcpTCPtoTCP:Body.umsg" resourcePath="tcp.tcpTCP.tcpTCPtoTCP">
+                        <variable name="Body" scope="context">
+                          <structure resourceId="tcp.tcpTCP.tcpTCPtoTCP:Body.umsg" resourcePath="tcp.tcpTCP.tcpTCPtoTCP" versionNo="17" logicalName="Body" physicalName="Body"/>
+                        </variable>
+                      </input>
+                      <output alias="contextHeader_TGT" comments="" logicalName="Header" physicalName="Header" referenceId="tcp.tcpTCP.tcpTCPtoTCP:Header.umsg" resourcePath="tcp.tcpTCP.tcpTCPtoTCP" arraySize="0">
+                        <variable name="header" scope="context" size="0">
+                          <structure resourceId="tcp.tcpTCP.tcpTCPtoTCP:Header.umsg" physicalName="Header" logicalName="Header" resourcePath="tcp.tcpTCP.tcpTCPtoTCP"/>
+                        </variable>
+                      </output>
+                      <output alias="contextBody_TGT" comments="" logicalName="Body" physicalName="Body" referenceId="tcp.tcpTCP.tcpTCPtoTCP:Body.umsg" resourcePath="tcp.tcpTCP.tcpTCPtoTCP" arraySize="0">
+                        <variable name="body" scope="context" size="0">
+                          <structure resourceId="tcp.tcpTCP.tcpTCPtoTCP:Body.umsg" physicalName="Body" logicalName="Body" resourcePath="tcp.tcpTCP.tcpTCPtoTCP"/>
+                        </variable>
+                      </output>
+                      <assign comments="FROM 논리명-serviceId;TO 논리명-serviceId;" fromExpression="contextHeader_SRC.serviceId" toExpression="contextHeader_TGT.serviceId">
+                        <fromField physicalName="serviceId" logicalName="serviceId" fieldType="string" decimal="0" length="4" xmlns:str="http://www.tmaxsoft.com/promapper/structure" xmlns:mes="http://www.tmaxsoft.com/promapper/message"/>
+                        <toField physicalName="serviceId" logicalName="serviceId" fieldType="string" decimal="0" length="4" xmlns:str="http://www.tmaxsoft.com/promapper/structure" xmlns:mes="http://www.tmaxsoft.com/promapper/message"/>
+                      </assign>
+                      <assign comments="FROM 논리명-serviceName;TO 논리명-serviceName;" fromExpression="contextHeader_SRC.serviceName" toExpression="contextHeader_TGT.serviceName">
+                        <fromField physicalName="serviceName" logicalName="serviceName" fieldType="string" decimal="0" length="4" xmlns:str="http://www.tmaxsoft.com/promapper/structure" xmlns:mes="http://www.tmaxsoft.com/promapper/message"/>
+                        <toField physicalName="serviceName" logicalName="serviceName" fieldType="string" decimal="0" length="4" xmlns:str="http://www.tmaxsoft.com/promapper/structure" xmlns:mes="http://www.tmaxsoft.com/promapper/message"/>
+                      </assign>
+                      <assign comments="FROM 논리명-data1;TO 논리명-data1;" fromExpression="contextBody_SRC.data1" toExpression="contextBody_TGT.data1">
+                        <fromField physicalName="data1" logicalName="data1" fieldType="string" decimal="0" length="4" xmlns:str="http://www.tmaxsoft.com/promapper/structure" xmlns:mes="http://www.tmaxsoft.com/promapper/message"/>
+                        <toField physicalName="data1" logicalName="data1" fieldType="string" decimal="0" length="4" xmlns:str="http://www.tmaxsoft.com/promapper/structure" xmlns:mes="http://www.tmaxsoft.com/promapper/message"/>
+                      </assign>
+                      <assign comments="FROM 논리명-data2;TO 논리명-data2;" fromExpression="contextBody_SRC.data2" toExpression="contextBody_TGT.data2">
+                        <fromField physicalName="data2" logicalName="data2" fieldType="string" decimal="0" length="4" xmlns:str="http://www.tmaxsoft.com/promapper/structure" xmlns:mes="http://www.tmaxsoft.com/promapper/message"/>
+                        <toField physicalName="data2" logicalName="data2" fieldType="string" decimal="0" length="4" xmlns:str="http://www.tmaxsoft.com/promapper/structure" xmlns:mes="http://www.tmaxsoft.com/promapper/message"/>
+                      </assign>
+                      <postProcessCode/>
+                      <userClassName/>
+                    </map>
+                  </tmax:resourceContent>
+                </tmax:outputMapping>
+              </tmax:TaskActivityExtendedAttribute>
+            </xpdl:ExtendedAttribute>
+          </xpdl:ExtendedAttributes>
+          <xpdl:NodeGraphicsInfos>
+            <xpdl:NodeGraphicsInfo tmax:fontColor="3e3f40" Height="60.0" Width="150.0" FillColor="6384bb">
+              <xpdl:Coordinates YCoordinate="91.0" XCoordinate="198.0"/>
+            </xpdl:NodeGraphicsInfo>
+          </xpdl:NodeGraphicsInfos>
+        </xpdl:Activity>
+      </xpdl:Activities>
+      <xpdl:Transitions>
+        <xpdl:Transition Id="Transition8490DD" Name="Transition" tmax:priority="0" From="Event84EED1" To="TCP8471DC">
+          <xpdl:Description>Transition</xpdl:Description>
+        </xpdl:Transition>
+        <xpdl:Transition Id="Transition8404DA" Name="Transition" tmax:priority="0" From="ReplyMessage849DD4" To="Event8431D2">
+          <xpdl:Description>Transition</xpdl:Description>
+        </xpdl:Transition>
+        <xpdl:Transition Id="Transition840FE0" Name="Transition" tmax:priority="0" From="TCP8471DC" To="ReplyMessage849DD4">
+          <xpdl:Description>Transition</xpdl:Description>
+        </xpdl:Transition>
+      </xpdl:Transitions>
+      <xpdl:ExtendedAttributes>
+        <xpdl:ExtendedAttribute Name="ProcessExtendedAttribute">
+          <tmax:ProcessExtendedAttribute lastModifiedTime="2014-11-14T14:25:27.253+09:00" backgroundColor="ffffff" serviceMake="true">
+            <tmax:errorCodeMapper xsi:nil="true"/>
+          </tmax:ProcessExtendedAttribute>
+        </xpdl:ExtendedAttribute>
+      </xpdl:ExtendedAttributes>
+    </xpdl:WorkflowProcess>
+  </xpdl:WorkflowProcesses>
+</xpdl:Package>

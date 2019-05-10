@@ -1,0 +1,36 @@
+[°øÅë]
+vi /etc/rc.d/rc.local
+vi /etc/group
+vi /etc/passwd
+
+[WEB]
+ps -efL | grep httpd | grep -v grep | awk '{print $(NF-2)}' | grep apache | wc -l
+ps -ef | grep httpd | grep -v grep | awk '{print $(NF-2)}' | grep apache | wc -l
+ps -ef | grep httpd | grep -v grep | awk '{print $(NF-2)}' | grep apache
+
+ps -ef | grep httpd | grep -v grep | grep 7000_7443 | wc -l
+ps -efL | grep httpd | grep -v grep | grep 7000_7443 | wc -l
+
+tail -f a-kos.kr.access-8443.20180519.log | grep -e "HTTP/1.1\" [^200]"
+
+sh /home/apache/monitoring_chk_sh/checkWEB.sh
+while true; do sh /home/apache/monitoring_chk_sh/checkWEB.sh; sleep 3;  done;
+
+http://10.220.167.43/server-status
+http://10.220.167.44/server-status
+http://10.220.167.43:7000/server-status
+http://10.220.167.44:7000/server-status
+
+
+[WAS]
+/subsystem=datasources/data-source=kkosDsJNDI/statistics=pool:read-resource(include-runtime=true)
+ps -ef | grep LogMonitoringAgent | grep -v grep
+ps -ef | grep initech | grep inisafe | grep -v grep
+ps -ef | grep kkosSvr | grep jvmRoute | grep -v grep
+ps -ef | grep zabbix | grep zabbix_agentd.conf | grep -v grep
+netstat -an | grep 10.220.172.33:8019 | grep ESTABLISHED | wc -l
+netstat -an | grep 10.220.172.31:8019 | grep ESTABLISHED | wc -l
+
+sh /home/jboss/monitoring_chk_sh/checkWAS.sh
+while true; do sh /home/jboss/monitoring_chk_sh/checkWAS.sh; sleep 3;  done;
+

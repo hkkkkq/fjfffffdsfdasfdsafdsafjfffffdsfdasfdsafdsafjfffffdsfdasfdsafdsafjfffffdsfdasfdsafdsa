@@ -1,0 +1,38 @@
+vi /etc/rc.d/rc.local : 부팅 시 마지막으로 실행되는 스크립트
+
+
+[WEB]
+
+# SMP WEB SHELL(PRD)
+sh /opt/ShellMonitorAgent/bin/autoRun start
+
+# LOOKS-ZABBIX(DEV,TEST,PRD)
+cd /home/zabbix/sbin
+sh start.sh
+#/home/zabbix/sbin/zabbix_agentd -c /home/zabbix/conf/zabbix_agentd.conf
+
+[WAS]
+
+# SMP WEB SHELL(PRD)
+sh /opt/ShellMonitorAgent/bin/autoRun start
+
+# SAFEDB(DEV,TEST,PRD)
+cd /jboss/safeDB/Agent1/bin
+sh startup.sh
+cd /jboss/safeDB/Agent2/bin
+sh startup.sh
+
+# LOOKS-ZABBIX(DEV,TEST,PRD)
+cd /home/zabbix/sbin
+sh start.sh
+#/home/zabbix/sbin/zabbix_agentd -c /home/zabbix/conf/zabbix_agentd.conf
+
+# BMON(DEV,TEST,PRD)
+sh /jboss/bmonagent/onm-bmon-agent/bin/agent-start.sh
+
+[DB]
+
+# LOOKS-ZABBIX(DEV,TEST,PRD)
+cd /home/zabbix/sbin
+sh start.sh
+#/home/zabbix/sbin/zabbix_agentd -c /home/zabbix/conf/zabbix_agentd.conf

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mes:umessage xmlns:mes="http://www.tmaxsoft.com/promapper/message">
+  <mes:structure physicalName="Header" logicalName="Header" resourceType="STRUCTURE" resourcePath="tcp.tcpTCP.tcpTCPtoTCP" resourceId="tcp.tcpTCP.tcpTCPtoTCP:Header.umsg" resourceGroup="" versionNo="18">
+    <str:structureField physicalName="serviceId" logicalName="serviceId" fieldType="string" decimal="0" length="4" xmlns:str="http://www.tmaxsoft.com/promapper/structure"/>
+    <str:structureField physicalName="serviceName" logicalName="serviceName" fieldType="string" decimal="0" length="4" xmlns:str="http://www.tmaxsoft.com/promapper/structure"/>
+    <str:messageInfo messagePath="tcp.tcpTCP.tcpTCPtoTCP" messagePhysicalName="HeaderFixedLength" messageType="FixedLength" messageId="tcp.tcpTCP.tcpTCPtoTCP:HeaderFixedLength.msg" xmlns:str="http://www.tmaxsoft.com/promapper/structure"/>
+  </mes:structure>
+  <mes:message physicalName="HeaderFixedLength" logicalName="Header" structureId="tcp.tcpTCP.tcpTCPtoTCP:Header.umsg" structureName="Header" structurePath="tcp.tcpTCP.tcpTCPtoTCP" resourcePath="tcp.tcpTCP.tcpTCPtoTCP" resourceType="MESSAGE" resourceGroup="" resourceId="tcp.tcpTCP.tcpTCPtoTCP:HeaderFixedLength.msg" messageType="FixedLength" trimFlag="none">
+    <mes:messageField physicalName="serviceId" logicalName="serviceId" fieldType="string" length="4" array="" align="None" fill="" decimal="0" point="false" sign="false" encodeOption="Char" trailer="" pattern="yyyy-MM-dd" endian="Little" EOD="false" comments=""/>
+    <mes:messageField physicalName="serviceName" logicalName="serviceName" fieldType="string" length="4" array="" align="None" fill="" decimal="0" point="false" sign="false" encodeOption="Char" trailer="" pattern="yyyy-MM-dd" endian="Little" EOD="false" comments=""/>
+  </mes:message>
+</mes:umessage>

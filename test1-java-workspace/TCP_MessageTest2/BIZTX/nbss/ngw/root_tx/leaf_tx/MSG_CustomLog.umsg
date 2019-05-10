@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mes:umessage xmlns:mes="http://www.tmaxsoft.com/promapper/message">
+  <mes:structure physicalName="MSG_CustomLog" logicalName="MSG_CustomLog" resourceType="STRUCTURE" resourcePath="nbss.ngw.root_tx.leaf_tx" resourceId="nbss.ngw.root_tx.leaf_tx:MSG_CustomLog.umsg" resourceGroup="" versionNo="34">
+    <str:structureField physicalName="GLOBAL_NO" logicalName="GLOBAL_NO" fieldType="string" decimal="0" xmlns:str="http://www.tmaxsoft.com/promapper/structure"/>
+    <str:structureField physicalName="SVR_IP" logicalName="SVR_IP" fieldType="string" decimal="0" xmlns:str="http://www.tmaxsoft.com/promapper/structure"/>
+    <str:structureField physicalName="SVR_HOSTNAME" logicalName="SVR_HOSTNAME" fieldType="string" decimal="0" xmlns:str="http://www.tmaxsoft.com/promapper/structure"/>
+    <str:structureField physicalName="SVR_INSTANCE_ID" logicalName="SVR_INSTANCE_ID" fieldType="string" decimal="0" xmlns:str="http://www.tmaxsoft.com/promapper/structure"/>
+    <str:structureField physicalName="IF_TYPE_CD" logicalName="IF_TYPE_CD" fieldType="string" decimal="0" array="" xmlns:str="http://www.tmaxsoft.com/promapper/structure"/>
+    <str:structureField physicalName="PROCESS_STATUS_CD" logicalName="PROCESS_STATUS_CD" fieldType="string" decimal="0" xmlns:str="http://www.tmaxsoft.com/promapper/structure"/>
+    <str:structureField physicalName="REG_DATE" logicalName="REG_DATE" fieldType="string" decimal="0" array="" xmlns:str="http://www.tmaxsoft.com/promapper/structure"/>
+    <str:structureField physicalName="REG_DT" logicalName="REG_DT" fieldType="string" decimal="0" xmlns:str="http://www.tmaxsoft.com/promapper/structure"/>
+  </mes:structure>
+</mes:umessage>

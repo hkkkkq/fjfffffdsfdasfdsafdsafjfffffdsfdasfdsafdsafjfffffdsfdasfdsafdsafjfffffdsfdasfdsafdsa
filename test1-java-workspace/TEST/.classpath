@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="E:/InfiniLink/Studio_PRD2/workspace_COMMON_LIB/Gen_JARs/20170515/commons-lang3-3.1.jar" sourcepath="E:/InfiniLink/Studio_PRD2/workspace_COMMON_LIB/extJars/commons-lang3-3.3.1-sources.jar">
+		<attributes>
+			<attribute name="source_encoding" value="UTF-8"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

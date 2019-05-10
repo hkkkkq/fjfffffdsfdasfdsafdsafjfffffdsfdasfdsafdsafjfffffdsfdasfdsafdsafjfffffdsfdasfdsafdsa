@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xpdl:Package xmlns:tmax="http://www.tmaxsoft.com/infinilink/XPDL20/" xmlns:flow="http://www.tmaxsoft.co.kr/proframe/flowModule" xmlns:xpdl="http://www.wfmc.org/2004/XPDL2.0alpha" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <xpdl:Pools>
+    <xpdl:Pool Id="Pool844B7A" Process="serviceflow" Orientation="VERTICAL">
+      <xpdl:Lanes>
+        <xpdl:Lane Id="Lane849F7B" Name="Lane" ParentPool="Pool844B7A">
+          <xpdl:NodeGraphicsInfos>
+            <xpdl:NodeGraphicsInfo Height="800.0" Width="300.0" BorderColor="c5ccfc"/>
+          </xpdl:NodeGraphicsInfos>
+        </xpdl:Lane>
+      </xpdl:Lanes>
+    </xpdl:Pool>
+  </xpdl:Pools>
+  <xpdl:WorkflowProcesses>
+    <xpdl:WorkflowProcess Id="serviceflow" Name="serviceflow" tmax:Package="tcp_root.tcp_root.tcp_leaf">
+      <xpdl:ProcessHeader>
+        <xpdl:Created>2014-11-11T22:05:29+09:00</xpdl:Created>
+        <xpdl:Description>This is a serviceflow process</xpdl:Description>
+      </xpdl:ProcessHeader>
+      <xpdl:RedefinableHeader>
+        <xpdl:Author>admin</xpdl:Author>
+        <xpdl:Version>2.0.0</xpdl:Version>
+      </xpdl:RedefinableHeader>
+      <xpdl:FormalParameters/>
+      <xpdl:DataFields>
+        <xpdl:DataField Id="commonheader" tmax:visible="true">
+          <xpdl:DataType/>
+          <xpdl:ExtendedAttributes>
+            <xpdl:ExtendedAttribute Name="VariableExtendedAttribute">
+              <tmax:VariableExtendedAttribute scope="instance" messageID="tcp_root.tcp_root:CommonHeader.umsg" messageClassName="tcp_root.tcp_root.CommonHeader" type="DataObject"/>
+            </xpdl:ExtendedAttribute>
+          </xpdl:ExtendedAttributes>
+        </xpdl:DataField>
+        <xpdl:DataField Id="header" tmax:visible="true">
+          <xpdl:DataType/>
+          <xpdl:ExtendedAttributes>
+            <xpdl:ExtendedAttribute Name="VariableExtendedAttribute">
+              <tmax:VariableExtendedAttribute scope="instance" messageID="tcp_root.tcp_root.tcp_leaf:Header.umsg" messageClassName="tcp_root.tcp_root.tcp_leaf.Header" type="DataObject"/>
+            </xpdl:ExtendedAttribute>
+          </xpdl:ExtendedAttributes>
+        </xpdl:DataField>
+        <xpdl:DataField Id="body" tmax:visible="true">
+          <xpdl:DataType/>
+          <xpdl:ExtendedAttributes>
+            <xpdl:ExtendedAttribute Name="VariableExtendedAttribute">
+              <tmax:VariableExtendedAttribute scope="instance" messageID="tcp_root.tcp_root.tcp_leaf:Body.umsg" messageClassName="tcp_root.tcp_root.tcp_leaf.Body" type="DataObject"/>
+            </xpdl:ExtendedAttribute>
+          </xpdl:ExtendedAttributes>
+        </xpdl:DataField>
+      </xpdl:DataFields>
+      <xpdl:Activities>
+        <xpdl:Activity Id="start_Event84AB80" Name="Message">
+          <xpdl:Description>Message</xpdl:Description>
+          <xpdl:Event>
+            <xpdl:StartEvent Trigger="Message">
+              <xpdl:TriggerResultMessage/>
+            </xpdl:StartEvent>
+          </xpdl:Event>
+          <xpdl:ExtendedAttributes>
+            <xpdl:ExtendedAttribute Name="ServiceExtendedAttribute">
+              <tmax:ServiceExtendedAttribute>
+                <tmax:inputVariableList>
+                  <tmax:variableId>commonheader</tmax:variableId>
+                  <tmax:variableId>header</tmax:variableId>
+                  <tmax:variableId>body</tmax:variableId>
+                </tmax:inputVariableList>
+                <tmax:outputVariableList>
+                  <tmax:variableId>commonheader</tmax:variableId>
+                  <tmax:variableId>header</tmax:variableId>
+                  <tmax:variableId>body</tmax:variableId>
+                </tmax:outputVariableList>
+              </tmax:ServiceExtendedAttribute>
+            </xpdl:ExtendedAttribute>
+            <xpdl:ExtendedAttribute Name="MessageEventExtendedAttribute">
+              <tmax:EventExtendedAttribute serviceId="tcp_root.tcp_root.tcp_leaf:serviceflow:start_Event84AB80" noLogging="false" checkPoint="false" savePoint="false" type="internal" autoUnregister="false">
+                <tmax:mappingInfo>
+                  <tmax:inputVariableList>
+                    <tmax:variableId>commonheader</tmax:variableId>
+                    <tmax:variableId>header</tmax:variableId>
+                    <tmax:variableId>body</tmax:variableId>
+                  </tmax:inputVariableList>
+                  <tmax:outputVariableList>
+                    <tmax:variableId>commonheader</tmax:variableId>
+                    <tmax:variableId>header</tmax:variableId>
+                    <tmax:variableId>body</tmax:variableId>
+                  </tmax:outputVariableList>
+                </tmax:mappingInfo>
+              </tmax:EventExtendedAttribute>
+            </xpdl:ExtendedAttribute>
+          </xpdl:ExtendedAttributes>
+          <xpdl:NodeGraphicsInfos>
+            <xpdl:NodeGraphicsInfo>
+              <xpdl:Coordinates YCoordinate="177.0" XCoordinate="159.0"/>
+            </xpdl:NodeGraphicsInfo>
+          </xpdl:NodeGraphicsInfos>
+        </xpdl:Activity>
+        <xpdl:Activity Id="TCP843181" Name="TCP" StartMode="Automatic" FinishMode="Automatic">
+          <xpdl:Description>TCP Adapter 서비스를 호출</xpdl:Description>
+          <xpdl:Implementation>
+            <xpdl:Task>
+              <xpdl:TaskManual/>
+            </xpdl:Task>
+          </xpdl:Implementation>
+          <xpdl:Priority>50</xpdl:Priority>
+          <xpdl:ExtendedAttributes>
+            <xpdl:ExtendedAttribute Name="TaskActivityExtendedAttribute">
+              <tmax:TaskActivityExtendedAttribute serviceId="tcp_root.tcp_root.tcp_leaf:tcpOutboundRule.orule" noLogging="false" checkPoint="false" savePoint="false" type="TCP" taskMode="Service" transMode="Request">
+                <tmax:inputVariableList>
+                  <tmax:variableId>header</tmax:variableId>
+                  <tmax:variableId>body</tmax:variableId>
+                </tmax:inputVariableList>
+                <tmax:outputVariableList>
+                  <tmax:variableId>header</tmax:variableId>
+                  <tmax:variableId>body</tmax:variableId>
+                </tmax:outputVariableList>
+              </tmax:TaskActivityExtendedAttribute>
+            </xpdl:ExtendedAttribute>
+          </xpdl:ExtendedAttributes>
+          <xpdl:NodeGraphicsInfos>
+            <xpdl:NodeGraphicsInfo tmax:fontColor="3e3f40" Height="60.0" Width="150.0" FillColor="6384bb">
+              <xpdl:Coordinates YCoordinate="170.0" XCoordinate="322.0"/>
+            </xpdl:NodeGraphicsInfo>
+          </xpdl:NodeGraphicsInfos>
+        </xpdl:Activity>
+        <xpdl:Activity Id="ReplyMessage842183" Name="ReplyMessage" StartMode="Automatic" FinishMode="Automatic">
+          <xpdl:Description>Activity</xpdl:Description>
+          <xpdl:Implementation>
+            <xpdl:Task>
+              <xpdl:TaskManual/>
+            </xpdl:Task>
+          </xpdl:Implementation>
+          <xpdl:Priority>50</xpdl:Priority>
+          <xpdl:ExtendedAttributes>
+            <xpdl:ExtendedAttribute Name="TaskActivityExtendedAttribute">
+              <tmax:TaskActivityExtendedAttribute noLogging="false" checkPoint="false" savePoint="false" type="SENDMESSAGE" taskMode="Service" transMode="Response" requestNodeId="start_Event84AB80">
+                <tmax:inputVariableList>
+                  <tmax:variableId>commonheader</tmax:variableId>
+                  <tmax:variableId>header</tmax:variableId>
+                  <tmax:variableId>body</tmax:variableId>
+                </tmax:inputVariableList>
+              </tmax:TaskActivityExtendedAttribute>
+            </xpdl:ExtendedAttribute>
+          </xpdl:ExtendedAttributes>
+          <xpdl:NodeGraphicsInfos>
+            <xpdl:NodeGraphicsInfo tmax:fontColor="3e3f40" Height="60.0" Width="150.0" FillColor="6384bb">
+              <xpdl:Coordinates YCoordinate="165.0" XCoordinate="574.0"/>
+            </xpdl:NodeGraphicsInfo>
+          </xpdl:NodeGraphicsInfos>
+        </xpdl:Activity>
+        <xpdl:Activity Id="Event847984" Name="None">
+          <xpdl:Description>None</xpdl:Description>
+          <xpdl:Event>
+            <xpdl:EndEvent Result="None"/>
+          </xpdl:Event>
+          <xpdl:ExtendedAttributes>
+            <xpdl:ExtendedAttribute Name="EventExtendedAttribute">
+              <tmax:EventExtendedAttribute noLogging="false" checkPoint="false" savePoint="false" type="internal" autoUnregister="false"/>
+            </xpdl:ExtendedAttribute>
+          </xpdl:ExtendedAttributes>
+          <xpdl:NodeGraphicsInfos>
+            <xpdl:NodeGraphicsInfo>
+              <xpdl:Coordinates YCoordinate="192.0" XCoordinate="827.0"/>
+            </xpdl:NodeGraphicsInfo>
+          </xpdl:NodeGraphicsInfos>
+        </xpdl:Activity>
+      </xpdl:Activities>
+      <xpdl:Transitions>
+        <xpdl:Transition Id="Transition84D587" Name="Transition" tmax:priority="0" From="start_Event84AB80" To="TCP843181">
+          <xpdl:Description>Transition</xpdl:Description>
+        </xpdl:Transition>
+        <xpdl:Transition Id="Transition84F58B" Name="Transition" tmax:priority="0" From="TCP843181" To="ReplyMessage842183">
+          <xpdl:Description>Transition</xpdl:Description>
+        </xpdl:Transition>
+        <xpdl:Transition Id="Transition84C090" Name="Transition" tmax:priority="0" From="ReplyMessage842183" To="Event847984">
+          <xpdl:Description>Transition</xpdl:Description>
+        </xpdl:Transition>
+      </xpdl:Transitions>
+      <xpdl:ExtendedAttributes>
+        <xpdl:ExtendedAttribute Name="ProcessExtendedAttribute">
+          <tmax:ProcessExtendedAttribute lastModifiedTime="2014-11-11T22:26:46.031+09:00" backgroundColor="ffffff" serviceMake="true">
+            <tmax:errorCodeMapper xsi:nil="true"/>
+          </tmax:ProcessExtendedAttribute>
+        </xpdl:ExtendedAttribute>
+      </xpdl:ExtendedAttributes>
+    </xpdl:WorkflowProcess>
+  </xpdl:WorkflowProcesses>
+</xpdl:Package>

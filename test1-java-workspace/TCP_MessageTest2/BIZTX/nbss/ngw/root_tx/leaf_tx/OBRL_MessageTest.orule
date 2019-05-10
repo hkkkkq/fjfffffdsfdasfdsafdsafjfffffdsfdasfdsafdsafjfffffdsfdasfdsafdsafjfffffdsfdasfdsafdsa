@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ns0:outboundRuleInfo xmlns:ns2="http://www.tmaxsoft.com/schemas/infinilink/reliableQueue/" xmlns:ns1="http://www.tmaxsoft.com/schemas/infinilink/common/" xmlns:ns3="http://www.tmaxsoft.com/schemas/infinilink/serverPlugin/" xmlns:ns0="http://www.tmaxsoft.com/schemas/infinilink/">
+   <ns0:sysId>nbss.ngw.root_tx.leaf_tx:OBRL_MessageTest.orule</ns0:sysId>
+   <ns0:id>OBRL_MessageTest</ns0:id>
+   <ns0:name>OBRL_MessageTest</ns0:name>
+   <ns0:package>nbss.ngw.root_tx.leaf_tx</ns0:package>
+   <ns0:version>34</ns0:version>
+   <ns0:resourceType>OutboundRule</ns0:resourceType>
+   <ns0:requestMessage>
+      <ns0:messageId>nbss.ngw.root_tx:MSG_Header.umsg</ns0:messageId>
+      <ns0:typeId>nbss.ngw.root_tx:MSG_HeaderFixedLength.msg</ns0:typeId>
+      <ns0:isArray>false</ns0:isArray>
+   </ns0:requestMessage>
+   <ns0:requestMessage>
+      <ns0:messageId>nbss.ngw.root_tx.leaf_tx:MSG_Body.umsg</ns0:messageId>
+      <ns0:typeId>nbss.ngw.root_tx.leaf_tx:MSG_BodyFixedLength.msg</ns0:typeId>
+      <ns0:isArray>false</ns0:isArray>
+   </ns0:requestMessage>
+   <ns0:responseMessage>
+      <ns0:messageId>nbss.ngw.root_tx:MSG_Header.umsg</ns0:messageId>
+      <ns0:typeId>nbss.ngw.root_tx:MSG_HeaderFixedLength.msg</ns0:typeId>
+      <ns0:isArray>false</ns0:isArray>
+   </ns0:responseMessage>
+   <ns0:responseMessage>
+      <ns0:messageId>nbss.ngw.root_tx.leaf_tx:MSG_Body.umsg</ns0:messageId>
+      <ns0:typeId>nbss.ngw.root_tx.leaf_tx:MSG_BodyFixedLength.msg</ns0:typeId>
+   </ns0:responseMessage>
+   <ns0:useResponseHeaderMessage>false</ns0:useResponseHeaderMessage>
+   <ns0:adapterId>TCP_IN_TEST_FOR_JWH</ns0:adapterId>
+   <ns0:endpointId>TCP_IN_TEST_FOR_JWH.TCP_OUT_MESSAGE_TEST</ns0:endpointId>
+   <ns0:requestTimeout>10000</ns0:requestTimeout>
+   <ns0:protocol>TCP</ns0:protocol>
+   <ns0:tcpOutboundRuleInfo>
+      <ns0:callType>Sync</ns0:callType>
+   </ns0:tcpOutboundRuleInfo>
+</ns0:outboundRuleInfo>

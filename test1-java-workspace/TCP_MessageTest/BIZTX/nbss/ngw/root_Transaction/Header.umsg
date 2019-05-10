@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mes:umessage xmlns:mes="http://www.tmaxsoft.com/promapper/message">
+  <mes:structure physicalName="Header" logicalName="Header" resourceType="STRUCTURE" resourcePath="nbss.ngw.root_Transaction" resourceId="nbss.ngw.root_Transaction:Header.umsg" resourceGroup="" versionNo="0">
+    <str:structureField physicalName="length" logicalName="length" fieldType="string" decimal="0" length="4" xmlns:str="http://www.tmaxsoft.com/promapper/structure"/>
+    <str:messageInfo messagePath="nbss.ngw.root_Transaction" messagePhysicalName="HeaderFixedLength" messageType="FixedLength" messageId="nbss.ngw.root_Transaction:HeaderFixedLength.msg" xmlns:str="http://www.tmaxsoft.com/promapper/structure"/>
+  </mes:structure>
+  <mes:message physicalName="HeaderFixedLength" logicalName="Header" structureId="nbss.ngw.root_Transaction:Header.umsg" structureName="Header" structurePath="nbss.ngw.root_Transaction" resourcePath="nbss.ngw.root_Transaction" resourceType="MESSAGE" resourceGroup="" resourceId="nbss.ngw.root_Transaction:HeaderFixedLength.msg" messageType="FixedLength" trimFlag="rtrim">
+    <mes:messageField physicalName="length" logicalName="length" fieldType="string" length="4" array="" align="None" fill="" decimal="0" point="false" sign="false" encodeOption="Char" trailer="" pattern="yyyy-MM-dd" endian="Little" EOD="false"/>
+  </mes:message>
+</mes:umessage>

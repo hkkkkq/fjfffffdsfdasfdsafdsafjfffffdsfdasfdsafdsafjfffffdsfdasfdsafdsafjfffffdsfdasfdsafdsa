@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="F:/BSS/03. 2nd/참고_java/FTPclient/commons-net-3.0.1.jar" sourcepath="F:/BSS/03. 2nd/참고_java/FTPclient/commons-net-3.0.1-src.zip">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:file:/F:/BSS/03.%202nd/참고_java/FTPclient/commons-net-3.0.1-src.zip!/"/>
+			<attribute name="source_encoding" value="UTF-8"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

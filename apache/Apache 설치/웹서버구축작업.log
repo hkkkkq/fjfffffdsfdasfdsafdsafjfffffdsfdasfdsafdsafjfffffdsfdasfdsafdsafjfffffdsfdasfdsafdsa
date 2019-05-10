@@ -1,0 +1,62 @@
+/apache/apache24/bin/apachectl start
+                                               
+sh /apache/apache24/bin/startweb_80_443.sh
+sh /apache/apache24/bin/stopweb_80_443.sh
+
+cd /apache/apache24/conf/extra
+cd /apache/apache24/bin
+cd /apache/apache24/ssl_private/kkos
+
+------------------------------------------------------------------------------------------------------------------
+curl http://dev.k-kos.kt.com
+curl https://dev.k-kos.kt.com
+curl --cacert /apache/apache24/ssl_private/kkos/server_kkos_dev_test.crt https://dev.k-kos.kt.com
+
+curl http://test.k-kos.kt.com
+curl https://test.k-kos.kt.com
+curl --cacert /apache/apache24/ssl_private/kkos/server_kkos_dev_test.crt https://test.k-kos.kt.com
+
+curl http://k-kos.kt.com
+curl https://k-kos.kt.com
+curl --cacert /apache/apache24/ssl_private/kkos/server_kkos_prd.crt https://k-kos.kt.com
+------------------------------------------------------------------------------------------------------------------
+
+-- apache2.4 변경사항
+#NameVirtualHost *:443 => 불필요
+
+<Directory "/apache/apache24/www_kkos">
+  Options -Indexes -FollowSymLinks
+  AllowOverride AuthConfig
+  Require all granted
+</Directory>
+
+
+-- mod_ssl 설치 확인 및 설치
+yum list mod_ssl
+yum install mod_ssl
+-----------------------------
+service httpd status
+service httpd restart
+----------------------------
+
+-- mod_ssl 추가
+LoadModule ssl_module modules/mod_ssl.so
+LoadModule socache_shmcb_module modules/mod_socache_shmcb.so
+
+-- mod_rewrite 추가 (필요 시)
+#LoadModule rewrite_module modules/mod_rewrite.so
+
+
+
+-- mod_ssl 설치 확인 및 설치
+yum list mod_ssl
+yum install mod_ssl
+-----------------------------
+service httpd status
+service httpd restart
+----------------------------
+
+
+
+
+
