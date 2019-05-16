@@ -127,13 +127,13 @@ deployments:
       httpGet:
         path: /actuator/health
         port: http
-    resources: {}
-#      limits:
-#        cpu: 100m
-#        memory: 128Mi
-#      requests:
-#        cpu: 100m
-#        memory: 128Mi
+    resources: 
+      limits:
+        cpu: 1000m
+        memory: 512Mi
+      requests:
+        cpu: 10m
+        memory: 512Mi
     nodeSelector: {}
     tolerations: []
     affinity: {}

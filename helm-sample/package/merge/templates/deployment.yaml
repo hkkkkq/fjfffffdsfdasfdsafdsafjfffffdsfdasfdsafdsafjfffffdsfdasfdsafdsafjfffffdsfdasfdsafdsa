@@ -1,0 +1,31 @@
+{{- $releaseName := .Release.Name -}}
+{{- range .Values.deployments }}
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: {{ .name }}
+  labels:
+    app: {{ .name }}
+    version: {{ .version }}
+    chart: {{ template "merge.chart" $ }}
+    release: {{ $releaseName }}
+spec:
+  replicas: {{ .replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ .name }}
+      version: {{ .version }}
+      chart: {{ template "merge.chart" $ }}
+      release: {{ $releaseName }}
+  template:
+    metadata:
+      labels:
+        app: {{ .name }}
+        version:  {{ .version}}
+        chart: {{ template "merge.chart" $ }}
+        release: {{ $releaseName }}
+    spec:
+{{ toYaml .spec | indent 8 }}
+---
+
+{{- end }}

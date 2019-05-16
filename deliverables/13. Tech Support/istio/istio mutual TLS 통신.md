@@ -272,3 +272,8 @@ spec:
 
 
 
+### 요약
+
+- istio => non istio : "DISABLE" 적용을 고려
+- non-istio => istio : "PERMISSIVE" 적용을 고려
+
