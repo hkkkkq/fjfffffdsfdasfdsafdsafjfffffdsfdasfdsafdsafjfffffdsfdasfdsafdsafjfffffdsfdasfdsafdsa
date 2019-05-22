@@ -1,0 +1,12 @@
+apiVersion: v1
+data:
+  CERT_SDP_CPID: KTOM2002
+  SPRING_PROFILES_ACTIVE: prd
+kind: ConfigMap
+metadata:
+  name: be-collect
+  labels:
+    app: be-collect
+    version: 1.0.0
+    release: vivaldi
+

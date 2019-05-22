@@ -1,0 +1,82 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: be-auth-canary
+  labels:
+    app: be-auth
+    version: 1.1.0
+    release: vivaldi
+spec:
+  selector:
+    matchLabels:
+      app: be-auth
+      version: 1.1.0
+      release: vivaldi
+  replicas: 0
+  template:
+    metadata:
+      labels:
+        app: be-auth
+        version: 1.1.0
+        release: vivaldi
+      annotations:
+        sidecar.istio.io/inject: "true"
+    spec:
+      containers:
+      - name: be-auth
+        image: docker-registry.default.svc.cluster.local:5000/vivaldi/be-auth:latest
+        imagePullPolicy: "Always"
+        ports:
+         - containerPort: 8080
+        env:
+         - name: NODE_IP
+           valueFrom:
+             fieldRef:
+               fieldPath: status.hostIP
+         - name: DB_PWD
+           valueFrom:
+             secretKeyRef:
+               name: be-auth               
+               key: DB_PWD
+        envFrom:
+        - configMapRef:
+            name: be-auth
+        volumeMounts:
+        - mountPath: /var/log/LAMP/
+          name: lamp-volume
+        - mountPath: /etc/localtime
+          name: timezone-config
+        securityContext:
+          privileged: true
+        livenessProbe:
+          httpGet:
+            path: /api/be/auth/actuator/health
+            port: 8080
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /api/be/auth/actuator/health
+            port: 8080
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        resources:
+          requests:
+            cpu: "500m"
+            memory: "1250Mi"
+          limits:
+            cpu: "2000m"
+            memory: "1250Mi"
+      nodeSelector:
+        ktis-node: "true"
+      volumes:
+      - name: lamp-volume
+        hostPath:
+          # directory location on host
+          path: /var/log/vivaldi/LAMP/
+          # this field is optional
+          type: DirectoryOrCreate
+      - hostPath:
+          path: /usr/share/zoneinfo/Asia/Seoul
+        name: timezone-config
+

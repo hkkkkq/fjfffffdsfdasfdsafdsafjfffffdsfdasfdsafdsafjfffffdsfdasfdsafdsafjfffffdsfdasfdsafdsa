@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: fe-web
+  labels:
+    app: fe-web
+    version: 1.0.0
+    release: vivaldi
+spec:
+  type: NodePort
+  ports:
+  - name: fe-web  
+    port: 80
+    targetPort: 80
+  selector:
+    app: fe-web
+

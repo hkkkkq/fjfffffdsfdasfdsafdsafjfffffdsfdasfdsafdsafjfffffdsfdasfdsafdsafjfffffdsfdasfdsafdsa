@@ -1,0 +1,12 @@
+apiVersion: v1
+data:
+  CERT_SDP_CPID: KTOM2002
+  SPRING_PROFILES_ACTIVE: dev
+kind: ConfigMap
+metadata:
+  name: be-pay
+  labels:
+    app: be-pay
+    version: 1.0.0
+    release: vivaldi
+

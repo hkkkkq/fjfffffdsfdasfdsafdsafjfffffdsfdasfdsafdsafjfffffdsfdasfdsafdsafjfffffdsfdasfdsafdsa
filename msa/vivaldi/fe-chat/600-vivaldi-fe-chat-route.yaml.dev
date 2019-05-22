@@ -1,0 +1,20 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  labels:
+    app: fe-chat
+    version: 1.0.0
+    release: vivaldi
+  name: fe-chat
+  namespace: istio-system
+spec:
+  host: test.dt.kt.com
+  path: /fe/chat
+  port:
+    targetPort: http2
+  to:
+    kind: Service
+    name: istio-ingressgateway
+    weight: 100
+  wildcardPolicy: None
+

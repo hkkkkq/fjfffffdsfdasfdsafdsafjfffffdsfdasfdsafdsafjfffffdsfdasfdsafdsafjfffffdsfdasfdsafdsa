@@ -1,0 +1,18 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: ServiceEntry
+metadata:
+  name: be-pay-kos
+  labels:
+    app: be-pay
+    version: 1.0.0
+    release: vivaldi
+spec:
+  hosts:
+  - "10.217.155.85"
+  - "10.217.155.172"
+  ports:
+  - number: 5000
+    name: http
+    protocol: HTTP
+  location: MESH_EXTERNAL
+  resolution: NONE

@@ -1,0 +1,13 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: be-common
+  labels:
+    app: be-common
+    version: 1.0.0
+    release: vivaldi
+spec:
+  host: be-common
+  trafficPolicy:
+    tls:
+      mode: DISABLE 

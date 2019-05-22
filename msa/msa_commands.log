@@ -150,3 +150,8 @@ $ /usr/local/bin/master-restart api && /usr/local/bin/master-restart controllers
 while true; do echo "================TEST==============="; curl -k -HHost:test.insuretech.kt.com https://10.217.59.30:443/athn/actuator/health; sleep 1; echo ""; done;
 while true; do echo "================TEST==============="; curl -k -H "Host: test.insuretech.kt.com" -H "end-user: canary" https://10.217.59.30:443/athn/actuator/health; sleep 1; echo ""; done;
 while true; do echo "================TEST==============="; curl -k --header "Host: test.insuretech.kt.com" --header "end-user: canary" https://10.217.59.30:443/athn/actuator/health; sleep 1; echo ""; done;
+
+# pod, container, node cpu/mem check
+
+kubectl -n vivaldi top node
+kubectl -n vivaldi top pod --containers

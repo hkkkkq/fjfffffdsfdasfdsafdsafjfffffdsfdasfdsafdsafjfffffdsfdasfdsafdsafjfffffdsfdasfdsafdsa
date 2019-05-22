@@ -1,0 +1,19 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: ServiceEntry
+metadata:
+  name: fe-chat-infisafenet
+  labels:
+    app: fe-chat
+    version: 1.0.0
+    release: vivaldi
+spec:
+  hosts:
+  - 147.6.37.57
+  addresses:
+  - 147.6.37.57/32
+  ports:
+  - number: 8888
+    name: tcp
+    protocol: TCP
+  location: MESH_EXTERNAL
+  resolution: NONE

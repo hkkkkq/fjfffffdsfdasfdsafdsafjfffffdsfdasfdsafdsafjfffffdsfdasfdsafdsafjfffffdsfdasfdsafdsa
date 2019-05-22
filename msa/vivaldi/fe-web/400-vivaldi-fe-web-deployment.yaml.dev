@@ -1,0 +1,70 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: fe-web
+  labels:
+    app: fe-web
+    version: 1.0.0
+    release: vivaldi
+spec:
+  selector:
+    matchLabels:
+      app: fe-web
+      version: 1.0.0
+      release: vivaldi
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: fe-web
+        version: 1.0.0
+        release: vivaldi
+      annotations:
+        sidecar.istio.io/inject: "true"
+    spec:
+      containers:
+      - name: fe-web 
+        image: docker-registry.default.svc.cluster.local:5000/vivaldi/fe-web:latest
+        imagePullPolicy: "Always"
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - mountPath: /var/log/LAMP/
+          name: lamp-volume
+        - mountPath: /etc/localtime
+          name: timezone-config
+        securityContext:
+          privileged: true
+#        livenessProbe:
+#          httpGet:
+#            path: /
+#            port: 80
+#          initialDelaySeconds: 30
+#          periodSeconds: 10
+#        readinessProbe:
+#          httpGet:
+#            path: /
+#            port: 80
+#          initialDelaySeconds: 30
+#          periodSeconds: 10
+        resources:
+          requests:
+            cpu: "500m"
+            memory: "1024Mi"
+          limits:
+            cpu: "2000m"
+            memory: "1024Mi"
+      nodeSelector:
+        ktis-node: "true"
+      volumes:
+      - name: lamp-volume
+        hostPath:
+          # directory location on host
+          path: /var/log/vivaldi/LAMP
+          # this field is optional
+          type: DirectoryOrCreate
+      - hostPath:
+          path: /usr/share/zoneinfo/Asia/Seoul
+        name: timezone-config
+
+

@@ -1,0 +1,110 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: be-common
+  labels:
+    app: be-common
+    version: 1.0.0
+    release: vivaldi
+spec:
+  selector:
+    matchLabels:
+      app: be-common
+      version: 1.0.0
+      release: vivaldi
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: be-common
+        version: 1.0.0
+        release: vivaldi
+    spec:
+      hostAliases:
+      - ip: "172.31.30.238"
+        hostnames:
+        - "int-in.tbapi.kt.com"
+      - ip: "172.31.30.33"
+        hostnames:
+        - "cus-in.tbapi.kt.com"
+      - ip: "172.31.30.32"
+        hostnames:
+        - id.tbapi.kt.com        
+      containers:
+      - name: be-common
+        image: docker-registry.default.svc.cluster.local:5000/vivaldi/be-common:latest
+        imagePullPolicy: "Always"
+        ports:
+         - containerPort: 8080
+        env:
+         - name: NODE_IP
+           valueFrom:
+             fieldRef:
+               fieldPath: status.hostIP
+         - name: DB_PWD
+           valueFrom:
+             secretKeyRef:
+               name: be-common
+               key: DB_PWD
+         - name: SDP_ACCOUNT_CUS1_PW
+           valueFrom:
+             secretKeyRef:
+               name: be-common               
+               key: SDP_ACCOUNT_CUS1_PW
+         - name: SDP_ACCOUNT_CUS2_PW
+           valueFrom:
+             secretKeyRef:
+               name: be-common               
+               key: SDP_ACCOUNT_CUS2_PW 
+         - name: CERT_CREDIT_SITE_PWD
+           valueFrom:
+             secretKeyRef:
+               name: be-common               
+               key: CERT_CREDIT_SITE_PWD
+         - name: CERT_PUBLIC_SITEMINA
+           valueFrom:
+             secretKeyRef:
+               name: be-common               
+               key: CERT_PUBLIC_SITEMINA                  
+        envFrom:
+        - configMapRef:
+            name: be-common
+        volumeMounts:
+        - mountPath: /var/log/LAMP/
+          name: lamp-volume
+        - mountPath: /etc/localtime
+          name: timezone-config
+        securityContext:
+          privileged: true
+        livenessProbe:
+          httpGet:
+            path: /api/be/common/actuator/health
+            port: 8080
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /api/be/common/actuator/health
+            port: 8080
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        resources:
+          requests:
+            cpu: "500m"
+            memory: "1250Mi"
+          limits:
+            cpu: "2000m"
+            memory: "1250Mi"
+      nodeSelector:
+        ktis-node: "true"
+      volumes:
+      - name: lamp-volume
+        hostPath:
+          # directory location on host
+          path: /var/log/vivaldi/LAMP/
+          # this field is optional
+          type: DirectoryOrCreate
+      - hostPath:
+          path: /usr/share/zoneinfo/Asia/Seoul
+        name: timezone-config
+

@@ -1,0 +1,19 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: ServiceEntry
+metadata:
+  name: be-auth-myollehdb
+  labels:
+    app: be-auth
+    version: 1.0.0
+    release: vivaldi
+spec:
+  hosts:
+  - 10.220.177.59
+  addresses:
+  - 10.220.177.59/32
+  ports:
+  - number: 5444
+    name: tcp
+    protocol: TCP
+  location: MESH_EXTERNAL
+  resolution: NONE

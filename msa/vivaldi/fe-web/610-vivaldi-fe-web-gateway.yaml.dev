@@ -1,0 +1,52 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: fe-web
+  labels:
+    app: fe-web
+    version: 1.0.0
+    release: vivaldi
+spec:
+  selector:
+    istio: ingressgateway # use istio default controller
+  servers:
+  - port:
+      number: 80
+      name: http
+      protocol: HTTP
+    hosts:
+    #- "*"
+    - "test.dt.kt.com"
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: gateway-fe-web
+  labels:
+    app: fe-web
+    version: 1.0.0
+    release: vivaldi
+spec:
+  hosts:
+  #- "*"
+  - "test.dt.kt.com"
+  gateways:
+  - fe-web
+  http:
+  - match:
+    - uri:
+        prefix: /
+    route:
+    - destination:
+        host: fe-web
+        port:
+          number: 80
+        subset: v1
+      weight: 100
+    - destination:
+        host: fe-web
+        port:
+          number: 80
+        subset: v2
+      weight: 0
+    #timeout: 10s

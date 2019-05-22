@@ -1,0 +1,13 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: queue-zookeeper-headless
+  labels:
+    app: queue-zookeeper
+    version: 1.0.0
+    release: vivaldi
+spec:
+  host: vivaldi-queue-zookeeper-headless
+  trafficPolicy:
+    tls:
+      mode: DISABLE 

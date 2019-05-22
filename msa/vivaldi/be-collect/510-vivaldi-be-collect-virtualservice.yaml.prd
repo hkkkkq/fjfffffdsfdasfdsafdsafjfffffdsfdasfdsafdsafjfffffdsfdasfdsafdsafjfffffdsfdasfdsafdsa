@@ -1,0 +1,32 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: be-collect
+  labels:
+    app: be-collect
+    version: 1.0.0
+    release: vivaldi
+spec:
+  hosts:
+  - be-collect
+  http:
+  - match:
+    - headers:
+        end-user:
+          exact: canary
+    route:
+    - destination:
+        host: be-collect
+        port:
+          number: 80
+        subset: v2
+      weight: 100
+    #timeout: 10s
+  - route:
+    - destination:
+        host: be-collect
+        port:
+          number: 80
+        subset: v1
+      weight: 100
+    #timeout: 10s
