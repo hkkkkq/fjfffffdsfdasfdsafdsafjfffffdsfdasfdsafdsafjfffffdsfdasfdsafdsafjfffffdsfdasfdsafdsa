@@ -25,11 +25,13 @@ openshift 3.11 / istio 1.0.4
 
 #### Sidecar injection
 
->  oc 명령과 kubectl 명령은 기본적으로 동일하게 동작한다. istio 기능을 활용하는데 몇 가지 차이가 있음
+>  기본적으로 oc 명령과 kubectl 명령은 기본적으로 동일하게 동작한다. (단, Openshift Custom Resource의 경우  oc명령으로 관리해야만 한다. ex. Route)
+>
+>  Istio 공식사이트에서 가이드하는 Namespace 단위 Sidecar injection은 지원하지 않는다. 
 
 
 
-1. 권한 및 인증 필요 (안하면 Pod 생성이 안됨)
+1. Openshift 관련 권한 및 인증 필요 (안하면 Pod 생성이 안됨)
 
 ```bash
 oc adm policy add-scc-to-user anyuid -z default -n herasoo $ oc adm policy add-scc-to-user privileged -z default -n herasoo
@@ -74,6 +76,7 @@ spec:
 #### DestinationRule 작성
 
 - Envoy proxy간 tls 통신을 활성화하도록 설치/설정하였다면 다음을 추가하여 사용하여야 한다. 그렇지 않으면 503 서버 통신 에러가 발생한다.
+- 이 경우 istio-proxy access log 확인 시 UF response-flag로 확인된다.
 - trafficPolicy 부분
 
 ```yaml

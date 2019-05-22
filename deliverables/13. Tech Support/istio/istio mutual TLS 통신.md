@@ -274,6 +274,6 @@ spec:
 
 ### 요약
 
-- istio => non istio : "DISABLE" 적용을 고려
-- non-istio => istio : "PERMISSIVE" 적용을 고려
+- istio => non istio :  DestinationRule 오브젝트를 통한 "DISABLE" 적용을 고려
+- non-istio => istio : Policy 및 MeshPolicy 오브젝트를 통한 "PERMISSIVE" 적용을 고려
 
