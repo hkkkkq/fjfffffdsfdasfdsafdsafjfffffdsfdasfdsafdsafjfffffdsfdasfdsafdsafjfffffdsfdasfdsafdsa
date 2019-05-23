@@ -1,0 +1,2 @@
+crond;
+echo '0 1 * * * find /var/log/LAMP/ -type f -mtime +3 -delete >> /crontab-date.log' | crontab -;

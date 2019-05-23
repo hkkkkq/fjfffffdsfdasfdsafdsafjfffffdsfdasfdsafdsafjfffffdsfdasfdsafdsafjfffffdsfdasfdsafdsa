@@ -1,0 +1,14 @@
+# topic 생성
+oc -n vivaldi exec vivaldi-queue-kafka-0 -- /usr/bin/kafka-topics --zookeeper vivaldi-queue-zookeeper:2181 --topic dt_hit --create --partitions 3 --replication-factor 1
+oc -n vivaldi exec vivaldi-queue-kafka-0 -- /usr/bin/kafka-topics --zookeeper vivaldi-queue-zookeeper:2181 --topic dt_chg --create --partitions 3 --replication-factor 1
+oc -n vivaldi exec vivaldi-queue-kafka-0 -- /usr/bin/kafka-topics --zookeeper vivaldi-queue-zookeeper:2181 --topic dt_inf --create --partitions 3 --replication-factor 1
+oc -n vivaldi exec vivaldi-queue-kafka-0 -- /usr/bin/kafka-topics --zookeeper vivaldi-queue-zookeeper:2181 --topic dt_inf_fail --create --partitions 3 --replication-factor 1
+
+# topic 삭제
+oc -n vivaldi exec vivaldi-queue-kafka-0 -- /usr/bin/kafka-topics --delete --zookeeper vivaldi-queue-zookeeper:2181 --topic dt_inf_fail
+oc -n vivaldi exec vivaldi-queue-kafka-0 -- /usr/bin/kafka-topics --delete --zookeeper vivaldi-queue-zookeeper:2181 --topic dt_inf
+oc -n vivaldi exec vivaldi-queue-kafka-0 -- /usr/bin/kafka-topics --delete --zookeeper vivaldi-queue-zookeeper:2181 --topic dt_chg
+oc -n vivaldi exec vivaldi-queue-kafka-0 -- /usr/bin/kafka-topics --delete --zookeeper vivaldi-queue-zookeeper:2181 --topic dt_hit
+
+# topic 확인
+oc -n vivaldi exec vivaldi-queue-kafka-0 -- /usr/bin/kafka-topics --zookeeper vivaldi-queue-zookeeper:2181 --describe
