@@ -189,6 +189,17 @@ alias gll='git log --format=medium -20 --author=herasoo' # 내가 commit한 정�
 
 
 
+- file 단위 이력 조회
+
+```bash
+git log <filename>
+git log -p -5 --word-diff <filename> # file의 diff 정보 출력
+```
+
+
+
+
+
 - git rebase: ` Reapply commits on top of another base tip` 잦은 커밋으로 또는 의미없는 커밋으로 커밋 버전이 복잡하여 단순화하고 싶을 때 사용할 수 있다.
 
 ```bash
