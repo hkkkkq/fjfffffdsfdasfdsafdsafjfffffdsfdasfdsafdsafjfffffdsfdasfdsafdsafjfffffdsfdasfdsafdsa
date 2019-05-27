@@ -38,6 +38,6 @@ hystrix:
     default:
       coreSize: 10
         
-management:  endpoints:    web:      exposure:        include:        #- "*"
-        - health
-        - prometheus        
+management:  endpoints:    web:      exposure:        include:        - "*"
+        #- health
+        #- prometheus        

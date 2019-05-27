@@ -13,9 +13,11 @@
 		<relativePath/> <!-- lookup parent from repository -->
   </parent>
   
+  <!--
   <modules>
   	<module>../microSvc1</module>
   	<module>../microSvc2</module>
   </modules>
+  -->
   
 </project>
