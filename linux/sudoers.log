@@ -1,0 +1,16 @@
+
+root		ALL = (ALL) ALL
+%admin		ALL = (ALL) ALL
+
+
+<user list> <host list> = command_definition [, command_definition ]...
+
+command_definition :=   [<run_as_list>] [<tag list>] <command list>
+
+- user list: %admin는 admin 그룹의 user
+- host list: ALL은 체크하지 않는다.
+- run_as_list, tag_list 는 옵션
+- run_as_list 생략 시 root로 실행한다
+- tag_list는 NOPASSWD: NOEXEC:
+- command list가 디렉토리인 경우 하위 명령어를 의미
+
