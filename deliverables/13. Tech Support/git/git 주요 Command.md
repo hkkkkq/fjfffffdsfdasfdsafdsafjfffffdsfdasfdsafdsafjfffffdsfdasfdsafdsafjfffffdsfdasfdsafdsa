@@ -29,6 +29,25 @@ git config --global user.email herasoo@kt.com
 
 
 
+- windows  경우 mac과 협업 시
+
+```bash
+git config --global core.autocrlf true
+git config --global core.safecrlf false
+```
+
+
+
+
+- mac 경우 window와 협업 시
+
+```bash
+git config --global core.autocrlf true input
+git config --global core.safecrlf false
+```
+
+
+
 - git 저장소 초기화
 
 ```bash
