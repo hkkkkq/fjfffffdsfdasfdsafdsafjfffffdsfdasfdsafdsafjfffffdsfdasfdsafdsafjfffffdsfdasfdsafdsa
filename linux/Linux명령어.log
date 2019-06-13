@@ -15,20 +15,6 @@
  
  while true; do echo "================Deploy Processing==============="; ps -ef | grep 'sh /app/infinilink/cm_deploy/' | grep -v grep; ps -ef | grep 'sh /app/infinilink/cm_undeploy/' | grep -v grep; echo "======================================"; echo ""; sleep 3;  done;
  
- ¡Ø Deploy
- sh /app/infinilink/cm_deploy/bizsys/cm-deploy-bizsys.sh /home/infadm/rundeck/NBSS-GWEAP-INFI/EO_NAC1 EO_NAC1
- sh /app/infinilink/cm_deploy/comlib/cm-deploy-comlib.sh /home/infadm/rundeck/NBSS-GWEAP-INFI/E_COMMONLIB E_COMMONLIB
- sh /app/infinilink/cm_deploy/prop/cm-deploy-prop.sh /home/infadm/rundeck/R1.0.s160826R_20160823_1804/E_PROPERTIES EB_BAT1
- 
- ¡Ø Undeploy
- sh /app/infinilink/cm_undeploy/cm-undeploy.sh /home/infadm/rundeck/NBSS-GWEAP-INFI/delete_list.txt
- 
- ¡Ø ·Î±×º¹È£È­
- sh /home/infadm/monitoring_chk_sh/LogFileZipEncrypt/logFileDecUnzip.sh /GW_REPO/applog_bak/infinilink/rte_log/eo_cdrm1/eo_cdrm1_svr1/20160505 all
- 
- ¡Ø EP ±âµ¿/ÁßÁö
- sh /app/infinilink/properties/rolling_deploy/epControl.sh "start" "/app/infinilink/properties/rolling_deploy/EO_GRP1_TCP_EP_LIST.txt" "EO_GRP1"
- 
  <2>
  nc -z [local pc ip] [port_number]
  ex) nc -z 10.225.137.132 9001
@@ -44,31 +30,31 @@
  
 
  <4> window
- echo "Àü¿øÈ£´ÔÂ¯ÀÎµíÀü¿øÈ£´ÔÂ¯ÀÎµíÀü¿øÈ£´ÔÂ¯ÀÎµíÀü¿øÈ£´ÔÂ¯ÀÎµí!Àü¿øÈ£´ÔÂ¯ÀÎµíÀü¿øÈ£´ÔÂ¯ÀÎµíÀü¿øÈ£´ÔÂ¯ÀÎµíÀü¿øÈ£´ÔÂ¯ÀÎµíÀü¿øÈ£´ÔÂ¯ÀÎµíÀü¿øÈ£´ÔÂ¯ÀÎµí!Àü¿øÈ£´ÔÂ¯ÀÎµí" > testdummy.txt 
+ echo "ì „ì›í˜¸ë‹˜ì§±ì¸ë“¯ì „ì›í˜¸ë‹˜ì§±ì¸ë“¯ì „ì›í˜¸ë‹˜ì§±ì¸ë“¯ì „ì›í˜¸ë‹˜ì§±ì¸ë“¯!ì „ì›í˜¸ë‹˜ì§±ì¸ë“¯ì „ì›í˜¸ë‹˜ì§±ì¸ë“¯ì „ì›í˜¸ë‹˜ì§±ì¸ë“¯ì „ì›í˜¸ë‹˜ì§±ì¸ë“¯ì „ì›í˜¸ë‹˜ì§±ì¸ë“¯ì „ì›í˜¸ë‹˜ì§±ì¸ë“¯!ì „ì›í˜¸ë‹˜ì§±ì¸ë“¯" > testdummy.txt 
  for /L %i in (1,1,19) do type testdummy.txt >> testdummy.txt
  
  <5>
  
-º¹»çÇÏ±â: scp -r * repoadm@devdns02:/repo_osimg/repo/Infinilink/
-°¡Á®¿À±â: scp -r repoadm@devdns02:/repo_osimg/repo/Infinilink/ ./
-   - ¿©·¯ ÆÄÀÏ °¡Á®¿À±â: scp apache@10.217.46.112:/apache/apache24/bin/{startweb_80_443.sh,stopweb_8000_8443_forSPT.sh,stopweb_80_443.sh} ./
+ë³µì‚¬í•˜ê¸°: scp -r * repoadm@devdns02:/repo_osimg/repo/Infinilink/
+ê°€ì ¸ì˜¤ê¸°: scp -r repoadm@devdns02:/repo_osimg/repo/Infinilink/ ./
+   - ì—¬ëŸ¬ íŒŒì¼ ê°€ì ¸ì˜¤ê¸°: scp apache@10.217.46.112:/apache/apache24/bin/{startweb_80_443.sh,stopweb_8000_8443_forSPT.sh,stopweb_80_443.sh} ./
  
- ¿É¼Ç: 
-  -v ÁøÇà»óÈ²À» »ó¼¼È÷ º¸¿©ÁÜ 
+ ì˜µì…˜: 
+  -v ì§„í–‰ìƒí™©ì„ ìƒì„¸íˆ ë³´ì—¬ì¤Œ 
 
-  -r ÁöÁ¤ÇÑ µğ·ºÅä¸®ÀÇ ÇÏÀ§ µğ·ºÅä¸®±îÁö Àç±ÍÀûÀ¸·Î ½ÇÇà 
+  -r ì§€ì •í•œ ë””ë ‰í† ë¦¬ì˜ í•˜ìœ„ ë””ë ‰í† ë¦¬ê¹Œì§€ ì¬ê·€ì ìœ¼ë¡œ ì‹¤í–‰ 
 
-  -p ¹öÀü¼Ó¼º º¸Á¸ 
+  -p ë²„ì „ì†ì„± ë³´ì¡´ 
 
-  -z µ¥ÀÌÅÍ¾ĞÃà Àü¼Û 
+  -z ë°ì´í„°ì••ì¶• ì „ì†¡ 
 
-  -u Ãß°¡µÈ ÆÄÀÏ¸¸ Àü¼Û 
+  -u ì¶”ê°€ëœ íŒŒì¼ë§Œ ì „ì†¡ 
 
-  -b ³°Àº ÆÄÀÏÀº ~°¡ ºÙÀ½ 
+  -b ë‚¡ì€ íŒŒì¼ì€ ~ê°€ ë¶™ìŒ 
   
   -q Quiet mode, diables the progress meter as well as warning and diagnostic messages from ssh
   
- <6> À¥Ä¿³Ø¼Ç ¾²·¹µå Á¶È¸
+ <6> ì›¹ì»¤ë„¥ì…˜ ì“°ë ˆë“œ ì¡°íšŒ
 dsa (alias dsa='jeusadmin -host 10.217.232.101 -port 9010 -u administrator -p infinilink')
 ti -server eo_cdrm1_svr1 -li http1 -s active -repeat 9999 -interval 1
 ti -server eo_cdrm1_svr1 -s active -repeat 9999 -interval 1
@@ -90,7 +76,7 @@ while true; do echo "===9988 EST=="; netstat -an | grep 9988 | grep EST |wc -l ;
  <7> cat -n eo_cdrm1_svr1_rte_20151205.log_bak | grep Exception
 
 
- <8> Æ¯Á¤¶óÀÎ Ãâ·Â
+ <8> íŠ¹ì •ë¼ì¸ ì¶œë ¥
 cat io_cdrm1_svr1_rte_20160114.log | grep "JDBC-11048"
 sed -n '385900,386500p' eo_cdrm1_svr1_rte_20160115.log
 
@@ -98,16 +84,16 @@ sed -n '385900,386500p' eo_cdrm1_svr1_rte_20160115.log
 
  <10> top -d 3
       top -d 3 -p 31087
-      : ÀÌÈÄ h´Â help
-      : ÀÌÈÄ c´Â command
-      : ÀÌÈÄ 1Àº cpu coreº° »ó¼¼
-      : ÀÌÈÄ mÀº memoryÁ¤º¸ »ó¼¼
-      : pid º° »ç¿ëÇÏ´Â %CPU´Â 100*cpuÄÚ¾î°³¼ö ±âÁØÀÌ´Ù.
+      : ì´í›„ hëŠ” help
+      : ì´í›„ cëŠ” command
+      : ì´í›„ 1ì€ cpu coreë³„ ìƒì„¸
+      : ì´í›„ mì€ memoryì •ë³´ ìƒì„¸
+      : pid ë³„ ì‚¬ìš©í•˜ëŠ” %CPUëŠ” 100*cpuì½”ì–´ê°œìˆ˜ ê¸°ì¤€ì´ë‹¤.
       
-      top -d 3 -c -a : command È°¼º, memory·Î sorting
+      top -d 3 -c -a : command í™œì„±, memoryë¡œ sorting
       free -mts 3
      
-¡Ø SWAP: ½ÇÁ¦¸Ş¸ğ¸® + Ä³½¬¸Ş¸ğ¸® ¸ğµÎ »ç¿ëÇØ¼­ ºÎÁ·ÇÒ ¶§ ÇÏµå ÀÏºÎºĞÀ» ¸Ş¸ğ¸®Ã³·³ »ç¿ëÇÏ´Â ¸Ş¸ğ¸® ¿µ¿ª
+â€» SWAP: ì‹¤ì œë©”ëª¨ë¦¬ + ìºì‰¬ë©”ëª¨ë¦¬ ëª¨ë‘ ì‚¬ìš©í•´ì„œ ë¶€ì¡±í•  ë•Œ í•˜ë“œ ì¼ë¶€ë¶„ì„ ë©”ëª¨ë¦¬ì²˜ëŸ¼ ì‚¬ìš©í•˜ëŠ” ë©”ëª¨ë¦¬ ì˜ì—­
 
 --------------------------------------------------------------------------------------
 top - 09:57:34 up 9 days, 16:58, 4 users, load average: 0.10, 0.11, 0.15
@@ -117,15 +103,15 @@ Mem: 68799712k total, 59522264k used, 9277448k free, 728644k buffers
 Swap: 20971516k total, 0k used, 20971516k free, 52340468k cached
 --------------------------------------------------------------------------------------
 
-1) load average: 0.10, 0.11, 0.15 => 1ºĞ, 5ºĞ, 15ºĞ°£ ½Ã½ºÅÛ ºÎÇÏÀ² (Æò±ÕÀûÀ¸·Î ½ÇÇàµÈ ÇÁ·Î¼¼½º ¼ö)
-2) 0.0%us: »ç¿ëÀÚ°¡ »ç¿ëÁßÀÎ CPU »ç¿ë·ü
-3) 0.1%sy: ½Ã½ºÅÛÀÌ »ç¿ëÁßÀÎ CPU »ç¿ë·ü
-4) 0.0%ni: Nice Á¤Ã¥¿¡ ÀÇÇØ »ç¿ëµÇ´Â CPU »ç¿ë·ü
-5) 99.9%id: »ç¿ëµÇÁö ¾Ê´Â CPU
-6) 0.0%wa: ÀÔÃâ·Â ´ë±â»óÅÂÀÇ »ç¿ë·ü
-7) 0.0%hi: ÇÏµå¿ş¾î ÀÎÅÍ·´Æ® CPU »ç¿ë·ü
-8) 0.0%si: ¼ÒÇÁÆ®¿ş¾î ÀÎÅÍ·´Æ® CPU »ç¿ë·ü
-9) 0.0%st: °¡»óÈ­ È¯°æ¿¡¼­ CPU ¼Õ½Ç·ü
+1) load average: 0.10, 0.11, 0.15 => 1ë¶„, 5ë¶„, 15ë¶„ê°„ ì‹œìŠ¤í…œ ë¶€í•˜ìœ¨ (í‰ê· ì ìœ¼ë¡œ ì‹¤í–‰ëœ í”„ë¡œì„¸ìŠ¤ ìˆ˜)
+2) 0.0%us: ì‚¬ìš©ìê°€ ì‚¬ìš©ì¤‘ì¸ CPU ì‚¬ìš©ë¥ 
+3) 0.1%sy: ì‹œìŠ¤í…œì´ ì‚¬ìš©ì¤‘ì¸ CPU ì‚¬ìš©ë¥ 
+4) 0.0%ni: Nice ì •ì±…ì— ì˜í•´ ì‚¬ìš©ë˜ëŠ” CPU ì‚¬ìš©ë¥ 
+5) 99.9%id: ì‚¬ìš©ë˜ì§€ ì•ŠëŠ” CPU
+6) 0.0%wa: ì…ì¶œë ¥ ëŒ€ê¸°ìƒíƒœì˜ ì‚¬ìš©ë¥ 
+7) 0.0%hi: í•˜ë“œì›¨ì–´ ì¸í„°ëŸ½íŠ¸ CPU ì‚¬ìš©ë¥ 
+8) 0.0%si: ì†Œí”„íŠ¸ì›¨ì–´ ì¸í„°ëŸ½íŠ¸ CPU ì‚¬ìš©ë¥ 
+9) 0.0%st: ê°€ìƒí™” í™˜ê²½ì—ì„œ CPU ì†ì‹¤ë¥ 
 
 --------------------------------------------------------------------------------------
 											total 				used 			free 			shared 	buffers 	cached
@@ -136,19 +122,19 @@ Swap: 20971516k total, 0k used, 20971516k free, 52340468k cached
 --------------------------------------------------------------------------------------	
 	A = B+C = G+H
 	G = B-E-F
-	H(»ç¿ë°¡´É¸Ş¸ğ¸®) = C+E+F
+	H(ì‚¬ìš©ê°€ëŠ¥ë©”ëª¨ë¦¬) = C+E+F
 --------------------------------------------------------------------------------------
 
- <11> ½ÇÁ¦ »ç¿ëÇÏ´Â thread °³¼ö
+ <11> ì‹¤ì œ ì‚¬ìš©í•˜ëŠ” thread ê°œìˆ˜
 grep -s '^Threads' /proc/[0-9]*/status  | awk '{ sum += $2; } END { print sum; }'
 
- <12> OS ÆÄ¶ó¹ÌÅÍ
+ <12> OS íŒŒë¼ë¯¸í„°
 ulimit -a
 cat /etc/sysctl.conf
 cat /etc/security/limits.conf
 cat /proc/sys/kernel/threads-max
 
- <13> ÆĞÅ°Áö ¼³Ä¡ È®ÀÎ
+ <13> íŒ¨í‚¤ì§€ ì„¤ì¹˜ í™•ì¸
 rpm -qa | grep ftp
 ftp-0.17-54.el6.x86_64 (ftp client)
 
@@ -157,7 +143,7 @@ ftp-0.17-54.el6.x86_64 (ftp client)
  netstat -an | grep 10.219.1.176:9091 | wc -l
  netstat -an | grep 10.219.1.177:9091 | wc -l
  
- <15> DB Connection Pool Á¤º¸
+ <15> DB Connection Pool ì •ë³´
  dsa
  connection-pool-info -server eo_mnp1_svr1 -repeat 9999 -interval 1
  connection-pool-info -server io_cdrm1_svr1 -jndi -repeat 9999 -interval 1
@@ -165,8 +151,8 @@ ftp-0.17-54.el6.x86_64 (ftp client)
  connection-pool-info -server eo_mnp1_svr1 -jdbc -repeat 9999 -interval 1
  connection-pool-info -server ib_cdrm1_svr2 -id ora_jdbc_ngtw_01_ORDDB -repeat 9999 -interval 1
  
- <16> ·Î±× ÃÊ±âÈ­ 
- cp eo_cdrm1_svr1_rte_20160207.log eo_cdrm1_svr1_rte_20160207.log_bak_½Ã°£ÀûÀ½(10½Ã40ºĞ)
+ <16> ë¡œê·¸ ì´ˆê¸°í™” 
+ cp eo_cdrm1_svr1_rte_20160207.log eo_cdrm1_svr1_rte_20160207.log_bak_ì‹œê°„ì ìŒ(10ì‹œ40ë¶„)
  echo '' > eo_cdrm1_svr1_rte_20160207.log
  
  <17> wget
@@ -175,7 +161,7 @@ ftp-0.17-54.el6.x86_64 (ftp client)
   wget -O 'download_filename' http://10.217.159.222:8005/ESKY/NIFE_ESKY_NORD_I_2278_00?wsdl
   wget --post-file=req_test.xml --header="Content-Type: application/soap+xml" --header="SOAPAction: \"http://bizhub.kt.com/setSendSMSResult\"" http://10.217.155.190:5000/SoapGateway
 
- <18> viÃ¢ dos type => unix type
+ <18> viì°½ dos type => unix type
  :set ff=unixdsa
  
  <19> 
@@ -184,8 +170,8 @@ ftp-0.17-54.el6.x86_64 (ftp client)
  
  <20>
  grep -a "active connection count\[50:50\]" eo_cdrm1_svr1_rte_20160414*.log
- grep -c "active connection count\[50:50\]" eo_cdrm1_svr1_rte_20160414*.log : ÆÄÀÏº° count
- grep -l "active connection count\[50:50\]" eo_cdrm1_svr1_rte_20160414*.log : ÆÄÀÏ¸í¸¸
+ grep -c "active connection count\[50:50\]" eo_cdrm1_svr1_rte_20160414*.log : íŒŒì¼ë³„ count
+ grep -l "active connection count\[50:50\]" eo_cdrm1_svr1_rte_20160414*.log : íŒŒì¼ëª…ë§Œ
  
  <21> TCP DUMP
  tcpdump -i eth0 -w tcpdump_54433_1.pcap tcp port 54433
@@ -197,8 +183,8 @@ ftp-0.17-54.el6.x86_64 (ftp client)
  tcpdump -i eth6 -w tcpdump_KBcard_21.pcap tcp port 21 and host 203.229.169.152
  tcpdump -nnvXx -i eth6 -w tcpdump_KBcard_21.pcap tcp port 21 and host 203.229.169.152
  
- TCP Header ÀÇ Seq (32bit) => µ¥ÀÌÅÍÀÇ ¼ø¼­¸¦ ³ªÅ¸³»¸ç ºĞÇÒµÈ ÆĞÅ¶ÀÇ °æ¿ì µ¥ÀÌÅÍ Àç Á¶ÇÕ¿¡ »ç¿ë
- TCP Header ÀÇ Ack (32bit) => ´ÙÀ½¿¡ ¼ö½Å ±â´ëÇÏ´Â µ¥ÀÌÅÍ ¹øÈ£ÀÌ¸ç ÇØ´ç ¹øÈ£¸¦ ÅëÇØ ÀüÃ¼ µ¥ÀÌÅÍ Áß ¸î ¹øÂ° µ¥ÀÌÅÍÀÎÁö¸¦ ÆÄ¾Ç
+ TCP Header ì˜ Seq (32bit) => ë°ì´í„°ì˜ ìˆœì„œë¥¼ ë‚˜íƒ€ë‚´ë©° ë¶„í• ëœ íŒ¨í‚·ì˜ ê²½ìš° ë°ì´í„° ì¬ ì¡°í•©ì— ì‚¬ìš©
+ TCP Header ì˜ Ack (32bit) => ë‹¤ìŒì— ìˆ˜ì‹  ê¸°ëŒ€í•˜ëŠ” ë°ì´í„° ë²ˆí˜¸ì´ë©° í•´ë‹¹ ë²ˆí˜¸ë¥¼ í†µí•´ ì „ì²´ ë°ì´í„° ì¤‘ ëª‡ ë²ˆì§¸ ë°ì´í„°ì¸ì§€ë¥¼ íŒŒì•…
  
  <22> alias date="date +'%Y-%m-%d %H:%M:%S'"
  
@@ -208,7 +194,7 @@ ftp-0.17-54.el6.x86_64 (ftp client)
       tar -zxvf jeus7.20170410.tar.gz
       tar -zxvf jeus7.20170410.tar.gz -C /app/infinilink
  
-      implausibly old timestamp 1970-01-01 09:00:00 ==> --warning=no-timestamp ¿É¼Ç Ãß°¡
+      implausibly old timestamp 1970-01-01 09:00:00 ==> --warning=no-timestamp ì˜µì…˜ ì¶”ê°€
       
  <24> dsa 
       connection-pool-info -server io_cdrm1_svr1 -repeat 9999 -interval 3
@@ -228,7 +214,7 @@ ftp-0.17-54.el6.x86_64 (ftp client)
  
  <28> sftp -oport=22 infadm@10.217.159.221
  
- <29> viÃ¢ euc-kr => utf-8
+ <29> viì°½ euc-kr => utf-8
  :set fenc =utf-8
  
  <30> jstack /home/infadm/jdk1.7.0_75/jre/bin/java core.6818 > jstack.core.6818
@@ -236,7 +222,7 @@ ftp-0.17-54.el6.x86_64 (ftp client)
  <31> jmap /home/infadm/jdk1.7.0_75/jre/bin/java core.6818 > jmap.core.6818
  
  <32> grep -aPzo '(?s)\[#\|(?:(?!\[#).)*?10.217.186.250(?:(?!#\]).)*?\|#\]' filename
-     : message_log¿¡¼­ 10.217.186.250 °Ë»ö
+     : message_logì—ì„œ 10.217.186.250 ê²€ìƒ‰
 
  <33> chage -l infadm
      : password aging info
@@ -257,10 +243,10 @@ ftp-0.17-54.el6.x86_64 (ftp client)
  Remove LF
  : sed -i ':a;N;$!ba;s/\n//g' *.properties
      
- <36> ¹®ÀÚ¿­ Ä¡È¯
- 	   sed -e '/^#/d' /etc/services | more            => sed´Â "//"¸¦ ¸¸³ª¸é Á¤±ÔÇ¥Çö½ÄÀ¸·Î °£ÁÖÇØ¼­ ÇØ¼®À» ÇÑ´Ù. #·Î ½ÃÀÛÇÏ´Â ÁÖ¼® »èÁ¦
- 	   sed -n ¡®/[Ll]ove/p¡¯ datafile                   => datafile¿¡¼­ Love³ª love¸¦ Æ÷ÇÔÇÏ´Â Çà¸¸ Ãâ·ÂÇÑ´Ù.hk
- 	   sed -e s/prd2gweap02/gweap02/g -e s/prd2gweap04/gweap04/g domain.xml.20161125 > domain.xml    => µ¿ÀÏÇÑ ÆÄÀÏ¸íÀ¸·Î ÇÏ¸é 0byte µÈ´Ù.
+ <36> ë¬¸ìì—´ ì¹˜í™˜
+ 	   sed -e '/^#/d' /etc/services | more            => sedëŠ” "//"ë¥¼ ë§Œë‚˜ë©´ ì •ê·œí‘œí˜„ì‹ìœ¼ë¡œ ê°„ì£¼í•´ì„œ í•´ì„ì„ í•œë‹¤. #ë¡œ ì‹œì‘í•˜ëŠ” ì£¼ì„ ì‚­ì œ
+ 	   sed -n â€˜/[Ll]ove/pâ€™ datafile                   => datafileì—ì„œ Loveë‚˜ loveë¥¼ í¬í•¨í•˜ëŠ” í–‰ë§Œ ì¶œë ¥í•œë‹¤.hk
+ 	   sed -e s/prd2gweap02/gweap02/g -e s/prd2gweap04/gweap04/g domain.xml.20161125 > domain.xml    => ë™ì¼í•œ íŒŒì¼ëª…ìœ¼ë¡œ í•˜ë©´ 0byte ëœë‹¤.
  	   sed -e s@prd2gweap02@gweap02@g domain.xml.20161125 		=> sed can take any char as delimeter
 
  <37> traceroute -n -p 22 -T 172.29.213.115
@@ -293,16 +279,16 @@ ftp-0.17-54.el6.x86_64 (ftp client)
  <53> vi
  v: Visual
  ctrl+v: Visual Block
- y: º¹»ç
- c: Àß¶ó³»±â
- d: »èÁ¦
- yy: ÇÑÁÙ º¹»ç
- cc: ÇÑÁÙ Àß¶ó³»±â
- dd: ÇÑÁÙ »èÁ¦
- p: ºÙ¿©³Ö±â(Ä¿¼­ ´ÙÀ½ line)
- P: ºÙ¿©³Ö±â(Ä¿¼­ À§Ä¡)
+ y: ë³µì‚¬
+ c: ì˜ë¼ë‚´ê¸°
+ d: ì‚­ì œ
+ yy: í•œì¤„ ë³µì‚¬
+ cc: í•œì¤„ ì˜ë¼ë‚´ê¸°
+ dd: í•œì¤„ ì‚­ì œ
+ p: ë¶™ì—¬ë„£ê¸°(ì»¤ì„œ ë‹¤ìŒ line)
+ P: ë¶™ì—¬ë„£ê¸°(ì»¤ì„œ ìœ„ì¹˜)
  
- <53> ÇÁ·Î¼¼½º Thread °³¼ö
+ <53> í”„ë¡œì„¸ìŠ¤ Thread ê°œìˆ˜
  ps -eLf | grep 18528 | grep -v grep | cut -c1-100 | wc -l
  ps -eLf | grep 15900 | grep -v grep | cut -c1-100 | wc -l
  ps -eLf | grep 31776 | grep -v grep | wc -l
@@ -313,38 +299,38 @@ ftp-0.17-54.el6.x86_64 (ftp client)
  
  <55> java -XX:+PringFlagsFinal -version | grep Thread
  
- <56> cpu °³¼ö È®ÀÎ
+ <56> cpu ê°œìˆ˜ í™•ì¸
  
- 	processor => ³í¸®Àû CPU ÀÏ·Ã¹øÈ£
-	physical id => ¼ÒÄÏID
-	siblings => ÇÑ ¼ÒÄÏ ¾È¿¡ ÀÖ´Â ³í¸®Àû CPU °³¼ö
-	cpu cores => ÇÑ ¼ÒÄÏ ¾È ¹°¸®Àû ÄÚ¾î °³¼ö
+ 	processor => ë…¼ë¦¬ì  CPU ì¼ë ¨ë²ˆí˜¸
+	physical id => ì†Œì¼“ID
+	siblings => í•œ ì†Œì¼“ ì•ˆì— ìˆëŠ” ë…¼ë¦¬ì  CPU ê°œìˆ˜
+	cpu cores => í•œ ì†Œì¼“ ì•ˆ ë¬¼ë¦¬ì  ì½”ì–´ ê°œìˆ˜
  
- 1) ¹°¸®Àû cpu °³¼ö
+ 1) ë¬¼ë¦¬ì  cpu ê°œìˆ˜
  grep 'physical id' /proc/cpuinfo | sort | uniq | wc -l
  
- 2) cpu ´ç core °³¼ö
+ 2) cpu ë‹¹ core ê°œìˆ˜
  grep 'cpu cores' /proc/cpuinfo | tail -1
  
- 3) cpu core ÀüÃ¼ °³¼ö (³í¸®/°¡»ó)
+ 3) cpu core ì „ì²´ ê°œìˆ˜ (ë…¼ë¦¬/ê°€ìƒ)
  grep ^processor /proc/cpuinfo | wc -l
  
- ¡Ø flags Ç×¸ñ¿¡ ht (Hyper threading) Á¸ÀçÇÏ¸é *2·Î processor °³¼ö°¡ º¸ÀÎ´Ù.
-    Hyper threadingÀÎ °æ¿ì processor °³¼ö/2ÇÏ¸é DEDI, VM µ¿ÀÏÇÏ°Ô CPU core ¼ö·Î °è»êÇÏ¸é µÈ´Ù.
-    siblings = cpu cores * 2 ÀÌ¸é Hyper threading µÇ¾î´Ù°í º¸¸é µÈ´Ù.
- ¡Ø ½ÇÁ¦ VM ÀåºñÀÇ °æ¿ì processor °³¼ö/2°¡ core °³¼öÀÌ´Ù. DEDI´Â ±×´ë·Î processor °³¼ö°¡ core °³¼ö
+ â€» flags í•­ëª©ì— ht (Hyper threading) ì¡´ì¬í•˜ë©´ *2ë¡œ processor ê°œìˆ˜ê°€ ë³´ì¸ë‹¤.
+    Hyper threadingì¸ ê²½ìš° processor ê°œìˆ˜/2í•˜ë©´ DEDI, VM ë™ì¼í•˜ê²Œ CPU core ìˆ˜ë¡œ ê³„ì‚°í•˜ë©´ ëœë‹¤.
+    siblings = cpu cores * 2 ì´ë©´ Hyper threading ë˜ì–´ë‹¤ê³  ë³´ë©´ ëœë‹¤.
+ â€» ì‹¤ì œ VM ì¥ë¹„ì˜ ê²½ìš° processor ê°œìˆ˜/2ê°€ core ê°œìˆ˜ì´ë‹¤. DEDIëŠ” ê·¸ëŒ€ë¡œ processor ê°œìˆ˜ê°€ core ê°œìˆ˜
  
  <57>
  jar -cvf infinilink-distribution-agent.jar infinilink-distribution-agent
  jar -cf infinilink-distribution-agent.jar infinilink-distribution-agent
  jar -tvf infinilink-distribution-agent.jar
  jar -xvf infinilink-distribution-agent.jar
- Ç® Æú´õ¸¦ ¸¸µé°í, jar -xvf ../infinilink-distribution-agent.jar
+ í’€ í´ë”ë¥¼ ë§Œë“¤ê³ , jar -xvf ../infinilink-distribution-agent.jar
 
- <58> ÆÄÀÏºñ±³
- ´Ù¸¥Á¡: diff -rq /home/infadm/20170322_TASK/20170303/infinilink-distribution-agent /home/infadm/20170322_TASK/20170317/infinilink-distribution-agent
- 				 diff ÆÄÀÏ1 ÆÄÀÏ2
- °°ÀºÁ¡: diff -rs /home/infadm/20170322_TASK/20170303/infinilink-distribution-agent /home/infadm/20170322_TASK/20170317/infinilink-distribution-agent | grep identical
+ <58> íŒŒì¼ë¹„êµ
+ ë‹¤ë¥¸ì : diff -rq /home/infadm/20170322_TASK/20170303/infinilink-distribution-agent /home/infadm/20170322_TASK/20170317/infinilink-distribution-agent
+ 				 diff íŒŒì¼1 íŒŒì¼2
+ ê°™ì€ì : diff -rs /home/infadm/20170322_TASK/20170303/infinilink-distribution-agent /home/infadm/20170322_TASK/20170317/infinilink-distribution-agent | grep identical
  
  <59> apache web port
  ps -ef | grep httpd | grep -v grep | awk '{print $NF}' | uniq -c
@@ -369,20 +355,20 @@ ftp-0.17-54.el6.x86_64 (ftp client)
  while true; do date '+%Y%m%d %T.%N' >> LPRT_21session.log_20170802_2 ; netstat -an | grep 192.168.34.95:21 >> LPRT_21session.log_20170802_2; sleep 1; done;
  while true; do date '+%Y%m%d %T.%N' >> LPRT_20session.log_20170802_2 ; netstat -an | grep 192.168.34.95:20 >> LPRT_20session.log_20170802_2; sleep 1; done;
  
- <65> vi¿¡¼­ ÇÏÀÌ¶óÀÌÆ® ÃÊ±âÈ­
+ <65> viì—ì„œ í•˜ì´ë¼ì´íŠ¸ ì´ˆê¸°í™”
  :noh
  
- <66> vi¿¡¼­ Ã¹¶óÀÎ :1
-      vi¿¡¼­ ¸¶Áö¸·¶óÀÎ :$
+ <66> viì—ì„œ ì²«ë¼ì¸ :1
+      viì—ì„œ ë§ˆì§€ë§‰ë¼ì¸ :$
 
- <67> nohup: run a command immune to hangups, with output to a non-tty => µ¥¸ó ÇüÅÂ·Î ½ÇÇà
+ <67> nohup: run a command immune to hangups, with output to a non-tty => ë°ëª¬ í˜•íƒœë¡œ ì‹¤í–‰
  
-  1) nohupÀ¸·Î ½ÇÇà½ÃÅ³ ½©½ºÅ©¸³Æ® ÆÄÀÏÀº(*.sh) 755 ÀÌ»ó
-  2) nohup shell.sh & => nohup ¸í·É¾î¿¡ ÀÇÇØ ¼öÇàµÈ ÀÛ¾÷Àº ÀÚµ¿À¸·Î nohup.outÀÌ ÀÚµ¿ »ı¼º
+  1) nohupìœ¼ë¡œ ì‹¤í–‰ì‹œí‚¬ ì‰˜ìŠ¤í¬ë¦½íŠ¸ íŒŒì¼ì€(*.sh) 755 ì´ìƒ
+  2) nohup shell.sh & => nohup ëª…ë ¹ì–´ì— ì˜í•´ ìˆ˜í–‰ëœ ì‘ì—…ì€ ìë™ìœ¼ë¡œ nohup.outì´ ìë™ ìƒì„±
   3) kill -9 pid
 
  <68> > /dev/null 2 > &1
- : Ç¥ÁØÃâ·Â ¹ö¸®°í Ç¥ÁØ¿¡·¯¸¦ Ç¥ÁØÃâ·ÂÀ¸·Î
+ : í‘œì¤€ì¶œë ¥ ë²„ë¦¬ê³  í‘œì¤€ì—ëŸ¬ë¥¼ í‘œì¤€ì¶œë ¥ìœ¼ë¡œ
  
  <69>
  ls -l stopWeb*.sh|grep -v 58378| grep -v template | awk '{print $NF}'
@@ -395,22 +381,22 @@ ftp-0.17-54.el6.x86_64 (ftp client)
  
  <80> lsof -i :59906
       lsof -i @IP:PORT
- : Æ¯Á¤ Æ÷Æ®¸¦ »ç¿ëÇÏ´Â ÇÁ·Î¼¼½º Ã£±â
- : À¯»ç netstat -anp | grep 59906
+ : íŠ¹ì • í¬íŠ¸ë¥¼ ì‚¬ìš©í•˜ëŠ” í”„ë¡œì„¸ìŠ¤ ì°¾ê¸°
+ : ìœ ì‚¬ netstat -anp | grep 59906
  
  <81> 1) cd /proc/"pid"/fd
       2) > "fd"
         ex) > 1
- 			==> ÇÁ·Î¼¼½º Àç±âµ¿ ¾øÀÌ lsof | grep deleted ÆÄÀÏ¿¡ ´ëÇØ Á¡À¯0À¸·Î ¸¸µé ¼ö ÀÖ´Ù.
+ 			==> í”„ë¡œì„¸ìŠ¤ ì¬ê¸°ë™ ì—†ì´ lsof | grep deleted íŒŒì¼ì— ëŒ€í•´ ì ìœ 0ìœ¼ë¡œ ë§Œë“¤ ìˆ˜ ìˆë‹¤.
  			
  <82> link
    1) hard link: ln /data/file1 ~/file1
-    => ÆÄÀÏ¸¸ °¡´ÉÇÏ°í ´Ù¸¥ disk, volume ÆÄÀÏ Âü°íÇÒ ¼ö ¾ø´Ù. inode(ls -i) °ªÀÌ µ¿ÀÏ. ¼Ò½º°¡ »èÁ¦µÇ¾îµµ link´Â ³²¾ÆÀÖ°í »ç¿ë °¡´ÉÇÏ´Ù.
+    => íŒŒì¼ë§Œ ê°€ëŠ¥í•˜ê³  ë‹¤ë¥¸ disk, volume íŒŒì¼ ì°¸ê³ í•  ìˆ˜ ì—†ë‹¤. inode(ls -i) ê°’ì´ ë™ì¼. ì†ŒìŠ¤ê°€ ì‚­ì œë˜ì–´ë„ linkëŠ” ë‚¨ì•„ìˆê³  ì‚¬ìš© ê°€ëŠ¥í•˜ë‹¤.
    2) symbolic link: ln -s /data/file2 ~/file2
-    => ÆÄÀÏ ¹× µğ·ºÅä¸® °¡´ÉÇÏ°í ´Ù¸¥ disk, volume ÆÄÀÏ, µğ·ºÅä¸®  Âü°íÇÒ ¼ö ÀÖ´Ù. inode °ªÀÌ ´Ù¸£´Ù. ¼Ò½º°¡ »èÁ¦µÇ¸é link´Â ³²¾ÆÀÖÁö¸¸ »ç¿ë ºÒ°¡´ÉÇÏ´Ù. (À©µµ¿ì ¹Ù·Î°¡±â)
+    => íŒŒì¼ ë° ë””ë ‰í† ë¦¬ ê°€ëŠ¥í•˜ê³  ë‹¤ë¥¸ disk, volume íŒŒì¼, ë””ë ‰í† ë¦¬  ì°¸ê³ í•  ìˆ˜ ìˆë‹¤. inode ê°’ì´ ë‹¤ë¥´ë‹¤. ì†ŒìŠ¤ê°€ ì‚­ì œë˜ë©´ linkëŠ” ë‚¨ì•„ìˆì§€ë§Œ ì‚¬ìš© ë¶ˆê°€ëŠ¥í•˜ë‹¤. (ìœˆë„ìš° ë°”ë¡œê°€ê¸°)
     
  <83> find . -type f -name "*.log" | tail -3 | xargs -I{} mv {} ./mov
- : Á¤ÇØÁø ÆÄÀÏ °³¼ö¸¸Å­¸¸ Ã£¾Æ¼­ ÀÌµ¿
+ : ì •í•´ì§„ íŒŒì¼ ê°œìˆ˜ë§Œí¼ë§Œ ì°¾ì•„ì„œ ì´ë™
  
  <84> rtail1 | grep 'Exception\|SEVERE\|WARNING'
  
@@ -425,26 +411,26 @@ ftp-0.17-54.el6.x86_64 (ftp client)
 			
 			curl -k https://dev.a-kos.kt.com/KMOS/resources/html/apptest.html
 			-k: turn off curl's verification of the certificate of https
-			-LO: -LÀº redirect ÁÖ¼Ò·Î Àç¼öÇà ¼³Á¤, -O´Â outputÀ» ·ÎÄÃ ÆÄÀÏ·Î ÀúÀå
+			-LO: -Lì€ redirect ì£¼ì†Œë¡œ ì¬ìˆ˜í–‰ ì„¤ì •, -OëŠ” outputì„ ë¡œì»¬ íŒŒì¼ë¡œ ì €ì¥
 			
 			curl --cacert ./server.crt  https://test.a-kos.kt.com:8443
 
  <86> nslookup knote.kt.com
- : domain¸í¿¡ ÇØ´çÇÏ´Â IP È®ÀÎ
+ : domainëª…ì— í•´ë‹¹í•˜ëŠ” IP í™•ì¸
  
- <87> Linux OS bit È®ÀÎ
+ <87> Linux OS bit í™•ì¸
  : getconf LONG_BIT
  : getconf -a | grep LONG_BIT
  
- <87> Linux OS bit È®ÀÎ
+ <87> Linux OS bit í™•ì¸
  : cat /etc/*release
  
- <88> Linux ºÎÆÃ ½ºÅ©¸³Æ®
- vi /etc/rc.d/rc.sysinit : ºÎÆÃ ½Ã Ã³À½À¸·Î ½ÇÇàµÇ´Â ½ºÅ©¸³Æ®
- vi /etc/rc.d/rc.local : ºÎÆÃ ½Ã ¸¶Áö¸·À¸·Î ½ÇÇàµÇ´Â ½ºÅ©¸³Æ®
+ <88> Linux ë¶€íŒ… ìŠ¤í¬ë¦½íŠ¸
+ vi /etc/rc.d/rc.sysinit : ë¶€íŒ… ì‹œ ì²˜ìŒìœ¼ë¡œ ì‹¤í–‰ë˜ëŠ” ìŠ¤í¬ë¦½íŠ¸
+ vi /etc/rc.d/rc.local : ë¶€íŒ… ì‹œ ë§ˆì§€ë§‰ìœ¼ë¡œ ì‹¤í–‰ë˜ëŠ” ìŠ¤í¬ë¦½íŠ¸
  
  <89> vi /etc/group
- wheel ±×·ì ¸â¹ö¸¸ÀÌ su ¸í·É »ç¿ë °¡´É
+ wheel ê·¸ë£¹ ë©¤ë²„ë§Œì´ su ëª…ë ¹ ì‚¬ìš© ê°€ëŠ¥
  ex) wheel:x:10:root,apache,imadmin
 
  <90> visudo
@@ -452,7 +438,7 @@ ftp-0.17-54.el6.x86_64 (ftp client)
  chmod 640 /etc/sudoers
  
  #  user    MACHINE=COMMANDS
- root    ALL=(ALL)       ALL # root´Â ALL ¸ğµç machine¿¡¼­ (ALL) ¸ğµç »ç¿ëÀÚ ±ÇÇÑÀ¸·Î ALL ¸ğµç ¸í·É¾î »ç¿ë°¡´ÉÇÏ´Ù.
+ root    ALL=(ALL)       ALL # rootëŠ” ALL ëª¨ë“  machineì—ì„œ (ALL) ëª¨ë“  ì‚¬ìš©ì ê¶Œí•œìœ¼ë¡œ ALL ëª¨ë“  ëª…ë ¹ì–´ ì‚¬ìš©ê°€ëŠ¥í•˜ë‹¤.
  jboss   ALL=(ALL)       NOPASSWD:ALL
 
  chmod 440 /etc/sudoers
@@ -460,13 +446,13 @@ ftp-0.17-54.el6.x86_64 (ftp client)
  <91> pam_tally2 : The login counter (tallying) module is used to lock user accounts afer certain cumber of failed ssh login attempts made to the system.
  
  pam_tally2 --user=apache
- pam_tally2 --user=apache --reset (2¹ø Á¤µµ ½ÇÇàÇÏ¸é lock ÇØÁ¦)
+ pam_tally2 --user=apache --reset (2ë²ˆ ì •ë„ ì‹¤í–‰í•˜ë©´ lock í•´ì œ)
  
  <92> passwd -S enterprisedb
- PS: Á¤»ó, NP: ÆĞ½º¿öµå¾øÀ½, LK: Lock
+ PS: ì •ìƒ, NP: íŒ¨ìŠ¤ì›Œë“œì—†ìŒ, LK: Lock
  
  <93> $JAVA_HOME/bin/jmap -dump:format=b,file=$DUMP_PATH/heap-$SERVER_NAME-$PID-$DATE.hprof $PID
-      kill -3 $PID ==> JVM ·Î±×¿¡ »ı¼º
+      kill -3 $PID ==> JVM ë¡œê·¸ì— ìƒì„±
       jstack -l $PID
       
  <94> grep "19/May/2018:22" access_log.2018-05-19 | cut -d " " -f 2,7 | cut -c 17,22-25 |  awk -F " " '{print $1"0 "$2}' | sort -nk1 -nk2 | uniq -c
@@ -476,7 +462,7 @@ ftp-0.17-54.el6.x86_64 (ftp client)
       service httpd status
       service httpd restart
       
- <96> À¯Àú»ı¼º
+ <96> ìœ ì €ìƒì„±
  groupadd -g 500 jboss
  useradd -d /home/jboss -s /bin/bash -m -u 500 -g 500 jboss
  
@@ -486,12 +472,12 @@ ftp-0.17-54.el6.x86_64 (ftp client)
  syntax on
  syntax off
  
- <98> viÃ¢¿¡¼­ ¶óÀÎ¹øÈ£ ´©¸£°í shift + g => ÇØ´ç ¶óÀÎ¹øÈ£·Î ÀÌµ¿ 
+ <98> viì°½ì—ì„œ ë¼ì¸ë²ˆí˜¸ ëˆ„ë¥´ê³  shift + g => í•´ë‹¹ ë¼ì¸ë²ˆí˜¸ë¡œ ì´ë™ 
  
  <99> date +%Y%m%d_%H%M%S
       date -d "-5 day" +%Y%m%d
  
- <100> filesystem Á¶È¸
+ <100> filesystem ì¡°íšŒ
  mount -l | column -t
  
  <101> gzip dev.k-kos.kt.co.kr.access-80.20180810.log
@@ -499,19 +485,30 @@ ftp-0.17-54.el6.x86_64 (ftp client)
        gunzip dev.k-kos.kt.co.kr.access-80.20180611.log.gz
        
 
- <102> jboss DBCP ¸ğ´ÏÅÍ¸µ
+ <102> jboss DBCP ëª¨ë‹ˆí„°ë§
  ./jboss-cli.sh
  /subsystem=datasources/data-source=kkosDsJNDI/statistics=pool:read-resource(include-runtime=true)
  
- <103> vi /etc/rc.d/rc.local : ºÎÆÃ ½Ã ¸¶Áö¸·À¸·Î ½ÇÇàµÇ´Â ½ºÅ©¸³Æ®
+ <103> vi /etc/rc.d/rc.local : ë¶€íŒ… ì‹œ ë§ˆì§€ë§‰ìœ¼ë¡œ ì‹¤í–‰ë˜ëŠ” ìŠ¤í¬ë¦½íŠ¸
 
   # LOOKS-ZABBIX
   cd /home/zabbix/sbin
   sh /home/zabbix/sbin/start.sh
   
-  <104> history ¿¡ timestamp Ãß°¡
+  <104> history ì— timestamp ì¶”ê°€
 
   # vi /etc/bashrc
   export HISTTIMEFORMAT='%F %T  '
 
   # history | sort -n 
+
+  <105> ë°±ìŠ¤í˜ì´ìŠ¤ ë™ì‘ ì•ˆ í•˜ëŠ” ê²½ìš°
+  ctrl + h
+  
+  <106> ssh ì›ê²©ëª…ë ¹
+  ssh hwlstmax@172.25.251.174 << EOF
+  /app/jeus/bin/jeusadmin -u wasadmin -p consolepwd_174 -host 172.25.251.174 -port 7736 -verbose "redeploy-application hwls"
+  EOF
+
+  <107> jeusadmin
+  /app/jeus/bin/jeusadmin -u wasadmin -p consolepwd_174 -host 172.25.251.174 -port 7736 -verbose "redeploy-application hwls"
