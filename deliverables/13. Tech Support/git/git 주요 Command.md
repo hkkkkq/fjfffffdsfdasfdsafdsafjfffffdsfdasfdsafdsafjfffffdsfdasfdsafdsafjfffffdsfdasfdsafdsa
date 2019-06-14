@@ -88,11 +88,11 @@ git clone http://gitlab.msa.kt.com/coe-istio-master/msa-bunker.git
 
 - HEAD
 
-> HEAD는 현재 브랜치를 가리키는 포인터이며, 브랜치는 브랜치에 담긴 커밋 중 가장 마지막 커밋을 가리킨다. 
+> HEAD는 현재 브랜치를 가리키는 포인터이며, 브랜치에 담긴 커밋 중 가장 마지막 커밋을 가리킨다. 
 >
 > 지금의 HEAD가 가리키는 커밋은 바로 다음 커밋의 부모가 된다.
 >
-> 단순하게 생각하면 HEAD는 *현재 브랜치 마지막 커밋의 스냅샷*이다.
+> 단순하게 생각하면 HEAD는 *로컬 저장소 내 현재 브랜치의 마지막 커밋 스냅샷*이다.
 >
 > 커밋한적이 없다면 HEAD 정보는 없다.
 
@@ -285,7 +285,7 @@ git branch dev # git checkout dev로 이어진다.
 - git merge
 
 ```bash
-git merge dev	# 다른 브랜치 dev를 현재 브랜치 master로 합치기
+git merge dev	# 다른 브랜치 dev를 현재 브랜치(ex. master)로 합치기
 ```
 
 
@@ -293,7 +293,7 @@ git merge dev	# 다른 브랜치 dev를 현재 브랜치 master로 합치기
 - git branch 삭제
 
 ```bash
-git branch -d dev	# dev 브랜치가 현재 master 브랜치에 merge가 된 경우 삭제한다.
+git branch -d dev	# dev 브랜치가 현재 브랜치(ex. master)에 merge가 된 경우 삭제한다.
 git branch -D dev   # merge 여부 무관하게 삭제할 때
 ```
 
@@ -321,8 +321,8 @@ git push -u origin master  # -u: set upstream으로 설정
 - git push
 
 ```bash
-git push origin master  # 지역 브랜치 master를 원격저장소의 동일한 이름의 원격 브랜치에 push
-# git push origin master1:master2  # 지역 브랜치 master1를 원격저장소의 원격 브랜치에 master2에 push
+git push origin master  # 로컬 브랜치 master를 원격저장소의 동일한 이름의 원격 브랜치에 push
+# git push origin master1:master2  # 로컬 브랜치 master1를 원격저장소의 원격 브랜치에 master2에 push
 ```
 
 
@@ -343,7 +343,7 @@ git fetch origin
 # git fetch
 ```
 
-pull 을 실행하면, 원격 저장소의 내용을 가져와 자동으로 병합 작업을 실행하게 됩니다. 그러나 단순히 원격 저장소의 내용을 확인만 하고 로컬 데이터와 병합은 하고 싶지 않은 경우에는 fetch 명령어를 사용할 수 있습니다. 이 때 가져온 최신 커밋 이력은 이름 없는 브랜치로 로컬에 가져오게 됩니다. 이 브랜치는 `FETCH_HEAD`의 이름으로 체크아웃 할 수도 있습니다. 원격지에 있는 변경 사항을 병합하기전 리뷰할 때 유용하다.
+pull 을 실행하면, 원격 저장소의 내용을 가져와 자동으로 병합 작업을 실행하게 됩니다. 그러나 단순히 원격 저장소의 내용을 확인만 하고 로컬 데이터와 병합은 하고 싶지 않은 경우에는 fetch 명령어를 사용할 수 있습니다. 이 때 가져온 최신 커밋 이력은 이름 없는 브랜치로 로컬에 가져오게 됩니다. *이 브랜치는 `FETCH_HEAD`의 이름으로 체크아웃 할 수도 있습니다.*원격지에 있는 변경 사항을 병합하기전 리뷰할 때 유용하다.
 
 
 

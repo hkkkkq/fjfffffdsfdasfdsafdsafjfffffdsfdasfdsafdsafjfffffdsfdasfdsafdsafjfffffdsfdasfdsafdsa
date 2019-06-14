@@ -1,0 +1,15 @@
+docker pull gitlab/gitlab-ce:latest
+
+
+docker run --detach \
+--hostname gitlab.herasoo.com \
+--publish 443:443 --publish 80:80 \
+--name gitlab \
+--restart no \
+--volume /Users/herasoo/Volumes/gitlab/config:/etc/gitlab \
+--volume /Users/herasoo/Volumes/gitlab/logs:/var/log/gitlab \
+--volume /Users/herasoo/Volumes/gitlab/data:/var/opt/gitlab \
+gitlab/gitlab-ce:latest
+
+
+root / 원호00
