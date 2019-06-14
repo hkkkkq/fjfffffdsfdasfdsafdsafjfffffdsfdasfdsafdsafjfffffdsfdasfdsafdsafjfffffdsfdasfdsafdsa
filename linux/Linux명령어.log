@@ -341,10 +341,22 @@ ftp-0.17-54.el6.x86_64 (ftp client)
  3) cat /etc/sysctl.conf
  4) cat /etc/security/limits.conf
 
- <61> rename .properties.PRD .properties *.properties.PRD
+ <61> rename [변경전파일패턴] [변경후파일패턴] [대상파일]
  
+ [root@localhost /work/edu-rename]#ls -l
+total 0
+-rw-r--r-- 1 root root 0 Dec 31 02:08 file1
+-rw-r--r-- 1 root root 0 Dec 31 02:08 file2
+-rw-r--r-- 1 root root 0 Dec 31 02:08 file3
+[root@localhost /work/edu-rename]#rename file file0 file?
+[root@localhost /work/edu-rename]#ls -l
+total 0
+-rw-r--r-- 1 root root 0 Dec 31 02:08 file01
+-rw-r--r-- 1 root root 0 Dec 31 02:08 file02
+-rw-r--r-- 1 root root 0 Dec 31 02:08 file03
+
  <62> export LANG=ko_KR.euckr
- 			export LANG=en_US.utf8
+ 	 export LANG=en_US.utf8
  
  <63> ps -eo pid,lwp,etime,comm,args --sort=-etime
  
