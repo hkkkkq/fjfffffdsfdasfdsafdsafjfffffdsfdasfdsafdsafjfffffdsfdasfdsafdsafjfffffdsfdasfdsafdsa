@@ -3,3 +3,22 @@ docker pull jenkins
 docker run -d -p 8080:8080 -v /Users/herasoo/Volumes/jenkins:/var/jenkins_home --name jenkins -u root jenkins
 
 admin: jenkins / jenkins
+
+
+
+
+-- jenkins war update
+
+cd /usr/share/jenkins
+
+wget -O jenkins.war_2.181 http://updates.jenkins-ci.org/download/war/2.181/jenkins.war
+
+# mv jenkins.war jenkins.war_old
+# mv jenkins.war_2.181 jenkins.war
+
+
+docker commit 71887000aad7 jenkins:2.181
+
+
+
+docker run -d -p 8080:8080 -v /Users/herasoo/Volumes/jenkins:/var/jenkins_home --name jenkins -u root jenkins:2.181

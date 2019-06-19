@@ -1,0 +1,30 @@
+[API Gateway]
+
+- API 서버 앞단에서 모든 API 서버들의 엔드포인트를 단일화하여 묶어준다.
+- API를 호출하는 Client에 대한 API 인증과 인가 기능 + Token
+ 1) 엔드포인트에 별 API 인증 방식이 다르기 때문에, API 게이트웨이에서는 각 엔드 포인트 별로 다양한 형태의 인증 방식을 제공
+ 2) 권한 관리에 대한 RBAC으로 관리 가능
+- 서버 라우팅
+ 1) 로드발란싱
+ 2) HTTP URL,HTTP Header,HTTP Body 기반 라우팅   
+ 3) 호출 복제
+- 공통 로직 처리
+ 1) 인증/인가
+ 2) 로깅: apigee.com의 api 로그 분석 모니터링 활용 가능
+- 메시지 파싱 (불 필요 예상)
+- 프로토콜 변환
+- aggregation(orchestration): 비 추천, 별도의 orchestration api-gateway를 두도록 한다.
+- QOS
+ 1) 호출건수
+ 2) 전송용량
+ 3) 네트워크 대역폭
+
+
+ <디자인 패턴>
+ 1. 내부/외부 API Gateway 분리
+ 2. 파일 업/다운로드는 가급적이면 게이트웨이를 거치지 않고 별도의 독립된 엔드포인트나 프록시, 게이트웨이를 사용
+ 3. 글로벌 트렌젝션 ID(gtxid)와, 로컬 트렌젝션 ID (ltxid)의 개념을 도입 => ELK, EFK 활용가능ㄴ
+
+출처: https://bcho.tistory.com/1006?category=431297 [조대협의 블로그]
+
+ 
