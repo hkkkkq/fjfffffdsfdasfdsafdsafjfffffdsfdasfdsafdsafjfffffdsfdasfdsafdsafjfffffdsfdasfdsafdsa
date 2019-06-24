@@ -1,7 +1,7 @@
 public class Person {
 
 	void  whoAmI() {
-		System.out.println("³ª´Â PersonÀÌ´Ù.");
+		System.out.println("ë‚˜ëŠ” Personì´ë‹¤.");
 	}
 }
 

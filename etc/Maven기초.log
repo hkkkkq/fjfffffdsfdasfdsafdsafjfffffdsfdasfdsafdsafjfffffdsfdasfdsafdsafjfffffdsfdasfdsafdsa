@@ -1,32 +1,32 @@
-<Maven ±âÃÊ>
+<Maven ê¸°ì´ˆ>
 
-phase´Â ¸» ±×´ë·Î ´Ü°è¸¦ ¶æÇÏ´Âµ¥, ¸ÞÀÌºì¿¡¼­´Â ÇÁ·ÎÁ§Æ® ¶óÀÌÇÁ»çÀÌÅ¬ÀÇ °¢ ´Ü°è¸¦ ¹Ì¸® Á¤ÇØ³õ¾Ò´Ù.
-±âº»ÀûÀÎ phaseµéÀ» ¼ø¼­´ë·Î ³ª¿­ÇØº¸¸é ¾Æ·¡¿Í °°´Ù.(°¢ phase »çÀÌ¿¡ ¼¼¼¼ÇÑ ´Ü°èµéÀÌ Á¸ÀçÇÏ±âµµ ÇÏÁö¸¸ ÀÚÁÖ¾²´Â ´Ü°èµé¸¸À» Á¤¸®Çß´Ù.)
+phaseëŠ” ë§ ê·¸ëŒ€ë¡œ ë‹¨ê³„ë¥¼ ëœ»í•˜ëŠ”ë°, ë©”ì´ë¸ì—ì„œëŠ” í”„ë¡œì íŠ¸ ë¼ì´í”„ì‚¬ì´í´ì˜ ê° ë‹¨ê³„ë¥¼ ë¯¸ë¦¬ ì •í•´ë†“ì•˜ë‹¤.
+ê¸°ë³¸ì ì¸ phaseë“¤ì„ ìˆœì„œëŒ€ë¡œ ë‚˜ì—´í•´ë³´ë©´ ì•„ëž˜ì™€ ê°™ë‹¤.(ê° phase ì‚¬ì´ì— ì„¸ì„¸í•œ ë‹¨ê³„ë“¤ì´ ì¡´ìž¬í•˜ê¸°ë„ í•˜ì§€ë§Œ ìžì£¼ì“°ëŠ” ë‹¨ê³„ë“¤ë§Œì„ ì •ë¦¬í–ˆë‹¤.)
 
 [Clean Lifecycle]
-clean : ÀÌÀü ºôµå¿¡¼­ »ý¼ºµÈ ÆÄÀÏµéÀ» »èÁ¦ÇÏ´Â ´Ü°è. º¸Åë ºôµå ´Ü°è¸¦ ½ÇÇàÇÏ±â Àü »ç¿ë.
+clean : ì´ì „ ë¹Œë“œì—ì„œ ìƒì„±ëœ íŒŒì¼ë“¤ì„ ì‚­ì œí•˜ëŠ” ë‹¨ê³„. ë³´í†µ ë¹Œë“œ ë‹¨ê³„ë¥¼ ì‹¤í–‰í•˜ê¸° ì „ ì‚¬ìš©.
 
 [Build Lifecycle]
-process-resources : ÄÄÆÄÀÏÀü ÇÊ¿äÇÑ ¸®¼Ò½ºµéÀ» target µð·ºÅä¸®¿¡ º¹»çÇÏ°í ÇÊ¿äÇÑ Ã³¸® ÀÛ¾÷À» ÁøÇàÇÏ´Â ´Ü°è
-compile : ÇÁ·ÎÁ§Æ®ÀÇ ¼Ò½º ÄÚµå¸¦ ÄÄÆÄÀÏÇÏ´Â ´Ü°è
-process-test-resources : Å×½ºÆ® ÄÚµå ÄÄÆÄÀÏ¿¡ ÇÊ¿äÇÑ ¸®¼Ò½ºµéÀ» target µð·ºÅä¸®¿¡ º¹»çÇÏ°í ÇÊ¿äÇÑ Ã³¸® ÀÛ¾÷À» ÁøÇàÇÏ´Â ´Ü°è
-test-compile : ÇÁ·ÎÁ§Æ®ÀÇ Å×½ºÆ® ÄÚµå¸¦ ÄÄÆÄÀÏÇÏ´Â ´Ü°è
-test : Å×½ºÆ®¸¦ ½ÇÇàÇÏ´Â ´Ü°è
-package : ÄÄÆÄÀÏµÈ ¼Ò½º ÄÚµå¿Í ¸®¼Ò½ºµéÀ» ¹èÆ÷¸¦ À§ÇÑ ÆÐÅ°Áö(ex. JAR, WAR)·Î ¸¸µå´Â ´Ü°è
-install : ÆÐÅ°Áö¸¦ ·ÎÄÃ ÀúÀå¼Ò¿¡ ¼³Ä¡ÇÏ´Â ´Ü°è
-deploy : ¸¸µé¾îÁø ÆÐÅ°Áö¸¦ ¿ÜºÎ ÀúÀå¼Ò¿¡ release ÇÏ´Â ´Ü°è
+process-resources : ì»´íŒŒì¼ì „ í•„ìš”í•œ ë¦¬ì†ŒìŠ¤ë“¤ì„ target ë””ë ‰í† ë¦¬ì— ë³µì‚¬í•˜ê³  í•„ìš”í•œ ì²˜ë¦¬ ìž‘ì—…ì„ ì§„í–‰í•˜ëŠ” ë‹¨ê³„
+compile : í”„ë¡œì íŠ¸ì˜ ì†ŒìŠ¤ ì½”ë“œë¥¼ ì»´íŒŒì¼í•˜ëŠ” ë‹¨ê³„
+process-test-resources : í…ŒìŠ¤íŠ¸ ì½”ë“œ ì»´íŒŒì¼ì— í•„ìš”í•œ ë¦¬ì†ŒìŠ¤ë“¤ì„ target ë””ë ‰í† ë¦¬ì— ë³µì‚¬í•˜ê³  í•„ìš”í•œ ì²˜ë¦¬ ìž‘ì—…ì„ ì§„í–‰í•˜ëŠ” ë‹¨ê³„
+test-compile : í”„ë¡œì íŠ¸ì˜ í…ŒìŠ¤íŠ¸ ì½”ë“œë¥¼ ì»´íŒŒì¼í•˜ëŠ” ë‹¨ê³„
+test : í…ŒìŠ¤íŠ¸ë¥¼ ì‹¤í–‰í•˜ëŠ” ë‹¨ê³„
+package : ì»´íŒŒì¼ëœ ì†ŒìŠ¤ ì½”ë“œì™€ ë¦¬ì†ŒìŠ¤ë“¤ì„ ë°°í¬ë¥¼ ìœ„í•œ íŒ¨í‚¤ì§€(ex. JAR, WAR)ë¡œ ë§Œë“œëŠ” ë‹¨ê³„
+install : íŒ¨í‚¤ì§€ë¥¼ ë¡œì»¬ ì €ìž¥ì†Œì— ì„¤ì¹˜í•˜ëŠ” ë‹¨ê³„
+deploy : ë§Œë“¤ì–´ì§„ íŒ¨í‚¤ì§€ë¥¼ ì™¸ë¶€ ì €ìž¥ì†Œì— release í•˜ëŠ” ë‹¨ê³„
 
 [Site Lifecycle]
-site : ÇÁ·ÎÁ§Æ® ¹®¼­¸¦ »ý¼ºÇÏ´Â ´Ü°è
+site : í”„ë¡œì íŠ¸ ë¬¸ì„œë¥¼ ìƒì„±í•˜ëŠ” ë‹¨ê³„
 
-À§¿¡¼­ phase¸¦ "¼ø¼­´ë·Î" ³ª¿­Çß´Ù°í Çß´ø ÀÌÀ¯´Â °¢ Build Lifecycle¿¡¼­ phase¸¦ ½ÇÇà½Ã ÀÌÀü phaseºÎÅÍ ¼øÂ÷ÀûÀ¸·Î ½ÇÇàÀÌ µÇ±â ¶§¹®ÀÌ´Ù.
-¿¹¸¦ µé¸é test phase¸¦ ½ÇÇà½Ã¿¡´Â process-resources => compile => process-test-resources => test ¼øÀ¸·Î ½ÇÇàÀÌ µÈ´Ù.
+ìœ„ì—ì„œ phaseë¥¼ "ìˆœì„œëŒ€ë¡œ" ë‚˜ì—´í–ˆë‹¤ê³  í–ˆë˜ ì´ìœ ëŠ” ê° Build Lifecycleì—ì„œ phaseë¥¼ ì‹¤í–‰ì‹œ ì´ì „ phaseë¶€í„° ìˆœì°¨ì ìœ¼ë¡œ ì‹¤í–‰ì´ ë˜ê¸° ë•Œë¬¸ì´ë‹¤.
+ì˜ˆë¥¼ ë“¤ë©´ test phaseë¥¼ ì‹¤í–‰ì‹œì—ëŠ” process-resources => compile => process-test-resources => test ìˆœìœ¼ë¡œ ì‹¤í–‰ì´ ëœë‹¤.
 
-°¢ phase°¡ ½ÇÇàµÈ´Ù´Â °ÍÀº °ð, ÇØ´ç phase¿¡¼­ ½ÇÇàµÇµµ·Ï ¼³Á¤µÈ goalµéÀ» ½ÇÇàÇÑ´Ù´Â ¶æÀÌ´Ù.
-º¸Åë goal µéÀº compiler:compile Çü½ÄÀ¸·Î ³ªÅ¸³½´Ù. ÄÝ·Ð ¾ÕÀÇ compiler´Â pluginÀ» ³ªÅ¸³»°í, ÄÝ·Ð µÚÀÇ compileÀº goal ¸íÀ» ³ªÅ¸³½´Ù.
-Áï, ÇÃ·¯±×ÀÎ¸í:°ñ¸í À¸·Î ³ªÅ¸³½´Ù°í ÇÒ ¼ö ÀÖ´Ù.
-goalÀ» ÀÌ·¸°Ô ³ªÅ¸³»´Â ÀÌÀ¯´Â ¸ÞÀÌºìÀÇ ±¸Çö ¾ÆÅ°ÅØÃ³¿Íµµ °ü·ÃÀÌ ÀÖ´Âµ¥, ¸ÞÀÌºì ÀÚÃ¼´Â ¾ÆÁÖ ±âº»ÀûÀÎ ±â´É¸¸À» °¡Áö°í ÀÖ°í ´ëºÎºÐÀÇ ±â´ÉµéÀº pluginÀ» ÅëÇØ¼­ Á¦°øÇÏµµ·Ï µÇ¾îÀÖ±â ¶§¹®ÀÌ´Ù.
-pluginµéÀº ¸î °¡Áö goal ±â´ÉµéÀ» Á¦°øÇØÁÖ°í, ÇÁ·ÎÁ§Æ® ¸¶´ÙÀÇ ÇÊ¿ä¿¡ µû¶ó¼­ À¯¿¬ÇÏ°í ¼³Á¤ÇØ »ç¿ëÇÏµµ·Ï µÇ¾îÀÖ´Ù. °¢ ºôµå phase¿¡¼­ ½ÇÇàÇÏ´Â ±âº»ÀûÀÎ goalµéÀ» ¸ÅÄ¡ÇØº¸¸é ¾Æ·¡¿Í °°´Ù.
+ê° phaseê°€ ì‹¤í–‰ëœë‹¤ëŠ” ê²ƒì€ ê³§, í•´ë‹¹ phaseì—ì„œ ì‹¤í–‰ë˜ë„ë¡ ì„¤ì •ëœ goalë“¤ì„ ì‹¤í–‰í•œë‹¤ëŠ” ëœ»ì´ë‹¤.
+ë³´í†µ goal ë“¤ì€ compiler:compile í˜•ì‹ìœ¼ë¡œ ë‚˜íƒ€ë‚¸ë‹¤. ì½œë¡  ì•žì˜ compilerëŠ” pluginì„ ë‚˜íƒ€ë‚´ê³ , ì½œë¡  ë’¤ì˜ compileì€ goal ëª…ì„ ë‚˜íƒ€ë‚¸ë‹¤.
+ì¦‰, í”ŒëŸ¬ê·¸ì¸ëª…:ê³¨ëª… ìœ¼ë¡œ ë‚˜íƒ€ë‚¸ë‹¤ê³  í•  ìˆ˜ ìžˆë‹¤.
+goalì„ ì´ë ‡ê²Œ ë‚˜íƒ€ë‚´ëŠ” ì´ìœ ëŠ” ë©”ì´ë¸ì˜ êµ¬í˜„ ì•„í‚¤í…ì²˜ì™€ë„ ê´€ë ¨ì´ ìžˆëŠ”ë°, ë©”ì´ë¸ ìžì²´ëŠ” ì•„ì£¼ ê¸°ë³¸ì ì¸ ê¸°ëŠ¥ë§Œì„ ê°€ì§€ê³  ìžˆê³  ëŒ€ë¶€ë¶„ì˜ ê¸°ëŠ¥ë“¤ì€ pluginì„ í†µí•´ì„œ ì œê³µí•˜ë„ë¡ ë˜ì–´ìžˆê¸° ë•Œë¬¸ì´ë‹¤.
+pluginë“¤ì€ ëª‡ ê°€ì§€ goal ê¸°ëŠ¥ë“¤ì„ ì œê³µí•´ì£¼ê³ , í”„ë¡œì íŠ¸ ë§ˆë‹¤ì˜ í•„ìš”ì— ë”°ë¼ì„œ ìœ ì—°í•˜ê³  ì„¤ì •í•´ ì‚¬ìš©í•˜ë„ë¡ ë˜ì–´ìžˆë‹¤. ê° ë¹Œë“œ phaseì—ì„œ ì‹¤í–‰í•˜ëŠ” ê¸°ë³¸ì ì¸ goalë“¤ì„ ë§¤ì¹˜í•´ë³´ë©´ ì•„ëž˜ì™€ ê°™ë‹¤.
 
 process-resources            => resources:resource
 compile                         => compiler:compile
@@ -37,5 +37,5 @@ package                        => jar:jar
 install                           => install:install
 deploy                          => deploy:deploy
 
-À§¿¡ ¸ÅÄ¡µÈ goal µéÀº Àý´ëÀûÀÎ °ÍÀº ¾Æ´Ï¸ç, pom.xml ¼³Á¤À» ÅëÇØ °¢ ÇÁ·ÎÁ§Æ®¿¡ ¸Â°Ô ¼³Á¤ÀÌ °¡´ÉÇÏ´Ù.
-´Ü¼øÈ÷ Ãà¾àÇÏÀÚ¸é, °¢ phase´Â ½ÇÇàÇÒ goalÀ» °¡Áö°í ÀÖ°í, goalÀº plugin¿¡¼­ Á¦°øÇØÁÖ´Â °ÍÀÌ¸ç, ¾î¶² pluginÀ» ¾î¶»°Ô »ç¿ëÇÒÁö, ¾î¶² phase¿¡ ¾î¶² goalÀ» »ç¿ëÇÒÁö´Â pom.xml ¿¡¼­ ¼³Á¤ÇÑ´Ù.
+ìœ„ì— ë§¤ì¹˜ëœ goal ë“¤ì€ ì ˆëŒ€ì ì¸ ê²ƒì€ ì•„ë‹ˆë©°, pom.xml ì„¤ì •ì„ í†µí•´ ê° í”„ë¡œì íŠ¸ì— ë§žê²Œ ì„¤ì •ì´ ê°€ëŠ¥í•˜ë‹¤.
+ë‹¨ìˆœížˆ ì¶•ì•½í•˜ìžë©´, ê° phaseëŠ” ì‹¤í–‰í•  goalì„ ê°€ì§€ê³  ìžˆê³ , goalì€ pluginì—ì„œ ì œê³µí•´ì£¼ëŠ” ê²ƒì´ë©°, ì–´ë–¤ pluginì„ ì–´ë–»ê²Œ ì‚¬ìš©í• ì§€, ì–´ë–¤ phaseì— ì–´ë–¤ goalì„ ì‚¬ìš©í• ì§€ëŠ” pom.xml ì—ì„œ ì„¤ì •í•œë‹¤.

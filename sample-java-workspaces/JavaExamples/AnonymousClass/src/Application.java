@@ -4,16 +4,16 @@ public class Application {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 
-		// ÀÚ½Ä Å¬·¡½º¸¦ »ý¼ºÇÏ¿© »ç¿ëÇÒ ¼ö ÀÖ´Ù.
+		// ìžì‹ í´ëž˜ìŠ¤ë¥¼ ìƒì„±í•˜ì—¬ ì‚¬ìš©í•  ìˆ˜ ìžˆë‹¤.
 		Doctor doc = new Doctor();
 		doc.whoAmI();		
 		System.out.println(doc.name);
 		
-		// ¸¸¾à ºÎ¸ðÀÎ  Person¸¦ »ó¼Ó¹Þ¾Æ Ã³¸®ÇØ¾ß ÇÏ´Â Å¬·¡½º°¡ ¶Ç ÇÊ¿äÇÑ °æ¿ì,
-		// ¸Å¹ø ÀÚ½Ä Å¬·¡½º¸¦ ¸¸µå´Â °ÍÀº ³¶ºñ°í ºÒÇÊ¿äÇÑ Å¬·¡½º¸¸ ¸¹¾ÆÁø´Ù.
-		// »ó¼Ó¹ÞÀº Å¬·¡½º°¡ Àç»ç¿ëµÇ¸é ¸ð¸¦±î, ±×³É ÇÑ¹ø ¾²°í ¹ö·ÁÁø´Ù¸é ±»ÀÌ Å¬·¡½º ÆÄÀÏÀ» ¸¸µé ÇÊ¿ä´Â ¾ø´Ù.
-		// ÀÌ·² °æ¿ì¿¡ ¹Ù·Î ÀÍ¸í Å¬·¡½º¸¦ »ç¿ëÇÏ¸é µÈ´Ù. ÀÚ½Ä Å¬·¡½ºÀÇ °³³äÀÌ´Ù.
-		// ¹°·Ð Infterfaceµµ ÀÌ¿Í °°ÀÌ ±¸ÇöµÉ ¼ö ÀÖ´Ù.
+		// ë§Œì•½ ë¶€ëª¨ì¸  Personë¥¼ ìƒì†ë°›ì•„ ì²˜ë¦¬í•´ì•¼ í•˜ëŠ” í´ëž˜ìŠ¤ê°€ ë˜ í•„ìš”í•œ ê²½ìš°,
+		// ë§¤ë²ˆ ìžì‹ í´ëž˜ìŠ¤ë¥¼ ë§Œë“œëŠ” ê²ƒì€ ë‚­ë¹„ê³  ë¶ˆí•„ìš”í•œ í´ëž˜ìŠ¤ë§Œ ë§Žì•„ì§„ë‹¤.
+		// ìƒì†ë°›ì€ í´ëž˜ìŠ¤ê°€ ìž¬ì‚¬ìš©ë˜ë©´ ëª¨ë¥¼ê¹Œ, ê·¸ëƒ¥ í•œë²ˆ ì“°ê³  ë²„ë ¤ì§„ë‹¤ë©´ êµ³ì´ í´ëž˜ìŠ¤ íŒŒì¼ì„ ë§Œë“¤ í•„ìš”ëŠ” ì—†ë‹¤.
+		// ì´ëŸ´ ê²½ìš°ì— ë°”ë¡œ ìµëª… í´ëž˜ìŠ¤ë¥¼ ì‚¬ìš©í•˜ë©´ ëœë‹¤. ìžì‹ í´ëž˜ìŠ¤ì˜ ê°œë…ì´ë‹¤.
+		// ë¬¼ë¡  Infterfaceë„ ì´ì™€ ê°™ì´ êµ¬í˜„ë  ìˆ˜ ìžˆë‹¤.
 		Person p = new Person() {
 			public String name = "ssemdol";
 			
@@ -27,8 +27,7 @@ public class Application {
 			}
 			
 		};
-		p.whoAmI();
-		// p.name, p.work() Á¢±ÙµÇÁö ¾Ê´Â´Ù. ºÎ¸ðÅ¬·¡½º·Î ÀÎ½ºÅÏ½º¸¦ »ý¼ºÇß±â¿¡ ºÎ¸ðÅ¬·¡½ºÀÇ ÇÊµå³ª ¸Þ¼Òµå¸¸ Á¢±ÙÀÌ °¡´ÉÇÏ´Ù.
+		p.whoAmI(); // p.name, p.work() ì ‘ê·¼ë˜ì§€ ì•ŠëŠ”ë‹¤. ë¶€ëª¨í´ëž˜ìŠ¤ë¡œ ì¸ìŠ¤í„´ìŠ¤ë¥¼ ìƒì„±í–ˆê¸°ì— ë¶€ëª¨í´ëž˜ìŠ¤ì˜ í•„ë“œë‚˜ ë©”ì†Œë“œë§Œ ì ‘ê·¼ì´ ê°€ëŠ¥í•˜ë‹¤.
 		
 
 		

@@ -8,7 +8,7 @@ public class Application {
 	public static void main(String[] args) {
 
 			
-		// ÀÍ¸í Å¬·¡½º
+		// ìµëª… í´ë˜ìŠ¤
 		Compare max1 = new Compare() {
 			
 			@Override
@@ -20,12 +20,12 @@ public class Application {
 		System.out.println(max1.compareTo(8, 5));
 		
 		
-		// ÇÔ¼öÇü ÀÎÅÍÆäÀÌ½º
+		// í•¨ìˆ˜í˜• ì¸í„°í˜ì´ìŠ¤
 		Compare max2 = (x, y) -> x > y ? x: y;
 		System.out.println(max2.compareTo(7, 4));
 		
 		
-		// java.util.function ÆĞÅ°Áö¿¡´Â À¯¿ëÇÑ FunctionalInterface Á¸Àç	
+		// java.util.function íŒ¨í‚¤ì§€ì—ëŠ” ìœ ìš©í•œ FunctionalInterface ì¡´ì¬	
 		Predicate<String> isEmptyStr = s -> s.length() == 0;
 		String s = "";
 
@@ -33,15 +33,15 @@ public class Application {
 		  System.out.println("This is an empty String.");
 		
 		
-		// ¶÷´Ù½ÄÀÌ ÇÏ³ªÀÇ ¸Ş¼­µå¸¸ È£ÃâÇÏ´Â °æ¿ì, ¸Ş¼­µå ÂüÁ¶¸¦ ÅëÇØ ¶÷´Ù½ÄÀ» °£·«È÷ ÇÒ ¼ö ÀÖ´Ù.
-		// 	Å¬·¡½º¸í::¸Ş¼­µå¸í ¶Ç´Â ÂüÁ¶º¯¼ö::¸Ş¼­µå¸í
+		// ëŒë‹¤ì‹ì´ í•˜ë‚˜ì˜ ë©”ì„œë“œë§Œ í˜¸ì¶œí•˜ëŠ” ê²½ìš°, ë©”ì„œë“œ ì°¸ì¡°ë¥¼ í†µí•´ ëŒë‹¤ì‹ì„ ê°„ëµíˆ í•  ìˆ˜ ìˆë‹¤.
+		// í´ë˜ìŠ¤ëª…::ë©”ì„œë“œëª… ë˜ëŠ” ì°¸ì¡°ë³€ìˆ˜::ë©”ì„œë“œëª…
 		
-		// ±âÁ¸
+		// ê¸°ì¡´
 		//Function<String, Integer> f = (String x) -> Integer.parseInt(x);
 		//Function<Integer, int[]> j = x -> new int[x];
 		
 
-		// ¸Ş¼­µå ÂüÁ¶
+		// ë©”ì„œë“œ ì°¸ì¡°
 		Function<String, Integer> f = Integer::parseInt;
 		Function<Integer, int[]> j = int[]::new;
 		
