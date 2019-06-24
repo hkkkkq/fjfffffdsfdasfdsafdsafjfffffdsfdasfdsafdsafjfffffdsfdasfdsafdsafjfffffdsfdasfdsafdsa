@@ -121,7 +121,7 @@ git add . # git add * # 해당 directory 내 모두 add
 git rm --cached work.txt  # --cached: only remove from the index
 git rm --cached -r . # 해당 directory 내 모두
 # 또는 커밋 버전이 존재하면
-git reset HEAD work.txt # git reset --mixed HEAD work.txt
+git reset HEAD~ work.txt # git reset --mixed HEAD work.txt
 ```
 
 - git commit
