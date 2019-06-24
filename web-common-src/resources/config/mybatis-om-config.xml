@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "HTTP://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+	<settings>
+		<setting name="cacheEnabled" value="true" />
+		<setting name="useGeneratedKeys" value="true" />
+		<setting name="defaultExecutorType" value="REUSE" />
+	</settings>
+	
+	<!-- OM 서비스 추가부분 -->
+	<mappers>
+		<mapper resource="com/kt/kkos/itl/xml/ITLMapperTemplete.xml" />
+		<mapper resource="com/kt/kkos/itl/xml/CntrMpngInfo.xml" />
+		<mapper resource="com/kt/kkos/itl/xml/MvnoSocInqr.xml" />				
+		<mapper resource="com/kt/kkos/itl/xml/MvnoIntmMdlInqr.xml" />	
+		<mapper resource="com/kt/kkos/itl/xml/PrdcMgmt.xml" />
+		<mapper resource="com/kt/kkos/itl/xml/IntmMgmt.xml" />
+		<mapper resource="com/kt/kkos/itl/xml/CntrMgmt.xml" />		
+		<mapper resource="com/kt/kkos/itl/xml/PrdcAlwdInfo.xml" />
+		<mapper resource="com/kt/kkos/itl/xml/ITLUtil.xml" />	
+		<mapper resource="com/kt/kkos/itl/xml/CntrInfo.xml" />					
+		<mapper resource="com/kt/kkos/itl/xml/JuiceSync.xml" />	
+		<mapper resource="com/kt/kkos/itl/xml/ApplLockInfo.xml" />		
+		<mapper resource="com/kt/kkos/itl/xml/MvnoIntmMdlInfo.xml" />	
+		<mapper resource="com/kt/kkos/itl/xml/ScMgmt.xml" />
+		<mapper resource="com/kt/kkos/itl/xml/MvnoUsimMoveHist.xml" />
+		<mapper resource="com/kt/kkos/itl/xml/MarketImsiLr.xml" />	
+		<mapper resource="com/kt/kkos/itl/xml/TesChgRcrdInfo.xml" />			
+		<mapper resource="com/kt/kkos/itl/xml/ImsIdmsCompnGearInfo.xml" />
+		<mapper resource="com/kt/kkos/itl/xml/SrTtMgmt.xml" />
+		<mapper resource="com/kt/kkos/itl/xml/SpamMgmt.xml" />
+		<mapper resource="com/kt/kkos/itl/xml/InnMgmt.xml"/>
+		<mapper resource="com/kt/kkos/itl/xml/NisMgmt.xml"/>
+	</mappers>
+</configuration>

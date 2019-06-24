@@ -1,0 +1,892 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jaxws="http://cxf.apache.org/jaxws"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd">
+
+	<import resource="classpath:META-INF/cxf/cxf.xml" />
+	<import resource="classpath:META-INF/cxf/cxf-extension-soap.xml" />
+	<import resource="classpath:META-INF/cxf/cxf-servlet.xml" />
+
+	<bean id="testClient" class="com.kt.kkos.test.IWSEchoService" factory-bean="clientFactory" factory-method="create"/>
+	<bean id="clientFactory" class="org.apache.cxf.jaxws.JaxWsProxyFactoryBean">
+		<property name="serviceClass" value="com.kt.kkos.test.IWSEchoService"/>
+		<property name="address" value="http://localhost:8080/kkos/webservices/WSEchoService" />
+	</bean>
+
+
+	<jaxws:client id="CrisSvcMgmt"
+	     serviceClass="com.kt.kwl.wj.cdm.CrisSvc.CrisSvcMgmt"
+	     address="${kosORD}/SoapGateway">
+	     <jaxws:properties>
+            <entry key="thread.local.request.context" value="true" />
+        </jaxws:properties>
+	 </jaxws:client>  
+	
+	<jaxws:client id="NstepCustIdRetvSOIF"
+		serviceClass="com.kt.kwl.wj.cdm.NstepCustIdRetvSO.NstepCustIdRetvSOIF"
+		address="${kosORD}/SoapDynamicGateway">
+		<jaxws:properties>
+			<entry key="thread.local.request.context" value="true" />
+		</jaxws:properties>
+	</jaxws:client>
+	<jaxws:client id="ContBasInfoRetvSOIF"
+		serviceClass="com.kt.kwl.wj.oct.ContBasInfoRetvSO.ContBasInfoRetvSOIF"
+		address="${kosORD}/SoapDynamicGateway">
+		<jaxws:properties>
+			<entry key="thread.local.request.context" value="true" />
+		</jaxws:properties>
+	</jaxws:client>
+	<jaxws:client id="CustOnsbdyInfoRetvSOIF"
+		serviceClass="com.kt.kwl.wj.cst.CustOnsbdyInfoRetvSO.CustOnsbdyInfoRetvSOIF"
+		address="${kosORD}/SoapDynamicGateway">
+		<jaxws:properties>
+			<entry key="thread.local.request.context" value="true" />
+		</jaxws:properties>
+	</jaxws:client>
+	<jaxws:client id="SvcContSbscSumryInfoRetvSOIF"
+		serviceClass="com.kt.kwl.wj.oct.SvcContSbscSumryInfoRetvSO.SvcContSbscSumryInfoRetvSOIF"
+		address="${kosORD}/SoapDynamicGateway">
+		<jaxws:properties>
+			<entry key="thread.local.request.context" value="true" />
+		</jaxws:properties>
+	</jaxws:client>
+	<jaxws:client id="CustInfoIdfyRetvSOIF"
+		serviceClass="com.kt.kwl.wj.cdm.CustInfoIdfyRetvSO.CustInfoIdfyRetvSOIF"
+		address="${kosORD}/SoapDynamicGateway">
+		<jaxws:properties>
+			<entry key="thread.local.request.context" value="true" />
+		</jaxws:properties>
+	</jaxws:client>
+	<jaxws:client id="OderIdCretSOIF"
+		serviceClass="com.kt.kwl.wj.oct.OderIdCretSO.OderIdCretSOIF"
+		address="${kosORD}/SoapDynamicGateway">
+		<jaxws:properties>
+			<entry key="thread.local.request.context" value="true" />
+		</jaxws:properties>
+	</jaxws:client>
+	<jaxws:client id="SvcContIdCretSOIF"
+		serviceClass="com.kt.kwl.wj.oct.SvcContIdCretSO.SvcContIdCretSOIF"
+		address="${kosORD}/SoapDynamicGateway">
+		<jaxws:properties>
+			<entry key="thread.local.request.context" value="true" />
+		</jaxws:properties>
+	</jaxws:client>
+	<jaxws:client id="PLSvcNoNwumAdmPort"
+		serviceClass="com.kt.kwl.wj.ord.SvcNoNwnumAdm.PLSvcNoNwumAdmPort"
+		address="${kosORD}/SoapGateway">
+		<jaxws:properties>
+			<entry key="thread.local.request.context" value="true" />
+		</jaxws:properties>
+	</jaxws:client>
+	<jaxws:client id="PLSvcNoSttusAdmPort"
+		serviceClass="com.kt.kwl.wj.ord.SvcNoSttusAdm.PLSvcNoSttusAdmPort"
+		address="${kosORD}/SoapGateway">
+		<jaxws:properties>
+			<entry key="thread.local.request.context" value="true" />
+		</jaxws:properties>
+	</jaxws:client>
+	<jaxws:client id="SbscNflrBfacChkSOIF"
+		serviceClass="com.kt.kwl.wj.oct.SbscNflrBfacChkSO.SbscNflrBfacChkSOIF"
+		address="${kosORD}/SoapDynamicGateway">
+		<jaxws:properties>
+			<entry key="thread.local.request.context" value="true" />
+		</jaxws:properties>
+	</jaxws:client>
+	<jaxws:client id="UsimSalePricRetvSOIF"
+		serviceClass="com.kt.kwl.wj.oit.UsimSalePricRetvSO.UsimSalePricRetvSOIF"
+		address="${kosORD}/SoapDynamicGateway">
+		<jaxws:properties>
+			<entry key="thread.local.request.context" value="true" />
+		</jaxws:properties>
+	</jaxws:client>
+	<jaxws:client id="SpecRetvSOIF"
+		serviceClass="com.kt.kwl.wj.rds.SpecRetvSO.SpecRetvSOIF"
+		address="${kosORD}/SoapDynamicGateway">
+		<jaxws:properties>
+			<entry key="thread.local.request.context" value="true" />
+		</jaxws:properties>
+	</jaxws:client>
+	<jaxws:client id="PLIntmBasiInfoAdmPort"
+		serviceClass="com.kt.kwl.wj.ord.IntmBasiInfoAdm.PLIntmBasiInfoAdmPort"
+		address="${kosORD}/SoapGateway">
+		<jaxws:properties>
+			<entry key="thread.local.request.context" value="true" />
+		</jaxws:properties>
+	</jaxws:client>
+	<jaxws:client id="TrtmUsimInvRftYnChkSOIF"
+		serviceClass="com.kt.kwl.wj.oit.TrtmUsimInvRftYnChkSO.TrtmUsimInvRftYnChkSOIF"
+		address="${kosORD}/SoapDynamicGateway">
+		<jaxws:properties>
+			<entry key="thread.local.request.context" value="true" />
+		</jaxws:properties>
+	</jaxws:client>
+	<jaxws:client id="PLCustFraudSbscPrvnAthnPort"
+		serviceClass="com.kt.kwl.wj.cdm.PL_CustFraudSbscPrvnAthn.PLCustFraudSbscPrvnAthnPort"
+		address="${kosORD}/SoapGateway">
+		<jaxws:properties>
+			<entry key="thread.local.request.context" value="true" />
+		</jaxws:properties>
+	</jaxws:client>
+	<jaxws:client id="PLIntmSbscInfoRetrievePort"
+		serviceClass="com.kt.kwl.wj.ord.IntmSbscInfoRetrieve.PLIntmSbscInfoRetrievePort"
+		address="${kosORD}/SoapGateway">
+		<jaxws:properties>
+			<entry key="thread.local.request.context" value="true" />
+		</jaxws:properties>
+	</jaxws:client>
+	<jaxws:client id="CityAdrInfoRetvSOIF"
+		serviceClass="com.kt.kwl.wj.cdm.CityAdrInfoRetvSO.CityAdrInfoRetvSOIF"
+		address="${kosORD}/SoapDynamicGateway">
+		<jaxws:properties>
+			<entry key="thread.local.request.context" value="true" />
+		</jaxws:properties>
+	</jaxws:client>
+	<jaxws:client id="MblBasSalePlcyIdRetvSOIF"
+		serviceClass="com.kt.kwl.wj.oit.MblBasSalePlcyIdRetvSO.MblBasSalePlcyIdRetvSOIF"
+		address="${kosORD}/SoapDynamicGateway">
+		<jaxws:properties>
+			<entry key="thread.local.request.context" value="true" />
+		</jaxws:properties>
+	</jaxws:client>	
+	<jaxws:client id="AdrInfoRetvSOIF"
+		serviceClass="com.kt.kwl.wj.cdm.AdrInfoRetvSO.AdrInfoRetvSOIF"
+		address="${kosORD}/SoapDynamicGateway">
+		<jaxws:properties>
+			<entry key="thread.local.request.context" value="true" />
+		</jaxws:properties>
+	</jaxws:client>	
+	<jaxws:client id="RefineAdrInfoRetvSOIF"
+		serviceClass="com.kt.kwl.wj.cdm.RefineAdrInfoRetvSO.RefineAdrInfoRetvSOIF"
+		address="${kosORD}/SoapDynamicGateway">
+		<jaxws:properties>
+			<entry key="thread.local.request.context" value="true" />
+		</jaxws:properties>
+	</jaxws:client>	
+	<jaxws:client id="SvcContTrmnListRetvSOIF"
+		serviceClass="com.kt.kwl.wj.oct.SvcContTrmnListRetvSO.SvcContTrmnListRetvSOIF"
+		address="${kosORD}/SoapDynamicGateway">
+		<jaxws:properties>
+			<entry key="thread.local.request.context" value="true" />
+		</jaxws:properties>
+	</jaxws:client>
+	<jaxws:client id="UsimTmpStoreInfoChkSOIF"
+		serviceClass="com.kt.kwl.wj.oit.UsimTmpStoreInfoChkSO.UsimTmpStoreInfoChkSOIF"
+		address="${kosORD}/SoapDynamicGateway">
+		<jaxws:properties>
+			<entry key="thread.local.request.context" value="true" />
+		</jaxws:properties>
+	</jaxws:client>
+	<jaxws:client id="SbscInfoRetvSOIF"
+		serviceClass="com.kt.kwl.wj.oct.SbscInfoRetvSO.SbscInfoRetvSOIF"
+		address="${kosORD}/SoapDynamicGateway">
+		<jaxws:properties>
+			<entry key="thread.local.request.context" value="true" />
+		</jaxws:properties>
+	</jaxws:client>
+	<jaxws:client id="SvcContAdtnInfoRetvSOIF"
+		serviceClass="com.kt.kwl.wj.oct.SvcContAdtnInfoRetvSO.SvcContAdtnInfoRetvSOIF"
+		address="${kosORD}/SoapDynamicGateway">
+		<jaxws:properties>
+			<entry key="thread.local.request.context" value="true" />
+		</jaxws:properties>
+	</jaxws:client>
+	<jaxws:client id="WrkjobRstrtnFnsDtRetvSOIF"
+		serviceClass="com.kt.kwl.wj.oct.WrkjobRstrtnFnsDtRetvSO.WrkjobRstrtnFnsDtRetvSOIF"
+		address="${kosORD}/SoapDynamicGateway">
+		<jaxws:properties>
+			<entry key="thread.local.request.context" value="true" />
+		</jaxws:properties>
+	</jaxws:client>
+	<jaxws:client id="SysCdListMultiRetvSOIF"
+		serviceClass="com.kt.kwl.wj.oct.SysCdListMultiRetvSO.SysCdListMultiRetvSOIF"
+		address="${kosORD}/SoapDynamicGateway">
+		<jaxws:properties>
+			<entry key="thread.local.request.context" value="true" />
+		</jaxws:properties>
+	</jaxws:client>
+	<jaxws:client id="ComnCdRetvSOIF"
+		serviceClass="com.kt.kwl.wj.cdm.ComnCdRetvSO.ComnCdRetvSOIF"
+		address="${kosORD}/SoapDynamicGateway">
+		<jaxws:properties>
+			<entry key="thread.local.request.context" value="true" />
+		</jaxws:properties>
+	</jaxws:client>
+	<jaxws:client id="PLNpPortInTrmnAdmPort"
+		serviceClass="com.kt.kwl.wj.ord.NpPortInTrmnAdm.PLNpPortInTrmnAdmPort"
+		address="${kosORD}/SoapGateway">
+		<jaxws:properties>
+			<entry key="thread.local.request.context" value="true" />
+		</jaxws:properties>
+	</jaxws:client>
+	<jaxws:client id="BillAccInfoRetvSOIF"
+		serviceClass="com.kt.kwl.wj.cdm.BillAccInfoRetvSO.BillAccInfoRetvSOIF"
+		address="${kosORD}/SoapDynamicGateway">
+		<jaxws:properties>
+			<entry key="thread.local.request.context" value="true" />
+		</jaxws:properties>
+	</jaxws:client>
+	<jaxws:client id="NpCommCmpnInfoRetvSOIF"
+		serviceClass="com.kt.kwl.wj.oct.NpCommCmpnInfoRetvSO.NpCommCmpnInfoRetvSOIF"
+		address="${kosORD}/SoapDynamicGateway">
+		<jaxws:properties>
+			<entry key="thread.local.request.context" value="true" />
+		</jaxws:properties>
+	</jaxws:client>
+	<jaxws:client id="SvcContIdLockInfoRetvSOIF"
+		serviceClass="com.kt.kwl.wj.oct.SvcContIdLockInfoRetvSO.SvcContIdLockInfoRetvSOIF"
+		address="${kosORD}/SoapDynamicGateway">
+		<jaxws:properties>
+			<entry key="thread.local.request.context" value="true" />
+		</jaxws:properties>
+	</jaxws:client>
+	<jaxws:client id="BillAccIdLockInfoRetvSOIF"
+		serviceClass="com.kt.kwl.wj.bcc.BillAccIdLockInfoRetvSO.BillAccIdLockInfoRetvSOIF"
+		address="${kosORD}/SoapDynamicGateway">
+		<jaxws:properties>
+			<entry key="thread.local.request.context" value="true" />
+		</jaxws:properties>
+	</jaxws:client>
+	<jaxws:client id="OrderItgPrevChkSOIF"
+		serviceClass="com.kt.kwl.wj.oct.OrderItgPrevChkSO.OrderItgPrevChkSOIF"
+		address="${kosORD}/SoapDynamicGateway">
+		<jaxws:properties>
+			<entry key="thread.local.request.context" value="true" />
+		</jaxws:properties>
+	</jaxws:client>
+	<jaxws:client id="PLIntmSbscChkAdmPort"
+		serviceClass="com.kt.kwl.wj.ord.IntmSbscChkAdm.PLIntmSbscChkAdmPort"
+		address="${kosORD}/SoapGateway">
+		<jaxws:properties>
+			<entry key="thread.local.request.context" value="true" />
+		</jaxws:properties>
+	</jaxws:client>	
+	<jaxws:client id="EngtContHstRetvSOIF"
+		serviceClass="com.kt.kwl.wj.oct.EngtContHstRetvSO.EngtContHstRetvSOIF"
+		address="${kosORD}/SoapDynamicGateway">
+		<jaxws:properties>
+			<entry key="thread.local.request.context" value="true" />
+		</jaxws:properties>
+	</jaxws:client>
+	<jaxws:client id="EngtDcBfacCheckSOIF"
+		serviceClass="com.kt.kwl.wj.oct.EngtDcBfacCheckSO.EngtDcBfacCheckSOIF"
+		address="${kosORD}/SoapDynamicGateway">
+		<jaxws:properties>
+			<entry key="thread.local.request.context" value="true" />
+		</jaxws:properties>
+	</jaxws:client>
+	<jaxws:client id="EnggDscnDscnPrtcInqrSOIF"
+		serviceClass="com.kt.kwl.wj.bcc.EnggDscnDscnPrtcInqrSO.EnggDscnDscnPrtcInqrSOIF"
+		address="${kosORD}/SoapDynamicGateway">
+		<jaxws:properties>
+			<entry key="thread.local.request.context" value="true" />
+		</jaxws:properties>
+	</jaxws:client>
+	<jaxws:client id="CombApyInfoRetvSOIF"
+		serviceClass="com.kt.kwl.wj.cdm.CombApyInfoRetvSO.CombApyInfoRetvSOIF"
+		address="${kosORD}/SoapDynamicGateway">
+		<jaxws:properties>
+			<entry key="thread.local.request.context" value="true" />
+		</jaxws:properties>
+	</jaxws:client>
+	<jaxws:client id="EfctIntmInsurSbscInfoRetvSOIF"
+		serviceClass="com.kt.kwl.wj.oit.EfctIntmInsurSbscInfoRetvSO.EfctIntmInsurSbscInfoRetvSOIF"
+		address="${kosORD}/SoapDynamicGateway">
+		<jaxws:properties>
+			<entry key="thread.local.request.context" value="true" />
+		</jaxws:properties>
+	</jaxws:client>
+	<jaxws:client id="SpnsrItgInfoAdmPort"
+		serviceClass="com.kt.kwl.wj.ord.SpnsrItgInfoAdm.SpnsrItgInfoAdmPort"
+		address="${kosORD}/SoapGateway">
+		<jaxws:properties>
+			<entry key="thread.local.request.context" value="true" />
+		</jaxws:properties>
+	</jaxws:client>
+    <jaxws:client id="PLMlgInfoAdmPort"
+		serviceClass="com.kt.kwl.wj.ord.MlgInfoAdm.PLMlgInfoAdmPort"
+		address="${kosORD}/SoapGateway">
+		<jaxws:properties>
+			<entry key="thread.local.request.context" value="true" />
+		</jaxws:properties>
+	</jaxws:client>
+    <jaxws:client id="IntmUseSttusAdmPort"
+		serviceClass="com.kt.kwl.wj.ord.IntmUseSttusAdm.IntmUseSttusAdmPort"
+		address="${kosORD}/SoapGateway">
+		<jaxws:properties>
+			<entry key="thread.local.request.context" value="true" />
+		</jaxws:properties>
+	</jaxws:client>	
+    <jaxws:client id="IcpntUsePosblPointRetvSOIF"
+		serviceClass="com.kt.kwl.wj.oit.IcpntUsePosblPointRetvSO.IcpntUsePosblPointRetvSOIF"
+		address="${kosORD}/SoapDynamicGateway">
+		<jaxws:properties>
+			<entry key="thread.local.request.context" value="true" />
+		</jaxws:properties>
+    </jaxws:client>
+    <jaxws:client id="FornBaseInfoRetvSOIF"
+		serviceClass="com.kt.kwl.wj.oct.FornBaseInfoRetvSO.FornBaseInfoRetvSOIF"
+		address="${kosORD}/SoapDynamicGateway">
+		<jaxws:properties>
+			<entry key="thread.local.request.context" value="true" />
+		</jaxws:properties>
+    </jaxws:client>
+    <jaxws:client id="PerdIgnrFornCustRnmConfRetvSOIF"
+		serviceClass="com.kt.kwl.wj.cst.PerdIgnrFornCustRnmConfRetvSO.PerdIgnrFornCustRnmConfRetvSOIF"
+		address="${kosORD}/SoapDynamicGateway">
+		<jaxws:properties>
+			<entry key="thread.local.request.context" value="true" />
+		</jaxws:properties>
+    </jaxws:client>
+    <jaxws:client id="HoliRstrSkipYnByWrkjobRetvSOIF"
+		serviceClass="com.kt.kwl.wj.oct.HoliRstrSkipYnByWrkjobRetvSO.HoliRstrSkipYnByWrkjobRetvSOIF"
+		address="${kosORD}/SoapDynamicGateway">
+		<jaxws:properties>
+			<entry key="thread.local.request.context" value="true" />
+		</jaxws:properties>
+    </jaxws:client>
+    <jaxws:client id="TodayHoliYnRetvSOIF"
+		serviceClass="com.kt.kwl.wj.oct.TodayHoliYnRetvSO.TodayHoliYnRetvSOIF"
+		address="${kosORD}/SoapDynamicGateway">
+		<jaxws:properties>
+			<entry key="thread.local.request.context" value="true" />
+		</jaxws:properties>
+    </jaxws:client>
+    <jaxws:client id="CwSysCdRetvSOIF"
+		serviceClass="com.kt.kwl.wj.cdm.CwSysCdRetvSO.CwSysCdRetvSOIF"
+		address="${kosORD}/SoapDynamicGateway">
+		<jaxws:properties>
+			<entry key="thread.local.request.context" value="true" />
+		</jaxws:properties>
+    </jaxws:client>   
+	<jaxws:client id="PLAgncyGiroPosblYnRetvPort"
+		serviceClass="com.kt.kwl.wj.cdm.AgncyGiroPosblYnRetv.PLAgncyGiroPosblYnRetvPort"
+		address="${kosORD}/SoapGateway">
+		<jaxws:properties>
+			<entry key="thread.local.request.context" value="true" />
+		</jaxws:properties>
+	</jaxws:client>     
+	<jaxws:client id="RnmAthnTmscntRetvSOIF"
+		serviceClass="com.kt.kwl.wj.cdm.RnmAthnTmscntRetvSO.RnmAthnTmscntRetvSOIF"
+		address="${kosORD}/SoapDynamicGateway">
+		<jaxws:properties>
+			<entry key="thread.local.request.context" value="true" />
+		</jaxws:properties>
+	</jaxws:client>	
+	<jaxws:client id="MobileProdPrevChkSOIF"
+		serviceClass="com.kt.kwl.wj.opd.MobileProdPrevChkSO.MobileProdPrevChkSOIF"
+		address="${kosORD}/SoapDynamicGateway">
+		<jaxws:properties>
+			<entry key="thread.local.request.context" value="true" />
+		</jaxws:properties>
+	</jaxws:client>	
+	<jaxws:client id="ProdMetaInfoRetvSOIF"
+		serviceClass="com.kt.kwl.wj.opd.ProdMetaInfoRetvSO.ProdMetaInfoRetvSOIF"
+		address="${kosORD}/SoapDynamicGateway">
+		<jaxws:properties>
+			<entry key="thread.local.request.context" value="true" />
+		</jaxws:properties>
+	</jaxws:client>	
+	<jaxws:client id="PLBillAccInfoTrtPort"
+		serviceClass="com.kt.kwl.wj.cdm.BillAccInfoTrt.PLBillAccInfoTrtPort"
+		address="${kosORD}/SoapGateway">
+		<jaxws:properties>
+			<entry key="thread.local.request.context" value="true" />
+		</jaxws:properties>
+	</jaxws:client>  
+	<jaxws:client id="DrctlyAmtCalcSOIF"
+		serviceClass="com.kt.kwl.wj.bcc.DrctlyAmtCalcSO.DrctlyAmtCalcSOIF"
+		address="${kosORD}/SoapDynamicGateway">
+		<jaxws:properties>
+			<entry key="thread.local.request.context" value="true" />
+		</jaxws:properties>
+    </jaxws:client>  	
+    <jaxws:client id="GrnphBuyinSttusRetvSOIF"
+		serviceClass="com.kt.kwl.wj.rds.GrnphBuyinSttusRetvSO.GrnphBuyinSttusRetvSOIF"
+		address="${kosORD}/SoapDynamicGateway">
+		<jaxws:properties>
+			<entry key="thread.local.request.context" value="true" />
+		</jaxws:properties>
+    </jaxws:client>
+    <jaxws:client id="WlfrDcSbscRetvSOIF"
+		serviceClass="com.kt.kwl.wj.oct.WlfrDcSbscRetvSO.WlfrDcSbscRetvSOIF"
+		address="${kosORD}/SoapDynamicGateway">
+		<jaxws:properties>
+			<entry key="thread.local.request.context" value="true" />
+		</jaxws:properties>
+    </jaxws:client>
+    <jaxws:client id="CrptCardPosblYnRetvSOIF"
+		serviceClass="com.kt.kwl.wj.oct.CrptCardPosblYnRetvSO.CrptCardPosblYnRetvSOIF"
+		address="${kosORD}/SoapDynamicGateway">
+		<jaxws:properties>
+			<entry key="thread.local.request.context" value="true" />
+		</jaxws:properties>
+    </jaxws:client>
+    <jaxws:client id="LastNthnBnfExpPointHstRetvSOIF"
+		serviceClass="com.kt.kwl.wj.oit.LastNthnBnfExpPointHstRetvSO.LastNthnBnfExpPointHstRetvSOIF"
+		address="${kosORD}/SoapDynamicGateway">
+		<jaxws:properties>
+			<entry key="thread.local.request.context" value="true" />
+		</jaxws:properties>
+    </jaxws:client>
+    <jaxws:client id="ChngUpBfacChkSOIF"
+		serviceClass="com.kt.kwl.wj.oit.ChngUpBfacChkSO.ChngUpBfacChkSOIF"
+		address="${kosORD}/SoapDynamicGateway">
+		<jaxws:properties>
+			<entry key="thread.local.request.context" value="true" />
+		</jaxws:properties>
+    </jaxws:client>
+    <jaxws:client id="HndsetOrrgModelInfoRetvSOIF"
+		serviceClass="com.kt.kwl.wj.rds.HndsetOrrgModelInfoRetvSO.HndsetOrrgModelInfoRetvSOIF"
+		address="${kosORD}/SoapDynamicGateway">
+		<jaxws:properties>
+			<entry key="thread.local.request.context" value="true" />
+		</jaxws:properties>
+    </jaxws:client>
+    <jaxws:client id="FeePrvdHstRetvSOIF"
+		serviceClass="com.kt.kwl.wj.rds.FeePrvdHstRetvSO.FeePrvdHstRetvSOIF"
+		address="${kosORD}/SoapDynamicGateway">
+		<jaxws:properties>
+			<entry key="thread.local.request.context" value="true" />
+		</jaxws:properties>
+    </jaxws:client>    
+    <jaxws:client id="IntmModelInfoRetvSOIF"
+		serviceClass="com.kt.kwl.wj.rds.IntmModelInfoRetvSO.IntmModelInfoRetvSOIF"
+		address="${kosORD}/SoapDynamicGateway">
+		<jaxws:properties>
+			<entry key="thread.local.request.context" value="true" />
+		</jaxws:properties>
+    </jaxws:client>        
+    <jaxws:client id="SpecInfoMultiRetvSOIF"
+		serviceClass="com.kt.kwl.wj.rds.SpecInfoMultiRetvSO.SpecInfoMultiRetvSOIF"
+		address="${kosORD}/SoapDynamicGateway">
+		<jaxws:properties>
+			<entry key="thread.local.request.context" value="true" />
+		</jaxws:properties>
+    </jaxws:client>
+    <jaxws:client id="OpnRstrtnYnRetvSOIF"
+		serviceClass="com.kt.kwl.wj.rds.OpnRstrtnYnRetvSO.OpnRstrtnYnRetvSOIF"
+		address="${kosORD}/SoapDynamicGateway">
+		<jaxws:properties>
+			<entry key="thread.local.request.context" value="true" />
+		</jaxws:properties>
+    </jaxws:client>
+    <jaxws:client id="SpnsrOpnHstRetvSOIF"
+		serviceClass="com.kt.kwl.wj.oit.SpnsrOpnHstRetvSO.SpnsrOpnHstRetvSOIF"
+		address="${kosORD}/SoapDynamicGateway">
+		<jaxws:properties>
+			<entry key="thread.local.request.context" value="true" />
+		</jaxws:properties>
+    </jaxws:client>
+    <jaxws:client id="MblSalePlcyInfoAdmPort"
+		serviceClass="com.kt.kwl.wj.ord.MblSalePlcyInfoAdm.MblSalePlcyInfoAdmPort"
+		address="${kosORD}/SoapGateway">
+		<jaxws:properties>
+			<entry key="thread.local.request.context" value="true" />
+		</jaxws:properties>
+	</jaxws:client>
+	<jaxws:client id="IfAcrndDspTypeChgSOIF"
+		serviceClass="com.kt.kwl.wj.cdm.IfAcrndDspTypeChgSO.IfAcrndDspTypeChgSOIF"
+		address="${kosORD}/SoapDynamicGateway">
+		<jaxws:properties>
+			<entry key="thread.local.request.context" value="true" />
+		</jaxws:properties>
+    </jaxws:client>
+    <jaxws:client id="TrmnPrcsItgPort"
+		serviceClass="com.kt.kwl.wj.ord.TrmnPrcsItg.TrmnPrcsItgPort"
+		address="${kosORD}/SoapGateway">
+		<jaxws:properties>
+			<entry key="thread.local.request.context" value="true" />
+		</jaxws:properties>
+	</jaxws:client>
+	<jaxws:client id="MvnoBizBasInfoRetvSOIF"
+		serviceClass="com.kt.kwl.wj.oct.MvnoBizBasInfoRetvSO.MvnoBizBasInfoRetvSOIF"
+		address="${kosORD}/SoapDynamicGateway">
+		<jaxws:properties>
+			<entry key="thread.local.request.context" value="true" />
+		</jaxws:properties>
+    </jaxws:client>
+    <jaxws:client id="PLNpPortInSbscAdmPort"
+		serviceClass="com.kt.kwl.wj.ord.NpPortInSbscAdm.PLNpPortInSbscAdmPort"
+		address="${kosORD}/SoapGateway">
+		<jaxws:properties>
+			<entry key="thread.local.request.context" value="true" />
+		</jaxws:properties>
+	</jaxws:client>
+	<jaxws:client id="PLNpInfoAdmPort"
+		serviceClass="com.kt.kwl.wj.ord.NpInfoAdm.PLNpInfoAdmPort"
+		address="${kosORD}/SoapGateway">
+		<jaxws:properties>
+			<entry key="thread.local.request.context" value="true" />
+		</jaxws:properties>
+	</jaxws:client>
+	<jaxws:client id="PLNpPortInEtcAdmPort"
+		serviceClass="com.kt.kwl.wj.ord.NpPortInEtcAdm.PLNpPortInEtcAdmPort"
+		address="${kosORD}/SoapGateway">
+		<jaxws:properties>
+			<entry key="thread.local.request.context" value="true" />
+		</jaxws:properties>
+	</jaxws:client>
+	<jaxws:client id="NpAdmNoRetvByTelNoSOIF"
+		serviceClass="com.kt.kwl.wj.oct.NpAdmNoRetvByTelNoSO.NpAdmNoRetvByTelNoSOIF"
+		address="${kosORD}/SoapDynamicGateway">
+		<jaxws:properties>
+			<entry key="thread.local.request.context" value="true" />
+		</jaxws:properties>
+	</jaxws:client>
+	<jaxws:client id="NpLastInfoByTelNoAndMotCdSOIF"
+		serviceClass="com.kt.kwl.wj.oct.NpLastInfoByTelNoAndMotCdSO.NpLastInfoByTelNoAndMotCdSOIF"
+		address="${kosORD}/SoapDynamicGateway">
+		<jaxws:properties>
+			<entry key="thread.local.request.context" value="true" />
+		</jaxws:properties>
+	</jaxws:client>
+	<jaxws:client id="NpPayAsertInfoRetvSOIF"
+		serviceClass="com.kt.kwl.wj.oct.NpPayAsertInfoRetvSO.NpPayAsertInfoRetvSOIF"
+		address="${kosORD}/SoapDynamicGateway">
+		<jaxws:properties>
+			<entry key="thread.local.request.context" value="true" />
+		</jaxws:properties>
+	</jaxws:client>
+	<jaxws:client id="NpTgtCommCmpnRetvSOIF"
+		serviceClass="com.kt.kwl.wj.oct.NpTgtCommCmpnRetvSO.NpTgtCommCmpnRetvSOIF"
+		address="${kosORD}/SoapDynamicGateway">
+		<jaxws:properties>
+			<entry key="thread.local.request.context" value="true" />
+		</jaxws:properties>
+	</jaxws:client>
+	<jaxws:client id="OtcomNoChgLastHstRetvSOIF"
+		serviceClass="com.kt.kwl.wj.oct.OtcomNoChgLastHstRetvSO.OtcomNoChgLastHstRetvSOIF"
+		address="${kosORD}/SoapDynamicGateway">
+		<jaxws:properties>
+			<entry key="thread.local.request.context" value="true" />
+		</jaxws:properties>
+	</jaxws:client>
+	<jaxws:client id="SpclPrpsNoRetvSOIF"
+		serviceClass="com.kt.kwl.wj.oct.SpclPrpsNoRetvSO.SpclPrpsNoRetvSOIF"
+		address="${kosORD}/SoapDynamicGateway">
+		<jaxws:properties>
+			<entry key="thread.local.request.context" value="true" />
+		</jaxws:properties>
+	</jaxws:client>
+	<jaxws:client id="CustBfacAgreeTroblBizrRetvSOIF"
+		serviceClass="com.kt.kwl.wj.oct.CustBfacAgreeTroblBizrRetvSO.CustBfacAgreeTroblBizrRetvSOIF"
+		address="${kosORD}/SoapDynamicGateway">
+		<jaxws:properties>
+			<entry key="thread.local.request.context" value="true" />
+		</jaxws:properties>
+	</jaxws:client>
+	<jaxws:client id="UserCdRetvSOIF"
+		serviceClass="com.kt.kwl.wj.cdm.UserCdRetvSO.UserCdRetvSOIF"
+		address="${kosORD}/SoapDynamicGateway">
+		<jaxws:properties>
+			<entry key="thread.local.request.context" value="true" />
+		</jaxws:properties>
+	</jaxws:client>
+	<jaxws:client id="IntmSpInslPosblMonsNumRetvSOIF"
+		serviceClass="com.kt.kwl.wj.oit.IntmSpInslPosblMonsNumRetvSO.IntmSpInslPosblMonsNumRetvSOIF"
+		address="${kosORD}/SoapDynamicGateway">
+		<jaxws:properties>
+			<entry key="thread.local.request.context" value="true" />
+		</jaxws:properties>
+	</jaxws:client>	
+	<jaxws:client id="IntmSpInslDlmtAmtRetvSOIF"
+		serviceClass="com.kt.kwl.wj.oit.IntmSpInslDlmtAmtRetvSO.IntmSpInslDlmtAmtRetvSOIF"
+		address="${kosORD}/SoapDynamicGateway">
+		<jaxws:properties>
+			<entry key="thread.local.request.context" value="true" />
+		</jaxws:properties>
+	</jaxws:client>
+	<jaxws:client id="IntmInslFeeRetvSOIF"
+		serviceClass="com.kt.kwl.wj.oit.IntmInslFeeRetvSO.IntmInslFeeRetvSOIF"
+		address="${kosORD}/SoapDynamicGateway">
+		<jaxws:properties>
+			<entry key="thread.local.request.context" value="true" />
+		</jaxws:properties>
+	</jaxws:client>	
+	<jaxws:client id="SdsInfoAdmPort"
+		serviceClass="com.kt.kwl.wj.ord.SdsInfoAdm.SdsInfoAdmPort"
+		address="${kosORD}/SoapGateway">
+		<jaxws:properties>
+			<entry key="thread.local.request.context" value="true" />
+		</jaxws:properties>
+	</jaxws:client>
+	<jaxws:client id="AplyProdInfoRetvSOIF"
+		serviceClass="com.kt.kwl.wj.opd.AplyProdInfoRetvSO.AplyProdInfoRetvSOIF"
+		address="${kosORD}/SoapDynamicGateway">
+		<jaxws:properties>
+			<entry key="thread.local.request.context" value="true" />
+		</jaxws:properties>
+	</jaxws:client>
+	<jaxws:client id="PLKaitFraudSbscPrvnLegalAgntRegPort"
+		serviceClass="com.kt.kwl.wj.cdm.PL_KaitFraudSbscPrvnLegalAgntReg.PLKaitFraudSbscPrvnLegalAgntRegPort"
+		address="${kosORD}/SoapGateway">
+		<jaxws:properties>
+			<entry key="thread.local.request.context" value="true" />
+		</jaxws:properties>
+	</jaxws:client>
+	<jaxws:client id="PLBillAccCretPort"
+		serviceClass="com.kt.kwl.wj.cdm.BillAccCret.PLBillAccCretPort"
+		address="${kosORD}/SoapGateway">
+		<jaxws:properties>
+			<entry key="thread.local.request.context" value="true" />
+		</jaxws:properties>
+	</jaxws:client>
+		<jaxws:client id="PLCustInfoAdmPort"
+		serviceClass="com.kt.kwl.wj.cdm.PL_CustInfoAdm.PLCustInfoAdmPort"
+		address="${kosORD}/SoapGateway">
+		<jaxws:properties>
+			<entry key="thread.local.request.context" value="true" />
+		</jaxws:properties>
+	</jaxws:client>
+	<jaxws:client id="PLOmdInfoAdmTrtPort"
+		serviceClass="com.kt.kwl.wj.ord.OmdInfoAdmTrt.PLOmdInfoAdmTrtPort"
+		address="${kosORD}/SoapGateway">
+		<jaxws:properties>
+			<entry key="thread.local.request.context" value="true" />
+		</jaxws:properties>		
+	</jaxws:client>
+	<jaxws:client id="SpnsrPlcyDcBaseInfoRetvSOIF"
+		serviceClass="com.kt.kwl.wj.oit.SpnsrPlcyDcBaseInfoRetvSO.SpnsrPlcyDcBaseInfoRetvSOIF"
+		address="${kosORD}/SoapDynamicGateway">
+		<jaxws:properties>
+			<entry key="thread.local.request.context" value="true" />
+		</jaxws:properties>
+	</jaxws:client>		
+	<jaxws:client id="PLAgntListAdmPort"
+		serviceClass="com.kt.kwl.wj.ord.AgntInfoAdm.PLAgntListAdmPort"
+		address="${kosORD}/SoapGateway">
+		<jaxws:properties>
+			<entry key="thread.local.request.context" value="true" />
+		</jaxws:properties>
+	</jaxws:client>		
+	<jaxws:client id="PLSbscRstrtnWrkjobTrtAdmPort"
+		serviceClass="com.kt.kwl.wj.ord.SbscRstrtnWrkjobTrtAdm.PLSbscRstrtnWrkjobTrtAdmPort"
+		address="${kosORD}/SoapGateway">
+		<jaxws:properties>
+			<entry key="thread.local.request.context" value="true" />
+		</jaxws:properties>
+	</jaxws:client>		
+	<jaxws:client id="SpnsrGraceInfoPort"
+		serviceClass="com.kt.kwl.wj.ord.SpnsrGraceInfo.SpnsrGraceInfoPort"
+		address="${kosORD}/SoapGateway">
+		<jaxws:properties>
+			<entry key="thread.local.request.context" value="true" />
+		</jaxws:properties>
+	</jaxws:client>
+	<jaxws:client id="UsimIcgAdmPort"
+		serviceClass="com.kt.kwl.wj.ord.UsimIcgAdm.UsimIcgAdmPort"
+		address="${kosORD}/SoapGateway">
+		<jaxws:properties>
+			<entry key="thread.local.request.context" value="true" />
+		</jaxws:properties>
+	</jaxws:client>	
+	<jaxws:client id="UserOrgInfoListFindSOIF"
+		serviceClass="com.kt.kwl.wj.ata.UserOrgInfoListFindSO.UserOrgInfoListFindSOIF"
+		address="${kosORD}/SoapDynamicGateway">
+		<jaxws:properties>
+			<entry key="thread.local.request.context" value="true" />
+		</jaxws:properties>
+	</jaxws:client>
+	<jaxws:client id="UserLastLoginDtChgSOIF"
+		serviceClass="com.kt.kwl.wj.ata.UserLastLoginDtChgSO.UserLastLoginDtChgSOIF"
+		address="${kosORD}/SoapDynamicGateway">
+		<jaxws:properties>
+			<entry key="thread.local.request.context" value="true" />
+		</jaxws:properties>
+	</jaxws:client>
+	<jaxws:client id="KaitFraudSbscPrvnLegalAgntRetvSOIF"
+	serviceClass="com.kt.kwl.wj.cdm.KaitFraudSbscPrvnLegalAgntRetvSO.KaitFraudSbscPrvnLegalAgntRetvSOIF"
+	address="${kosORD}/SoapDynamicGateway">
+	<jaxws:properties>
+		<entry key="thread.local.request.context" value="true" />
+	</jaxws:properties>
+	</jaxws:client>
+	<jaxws:client id="OrgDtlInfoSOIF"
+		serviceClass="com.kt.kwl.wj.ata.OrgDtlInfoSO.OrgDtlInfoSOIF"
+		address="${kosORD}/SoapDynamicGateway">
+		<jaxws:properties>
+			<entry key="thread.local.request.context" value="true" />
+		</jaxws:properties>
+	</jaxws:client>
+	<jaxws:client id="PLMblNewSbscMegaSvcPort"
+		serviceClass="com.kt.kwl.wj.ord.MblNewSbscMegaSvc.PLMblNewSbscMegaSvcPort"
+		address="${kosORD}/SoapGateway">
+		<jaxws:properties>
+			<entry key="thread.local.request.context" value="true" />
+		</jaxws:properties>
+	</jaxws:client>
+	<jaxws:client id="IcgMainPrcsPort"
+		serviceClass="com.kt.kwl.wj.ord.IcgMainPrcs.IcgMainPrcsPort"
+		address="${kosORD}/SoapGateway">
+		<jaxws:properties>
+			<entry key="thread.local.request.context" value="true" />
+		</jaxws:properties>
+	</jaxws:client>
+		<jaxws:client id="SpnsrRmndPerdRetvSOIF"
+		serviceClass="com.kt.kwl.wj.oit.SpnsrRmndPerdRetvSO.SpnsrRmndPerdRetvSOIF"
+		address="${kosORD}/SoapDynamicGateway">
+		<jaxws:properties>
+			<entry key="thread.local.request.context" value="true" />
+		</jaxws:properties>
+	</jaxws:client>	
+	<jaxws:client id="AgreeYetActBfacChkTrtSOIF"
+		serviceClass="com.kt.kwl.wj.oct.AgreeYetActBfacChkTrtSO.AgreeYetActBfacChkTrtSOIF"
+		address="${kosORD}/SoapDynamicGateway">
+		<jaxws:properties>
+			<entry key="thread.local.request.context" value="true" />
+		</jaxws:properties>
+	</jaxws:client>	
+	<jaxws:client id="PLSbscTxnInfoAdmPort"
+		serviceClass="com.kt.kwl.wj.ord.SbscTxnInfoAdm.PLSbscTxnInfoAdmPort"
+		address="${kosORD}/SoapGateway">
+		<jaxws:properties>
+			<entry key="thread.local.request.context" value="true" />
+		</jaxws:properties>
+	</jaxws:client>
+	<jaxws:client id="SbscTxnDspSOIF"
+		serviceClass="com.kt.kwl.wj.oct.SbscTxnDspSO.SbscTxnDspSOIF"
+		address="${kosORD}/SoapDynamicGateway">
+		<jaxws:properties>
+			<entry key="thread.local.request.context" value="true" />
+		</jaxws:properties>
+	</jaxws:client>	
+	<jaxws:client id="ItgOderTrtTypeRetvSOIF"
+		serviceClass="com.kt.kwl.wj.oct.ItgOderTrtTypeRetvSO.ItgOderTrtTypeRetvSOIF"
+		address="${kosORD}/SoapDynamicGateway">
+		<jaxws:properties>
+			<entry key="thread.local.request.context" value="true" />
+		</jaxws:properties>
+	</jaxws:client>
+		<jaxws:client id="CustInfoDtlRetvSOIF"
+		serviceClass="com.kt.kwl.wj.cdm.CustInfoDtlRetvSO.CustInfoDtlRetvSOIF"
+		address="${kosORD}/SoapDynamicGateway">
+		<jaxws:properties>
+			<entry key="thread.local.request.context" value="true" />
+		</jaxws:properties>
+	</jaxws:client>
+	<jaxws:client id="CnclTgtIcgHstRetvSOIF"
+		serviceClass="com.kt.kwl.wj.ord.CnclTgtIcgHstRetvSO.CnclTgtIcgHstRetvSOIF"
+		address="${kosORD}/SoapDynamicGateway">
+		<jaxws:properties>
+			<entry key="thread.local.request.context" value="true" />
+		</jaxws:properties>
+	</jaxws:client>
+	<jaxws:client id="GinsInfoRetvBySciSOIF"
+		serviceClass="com.kt.kwl.wj.oit.GinsInfoRetvBySciSO.GinsInfoRetvBySciSOIF"
+		address="${kosORD}/SoapDynamicGateway">
+		<jaxws:properties>
+			<entry key="thread.local.request.context" value="true" />
+		</jaxws:properties>
+	</jaxws:client>
+	<jaxws:client id="LastGinsHstRetvByIntmInfoSOIF"
+		serviceClass="com.kt.kwl.wj.oit.LastGinsHstRetvByIntmInfoSO.LastGinsHstRetvByIntmInfoSOIF"
+		address="${kosORD}/SoapDynamicGateway">
+		<jaxws:properties>
+			<entry key="thread.local.request.context" value="true" />
+		</jaxws:properties>
+	</jaxws:client>
+	<jaxws:client id="InslRmndRetvSOIF"
+		serviceClass="com.kt.kwl.wj.aro.InslRmndRetvSO.InslRmndRetvSOIF"
+		address="${kosORD}/SoapDynamicGateway">
+		<jaxws:properties>
+			<entry key="thread.local.request.context" value="true" />
+		</jaxws:properties>
+	</jaxws:client>
+	<jaxws:client id="ChckNpStatSOIF"
+		serviceClass="com.kt.kwl.wj.bcc.ChckNpStatSO.ChckNpStatSOIF"
+		address="${kosORD}/SoapDynamicGateway">
+		<jaxws:properties>
+			<entry key="thread.local.request.context" value="true" />
+		</jaxws:properties>
+	</jaxws:client>
+	<jaxws:client id="NpUnitSvcRetvSOIF"
+		serviceClass="com.kt.kwl.wj.oct.NpUnitSvcRetvSO.NpUnitSvcRetvSOIF"
+		address="${kosORD}/SoapDynamicGateway">
+		<jaxws:properties>
+			<entry key="thread.local.request.context" value="true" />
+		</jaxws:properties>
+	</jaxws:client>
+	<jaxws:client id="SvcContInfoRetvForKkosSOIF"
+		serviceClass="com.kt.kwl.wj.oct.SvcContInfoRetvForKkosSO.SvcContInfoRetvForKkosSOIF"
+		address="${kosORD}/SoapDynamicGateway">
+		<jaxws:properties>
+			<entry key="thread.local.request.context" value="true" />
+		</jaxws:properties>
+	</jaxws:client>
+	<jaxws:client id="UserInfoDtlRetvSOIF"
+		serviceClass="com.kt.kwl.wj.rds.UserInfoDtlRetvSO.UserInfoDtlRetvSOIF"
+		address="${kosORD}/SoapDynamicGateway">
+		<jaxws:properties>
+			<entry key="thread.local.request.context" value="true" />
+		</jaxws:properties>
+	</jaxws:client>
+	<jaxws:client id="CustIndvInfoPtuseAgreeTgtListRetvSOIF"
+		serviceClass="com.kt.kwl.wj.oct.CustIndvInfoPtuseAgreeTgtListRetvSO.CustIndvInfoPtuseAgreeTgtListRetvSOIF"
+		address="${kosORD}/SoapDynamicGateway">
+		<jaxws:properties>
+			<entry key="thread.local.request.context" value="true" />
+		</jaxws:properties>
+	</jaxws:client>
+	<jaxws:client id="LastIndvSecurClasHstRetvSOIF"
+		serviceClass="com.kt.kwl.wj.oct.LastIndvSecurClasHstRetvSO.LastIndvSecurClasHstRetvSOIF"
+		address="${kosORD}/SoapDynamicGateway">
+		<jaxws:properties>
+			<entry key="thread.local.request.context" value="true" />
+		</jaxws:properties>
+	</jaxws:client>		
+	<jaxws:client id="SpcfPotimProdInfoRetvSOIF"
+		serviceClass="com.kt.kwl.wj.opd.SpcfPotimProdInfoRetvSO.SpcfPotimProdInfoRetvSOIF"
+		address="${kosORD}/SoapDynamicGateway">
+		<jaxws:properties>
+			<entry key="thread.local.request.context" value="true" />
+		</jaxws:properties>		
+	</jaxws:client>	
+	<jaxws:client id="BillAccDtlInfoRetvSOIF"
+		serviceClass="com.kt.kwl.wj.ord.BillAccDtlInfoRetvSO.BillAccDtlInfoRetvSOIF"
+		address="${kosORD}/SoapDynamicGateway">
+		<jaxws:properties>
+			<entry key="thread.local.request.context" value="true" />
+		</jaxws:properties>
+	</jaxws:client>
+	<jaxws:client id="CondByModelInfoRetvSOIF"
+		serviceClass="com.kt.kwl.wj.rds.CondByModelInfoRetvSO.CondByModelInfoRetvSOIF"
+		address="${kosORD}/SoapDynamicGateway">
+		<jaxws:properties>
+			<entry key="thread.local.request.context" value="true" />
+		</jaxws:properties>
+	</jaxws:client>	
+	<jaxws:client id="EfctCustIndvInfoPtuseAgreeHstRetvSOIF"
+		serviceClass="com.kt.kwl.wj.ord.EfctCustIndvInfoPtuseAgreeHstRetvSO.EfctCustIndvInfoPtuseAgreeHstRetvSOIF"
+		address="${kosORD}/SoapDynamicGateway">
+		<jaxws:properties>
+			<entry key="thread.local.request.context" value="true" />
+		</jaxws:properties>
+	</jaxws:client>
+	<jaxws:client id="CertItgOderTrtTxnSOIF"
+		serviceClass="com.kt.kwl.wj.oct.CertItgOderTrtTxnSO.CertItgOderTrtTxnSOIF"
+		address="${kosORD}/SoapDynamicGateway">
+		<jaxws:properties>
+			<entry key="thread.local.request.context" value="true" />
+		</jaxws:properties>
+	</jaxws:client>
+	<jaxws:client id="SecuHistColecIF"
+		serviceClass="com.kt.kwl.wj.schist.SecuHistColec.SecuHistColecIF"
+		address="${kosORD}/SoapDynamicGateway">
+		<jaxws:properties>
+			<entry key="thread.local.request.context" value="true" />
+		</jaxws:properties>
+	</jaxws:client>	
+	<jaxws:client id="OrgDtlRtvForOrderSOIF"
+		serviceClass="com.kt.kwl.wj.rds.OrgDtlRtvForOrderSO.OrgDtlRtvForOrderSOIF"
+		address="${kosORD}/SoapDynamicGateway">
+		<jaxws:properties>
+			<entry key="thread.local.request.context" value="true" />
+		</jaxws:properties>
+	</jaxws:client>
+	<jaxws:client id="PLSbscTxnGdncAdmPort"
+		serviceClass="com.kt.kwl.wj.ord.SbscTxnGdncAdm.PLSbscTxnGdncAdmPort"
+		address="${kosORD}/SoapGateway">
+		<jaxws:properties>
+			<entry key="thread.local.request.context" value="true" />
+		</jaxws:properties>
+	</jaxws:client>	
+</beans>

@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE tiles-definitions PUBLIC
+       "-//Apache Software Foundation//DTD Tiles Configuration 2.0//EN"
+       "http://tiles.apache.org/dtds/tiles-config_2_0.dtd">
+       
+<tiles-definitions>
+
+
+    <definition name="defaultLayout" 		template="/WEB-INF/views/tiles/defaultLayout.jsp">
+		<put-attribute name="title" 			value=" ::: KT ::: " type="string"/>
+    	<put-attribute name="left"				value="/WEB-INF/views/tiles/left.jsp"/>
+    	<put-attribute name="body" 				value="/WEB-INF/views/tiles/blank.jsp"/>
+    </definition>
+    
+    <definition name="fullLayout" 		template="/WEB-INF/views/tiles/fullLayout.jsp">
+		<put-attribute name="title" 			value=" ::: KT ::: " type="string"/>
+    	<put-attribute name="body" 				value="/WEB-INF/views/tiles/blank.jsp"/>
+    </definition>
+    
+    
+	<!-- Login Page-->
+	<definition name="login" 			extends="fullLayout">
+		<put-attribute name="body"			value="/WEB-INF/views/login.jsp"/>
+	</definition>
+
+	<!-- Home Page-->
+	<definition name="main" 			extends="fullLayout">
+		<put-attribute name="body"			value="/WEB-INF/views/nwrc/main.jsp"/>
+	</definition>
+	
+	<!-- SSO SAML Parsing & A-Kos App Call Test (VPN용) -->
+	<definition name="HandleSSO" 			extends="fullLayout">
+		<put-attribute name="body"			value="/WEB-INF/views/nwrc/HandleSSO.jsp"/>
+	</definition>
+	
+	<!-- App 실행 초기 페이지 : SSO SAML Request 작성 및 IDP 로 redirect -->
+	<definition name="startup" 			extends="fullLayout">
+		<put-attribute name="body"			value="/WEB-INF/views/nwrc/startup.jsp"/>
+	</definition>
+	
+	<!-- SSO Reqsponse SAML Parsing & A-Kos App Call -->
+	<definition name="authSSO" 			extends="fullLayout">
+		<put-attribute name="body"			value="/WEB-INF/views/nwrc/authSSO.jsp"/>
+	</definition>
+
+	<!-- Cust Choice Page-->
+	<definition name="CustChoice" 			extends="fullLayout">
+		<put-attribute name="body"			value="/WEB-INF/views/nwrc/CustChoice.jsp"/>
+	</definition>
+
+	<!-- 실적관리 Page-->
+	<definition name="ResultManage" 		extends="fullLayout">
+		<put-attribute name="body"			value="/WEB-INF/views/nnsb/NNSB0100.jsp"/>
+	</definition>
+    
+    <!-- Access Denied Page -->
+    <definition name="denied" 			extends="fullLayout">
+		<put-attribute name="body"			value="/WEB-INF/views/denied.jsp"/>
+	</definition>
+    
+    <!--  Error Page -->
+    <definition name="error/*"			extends="fullLayout">
+    	<put-attribute name="body"			value="/WEB-INF/views/error/{1}.jsp" />
+    </definition>
+
+
+	<definition name="*/*|*/*" 				extends="defaultLayout">
+		<put-attribute name="left" 			value="/WEB-INF/views/{1}/{2}.jsp" />
+		<put-attribute name="body" 			value="/WEB-INF/views/{3}/{4}.jsp" />
+	</definition>
+
+	<definition name="*/*|*" 				extends="defaultLayout">
+		<put-attribute name="left" 			value="/WEB-INF/views/{1}/{2}.jsp" />
+		<put-attribute name="body" 			value="/WEB-INF/views/{3}.jsp" />
+	</definition>
+
+	<definition name="*|*/*" 				extends="defaultLayout">
+		<put-attribute name="left" 			value="/WEB-INF/views/{1}.jsp" />
+		<put-attribute name="body" 			value="/WEB-INF/views/{2}/{3}.jsp" />
+	</definition>
+
+	<definition name="*|*" 				extends="defaultLayout">
+		<put-attribute name="left" 			value="/WEB-INF/views/{1}.jsp" />
+		<put-attribute name="body" 			value="/WEB-INF/views/{2}.jsp" />
+	</definition>
+
+
+    
+	<definition name="*/*/*" 			extends="defaultLayout">
+		<put-attribute name="body" 			value="/WEB-INF/views/{1}/{2}/{3}.jsp" />
+	</definition>
+	
+	<definition name="*/*" 				extends="defaultLayout">
+		<put-attribute name="body" 			value="/WEB-INF/views/{1}/{2}.jsp" />
+	</definition>
+
+	
+	<definition name="*" 				extends="defaultLayout">
+		<put-attribute name="body" 			value="/WEB-INF/views/{1}.jsp" />
+	</definition>
+	
+</tiles-definitions>

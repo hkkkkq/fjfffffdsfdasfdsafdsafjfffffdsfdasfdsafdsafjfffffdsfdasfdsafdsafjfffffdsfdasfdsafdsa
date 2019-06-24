@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions name="ScProvResultSOService" targetNamespace="http://sc.so.itl.mvno.kt.com/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://sc.so.itl.mvno.kt.com/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
+  <wsdl:types>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://sc.so.itl.mvno.kt.com/" elementFormDefault="unqualified" targetNamespace="http://sc.so.itl.mvno.kt.com/" version="1.0">
+<xs:include schemaLocation="./xsd/MVNOCommHeader.xsd"></xs:include>
+<xs:element name="gwHeader" type="tns:gwHeader"/>
+<xs:element name="scProvResult" type="tns:scProvResult"/>
+<xs:element name="scProvResultResponse" type="tns:scProvResultResponse"/>
+<xs:complexType name="scProvResult">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="ScProvResultInVO" type="tns:scProvResultInVO"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="scProvResultInVO">
+    <xs:sequence>
+    	<xs:element maxOccurs="1" minOccurs="1" name="commHeader" type="tns:commHeader"/>
+      <xs:element maxOccurs="1" minOccurs="1" name="bizHeader" type="tns:bizHeader"/>
+      <xs:element minOccurs="0" name="inDto" type="tns:scProvResultInDTO"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="scProvResultInDTO">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="srvTrxSNo" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="scProvResultResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="tns:scProvResultOutVO"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="scProvResultOutVO">
+    <xs:sequence>
+    	<xs:element maxOccurs="1" minOccurs="1" name="commHeader" type="tns:commHeader"/>
+      <xs:element maxOccurs="1" minOccurs="1" name="bizHeader" type="tns:bizHeader"/>
+      <xs:element minOccurs="0" name="outDto" type="tns:scProvResultOutDTO"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="scProvResultOutDTO">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="completeDateTime" type="xs:string"/>
+      <xs:element minOccurs="0" name="dvcErrCd" type="xs:string"/>
+      <xs:element minOccurs="0" name="dvcSfxNo" type="xs:string"/>
+      <xs:element minOccurs="0" name="dvcTrxStsCd" type="xs:string"/>
+      <xs:element minOccurs="0" name="errCd" type="xs:string"/>
+      <xs:element minOccurs="0" name="errDateTime" type="xs:string"/>
+      <xs:element minOccurs="0" name="srvStsCd" type="xs:string"/>
+      <xs:element minOccurs="0" name="stsDateTime" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>
+  </wsdl:types>
+  <wsdl:message name="soapHeader">
+    <wsdl:part name="gwHeader" element="tns:gwHeader"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="scProvResult">
+    <wsdl:part name="parameters" element="tns:scProvResult">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="scProvResultResponse">
+    <wsdl:part name="parameters" element="tns:scProvResultResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="ScProvResultSO">
+    <wsdl:operation name="scProvResult">
+      <wsdl:input name="scProvResult" message="tns:scProvResult">
+    </wsdl:input>
+      <wsdl:output name="scProvResultResponse" message="tns:scProvResultResponse">
+    </wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="ScProvResultSOServiceSoapBinding" type="tns:ScProvResultSO">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="scProvResult">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="scProvResult">
+      	<soap:header use="literal" message="tns:soapHeader" part="gwHeader" />
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="scProvResultResponse">
+      	<soap:header use="literal" message="tns:soapHeader" part="gwHeader" />
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="ScProvResultSOService">
+    <wsdl:port name="ScProvResultSOPort" binding="tns:ScProvResultSOServiceSoapBinding">
+      <soap:address location="http://localhost:9090/ScProvResultSOPort"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

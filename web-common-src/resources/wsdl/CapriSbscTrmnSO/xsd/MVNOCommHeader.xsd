@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema 
+    targetNamespace="http://juice.so.itl.mvno.kt.com/"
+    xmlns="http://www.w3.org/2001/XMLSchema"
+    xmlns:mvno="http://juice.so.itl.mvno.kt.com/" 
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/">
+   <xsd:complexType name="gwHeader">
+        <xsd:all>
+            <xsd:element maxOccurs="1" minOccurs="0" name="gwEncYn" type="xsd:string"/>
+            <xsd:element maxOccurs="1" minOccurs="1" name="gwPUUID" type="xsd:string"/>
+            <xsd:element maxOccurs="1" minOccurs="1" name="gwUUID" type="xsd:string"/>
+        </xsd:all>
+    </xsd:complexType>
+    <xsd:complexType name="commHeader">
+        <xsd:all>
+				<xsd:element name="appName" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+				<xsd:element name="globalNo" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+				<xsd:element name="chnlType" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+				<xsd:element name="trFlag" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+				<xsd:element name="trDate" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+				<xsd:element name="trTime" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+				<xsd:element name="responseType" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+				<xsd:element name="responseCode" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+				<xsd:element name="responseLogcd" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+				<xsd:element name="responseTitle" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+				<xsd:element name="responseBasic" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+				<xsd:element name="responseDtal" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+				<xsd:element name="langCode" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+				<xsd:element name="filler" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+        </xsd:all>
+    </xsd:complexType>
+    <xsd:complexType name="bizHeader">
+	<xsd:all>
+				<xsd:element name="appOrgId" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+				<xsd:element name="appSrcId" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+				<xsd:element name="appCurHostId" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+				<xsd:element name="appLgDateTime" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+				<xsd:element name="appTokenId" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+				<xsd:element name="appCmpnCd" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+				<xsd:element name="appLockType" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+				<xsd:element name="appLockId" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+				<xsd:element name="appLockTimeSt" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+				<xsd:element name="appOrderId" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+	</xsd:all>
+    </xsd:complexType>
+
+</xsd:schema>

@@ -1,0 +1,15 @@
+<samlp:AuthnRequest xmlns:samlp="urn:oasis:names:tc:SAML:2.0:protocol"
+	Destination="#Destination#"
+	ForceAuthn="0" 
+	ID="#ID#" 
+	IssueInstant="#IssueInstant#"
+	ProtocolBinding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST"
+	ProviderName="#ProviderName#"
+	Version="2.0">
+	<saml:Issuer xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion">#Issuer#</saml:Issuer>
+	<samlp:NameIDPolicy AllowCreate="1" />
+	<samlp:RequestedAuthnContext Comparison="exact">
+		<saml:AuthnContextClassRef xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion">urn:oasis:names:tc:SAML:2.0:ac:classes:PasswordProtectedTransport
+		</saml:AuthnContextClassRef>
+	</samlp:RequestedAuthnContext>
+</samlp:AuthnRequest>

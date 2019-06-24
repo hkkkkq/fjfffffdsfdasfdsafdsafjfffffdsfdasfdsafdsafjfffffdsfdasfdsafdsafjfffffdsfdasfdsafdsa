@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions name="ScProvRequestSOService" targetNamespace="http://sc.so.itl.mvno.kt.com/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://sc.so.itl.mvno.kt.com/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
+  <wsdl:types>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://sc.so.itl.mvno.kt.com/" elementFormDefault="unqualified" targetNamespace="http://sc.so.itl.mvno.kt.com/" version="1.0">
+<xs:include schemaLocation="./xsd/MVNOCommHeader.xsd"></xs:include>
+<xs:element name="gwHeader" type="tns:gwHeader"/>
+<xs:element name="scProvRequest" type="tns:scProvRequest"/>
+<xs:element name="scProvRequestResponse" type="tns:scProvRequestResponse"/>
+<xs:complexType name="scProvRequest">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="ScProvReqInVO" type="tns:scProvReqInVO"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="scProvReqInVO">
+    <xs:sequence>
+    	<xs:element maxOccurs="1" minOccurs="1" name="commHeader" type="tns:commHeader"/>
+      <xs:element maxOccurs="1" minOccurs="1" name="bizHeader" type="tns:bizHeader"/>
+      <xs:element minOccurs="0" name="billAcntInfo" type="tns:billAcntInfoDTO"/>
+      <xs:element minOccurs="0" name="cntrInfo" type="tns:cntrInfoDTO"/>
+      <xs:element minOccurs="0" name="custInfo" type="tns:custInfoDTO"/>
+      <xs:element minOccurs="0" name="intmInfo" type="tns:intmInfoDTO"/>
+      <xs:element minOccurs="0" name="prdcInfo" type="tns:prdcInfoDTO"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="billAcntInfoDTO">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="billAcntNo" type="xs:string"/>
+      <xs:element minOccurs="0" name="billAddr1" type="xs:string"/>
+      <xs:element minOccurs="0" name="billAddr2" type="xs:string"/>
+      <xs:element minOccurs="0" name="billIdntNo" type="xs:string"/>
+      <xs:element minOccurs="0" name="billPrsnNm" type="xs:string"/>
+      <xs:element minOccurs="0" name="billZipCd" type="xs:string"/>
+      <xs:element minOccurs="0" name="blpymMthdCd" type="xs:string"/>
+      <xs:element minOccurs="0" name="unpdStatCd" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="cntrInfoDTO">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="actvDt" type="xs:string"/>
+      <xs:element minOccurs="0" name="entrStatCd" type="xs:string"/>
+      <xs:element minOccurs="0" name="intnetBlncYn" type="xs:string"/>
+      <xs:element minOccurs="0" name="prevTlphInfo" type="tns:tlphNoInfoDTO"/>
+      <xs:element minOccurs="0" name="slsCmpnCd" type="xs:string"/>
+      <xs:element minOccurs="0" name="statChngDt" type="xs:string"/>
+      <xs:element minOccurs="0" name="statChngRsnCd" type="xs:string"/>
+      <xs:element minOccurs="0" name="svcCntrNo" type="xs:string"/>
+      <xs:element minOccurs="0" name="svcIndCd" type="xs:string"/>
+      <xs:element minOccurs="0" name="tlphInfo" type="tns:tlphNoInfoDTO"/>
+      <xs:element minOccurs="0" name="userAddr1" type="xs:string"/>
+      <xs:element minOccurs="0" name="userAddr2" type="xs:string"/>
+      <xs:element minOccurs="0" name="userIdntNo" type="xs:string"/>
+      <xs:element minOccurs="0" name="userZipCd" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="tlphNoInfoDTO">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="tlphNo" type="xs:string"/>
+      <xs:element minOccurs="0" name="tlphNoUseMntCd" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="custInfoDTO">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="crprNo" type="xs:string"/>
+      <xs:element minOccurs="0" name="custAddr1" type="xs:string"/>
+      <xs:element minOccurs="0" name="custAddr2" type="xs:string"/>
+      <xs:element minOccurs="0" name="custId" type="xs:string"/>
+      <xs:element minOccurs="0" name="custIdntNo" type="xs:string"/>
+      <xs:element minOccurs="0" name="custNm" type="xs:string"/>
+      <xs:element minOccurs="0" name="custTypeCd" type="xs:string"/>
+      <xs:element minOccurs="0" name="custZipCd" type="xs:string"/>
+      <xs:element minOccurs="0" name="entrPrsnNo" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="intmInfoDTO">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="hndsetInfo" type="tns:hndsetInfoDTO"/>
+      <xs:element minOccurs="0" name="prevHndsetInfo" type="tns:hndsetInfoDTO"/>
+      <xs:element minOccurs="0" name="prevUsimInfo" type="tns:usimInfoDTO"/>
+      <xs:element minOccurs="0" name="usimInfo" type="tns:usimInfoDTO"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="hndsetInfoDTO">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="athnKeyId" type="xs:string"/>
+      <xs:element minOccurs="0" name="esn" type="xs:string"/>
+      <xs:element minOccurs="0" name="imei" type="xs:string"/>
+      <xs:element minOccurs="0" name="modelId" type="xs:string"/>
+      <xs:element minOccurs="0" name="modelNm" type="xs:string"/>
+      <xs:element minOccurs="0" name="uiccAlwdLmtCd" type="xs:string"/>
+      <xs:element minOccurs="0" name="wibroImei" type="xs:string"/>
+      <xs:element minOccurs="0" name="wibroMacId" type="xs:string"/>
+      <xs:element minOccurs="0" name="wifiMacId" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="usimInfoDTO">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="athnKeyId" type="xs:string"/>
+      <xs:element minOccurs="0" name="custInfoWtchSbst" type="xs:string"/>
+      <xs:element minOccurs="0" name="g3WtchKeyNo" type="xs:string"/>
+      <xs:element minOccurs="0" name="iccId" type="xs:string"/>
+      <xs:element minOccurs="0" name="modelId" type="xs:string"/>
+      <xs:element minOccurs="0" name="prchInfoWtchSbst" type="xs:string"/>
+      <xs:element minOccurs="0" name="ruimId" type="xs:string"/>
+      <xs:element minOccurs="0" name="usimFixId" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="prdcInfoDTO">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="prdcCd" type="xs:string"/>
+      <xs:element minOccurs="0" name="prdcProvTypeCd" type="xs:string"/>
+      <xs:element minOccurs="0" name="prdcStatCd" type="xs:string"/>
+      <xs:element minOccurs="0" name="prdcTypeCd" type="xs:string"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="untsSvcList" nillable="true" type="tns:untsSvcInfoDTO"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="untsSvcInfoDTO">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="paramList" nillable="true" type="tns:paramInfoDTO"/>
+      <xs:element minOccurs="0" name="swtcPrmtSbst" type="xs:string"/>
+      <xs:element minOccurs="0" name="untsSvcCd" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="paramInfoDTO">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="paramCd" type="xs:string"/>
+      <xs:element minOccurs="0" name="paramValue" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="scProvRequestResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="tns:scProvReqOutVO"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="scProvReqOutVO">
+    <xs:sequence>
+    	<xs:element maxOccurs="1" minOccurs="1" name="commHeader" type="tns:commHeader"/>
+      <xs:element maxOccurs="1" minOccurs="1" name="bizHeader" type="tns:bizHeader"/>
+      <xs:element minOccurs="0" name="scProvReqOutDTO" type="tns:scProvReqOutDTO"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="scProvReqOutDTO">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="errorCode" type="xs:string"/>
+      <xs:element minOccurs="0" name="srvTrxSNo" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>
+  </wsdl:types>
+  <wsdl:message name="soapHeader">
+    <wsdl:part name="gwHeader" element="tns:gwHeader"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="scProvRequestResponse">
+    <wsdl:part name="parameters" element="tns:scProvRequestResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="scProvRequest">
+    <wsdl:part name="parameters" element="tns:scProvRequest">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="ScProvRequestSO">
+    <wsdl:operation name="scProvRequest">
+      <wsdl:input name="scProvRequest" message="tns:scProvRequest">
+    </wsdl:input>
+      <wsdl:output name="scProvRequestResponse" message="tns:scProvRequestResponse">
+    </wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="ScProvRequestSOServiceSoapBinding" type="tns:ScProvRequestSO">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="scProvRequest">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="scProvRequest">
+      	<soap:header use="literal" message="tns:soapHeader" part="gwHeader" />
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="scProvRequestResponse">
+      	<soap:header use="literal" message="tns:soapHeader" part="gwHeader" />
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="ScProvRequestSOService">
+    <wsdl:port name="ScProvRequestSOPort" binding="tns:ScProvRequestSOServiceSoapBinding">
+      <soap:address location="http://localhost:9090/ScProvRequestSOPort"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

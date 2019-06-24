@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<!DOCTYPE jboss-web PUBLIC "-//JBoss//DTD Web Application 5.0//EN" "http://www.jboss.org/j2ee/dtd/jboss-web_5_0.dtd">
+<jboss-web>
+	<context-root>/KKOS</context-root>
+    
+    <resource-ref>
+    	<res-ref-name>jdbc/kkosDs</res-ref-name>
+		<jndi-name>java:/jdbc/kkosDs</jndi-name>
+	</resource-ref>
+	
+</jboss-web>

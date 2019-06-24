@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema 
+    targetNamespace="http://sc.so.itl.mvno.kt.com/"
+    xmlns="http://www.w3.org/2001/XMLSchema"
+    xmlns:mvno="http://sc.so.itl.mvno.kt.com/" 
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/">
+   <xsd:complexType name="gwHeader">
+        <xsd:all>
+            <xsd:element maxOccurs="1" minOccurs="1" name="gwAuthId" type="xsd:string"/>
+            <xsd:element maxOccurs="1" minOccurs="1" name="gwAuthPwd" type="xsd:string"/>
+            <xsd:element maxOccurs="1" minOccurs="1" name="gwSvcName" type="xsd:string"/>
+            <xsd:element maxOccurs="1" minOccurs="1" name="gwSvcVrsn" type="xsd:string"/>
+            <xsd:element maxOccurs="1" minOccurs="1" name="gwOprtName" type="xsd:string"/>
+            <xsd:element maxOccurs="1" minOccurs="0" name="gwEncYn" type="xsd:string"/>
+            <xsd:element maxOccurs="1" minOccurs="1" name="gwPUUID" type="xsd:string"/>
+            <xsd:element maxOccurs="1" minOccurs="1" name="gwUUID" type="xsd:string"/>
+        </xsd:all>
+    </xsd:complexType>
+    <xsd:complexType name="commHeader">
+        <xsd:all>
+				<xsd:element name="commAppName" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+				<xsd:element name="commFnCd" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+				<xsd:element name="commGlobalNo" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+				<xsd:element name="commChnlType" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+				<xsd:element name="commEnvrFlag" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+				<xsd:element name="commTrFlag" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+				<xsd:element name="commTrDate" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+				<xsd:element name="commTrTime" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+				<xsd:element name="commClntIp" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+				<xsd:element name="commResponseType" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+				<xsd:element name="commResponseCode" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+				<xsd:element name="commResponseLogcd" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+				<xsd:element name="commResponseTitle" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+				<xsd:element name="commResponseBasc" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+				<xsd:element name="commResponseDtal" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+				<xsd:element name="commUserId" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+				<xsd:element name="commLangCode" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+				<xsd:element name="commFiller" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+        </xsd:all>
+    </xsd:complexType>
+    <xsd:complexType name="bizHeader">
+	<xsd:all>
+				<xsd:element name="appOrgId" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+				<xsd:element name="appSrcId" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+				<xsd:element name="appCurHostId" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+				<xsd:element name="appLgDateTime" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+				<xsd:element name="appTokenId" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+				<xsd:element name="appCmpnCd" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+				<xsd:element name="appLockType" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+				<xsd:element name="appLockId" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+				<xsd:element name="appLockTimeSt" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+				<xsd:element name="appOrderId" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+	</xsd:all>
+    </xsd:complexType>
+
+</xsd:schema>

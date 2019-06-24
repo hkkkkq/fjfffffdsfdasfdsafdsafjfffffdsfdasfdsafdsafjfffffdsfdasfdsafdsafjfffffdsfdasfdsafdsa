@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "HTTP://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+	<settings>
+		<setting name="cacheEnabled" value="true" />
+		<setting name="useGeneratedKeys" value="true" />
+		<setting name="defaultExecutorType" value="REUSE" />
+	</settings>
+	
+	<!-- OM 서비스 추가부분 -->
+	<mappers>
+		<mapper resource="com/kt/kkos/itl/xml/KkosMapperTemplete.xml" />
+		<mapper resource="com/kt/kkos/itl/xml/ITLMapperTemplete.xml" />
+		<mapper resource="com/kt/kkos/itl/xml/TrtBaseInfo.xml" />
+		<mapper resource="com/kt/kkos/itl/xml/MaskingInfo.xml" />
+		<mapper resource="com/kt/kkos/itl/xml/CrisServiceInfo.xml" />
+		<mapper resource="com/kt/kkos/itl/xml/ImageInfo.xml" />
+		<mapper resource="com/kt/kkos/itl/xml/QrCodeInfo.xml" />
+		<mapper resource="com/kt/kkos/itl/xml/BatchControlInfo.xml" />
+		<mapper resource="com/kt/kkos/itl/xml/CustInfo.xml" />
+		<mapper resource="com/kt/kkos/itl/xml/BillAccInfo.xml" />
+		<mapper resource="com/kt/kkos/itl/xml/SbscIntmInfo.xml" />
+		<mapper resource="com/kt/kkos/itl/xml/TrmnOrderBaseInfo.xml" />
+		<mapper resource="com/kt/kkos/itl/xml/NpInfo.xml" />
+		<mapper resource="com/kt/kkos/itl/xml/IcgSvcContInfo.xml" />
+		<mapper resource="com/kt/kkos/itl/xml/IcgTrtInfo.xml" />
+		<mapper resource="com/kt/kkos/itl/xml/CustPplInfoIfList.xml" />
+		<mapper resource="com/kt/kkos/itl/xml/CustPplUnitSvcInfoIfList.xml" />
+		<mapper resource="com/kt/kkos/itl/xml/TrmnProdInfoIfList.xml" />
+		<mapper resource="com/kt/kkos/itl/xml/TrmnProdUnitSvcInfoIfList.xml" />
+		<mapper resource="com/kt/kkos/itl/xml/SbscProdInfoIfList.xml" />
+		<mapper resource="com/kt/kkos/itl/xml/StoreSbscProdInfoList.xml" />
+		<mapper resource="com/kt/kkos/itl/xml/PreChkRsltList.xml" />
+		<mapper resource="com/kt/kkos/itl/xml/IcgCnclSvcContInfo.xml" />
+		<mapper resource="com/kt/kkos/itl/xml/IcgEtcInfo.xml" />
+		<mapper resource="com/kt/kkos/itl/xml/KkosUserBas.xml" />
+		<mapper resource="com/kt/kkos/itl/xml/BillAccCustCntplcInfo.xml" />
+		<mapper resource="com/kt/kkos/itl/xml/IcgCnclTrtInfo.xml" />
+		<mapper resource="com/kt/kkos/itl/xml/ProdAlwdBas.xml" />
+		<mapper resource="com/kt/kkos/itl/xml/EmailSendBas.xml" />
+		<mapper resource="com/kt/kkos/itl/xml/NewSbscTrtInfo.xml" />
+		<mapper resource="com/kt/kkos/itl/xml/NewSbscIntmUsimInfo.xml" />
+		<mapper resource="com/kt/kkos/itl/xml/NewSbscSpnsrInfo.xml" />
+		<mapper resource="com/kt/kkos/itl/xml/IntmInslInfoOut.xml" />
+	</mappers>
+</configuration>

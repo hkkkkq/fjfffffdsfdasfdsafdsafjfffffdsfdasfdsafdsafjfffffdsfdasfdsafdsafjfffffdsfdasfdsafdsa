@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions name="UmcTrtmSOService" targetNamespace="http://umc.so.itl.mvno.kt.com/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://umc.so.itl.mvno.kt.com/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
+  <wsdl:types>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://umc.so.itl.mvno.kt.com/" elementFormDefault="unqualified" targetNamespace="http://umc.so.itl.mvno.kt.com/" version="1.0">
+<xs:include schemaLocation="./xsd/MVNOCommHeader.xsd"></xs:include>
+<xs:element name="gwHeader" type="tns:gwHeader"/>
+<xs:element name="umcOtaReq" type="tns:umcOtaReq"/>
+<xs:element name="umcOtaReqResponse" type="tns:umcOtaReqResponse"/>
+<xs:element name="umcQueryOta" type="tns:umcQueryOta"/>
+<xs:element name="umcQueryOtaResponse" type="tns:umcQueryOtaResponse"/>
+<xs:element name="umcReportOta" type="tns:umcReportOta"/>
+<xs:element name="umcReportOtaResponse" type="tns:umcReportOtaResponse"/>
+<xs:complexType name="umcQueryOta">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="UmcQueryOtaInVO" type="tns:umcQueryOtaInVO"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="umcQueryOtaInVO">
+    <xs:sequence>
+    	<xs:element maxOccurs="1" minOccurs="1" name="commHeader" type="tns:commHeader"/>
+      <xs:element maxOccurs="1" minOccurs="1" name="bizHeader" type="tns:bizHeader"/>
+      <xs:element minOccurs="0" name="inMsg" type="tns:umcInMsgDTO"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="umcInMsgDTO">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="commandCd" type="xs:string"/>
+      <xs:element minOccurs="0" name="deviceId" type="xs:string"/>
+      <xs:element minOccurs="0" name="param" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="umcQueryOtaResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="tns:umcQueryOtaOutVO"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="umcQueryOtaOutVO">
+    <xs:sequence>
+    	<xs:element maxOccurs="1" minOccurs="1" name="commHeader" type="tns:commHeader"/>
+      <xs:element maxOccurs="1" minOccurs="1" name="bizHeader" type="tns:bizHeader"/>
+      <xs:element minOccurs="0" name="outMsg" type="tns:umcOutMsgDTO"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="umcOutMsgDTO">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="deviceId" type="xs:string"/>
+      <xs:element minOccurs="0" name="param" type="xs:string"/>
+      <xs:element minOccurs="0" name="resultCd" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="umcReportOta">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="UmcReportOtaInVO" type="tns:umcReportOtaInVO"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="umcReportOtaInVO">
+    <xs:sequence>
+    	<xs:element maxOccurs="1" minOccurs="1" name="commHeader" type="tns:commHeader"/>
+      <xs:element maxOccurs="1" minOccurs="1" name="bizHeader" type="tns:bizHeader"/>
+      <xs:element minOccurs="0" name="inMsg" type="tns:umcInMsgDTO"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="umcReportOtaResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="tns:umcReportOtaOutVO"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="umcReportOtaOutVO">
+    <xs:sequence>
+    	<xs:element maxOccurs="1" minOccurs="1" name="commHeader" type="tns:commHeader"/>
+      <xs:element maxOccurs="1" minOccurs="1" name="bizHeader" type="tns:bizHeader"/>
+      <xs:element minOccurs="0" name="outMsg" type="tns:umcOutMsgDTO"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="umcOtaReq">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="UmcOtaReqInVO" type="tns:umcOtaReqInVO"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="umcOtaReqInVO">
+    <xs:sequence>
+    	<xs:element maxOccurs="1" minOccurs="1" name="commHeader" type="tns:commHeader"/>
+      <xs:element maxOccurs="1" minOccurs="1" name="bizHeader" type="tns:bizHeader"/>
+      <xs:element minOccurs="0" name="inMsg" type="tns:umcInMsgDTO"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="umcOtaReqResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="tns:umcOtaReqOutVO"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="umcOtaReqOutVO">
+    <xs:sequence>
+    	<xs:element maxOccurs="1" minOccurs="1" name="commHeader" type="tns:commHeader"/>
+      <xs:element maxOccurs="1" minOccurs="1" name="bizHeader" type="tns:bizHeader"/>
+      <xs:element minOccurs="0" name="outMsg" type="tns:umcOutMsgDTO"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>
+  </wsdl:types>
+  <wsdl:message name="soapHeader">
+    <wsdl:part name="gwHeader" element="tns:gwHeader"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="umcOtaReqResponse">
+    <wsdl:part name="parameters" element="tns:umcOtaReqResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="umcReportOtaResponse">
+    <wsdl:part name="parameters" element="tns:umcReportOtaResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="umcReportOta">
+    <wsdl:part name="parameters" element="tns:umcReportOta">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="umcOtaReq">
+    <wsdl:part name="parameters" element="tns:umcOtaReq">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="umcQueryOtaResponse">
+    <wsdl:part name="parameters" element="tns:umcQueryOtaResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="umcQueryOta">
+    <wsdl:part name="parameters" element="tns:umcQueryOta">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="UmcTrtmSO">
+    <wsdl:operation name="umcQueryOta">
+      <wsdl:input name="umcQueryOta" message="tns:umcQueryOta">
+    </wsdl:input>
+      <wsdl:output name="umcQueryOtaResponse" message="tns:umcQueryOtaResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="umcReportOta">
+      <wsdl:input name="umcReportOta" message="tns:umcReportOta">
+    </wsdl:input>
+      <wsdl:output name="umcReportOtaResponse" message="tns:umcReportOtaResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="umcOtaReq">
+      <wsdl:input name="umcOtaReq" message="tns:umcOtaReq">
+    </wsdl:input>
+      <wsdl:output name="umcOtaReqResponse" message="tns:umcOtaReqResponse">
+    </wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="UmcTrtmSOServiceSoapBinding" type="tns:UmcTrtmSO">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="umcQueryOta">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="umcQueryOta">
+      	<soap:header use="literal" message="tns:soapHeader" part="gwHeader" />
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="umcQueryOtaResponse">
+      	<soap:header use="literal" message="tns:soapHeader" part="gwHeader" />
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="umcReportOta">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="umcReportOta">
+      	<soap:header use="literal" message="tns:soapHeader" part="gwHeader" />
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="umcReportOtaResponse">
+      	<soap:header use="literal" message="tns:soapHeader" part="gwHeader" />
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="umcOtaReq">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="umcOtaReq">
+      	<soap:header use="literal" message="tns:soapHeader" part="gwHeader" />
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="umcOtaReqResponse">
+      	<soap:header use="literal" message="tns:soapHeader" part="gwHeader" />
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="UmcTrtmSOService">
+    <wsdl:port name="UmcTrtmSOPort" binding="tns:UmcTrtmSOServiceSoapBinding">
+      <soap:address location="http://localhost:9090/UmcTrtmSOPort"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

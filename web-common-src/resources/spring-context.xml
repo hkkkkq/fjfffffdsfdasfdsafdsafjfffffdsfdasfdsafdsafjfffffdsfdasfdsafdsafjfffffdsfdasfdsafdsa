@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jee="http://www.springframework.org/schema/jee"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+	http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-2.5.xsd
+	http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+    
+    
+    
+    <context:annotation-config/>
+    
+    
+    <!--  Controller 를 제외한 Component Scan -->
+    <context:component-scan base-package="com.kt">
+    	<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+    </context:component-scan>
+    
+    
+    <!--  DataSource Setting -->
+    <jee:jndi-lookup id="kkosDs" jndi-name="jdbc/kkosDs" resource-ref="true" />
+    
+    
+    <bean id="sqlSessionFactoryForKkos" class="org.mybatis.spring.SqlSessionFactoryBean">
+      <property name="configLocation">
+        <value>classpath:config/mybatis-kkos-config.xml</value>
+      </property>
+      <property name="dataSource">
+        <ref bean="kkosDs" />
+      </property>
+    </bean>
+    
+    <bean id="sqlSessionTemplateForKkos" class="org.mybatis.spring.SqlSessionTemplate">
+	  <constructor-arg ref="sqlSessionFactoryForKkos" />
+	</bean>
+    
+    
+    
+    <!--  Load Properties -->
+    <context:property-placeholder location="classpath:properties/env-${SYSTarget}.properties"/>
+    
+    <!--  
+	<import resource="classpath:spring/spring-business-cache.xml" />
+	-->
+	<import resource="classpath:spring/spring-business-support.xml" />
+	<import resource="classpath:spring/spring-ws-server.xml" />
+	<import resource="classpath:spring/spring-ws-client.xml" />
+	<import resource="classpath:spring/spring-message-config.xml" />
+	
+</beans>

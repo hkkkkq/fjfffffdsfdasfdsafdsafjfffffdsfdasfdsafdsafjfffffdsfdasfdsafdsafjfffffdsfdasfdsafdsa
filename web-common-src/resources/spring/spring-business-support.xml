@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jee="http://www.springframework.org/schema/jee"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+	http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-2.5.xsd
+	http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
+    
+	<bean id="kkosMapperDao" class="org.mybatis.spring.mapper.MapperFactoryBean">
+	  <property name="mapperInterface" value="com.kt.kkos.itl.mapper.nwrc.KkosMapper" />
+      <property name="sqlSessionFactory" ref="sqlSessionFactoryForKkos" />
+      <property name="sqlSessionTemplate" ref="sqlSessionTemplateForKkos" />
+      <qualifier value="KkosMapper"/>
+	</bean>
+	
+	<bean id="ITLMapperDao" class="org.mybatis.spring.mapper.MapperFactoryBean">
+	  <property name="mapperInterface" value="com.kt.kkos.itl.mapper.nwrc.ITLMapper" />
+      <property name="sqlSessionFactory" ref="sqlSessionFactoryForKkos" />
+      <property name="sqlSessionTemplate" ref="sqlSessionTemplateForKkos" />
+      <qualifier value="ITLMapper"/>
+	</bean>
+	
+	
+	<bean id="TrtBaseInfoMapperDao" class="org.mybatis.spring.mapper.MapperFactoryBean">
+	  <property name="mapperInterface" value="com.kt.kkos.itl.mapper.nwrc.TrtBaseInfoMapper" />
+      <property name="sqlSessionFactory" ref="sqlSessionFactoryForKkos" />
+      <property name="sqlSessionTemplate" ref="sqlSessionTemplateForKkos" />
+      <qualifier value="TrtBaseInfoMapper"/>
+	</bean>
+
+
+	<bean id="MaskingInfoDao" class="org.mybatis.spring.mapper.MapperFactoryBean">
+	  <property name="mapperInterface" value="com.kt.kkos.itl.mapper.nwrc.MaskingInfoMapper" />
+      <property name="sqlSessionFactory" ref="sqlSessionFactoryForKkos" />
+      <property name="sqlSessionTemplate" ref="sqlSessionTemplateForKkos" />
+      <qualifier value="MaskingInfoMapper"/>
+	</bean>
+	
+	<bean id="CrisServiceInfoDao" class="org.mybatis.spring.mapper.MapperFactoryBean">
+	  <property name="mapperInterface" value="com.kt.kkos.itl.mapper.nwrc.CrisServiceMapper" />
+      <property name="sqlSessionFactory" ref="sqlSessionFactoryForKkos" />
+      <property name="sqlSessionTemplate" ref="sqlSessionTemplateForKkos" />
+      <qualifier value="CrisServiceMapper"/>
+	</bean>
+	
+	<bean id="ImageInfoDao" class="org.mybatis.spring.mapper.MapperFactoryBean">
+	  <property name="mapperInterface" value="com.kt.kkos.itl.mapper.nwrc.ImageInfoMapper" />
+      <property name="sqlSessionFactory" ref="sqlSessionFactoryForKkos" />
+      <property name="sqlSessionTemplate" ref="sqlSessionTemplateForKkos" />
+      <qualifier value="ImageInfoMapper"/>
+	</bean>
+	
+	<bean id="QrCodeInfoDao" class="org.mybatis.spring.mapper.MapperFactoryBean">
+	  <property name="mapperInterface" value="com.kt.kkos.itl.mapper.nwrc.QrCodeInfoMapper" />
+      <property name="sqlSessionFactory" ref="sqlSessionFactoryForKkos" />
+      <property name="sqlSessionTemplate" ref="sqlSessionTemplateForKkos" />
+      <qualifier value="QrCodeInfoMapper"/>
+	</bean>
+	
+	<bean id="BatchControlInfoDao" class="org.mybatis.spring.mapper.MapperFactoryBean">
+	  <property name="mapperInterface" value="com.kt.kkos.itl.mapper.nwrc.BatchControlInfoMapper" />
+      <property name="sqlSessionFactory" ref="sqlSessionFactoryForKkos" />
+      <property name="sqlSessionTemplate" ref="sqlSessionTemplateForKkos" />
+      <qualifier value="BatchControlInfoMapper"/>
+	</bean>
+
+	<bean id="CustInfoMapperDao" class="org.mybatis.spring.mapper.MapperFactoryBean">
+	  <property name="mapperInterface" value="com.kt.kkos.itl.mapper.nwrc.CustInfoMapper" />
+      <property name="sqlSessionFactory" ref="sqlSessionFactoryForKkos" />
+      <property name="sqlSessionTemplate" ref="sqlSessionTemplateForKkos" />
+      <qualifier value="CustInfoMapper"/>
+	</bean>
+	
+	<bean id="BillAccInfoMapperDao" class="org.mybatis.spring.mapper.MapperFactoryBean">
+	  <property name="mapperInterface" value="com.kt.kkos.itl.mapper.nwrc.BillAccInfoMapper" />
+      <property name="sqlSessionFactory" ref="sqlSessionFactoryForKkos" />
+      <property name="sqlSessionTemplate" ref="sqlSessionTemplateForKkos" />
+      <qualifier value="BillAccInfoMapper"/>
+	</bean>
+	
+	<bean id="SbscIntmInfoMapperDao" class="org.mybatis.spring.mapper.MapperFactoryBean">
+	  <property name="mapperInterface" value="com.kt.kkos.itl.mapper.nwrc.SbscIntmInfoMapper" />
+      <property name="sqlSessionFactory" ref="sqlSessionFactoryForKkos" />
+      <property name="sqlSessionTemplate" ref="sqlSessionTemplateForKkos" />
+      <qualifier value="SbscIntmInfoMapper"/>
+	</bean>
+	
+	<bean id="TrmnOrderBaseInfoMapperDao" class="org.mybatis.spring.mapper.MapperFactoryBean">
+	  <property name="mapperInterface" value="com.kt.kkos.itl.mapper.nwrc.TrmnOrderBaseInfoMapper" />
+      <property name="sqlSessionFactory" ref="sqlSessionFactoryForKkos" />
+      <property name="sqlSessionTemplate" ref="sqlSessionTemplateForKkos" />
+      <qualifier value="TrmnOrderBaseInfoMapper"/>
+	</bean>
+	
+	<bean id="NpInfoMapperDao" class="org.mybatis.spring.mapper.MapperFactoryBean">
+	  <property name="mapperInterface" value="com.kt.kkos.itl.mapper.nwrc.NpInfoMapper" />
+      <property name="sqlSessionFactory" ref="sqlSessionFactoryForKkos" />
+      <property name="sqlSessionTemplate" ref="sqlSessionTemplateForKkos" />
+      <qualifier value="NpInfoMapper"/>
+	</bean>
+	
+	<bean id="IcgSvcContInfoMapperDao" class="org.mybatis.spring.mapper.MapperFactoryBean">
+	  <property name="mapperInterface" value="com.kt.kkos.itl.mapper.nwrc.IcgSvcContInfoMapper" />
+      <property name="sqlSessionFactory" ref="sqlSessionFactoryForKkos" />
+      <property name="sqlSessionTemplate" ref="sqlSessionTemplateForKkos" />
+      <qualifier value="IcgSvcContInfoMapper"/>
+	</bean>
+	
+	<bean id="IcgTrtInfoMapperDao" class="org.mybatis.spring.mapper.MapperFactoryBean">
+	  <property name="mapperInterface" value="com.kt.kkos.itl.mapper.nwrc.IcgTrtInfoMapper" />
+      <property name="sqlSessionFactory" ref="sqlSessionFactoryForKkos" />
+      <property name="sqlSessionTemplate" ref="sqlSessionTemplateForKkos" />
+      <qualifier value="IcgTrtInfoMapper"/>
+	</bean>
+	
+	<bean id="CustPplInfoIfListMapperDao" class="org.mybatis.spring.mapper.MapperFactoryBean">
+	  <property name="mapperInterface" value="com.kt.kkos.itl.mapper.nwrc.CustPplInfoIfListMapper" />
+      <property name="sqlSessionFactory" ref="sqlSessionFactoryForKkos" />
+      <property name="sqlSessionTemplate" ref="sqlSessionTemplateForKkos" />
+      <qualifier value="CustPplInfoIfListMapper"/>
+	</bean>
+	
+	<bean id="CustPplUnitSvcInfoIfListMapperDao" class="org.mybatis.spring.mapper.MapperFactoryBean">
+	  <property name="mapperInterface" value="com.kt.kkos.itl.mapper.nwrc.CustPplUnitSvcInfoIfListMapper" />
+      <property name="sqlSessionFactory" ref="sqlSessionFactoryForKkos" />
+      <property name="sqlSessionTemplate" ref="sqlSessionTemplateForKkos" />
+      <qualifier value="CustPplUnitSvcInfoIfListMapper"/>
+	</bean>
+	
+	<bean id="TrmnProdInfoIfListMapperDao" class="org.mybatis.spring.mapper.MapperFactoryBean">
+	  <property name="mapperInterface" value="com.kt.kkos.itl.mapper.nwrc.TrmnProdInfoIfListMapper" />
+      <property name="sqlSessionFactory" ref="sqlSessionFactoryForKkos" />
+      <property name="sqlSessionTemplate" ref="sqlSessionTemplateForKkos" />
+      <qualifier value="TrmnProdInfoIfListMapper"/>
+	</bean>
+	
+	<bean id="TrmnProdUnitSvcInfoIfListMapperDao" class="org.mybatis.spring.mapper.MapperFactoryBean">
+	  <property name="mapperInterface" value="com.kt.kkos.itl.mapper.nwrc.TrmnProdUnitSvcInfoIfListMapper" />
+      <property name="sqlSessionFactory" ref="sqlSessionFactoryForKkos" />
+      <property name="sqlSessionTemplate" ref="sqlSessionTemplateForKkos" />
+      <qualifier value="TrmnProdUnitSvcInfoIfListMapper"/>
+	</bean>
+	
+	<bean id="SbscProdInfoIfListMapperDao" class="org.mybatis.spring.mapper.MapperFactoryBean">
+	  <property name="mapperInterface" value="com.kt.kkos.itl.mapper.nwrc.SbscProdInfoIfListMapper" />
+      <property name="sqlSessionFactory" ref="sqlSessionFactoryForKkos" />
+      <property name="sqlSessionTemplate" ref="sqlSessionTemplateForKkos" />
+      <qualifier value="SbscProdInfoIfListMapper"/>
+	</bean>
+	
+	<bean id="StoreSbscProdInfoListMapperDao" class="org.mybatis.spring.mapper.MapperFactoryBean">
+	  <property name="mapperInterface" value="com.kt.kkos.itl.mapper.nwrc.StoreSbscProdInfoListMapper" />
+      <property name="sqlSessionFactory" ref="sqlSessionFactoryForKkos" />
+      <property name="sqlSessionTemplate" ref="sqlSessionTemplateForKkos" />
+      <qualifier value="StoreSbscProdInfoListMapper"/>
+	</bean>
+	
+	<bean id="PreChkRsltListMapperDao" class="org.mybatis.spring.mapper.MapperFactoryBean">
+	  <property name="mapperInterface" value="com.kt.kkos.itl.mapper.nwrc.PreChkRsltListMapper" />
+      <property name="sqlSessionFactory" ref="sqlSessionFactoryForKkos" />
+      <property name="sqlSessionTemplate" ref="sqlSessionTemplateForKkos" />
+      <qualifier value="PreChkRsltListMapper"/>
+	</bean>
+	
+	<bean id="IcgCnclSvcContInfoMapperDao" class="org.mybatis.spring.mapper.MapperFactoryBean">
+	  <property name="mapperInterface" value="com.kt.kkos.itl.mapper.nwrc.IcgCnclSvcContInfoMapper" />
+      <property name="sqlSessionFactory" ref="sqlSessionFactoryForKkos" />
+      <property name="sqlSessionTemplate" ref="sqlSessionTemplateForKkos" />
+      <qualifier value="IcgCnclSvcContInfoMapper"/>
+	</bean>
+	
+	<bean id="ProdAlwdBasMapperDao" class="org.mybatis.spring.mapper.MapperFactoryBean">
+	  <property name="mapperInterface" value="com.kt.kkos.itl.mapper.nnsb.ProdAlwdBasMapper" />
+      <property name="sqlSessionFactory" ref="sqlSessionFactoryForKkos" />
+      <property name="sqlSessionTemplate" ref="sqlSessionTemplateForKkos" />
+      <qualifier value="ProdAlwdBasMapper"/>
+	</bean>
+	
+	<bean id="IcgEtcInfoMapperDao" class="org.mybatis.spring.mapper.MapperFactoryBean">
+	  <property name="mapperInterface" value="com.kt.kkos.itl.mapper.nwrc.IcgEtcInfoMapper" />
+      <property name="sqlSessionFactory" ref="sqlSessionFactoryForKkos" />
+      <property name="sqlSessionTemplate" ref="sqlSessionTemplateForKkos" />
+      <qualifier value="IcgEtcInfoMapper"/>
+	</bean>
+
+	<bean id="KkosUserBasDao" class="org.mybatis.spring.mapper.MapperFactoryBean">
+	  <property name="mapperInterface" value="com.kt.kkos.itl.mapper.nwrc.KkosUserBasMapper" />
+      <property name="sqlSessionFactory" ref="sqlSessionFactoryForKkos" />
+      <property name="sqlSessionTemplate" ref="sqlSessionTemplateForKkos" />
+      <qualifier value="KkosUserBasMapper"/>
+	</bean>
+	
+	<bean id="BillAccCustCntplcInfoMapperDao" class="org.mybatis.spring.mapper.MapperFactoryBean">
+	  <property name="mapperInterface" value="com.kt.kkos.itl.mapper.nwrc.BillAccCustCntplcInfoMapper" />
+      <property name="sqlSessionFactory" ref="sqlSessionFactoryForKkos" />
+      <property name="sqlSessionTemplate" ref="sqlSessionTemplateForKkos" />
+      <qualifier value="BillAccCustCntplcInfoMapper"/>
+	</bean>
+	
+	<bean id="IcgCnclTrtInfoMapperDao" class="org.mybatis.spring.mapper.MapperFactoryBean">
+	  <property name="mapperInterface" value="com.kt.kkos.itl.mapper.nwrc.IcgCnclTrtInfoMapper" />
+      <property name="sqlSessionFactory" ref="sqlSessionFactoryForKkos" />
+      <property name="sqlSessionTemplate" ref="sqlSessionTemplateForKkos" />
+      <qualifier value="IcgCnclTrtInfoMapper"/>
+	</bean>
+	
+	<bean id="NewSbscTrtInfoMapperDao" class="org.mybatis.spring.mapper.MapperFactoryBean">
+	  <property name="mapperInterface" value="com.kt.kkos.itl.mapper.nwrc.NewSbscTrtInfoMapper" />
+      <property name="sqlSessionFactory" ref="sqlSessionFactoryForKkos" />
+      <property name="sqlSessionTemplate" ref="sqlSessionTemplateForKkos" />
+      <qualifier value="NewSbscTrtInfoMapper"/>
+	</bean>
+	
+	<bean id="NewSbscIntmUsimInfoMapperDao" class="org.mybatis.spring.mapper.MapperFactoryBean">
+	  <property name="mapperInterface" value="com.kt.kkos.itl.mapper.nwrc.NewSbscIntmUsimInfoMapper" />
+      <property name="sqlSessionFactory" ref="sqlSessionFactoryForKkos" />
+      <property name="sqlSessionTemplate" ref="sqlSessionTemplateForKkos" />
+      <qualifier value="NewSbscIntmUsimInfoMapper"/>
+	</bean>
+	
+	<bean id="NewSbscSpnsrInfoMapperDao" class="org.mybatis.spring.mapper.MapperFactoryBean">
+	  <property name="mapperInterface" value="com.kt.kkos.itl.mapper.nwrc.NewSbscSpnsrInfoMapper" />
+      <property name="sqlSessionFactory" ref="sqlSessionFactoryForKkos" />
+      <property name="sqlSessionTemplate" ref="sqlSessionTemplateForKkos" />
+      <qualifier value="NewSbscSpnsrInfoMapper"/>
+	</bean>
+	
+	<bean id="IntmInslInfoOutMapperDao" class="org.mybatis.spring.mapper.MapperFactoryBean">
+	  <property name="mapperInterface" value="com.kt.kkos.itl.mapper.nwrc.IntmInslInfoOutMapper" />
+      <property name="sqlSessionFactory" ref="sqlSessionFactoryForKkos" />
+      <property name="sqlSessionTemplate" ref="sqlSessionTemplateForKkos" />
+      <qualifier value="IntmInslInfoOutMapper"/>
+	</bean>
+	
+	<bean id="EmailSendBasMapperDao" class="org.mybatis.spring.mapper.MapperFactoryBean">
+	  <property name="mapperInterface" value="com.kt.kkos.itl.mapper.nnsb.EmailSendBasMapper" />
+      <property name="sqlSessionFactory" ref="sqlSessionFactoryForKkos" />
+      <property name="sqlSessionTemplate" ref="sqlSessionTemplateForKkos" />
+      <qualifier value="EmailSendBasMapper"/>
+	</bean>
+</beans>

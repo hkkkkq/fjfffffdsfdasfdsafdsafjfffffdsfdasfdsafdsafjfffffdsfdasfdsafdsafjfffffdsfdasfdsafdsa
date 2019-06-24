@@ -1,0 +1,24 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+
+<html>
+<head>
+<title>Handle SSO</title>
+<script>
+	$(document).ready(function() {
+// 		akos://web/home?appleid={애플아이디}&clntip={클라이언트IP}&nextUrl={접속할 홈 URL}
+// 		window.location.href = "akos://web/home?appleid=${appleid}&clntip=${clntip}&nextUrl=${nextUrl}";
+// 		document.loginForm.action = "akos://web/home";
+		document.loginForm.action = "${dmin}/KKOS/resources/html/apptest.html";;
+		
+		$("#loginForm").submit();
+	});
+</script>
+</head>
+<body>
+	<form method = "get" name = "loginForm" id = "loginForm">
+		<input type = "hidden" id = "clntip" name = "clntip" value = "${clntip}" ><br>
+		<input type = "hidden" id = "nextUrl" name = "nextUrl" value = "${nextUrl}" ><br>
+		<input type = "hidden" id = "appleid" name = "appleid" value = "${appleid}" ><br>
+	</form>
+</body>
+</html>
