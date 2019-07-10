@@ -21,4 +21,4 @@ docker commit 71887000aad7 jenkins:2.181
 
 
 
-docker run -d -p 8080:8080 -v /Users/herasoo/Volumes/jenkins:/var/jenkins_home --name jenkins -u root jenkins:2.181
+docker run -d -p 9090:8080 -v /Users/herasoo/Volumes/jenkins:/var/jenkins_home --name jenkins -u root jenkins:2.181

@@ -169,6 +169,7 @@ git push --force origin master
 
 ```bash
 git checkout dev
+git checkout -b dev master  # master branch로 부터 dev branch를 생성하고 checkout
 ```
 
 >  HEAD는 현재 브랜치를 가리키는 포인터라고 설명을 했는데 바로 HEAD가 바라보고 있는 브랜치 정보 자체를 바꾸는 것이다.  Workding Directory와 Index는 checkout 한 브랜치의 파일 목록과 파일 내용으로 채워진다.
@@ -219,7 +220,9 @@ git log -p -5 --word-diff <filename> # file의 diff 정보 출력
 
 
 
-- git rebase: ` Reapply commits on top of another base tip` 잦은 커밋으로 또는 의미없는 커밋으로 커밋 버전이 복잡하여 단순화하고 싶을 때 사용할 수 있다.
+- git rebase: ` Reapply commits on top of another base tip` 잦은 커밋으로 또는 의미없는 커밋으로 커밋 버전이 복잡하여 단순화하고 싶을 때 사용할 수 있다. (이미 커밋한 히스토리를 변경 또는 삭제)
+  - -i: —interactive
+  - git rebase -i [수정을 시작할 커밋의 이전 커밋]
 
 ```bash
 $ gl
@@ -236,25 +239,26 @@ pick f3457f5 third commit
 
 --------------------------------------
 
-pick 6518c22 lasted
+pick 6518c22 lasted           # use commit
 pick 1b1fd18 first commit
-squash 4afa25c second commit  # 해당 버전을 이전 버전과 통합한다.
+squash 4afa25c second commit  # use commit, but meld into previous commit
 pick f3457f5 third commit
-
+# reword: use commit, but edit the commit messasge 
+# drop: remove commit
 --------------------------------------
 
 # This is a combination of 2 commits.
 # This is the 1st commit message:
 
-first commit!!!
+first commit
 
 # This is the commit message #2:
 
-second commit!!!
+second commit
 
 $ gl
 * 37991de (HEAD -> master) third commit
-* 389eaef first commit!!!
+* 389eaef first commit second commit
 * 6518c22 lasted
 ```
 
@@ -295,6 +299,7 @@ git merge dev	# 다른 브랜치 dev를 현재 브랜치(ex. master)로 합치�
 ```bash
 git branch -d dev	# dev 브랜치가 현재 브랜치(ex. master)에 merge가 된 경우 삭제한다.
 git branch -D dev   # merge 여부 무관하게 삭제할 때
+git push origin :dev # 원격 dev 브랜치 삭제
 ```
 
 
@@ -344,6 +349,39 @@ git fetch origin
 ```
 
 pull 을 실행하면, 원격 저장소의 내용을 가져와 자동으로 병합 작업을 실행하게 됩니다. 그러나 단순히 원격 저장소의 내용을 확인만 하고 로컬 데이터와 병합은 하고 싶지 않은 경우에는 fetch 명령어를 사용할 수 있습니다. 이 때 가져온 최신 커밋 이력은 이름 없는 브랜치로 로컬에 가져오게 됩니다. *이 브랜치는 `FETCH_HEAD`의 이름으로 체크아웃 할 수도 있습니다.*원격지에 있는 변경 사항을 병합하기전 리뷰할 때 유용하다.
+
+
+
+### git tag
+
+단순히 특정 커밋에 대한 포인터이다. 이 포인터를 통해 특정 버전으로 소스를 돌리거나 받을 수 있다.
+
+```bash
+# 조회하기
+git tag
+git tag --list 'v1.4.2.*'
+
+# tag 생성
+git tag v0.1
+git tag -a 'v0.1' -m 'version 0.1'
+git tag v0.1 4afa25c # 특정 커밋 버전의 tag 생성
+
+# tag 삭제
+git tag -d v0.1
+git push origin :/refs/tags/v0.1 # remote에 있는 tag 삭제 1
+git push origin --delete v0.1 # remote에 있는 tag 삭제 2
+
+# git tag push
+git push origin v0.1
+git push origin --tags # 모든 tag를 push
+
+# checkout tags
+git checkout tags/<tag_name>	# 확인만 할 때
+git checkout tags/<tag_name> -b <branch_name> # 변경 작업이 필요할 때는 branch 생성 필요
+
+```
+
+
 
 
 

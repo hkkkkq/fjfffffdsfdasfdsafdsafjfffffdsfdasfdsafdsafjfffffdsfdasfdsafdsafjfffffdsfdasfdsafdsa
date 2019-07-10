@@ -129,8 +129,9 @@ echo '' > eo_cdrm1_svr1_rte_20160207.log
  wget --post-data='TRID=1&RCODE=2&RMSG=3' http://10.219.3.94:7001/http/ktmhows/httpInbound
  wget -O 'download_filename' http://10.217.159.222:8005/ESKY/NIFE_ESKY_NORD_I_2278_00?wsdl
  wget --post-file=req_test.xml --header="Content-Type: application/soap+xml" --header="SOAPAction: \"http://bizhub.kt.com/setSendSMSResult\"" http://10.217.155.190:5000/SoapGateway
+
 <18> vi창 dos type => unix type
-:set ff=unixdsa
+:set ff=unix
 
 <19> 
 ls -l *.log.gz | awk '{totalsize += $5} END {print totalsize/1024/1024/1024}'
@@ -454,12 +455,27 @@ mount -l | column -t
  # vi /etc/bashrc
  export HISTTIMEFORMAT='%F %T  '
  # history | sort -n 
+ 
  <105> 백스페이스 동작 안 하는 경우
  ctrl + h
+ ctrl + w
  
  <106> ssh 원격명령
  ssh hwlstmax@172.25.251.174 << EOF
  /app/jeus/bin/jeusadmin -u wasadmin -p consolepwd_174 -host 172.25.251.174 -port 7736 -verbose "redeploy-application hwls"
  EOF
+
  <107> jeusadmin
  /app/jeus/bin/jeusadmin -u wasadmin -p consolepwd_174 -host 172.25.251.174 -port 7736 -verbose "redeploy-application hwls"
+
+ <108> set list
+ vi에서 tab문자와 라인끝을 확인할 때 사용한다.
+
+ <109> vi ^M 표시 후 제거
+ :set ffs=unix
+ :e
+
+ :%s/^M//g
+
+ <110> ssh 개인키파일로 접속
+ ssh -i ./henc_testkey_002.pem ec2-user@15.164.100.35
