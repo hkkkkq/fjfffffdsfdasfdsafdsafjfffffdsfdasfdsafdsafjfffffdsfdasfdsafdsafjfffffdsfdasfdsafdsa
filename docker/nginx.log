@@ -1,0 +1,3 @@
+docker pull nginx:1.17.1
+
+docker run -d -p 9070:80 -v /Users/herasoo/Volumes/mdwiki:/usr/share/nginx/html/mdwiki --name nginx nginx:1.17.1
