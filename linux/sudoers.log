@@ -14,3 +14,19 @@ command_definition :=   [<run_as_list>] [<tag list>] <command list>
 - tag_list는 NOPASSWD: NOEXEC:
 - command list가 디렉토리인 경우 하위 명령어를 의미
 
+--------------------------------
+
+#  user    MACHINE=COMMANDS
+root        ALL = (ALL) ALL             # root는 ALL 모든 machine에서 (ALL) 모든 사용자 권한으로 ALL 모든 명령어 사용가능하다.
+
+# user1 사용자에게 sudo 권한 주기
+user1       ALL = (ALL) ALL
+
+# wheel 그룹의 모든 사용자에게 sudo 권한을 부여하는 경우
+%wheel      ALL = (ALL) ALL
+
+# user1 사용자에게 패스워드 확인없이 sudo 권한 주기
+user1       ALL = (ALL) NOPASSWD: ALL
+
+# wheel 그룹의 모든 사용자에게 패스워드 확인없이 sudo 권한을 부여하는 경우
+%wheel      ALL = (ALL) NOPASSWD: ALL

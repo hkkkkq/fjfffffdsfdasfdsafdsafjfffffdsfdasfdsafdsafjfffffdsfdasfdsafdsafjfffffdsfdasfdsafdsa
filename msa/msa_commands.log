@@ -25,7 +25,7 @@ http://10.106.65.91/api/books/create
 
 curl -HHost:sample1-millet.container.ipc.kt.com http://172.30.158.41/svc1/hello
 
-# openshift ±ÇÇÑ °ü·Ã ¼³Á¤ =======================
+# openshift ê¶Œí•œ ê´€ë ¨ ì„¤ì • =======================
 
 oc adm policy add-scc-to-user anyuid -z default -n millet
 oc adm policy add-scc-to-user privileged -z default -n millet
@@ -35,9 +35,9 @@ oc adm policy add-scc-to-user privileged -z default -n millet
 oc annotate ns mmp openshift.io/node-selector-
 oc annotate ns mmp openshift.io/node-selector=""
 
-# °èÁ¤ »ı¼º =======================
+# ê³„ì • ìƒì„± =======================
 
-[root °èÁ¤À¸·Î, passwd: Ktcl@ud12# ]
+[root ê³„ì •ìœ¼ë¡œ, passwd: Ktcl@ud12# ]
 
 vi ~/.bash_profile
 export TMOUT=0
@@ -55,18 +55,18 @@ Dtserver1234!
 chage -E -1 -I -1 -m 0 -M 99999 bsscoe
 chage -l bsscoe
 
--- su ±ÇÇÑ Ãß°¡
+-- su ê¶Œí•œ ì¶”ê°€
 vi /etc/group
 wheel:x:10:cloud-user,bsscoe
 
--- Master Node ´ë»ó bsscoe°èÁ¤¿¡ ´ëÇÑ kubectl ÀÛ¾÷
+-- Master Node ëŒ€ìƒ bsscoeê³„ì •ì— ëŒ€í•œ kubectl ì‘ì—…
 mkdir -p /home/bsscoe/.kube
 cp ~/.kube/config /home/bsscoe/.kube
 chown bsscoe:bsscoe /home/bsscoe/.kube/config
 
 su -l bsscoe
 
-[bsscoe °èÁ¤À¸·Î]
+[bsscoe ê³„ì •ìœ¼ë¡œ]
 
 vi ~/.bash_profile
 export TMOUT=0
@@ -90,7 +90,7 @@ echo "
 
 . ~/.bash_profile
 
--- Master Node ´ë»ó kubectl ÀÛ¾÷
+-- Master Node ëŒ€ìƒ kubectl ì‘ì—…
 vi ~/.bash_profile
 # Enable kubectl alias and autocompletion
 alias k='kubectl'
@@ -125,9 +125,9 @@ annotations:
 
 oc config current-context
 
-# oc istio-proxy injection È°¼ºÈ­ =======================
+# oc istio-proxy injection í™œì„±í™” =======================
 
-master-config.yaml¿¡ Ãß°¡
+master-config.yamlì— ì¶”ê°€
 
 admissionConfig:
   pluginConfig:
@@ -142,10 +142,10 @@ admissionConfig:
         kind: WebhookAdmission
         kubeConfigFile: /dev/null
 
-±×¸®°í master node Àç±âµ¿
+ê·¸ë¦¬ê³  master node ì¬ê¸°ë™
 $ /usr/local/bin/master-restart api && /usr/local/bin/master-restart controllers
 
-# curl ¹İº¹¹® =======================
+# curl ë°˜ë³µë¬¸ =======================
 
 while true; do echo "================TEST==============="; curl -k -HHost:test.insuretech.kt.com https://10.217.59.30:443/athn/actuator/health; sleep 1; echo ""; done;
 while true; do echo "================TEST==============="; curl -k -H "Host: test.insuretech.kt.com" -H "end-user: canary" https://10.217.59.30:443/athn/actuator/health; sleep 1; echo ""; done;
