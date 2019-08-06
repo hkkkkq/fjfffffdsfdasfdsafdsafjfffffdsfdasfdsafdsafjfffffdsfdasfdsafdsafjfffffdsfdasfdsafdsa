@@ -1,0 +1,19 @@
+# yum list installed gitlab*
+
+# yum remove gitlab-ce.x86_64
+
+# yum localinstall 이란?
+기본 yum 저장소에서도 MySQL 패키지를 제공하지만, 최신 버전을 설치하기 위해 MySQL에서 제공하는 yum 저장소를 사용해 MySQL을 설치하겠다.
+yum repository 를 제공하지 않고 rpm 으로만 제공하는 패키지가 있을 경우 (Ex: MySQL) 유용한 명령어다.
+rpm 을 로컬에 다운로드하고 yum localinstall 로 설치하면 된다.
+rpm -ivh 로 설치할 수도 있지만 yum  으로 작업하면 transaction 기록이 남으므로 yum history 를 사용하여 rollback 이 가능하다.
+rpm 제작사의 서명이 없어서 에러가 날수 있으므로 --nogpgcheck 옵션을 추가해야 할 경우도 있다.
+
+wget http://dev.mysql.com/get/mysql-community-release-el6-5.noarch.rpm
+sudo yum localinstall mysql-community-release-el6-5.noarch.rpm
+
+ls /etc/yum.repos.d | grep mysql
+mysql-community-source.repo  
+mysql-community.repo  
+
+yum install mysql-community-server

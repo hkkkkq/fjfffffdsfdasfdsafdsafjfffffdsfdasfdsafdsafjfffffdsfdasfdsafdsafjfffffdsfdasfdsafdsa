@@ -1,4 +1,0 @@
-yum list installed gitlab*
-
-yum remove gitlab-ce.x86_64
-
