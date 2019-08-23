@@ -1,0 +1,115 @@
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layouts/modalLayout">
+<body>
+<div layout:fragment="contents">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="row align-items-center">
+                <div class="col-auto mr-auto">
+                </div>
+                <div class="col-auto mb-2">
+                </div>
+            </div>
+
+            <div class="card mb-4">
+                <div class="card-body">
+
+                    <form class="row form-inline" id="search">
+                        <div class="col mr-auto">
+
+                            <div class="row">
+                                <div class="form-group col-xl-4">
+                                    <label for="">협력사 명</label>
+                                    <input type="text" class="form-control" id="corpKor" name="corpKor" th:value="${searchCorpKorNm}">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-auto align-self-end">
+                            <button class="btn btn-info btn-sm mb-1" type="submit" id="btnDeptListPopupSearch">조회</button>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+
+            <div class="row align-items-center">
+                <div class="col-auto mr-auto">
+                </div>
+                <div class="col-auto mb-2">
+                    <button type="button" class="btn btn-outline-secondary btn-sm mb-1" id="btnDeptListPopupConfirm">확인</button>
+                </div>
+            </div>
+            <div id="prtnConListSheet"></div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" th:fragment="javascript">
+    $(document).ready(function () {
+        var headers = [
+           {Text: "진행상태|선택|협력업체NO|협력업체명|계약번호|계약명|계약면허공종명|현장코드|계약기간"}
+        ],
+        mode = {
+           HeaderCheck: true
+        },
+        columns = [
+           {Type: "Status", SaveName: "rowStatus", Width: 0, Align: "center", Hidden: true, Edit: false},
+           {Type: "CheckBox", SaveName: "at_Chk", Width: 0, Align: "center"}, 
+           {Type: "Text", SaveName: "corpId", Width:100, Align: "center", Hidden: false, Edit: false},
+           {Type: "Text", SaveName: "corpKor", Width:200, Align: "left", Edit: false},
+           {Type: "Text", SaveName: "cstInfoId", Width:200, Align: "left", Hidden: true},
+           {Type: "Text", SaveName: "conName", Width:200, Align: "left", Edit: false},
+           {Type: "Text", SaveName: "workName", Width:150, Align: "left", Edit: false},
+           {Type: "Text", SaveName: "deptCd", Width:100, Align: "left", Edit: false, Hidden: true},
+           {Type: "Text", SaveName: "corpTerm", Width:200, Align: "left", Edit: false}
+           
+        ];
+        createIBSheet2($("#prtnConListSheet")[0], "prtnConListSheet", "100%", "300px");
+        prtnConListSheet.InitHeaders(headers, mode);
+        prtnConListSheet.InitColumns(columns);
+  
+        //조회
+        var $search = $("#search");
+        $search.on("submit", function (e) {
+            e.preventDefault();
+            $.getJSON("/partners/info/gridPrtnConPopList", $(this).serialize(), function (data) {
+                prtnConListSheet.LoadSearchData({"data": data});
+            });
+        });
+
+        $("#btnDeptListPopupConfirm").click(function () {
+
+            var cRow = prtnConListSheet.FindCheckedRow("at_Chk");
+            var arrRow = cRow.split("|");
+            
+            if (cRow == "undefined" || cRow == null || cRow == "") {
+                _.dialog.error("선택된 항목이 없습니다.");
+            } else {
+                var prtnConJson = "";
+                for (idx = 0; idx < arrRow.length; idx++) {
+                    prtnConJson += '{';
+                    prtnConJson += '"corpId":"' + prtnConListSheet.GetCellValue(arrRow[idx], 'corpId') + '",';
+                    prtnConJson += '"corpKor":"' + prtnConListSheet.GetCellValue(arrRow[idx], 'corpKor') + '",';
+                    prtnConJson += '"cstInfoId":"' + prtnConListSheet.GetCellValue(arrRow[idx], 'cstInfoId') + '",';
+                    prtnConJson += '"conName":"' + prtnConListSheet.GetCellValue(arrRow[idx], 'conName')   + '",';
+                    prtnConJson += '"workName":"' + prtnConListSheet.GetCellValue(arrRow[idx], 'workName')   + '",';
+                    prtnConJson += '"corpTerm":"' + prtnConListSheet.GetCellValue(arrRow[idx], 'corpTerm')   + '",';
+                    prtnConJson += '"deptCd":"' + prtnConListSheet.GetCellValue(arrRow[idx], 'corpTerm')   + '"';
+                    prtnConJson += '},';
+                }
+                if (prtnConJson.charAt(prtnConJson.length - 1) == ",") {
+                    prtnConJson = prtnConJson.substring(0, (prtnConJson.length - 1));
+                }
+            
+                callback(prtnConJson);
+            }
+        });
+ 
+        if ($('#corpKor').val() != '') {
+            $search.submit();
+        }
+          
+    });
+</script>
+</body>
+</html>

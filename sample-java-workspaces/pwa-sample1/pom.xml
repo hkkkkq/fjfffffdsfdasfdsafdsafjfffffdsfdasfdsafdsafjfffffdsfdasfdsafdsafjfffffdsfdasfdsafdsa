@@ -1,0 +1,135 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.henc</groupId>
+    <artifactId>henc-cdrs-project</artifactId>
+    <version>1.0.0</version>
+    <packaging>pom</packaging>
+    <name><![CDATA[Hanwha E&C CDRS Project]]></name>
+  
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <lombok.version>1.16.18</lombok.version>
+        <!--log4j2.version>2.8.2</log4j2.version-->
+        <dream-framework.version>0.4.2</dream-framework.version>
+    </properties>
+    
+    <repositories>
+        <repository>
+            <id>henc-repo</id>
+            <url>http://172.17.212.20:9000/content/groups/public</url>
+        </repository>
+    </repositories>
+
+    <pluginRepositories>
+        <pluginRepository>
+            <id>henc-repo</id>
+            <url>http://172.17.212.20:9000/content/groups/public</url>
+        </pluginRepository>
+    </pluginRepositories>
+
+    <distributionManagement>
+        <repository>
+            <id>henc-repo</id>
+            <layout>WAR</layout>
+            <url>file:///Users/sdcit_mac/.m2/repository</url>
+        </repository>
+    </distributionManagement>
+
+    <modules>
+        <module>henc-cdrs-common</module>
+        <module>henc-cdrs</module>
+    </modules>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.henc</groupId>
+                <artifactId>henc-dream-parent</artifactId>
+                <version>${dream-framework.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.henc</groupId>
+                <artifactId>henc-cdrs-common</artifactId>
+                <version>1.0.0</version>
+                <type>war</type>
+            </dependency>
+            <dependency>
+                <groupId>com.henc</groupId>
+                <artifactId>henc-cdrs-common</artifactId>
+                <version>1.0.0</version>
+                <classifier>classes</classifier>
+            </dependency>
+            
+            <!-- JEUS 배포를 위한 의존성 관리 -->
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>${lombok.version}</version>
+            </dependency>
+            <!--
+            <dependency>
+                <groupId>org.apache.logging.log4j</groupId>
+                <artifactId>log4j-bom</artifactId>
+                <version>${log4j2.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.logging.log4j</groupId>
+                <artifactId>log4j-to-slf4j</artifactId>
+                <version>${log4j2.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.logging.log4j</groupId>
+                <artifactId>log4j-api</artifactId>
+                <version>${log4j2.version}</version>
+            </dependency>
+            -->
+        </dependencies>
+    </dependencyManagement>
+
+    <dependencies>
+        <!-- JEUS 배포를 위한 의존성 관리 기존 log4j-api를 제외하고 log4j-api의 내용을 일부 변경한 log4j-api-henc를 의존하도록 설정-->
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-api-henc</artifactId>
+            <version>2.10.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-tomcat</artifactId>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <configuration>
+                    <failOnMissingWebXml>false</failOnMissingWebXml>
+<!--                    <mainClass>${start-class}</mainClass>-->
+<!--                    <layout>WAR</layout>-->
+                    <packagingExcludes>WEB-INF/lib/log4j-api-2.10.0.jar</packagingExcludes>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>

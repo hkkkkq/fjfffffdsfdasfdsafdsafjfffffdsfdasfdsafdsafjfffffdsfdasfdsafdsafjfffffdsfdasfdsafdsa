@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.henc.cdrs.daily.repository.DdBrfgCompMapper">
+
+	<select id="getDaily" resultType="ddBrfgComp" parameterType="searchDailyParams">
+		SELECT dept_cd,
+			   day,
+			   ordr_no,
+			   partner_no,
+			   ctrc_no,
+			   perdd_main_work,
+			   nmdd_main_work,
+			   sort_no_seq,
+			   objt_yn,
+			   sta_cd,
+			   submitter,
+			   updt_dm,
+			   updt_id,
+			   wrtr_dm,
+			   wrtr_id
+		FROM dd_brfg_comp
+		WHERE dept_cd = #{deptCd}
+		  AND day = #{day}
+		  AND ordr_no = #{ordrNo}
+		  AND partner_no = #{partnerNo}
+		  AND ctrc_no = #{ctrcNo}
+	</select>
+
+	<select id="dailyGroupList" resultType="camelCaseMap" parameterType="searchDailyParams">
+		SELECT nvl(dbc.dept_cd, ci.dept_cd)                AS dept_cd,
+			   dbc.day,
+			   dbc.ordr_no,
+			   nvl(dbc.partner_no, ci.coprcp_no)           AS partner_no,
+			   coprcp.CORP_KOR                             AS partner_nm,
+			   nvl(dbc.ctrc_no, ci.ctrc_no)                AS ctrc_no,
+			   ci.ctrc_nm,
+			   FN_GET_CSTKND_NM(ci.cstknd_no)              AS cstknd_nm,
+			   dbc.perdd_main_work,
+			   dbc.nmdd_main_work,
+			   nvl(dbc.sort_no_seq, ci.sort_no)            AS sort_no_seq,
+			   dbc.objt_yn,
+			   nvl(dbc.sta_cd, '00')                       AS sta_cd,
+			   dbc.submitter,
+			   to_char(dbc.UPDT_DM, 'YYYY-MM-DD HH:MM:SS') AS updt_dm
+		FROM (SELECT dept_cd, coprcp_no, ctrc_no, cstknd_no, ctrc_nm, use_yn, sort_no
+			  FROM coprcp_info
+			  WHERE dept_cd = #{deptCd}
+			  UNION
+			  SELECT comp.dept_cd, comp.partner_no, comp.ctrc_no, ci.CSTKND_NO, ci.CTRC_NM, ci.use_yn, ci.sort_no
+			  FROM DD_BRFG_COMP comp
+					   INNER JOIN coprcp_info ci
+								  ON ci.DEPT_CD = comp.DEPT_CD AND ci.COPRCP_NO = comp.PARTNER_NO AND ci.CTRC_NO = comp.CTRC_NO
+			  WHERE comp.dept_cd = #{deptCd}
+				AND comp.day = #{day}
+				AND comp.ordr_no = #{ordrNo}) ci
+				 LEFT OUTER JOIN (SELECT *
+								  FROM DD_BRFG_COMP dbc
+								  WHERE dbc.dept_cd = #{deptCd}
+									AND dbc.day = #{day}
+									AND dbc.ordr_no = #{ordrNo}) dbc
+								 ON ci.DEPT_CD = dbc.DEPT_CD AND ci.COPRCP_NO = dbc.PARTNER_NO AND ci.CTRC_NO = dbc.CTRC_NO
+				 LEFT OUTER JOIN coprcp ON ci.COPRCP_NO = coprcp.CORP_ID
+		ORDER BY sort_no_seq ASC NULLS LAST, PARTNER_NM
+	</select>
+
+	<insert id="insert" parameterType="ddBrfgComp">
+		INSERT INTO DD_BRFG_COMP (DEPT_CD, DAY, ORDR_NO, PARTNER_NO, CTRC_NO, PERDD_MAIN_WORK, NMDD_MAIN_WORK, SORT_NO_SEQ,
+                          OBJT_YN, STA_CD, UPDT_DM, UPDT_ID, WRTR_DM, WRTR_ID)
+        VALUES (#{deptCd}, #{day}, #{ordrNo}, #{partnerNo}, #{ctrcNo}, #{perddMainWork}, #{nmddMainWork}, #{sortNoSeq},
+                #{objtYn}, #{staCd}, sysdate, #{loginId}, sysdate, #{loginId})
+	</insert>
+
+	<update id="update" parameterType="ddBrfgComp">
+		UPDATE DD_BRFG_COMP
+		SET PERDD_MAIN_WORK = #{perddMainWork},
+			NMDD_MAIN_WORK  = #{nmddMainWork},
+			OBJT_YN         = #{objtYn},
+			STA_CD          = #{staCd},
+		<if test="sortNoSeq != null and !sortNoSeq.equals('')">
+			SORT_NO_SEQ     = #{sortNoSeq},
+		</if>
+		<if test="submitter != null and !submitter.equals('')">
+			SUBMITTER	    = #{submitter},
+		</if>
+			UPDT_DM         = sysdate,
+			UPDT_ID         = #{loginId}
+		WHERE DEPT_CD = #{deptCd}
+		  AND DAY = #{day}
+		  AND ORDR_NO = #{ordrNo}
+		  AND CTRC_NO = #{ctrcNo}
+		  AND PARTNER_NO = #{partnerNo}
+	</update>
+
+	<update id="updateObjectYN" parameterType="ddBrfgComp">
+		UPDATE DD_BRFG_COMP
+		SET OBJT_YN         = #{objtYn},
+		<if test="sortNoSeq != null">
+			SORT_NO_SEQ     = #{sortNoSeq},
+		</if>
+		UPDT_DM         = sysdate,
+		UPDT_ID         = #{loginId}
+		WHERE DEPT_CD = #{deptCd}
+		AND DAY = #{day}
+		AND ORDR_NO = #{ordrNo}
+		AND CTRC_NO = #{ctrcNo}
+		AND PARTNER_NO = #{partnerNo}
+	</update>
+
+	<update id="saveApproval" parameterType="saveDailyApprovalParams">
+		UPDATE DD_BRFG_COMP
+		SET STA_CD          = #{staCd},
+			UPDT_DM         = sysdate,
+			UPDT_ID         = #{loginId}
+		WHERE DEPT_CD = #{deptCd}
+		AND DAY = #{day}
+		AND ORDR_NO = #{ordrNo}
+		AND CTRC_NO = #{ctrcNo}
+		AND PARTNER_NO = #{partnerNo}
+	</update>
+
+	<delete id="delete" parameterType="searchDailyParams">
+		DELETE FROM DD_BRFG_COMP
+		WHERE DEPT_CD = #{deptCd}
+		  AND DAY = #{day}
+		  AND ORDR_NO = #{ordrNo}
+		  AND CTRC_NO = #{ctrcNo}
+		  AND PARTNER_NO = #{partnerNo}
+	</delete>
+
+	<insert id="copyHistoryCreate" parameterType="historyDailyCopyParams">
+		INSERT INTO DD_BRFG_COMP (PARTNER_NO, PERDD_MAIN_WORK, NMDD_MAIN_WORK, STA_CD, UPDT_DM, UPDT_ID, WRTR_DM, WRTR_ID,
+                          CTRC_NO, DEPT_CD, DAY, ORDR_NO, sort_no_seq)
+		SELECT hst.PARTNER_NO,
+			   hst.PERDD_MAIN_WORK,
+			   hst.NMDD_MAIN_WORK,
+			   #{targetDayParams.staCd},
+			   sysdate,
+			   #{loginId},
+			   sysdate,
+			   #{loginId},
+			   hst.CTRC_NO,
+			   hst.DEPT_CD,
+			   #{targetDayParams.day},
+			   hst.ORDR_NO,
+			   hst.sort_no_seq
+		FROM DD_BRFG_COMP hst
+		WHERE hst.dept_cd = #{copyDayParams.deptCd}
+		  AND hst.day = #{copyDayParams.day}
+		  AND hst.ordr_no = #{copyDayParams.ordrNo}
+		  AND hst.partner_no = #{copyDayParams.partnerNo}
+		  AND hst.ctrc_no = #{copyDayParams.ctrcNo}
+	</insert>
+
+	<update id="copyHistoryUpdate" parameterType="ddBrfgComp">
+		UPDATE DD_BRFG_COMP
+		SET STA_CD          = #{staCd},
+			PERDD_MAIN_WORK = #{perddMainWork},
+			NMDD_MAIN_WORK = #{nmddMainWork},
+			UPDT_DM         = sysdate,
+			UPDT_ID         = #{loginId}
+		WHERE DEPT_CD = #{deptCd}
+		AND DAY = #{day}
+		AND ORDR_NO = #{ordrNo}
+		AND CTRC_NO = #{ctrcNo}
+		AND PARTNER_NO = #{partnerNo}
+	</update>
+
+	<select id="getListInChange" resultType="ddBrfgComp" parameterType="ddBrfg">
+		SELECT dept_cd
+			 , day
+			 , ordr_no
+			 , ctrc_no
+			 , partner_no
+			 , perdd_main_work
+			 , nmdd_main_work
+			 , sort_no_seq
+			 , objt_yn
+			 , sta_cd
+			 , submitter
+		FROM dd_brfg_comp
+		WHERE dept_cd = #{deptCd}
+		AND day = #{day}
+		AND ordr_no = #{ordrNo}
+		ORDER BY dept_cd, day, ordr_no, partner_no, ctrc_no, sort_no_seq
+	</select>
+
+	<delete id="deleteChanged" parameterType="ddBrfg">
+		DELETE FROM dd_brfg_comp
+		WHERE DEPT_CD = #{deptCd}
+		  AND DAY = #{day}
+		  AND ORDR_NO = #{ordrNo}
+	</delete>
+
+</mapper>

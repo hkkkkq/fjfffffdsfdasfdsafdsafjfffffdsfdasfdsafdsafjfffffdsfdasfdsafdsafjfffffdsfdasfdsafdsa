@@ -1,0 +1,225 @@
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layouts/layout">
+<head>
+</head>
+<body>
+
+    <div layout:fragment="contents">
+
+        <section class="top-area">
+            <nav aria-label="breadcrumb" class="float-left">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="#">관리</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">현장공종관리</li>
+                </ol>
+            </nav>
+            <div class="btn-area float-right">
+            </div>
+        </section>
+    
+    
+        <section id="search-area" class="mb-3">
+            <form id="search">
+                <div class="border">
+                    <div class="form-row">
+                        <div>
+                            <label for="bizhdofCd">사업본부</label>
+                            <select class="form-control form-control-sm" name="bizhdofCd" id="bizhdofCd">
+                            </select>
+                        </div>
+<!--                         <div> -->
+<!--                             <label for="useYn">사용여부</label> -->
+<!--                             <select class="form-control form-control-sm" name="useYn" id="useYn"> -->
+<!--                                 <option selected="selected" value="">전체</option> -->
+<!--                             </select> -->
+<!--                         </div> -->
+                    </div>
+                    <div class="btn-area">
+                        <button class="btn btn-secondary btn-sm" type="submit" id="btnSearch">조회</button>
+                    </div>
+                </div>
+            </form>   
+        </section>
+    
+        <section id="grid-area" class="mb-3">
+            <div class="d-flex justify-content-between pb-2 grid-title">
+                <h2>◎ 현장공종등록</h2>  
+                <div class="btn-area">
+                    <button type="button" class="btn btn-outline-secondary btn-sm" id="btnSave">저장</button>
+                    <!-- <button type="button" class="btn btn-outline-secondary btn-sm" id="btnTest">테스트</button> -->
+                </div>
+            </div> 
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="vertical-full1" id="siteConstTypeSheet"></div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script type="text/javascript" th:inline="javascript" layout:fragment="script">
+        $(document).ready(function () {
+            
+            resizeContent();
+            
+            var is_loaded   = false;
+            var is_readOnly = false;
+            var is_mainBizhdofCd = _.cdrs.storage.bizhdofCd();
+            
+            $.getJSON("/code/getCodeList/USE_YN,BIZHDOF_CD", function (codes) {
+                var useYn = codes.useYn;
+                var bizhdofCd = codes.bizhdofCd;
+                _.binder.combo("#useYn", useYn, {value: "key", text: "value"});
+                _.binder.combo("#bizhdofCd", bizhdofCd, {value: "key", text: "value"});
+             });
+    
+            var headers = [
+                    {Text: "진행상태|순번|공종Seq|상위공종Seq|사업부|현장|공종명|설명|사용여부|트리레벨|유형"}
+                ],
+                mode = {},
+                columns = [
+                    {Type: "Status", SaveName: "rowStatus", Width: 0, Align: "center", Hidden: true},
+                    {Type: "Seq", SaveName: "rowSeq", Width: 60, Align: "center"},
+                    {Type: "Int", SaveName: "cstkndNo", Width: 0, Hidden: true},
+                    {Type: "Int", SaveName: "uprCstkndNo", Width: 0, Hidden: true},
+                    {Type: "Text", SaveName: "bizhdofCd", Width: 0, Hidden: true},
+                    {Type: "Text", SaveName: "deptCd", Width: 0, Hidden: true},
+                    {Type: "Text", SaveName: "cstkndNm", Width: 250, Align: "left", TreeCol: 1, Edit: false},
+                    {Type: "Text", SaveName: "description", Width: 250, Align: "left", Edit: false},
+                    {Type: "CheckBox", SaveName: "useYn", Width: 80, Align: "center", Edit: true, TrueValue: 'Y', FalseValue: 'N'},
+                    {Type: "Int", SaveName: "level", Width: 0, Hidden: true},
+                    {Type: "Text", SaveName: "rel", Width: 80, Hidden: true}
+                ];
+    
+            createIBSheet2($("#siteConstTypeSheet")[0], "siteConstTypeSheet", "100%", "496px");
+            siteConstTypeSheet.InitHeaders(headers, mode);
+            siteConstTypeSheet.InitColumns(columns);
+            siteConstTypeSheet.SetTreeCheckActionMode(1);
+    
+            window["siteConstTypeSheet_OnSearchEnd"] = function (Code, Msg, StCode, StMsg) {
+    /*             
+                if (siteConstTypeSheet.RowCount() > 0) {
+                    for (var i = siteConstTypeSheet.GetDataFirstRow(); i <= siteConstTypeSheet.RowCount(); i++) {
+                        if (siteConstTypeSheet.GetCellValue(i, "rel") == "root") {
+                            siteConstTypeSheet.SetRowEditable(i, 0);
+                        }
+                    }
+                }
+                is_loaded = true;
+    */
+    
+                // 최상단 현장 사업본부 <-> 상단 조건 사업본부 비교 체크
+                if($('#bizhdofCd').val() != is_mainBizhdofCd){
+                    //_.dialog.alert("최상단 현장에 속한 사업본부와 조건에 선택한 사업본부가 불일치. [ 조회 모드 ]");
+                    _.cdrs.notify.show("확인","최상단 현장에 속한 사업본부와 조건에 선택한 사업본부가 불일치. [ 조회 모드 ]");
+                    siteConstTypeSheet.SetEditable(false);
+                    is_readOnly = true;
+                }else{
+                    siteConstTypeSheet.SetEditable(true);
+                    is_readOnly = false;
+                }
+                
+                is_loaded = true;
+            
+            };
+    
+            window["siteConstTypeSheet_OnChange"] = function (Row, Col, Value, OldValue, RaiseFlag) {
+                if (siteConstTypeSheet.ColSaveName(Col) == "useYn") {
+                    if (Value == "Y") {
+                        var stack = [],
+                            parentRow = siteConstTypeSheet.GetParentRow(Row);
+    
+                        while (parentRow > 0) {
+                            stack.push(parentRow);
+                            parentRow = siteConstTypeSheet.GetParentRow(parentRow);
+                        }
+    
+                        while (stack.length) {
+                            siteConstTypeSheet.SetCellValue(stack.pop(), "useYn", "Y", false);
+                        }
+                    } else {
+                        var stack = [];
+                        
+                        stack = siteConstTypeSheet.GetChildRows(Row).split("|");
+                        
+                        while (stack.length > 0) {
+                            siteConstTypeSheet.SetCellValue(stack.pop(), "useYn", "N", false);
+                        }
+//                         // CheckedRows 기능이 정상적으로 작동하지 않음(하위 행 부터 검색하는 옵션이 작동안함)
+//                         // console.log(siteConstTypeSheet.CheckedRows(Col, {ParentRow: Row, Recursive: 1}));
+    
+//                         var checkedRows = childCheckedRows(siteConstTypeSheet, Row, Col, []);
+//                         if (checkedRows.length > 0) {
+//                             _.dialog.alert("하위공종을 먼저 사용여부를 해제하여 주시기 바랍니다.");
+//                             siteConstTypeSheet.SetCellValue(Row, Col, "Y", false);
+//                         }
+                    }
+                }
+            };
+    
+    
+            var $search = $("#search");
+            $search.on("submit", function (e) {
+                e.preventDefault();
+                $.getJSON("/mgmt/siteConstType/siteConstType/gridList", $(this).serialize(), function (data) {
+                    siteConstTypeSheet.LoadSearchData({"data": data});
+                });
+            });
+    
+            $("#btnSave").on("click", function () {
+                
+                if(is_readOnly){ 
+                    return false;
+                }
+                
+                if (!siteConstTypeSheet.IsDataModified()) {
+                    //_.dialog.alert("저장할 항목이 없습니다.");
+                    _.cdrs.notify.show("저장","저장할 항목이 없습니다.");
+                    return false;
+                }
+                
+                var siteConstTypeList = siteConstTypeSheet.GetSaveJson();
+                if (!_.cdrs.ibsheetValid(siteConstTypeList)) {
+                    return false;
+                }
+    
+                for (var i = siteConstTypeSheet.GetDataFirstRow(); i <= siteConstTypeSheet.RowCount(); i++) {
+                    if ( siteConstTypeSheet.GetCellValue(i, "rowStatus") == "U" && siteConstTypeSheet.GetCellValue(i, "useYn") == "Y") {
+                        siteConstTypeSheet.SetCellValue(i, "rowStatus", "I", false);
+                        // 화면에서는 수정 상태로 전송하고 spring 에서 삭제로 처리해준다.
+                    // } else if ( siteConstTypeSheet.GetCellValue(i, "rowStatus") == "U" && siteConstTypeSheet.GetCellValue(i, "useYn") == "N") {
+                    //     siteConstTypeSheet.SetCellValue(i, "rowStatus", "D", false);
+                    }
+                }
+    
+                var param = $("#search").serializeObject();
+                param.siteConstTypes = siteConstTypeSheet.GetSaveJson().data;
+    
+                _.dialog.confirm("저장하시겠습니까?", function () {
+                    $.post("/mgmt/siteConstType/siteConstType/gridSave", param, function () {
+                        //_.dialog.alert("저장되었습니다.");
+                        _.cdrs.notify.show("저장","저장되었습니다.");
+                        siteConstTypeSheet.LoadSaveData(_.ibsheet.success());
+                    });
+                });
+    
+            });
+        });
+    
+//         function childCheckedRows(sheet, row, col, queue) {
+//             var childRows = sheet.GetChildRows(row, sheet.GetRowLevel(row) + 1).split("|");
+//             if (sheet.GetCellValue(row, col) == "Y") {
+//                 queue.push(row);
+//             }
+    
+//             if (sheet.GetChildNodeCount(row) > 0) {
+//                 for (var i = 0, len = childRows.length; i < len; i++) {
+//                     childCheckedRows(sheet, childRows[i], col, queue);
+//                 }
+//             }
+    
+//             return queue;
+//         }
+    </script>
+</body>
+</html>

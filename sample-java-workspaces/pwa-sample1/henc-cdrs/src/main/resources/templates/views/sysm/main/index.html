@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="/views/common/layout/layout_index">
+
+<div layout:fragment="content" >
+
+<script type="text/javascript" th:inline="javascript">
+  /*<![CDATA[*/
+    $(document).ready(function(){
+
+    	$("#logoutBtn").click(function(){
+    		if(confirm('로그아웃 하시겠습니까?')){
+    			doSignOut();
+		    }
+    	});
+
+        $("#myInfo").click(function(){
+            $("#myInfoModal").modal('show');
+        });
+
+        //more 클릭이벤트
+        var scrollClickIdx = 0;
+        var offsetLeft = 0;
+        $('#menuMore').click(function(){
+            var menuArray = $('li.dropdown').toArray();
+            var menuWidth = 0;
+
+            if (scrollClickIdx < menuArray.length) {
+                menuWidth = $('li.dropdown:eq('+ (scrollClickIdx) +')').width() + 320; //+10 is padding-rignt value
+                offsetLeft += menuWidth;
+                $('li.dropdown').animate({'left':'-=' + menuWidth + 'px'});
+                scrollClickIdx += menuArray.length;
+            } else {
+                $('li.dropdown').animate({'left':'+=' + offsetLeft + 'px'});
+                scrollClickIdx = 0;
+                offsetLeft = 0;
+            }
+        });
+
+    });
+
+  function setGridSize() {
+    var height = ($(document).height() - 100);
+    $("#content-wrap").css("height", height);
+  }
+
+  function goMenu(menuId, pgmId, uriNm) {
+    if (uriNm != '#') {
+      //jQuery('#secRoleId').val(jQuery('#userRoleList').val());
+      //jQuery('#secMenuId').val(menuId);
+      //jQuery('#secPgmId').val(pgmId);
+
+      jQuery('#systemMenuForm').attr("action", uriNm);
+      jQuery('#systemMenuForm').attr("target", "mainFrame");
+      jQuery('#systemMenuForm').submit();
+    }
+  }
+
+  function doSignOut(){
+	  var systemMenuForm = $("#systemMenuForm");
+	  systemMenuForm.attr("action", "/security/sign_out");
+	  systemMenuForm.attr("target", "");
+	  systemMenuForm.attr("method", "post");
+	  systemMenuForm.submit();
+  }
+
+  /*]]>*/
+</script>
+
+  <form id="systemMenuForm" method="post">
+    <input type="hidden" id="secRoleId" value=""/>
+    <input type="hidden" id="secSystemMenuId" value=""/>
+    <input type="hidden" id="changeLang" value="" />
+    <input type="hidden" id="currentURL" value=""/>
+    <input type="hidden" id="secPgmId" value=""/>
+    <input type="hidden" id="systemVersion" value="" />
+    <input type="hidden" id="systemModule" value="" />
+    <input type="hidden" id="clauseAgreeYn" value="" />
+    <input type="hidden" id="clausePath" value="" />
+    <input type="hidden" id="system" value="" />
+  </form>
+
+  <div id="wrap">
+    <div class="container-fluid">
+      <!-- Static navbar -->
+      <nav class="navbar navbar-default">
+        <div class="container-fluid">
+          <div class="navbar-header" style="z-index:999">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">Project name</a>
+          </div>
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+              <th:block th:each="menuList : ${menuList}" th:utext="${menuList.tag}">
+              </th:block>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+              <li id="menuMore"><a href="#">more</a></li>
+              <li>
+                <a id="myInfo" href="#">
+                  <th:block th:text="${loginInfo}"></th:block>
+                </a>
+              </li>
+              <li><a id="logoutBtn" href="#">Log Out</a></li>
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div><!--/.container-fluid -->
+      </nav>
+    </div> <!-- /container -->
+
+
+      <!-- Bootstrap core JavaScript
+      ================================================== -->
+      <!-- Placed at the end of the document so the pages load faster -->
+      <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script> -->
+      <!-- <script src="../../dist/js/bootstrap.min.js"></script> -->
+      <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+      <!-- <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script> -->
+
+    <div id="content-wrap">
+      <iframe id="mainFrame" name="mainFrame" src="/portal"
+        tabIndex="-1"
+        marginwidth="10"
+        marginheight="10"
+        scrolling="no"
+        width="100%"
+        height="100%"
+        frameBorder="0"
+        style="marginLeft:0px;width:100%;height:100%;">
+      </iframe>
+    </div>
+
+  </div>
+
+  <!-- 사용자 정보 -->
+  <div class="modal" tabindex="-1" id="myInfoModal" role="dialog" aria-labelledby="myInfoLabel" aria-describedby="사용자 정보">
+    <div class="modal-dialog modal-sm">
+      <div class="modal-content">
+        <div class="modal-body">
+          <form name="frmMyInfo" onsubmit="return false;">
+            <label for="pmSysClsCd">시스템 권한</label>
+            <select class="form-control" name="pmSysClsCd" id="pmSysClsCd">
+              <option th:each="userRoles : ${userRoles}" th:value="${userRoles.roleId}" th:text="${userRoles.nmspcVal}" th:selected="(${userRoles.roleId} == *{tokenUser.roleId})"></option>
+            </select>
+            <label for="pmSysClsCd">언어 선택</label>
+            <input class="form-control" type="text" id="lang" name="lang" value="" />
+            <div th:text="${#authentication}">
+              The value of the "name" property of the authentication object should appear here.
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary"  id="btnMyInfoClose" data-dismiss="modal">닫기</button>
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
+
+  <script>
+  $(window).resize(function() {
+    setGridSize();
+  });
+  $(document).ready(function() {
+    setGridSize();
+  });
+  </script>
+</div>
+</html>

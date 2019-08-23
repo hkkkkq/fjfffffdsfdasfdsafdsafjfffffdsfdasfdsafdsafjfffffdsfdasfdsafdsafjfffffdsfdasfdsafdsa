@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.henc.cdrs.mgmt.constType.repository.ConstTypeMapper">
+
+    <select id="selectConstTypeGrdList" resultType="camelCaseMap">
+        SELECT t1.CSTKND_NO,
+               t1.UPR_CSTKND_NO,
+               t1.BIZHDOF_CD,
+               t1.CSTKND_NM,
+               t1.LEVL,
+               t1.DESCRIPTION,
+               t1.SORT_NO,
+               LEVEL - 1 as "level",
+               nvl(t1.use_yn, 'Y') AS use_yn,
+               decode(LEVEL, 1, 'root', 'worktype' ) AS rel
+        FROM (SELECT * 
+                FROM BIZHDOF_CSTKND
+               WHERE 1=1 
+               <if test="bizhdofCd != null"> 
+                 AND BIZHDOF_CD = #{bizhdofCd}
+               </if>
+             ) t1
+        WHERE 1 = 1
+        START WITH t1.UPR_CSTKND_NO IS NULL
+              <if test="useYn != null">
+                AND USE_YN = #{useYn}
+              </if>
+        CONNECT BY PRIOR t1.CSTKND_NO = t1.UPR_CSTKND_NO
+        ORDER SIBLINGS BY t1.SORT_NO
+    </select>
+    
+    <insert id="insertConstType" parameterType="constType">
+        insert into BIZHDOF_CSTKND (CSTKND_NO
+                                   ,UPR_CSTKND_NO
+                                   ,BIZHDOF_CD
+                                   ,CSTKND_NM
+                                   ,LEVL
+                                   ,DESCRIPTION
+                                   ,SORT_NO
+                                   ,USE_YN  
+                                   ,wrtr_dm
+                                   ,wrtr_id
+                                   ,updt_dm
+                                   ,updt_id)
+             values (BIZHDOF_CSTKND_S.nextval
+                     <choose>
+                         <when test="uprCstkndNo == 0">
+                         ,NULL
+                         </when>
+                         <otherwise>
+                         ,#{uprCstkndNo}
+                         </otherwise>
+                     </choose>
+                    ,#{bizhdofCd}
+                    ,#{cstkndNm}
+                    ,#{levl}
+                    ,#{description}
+                    ,#{sortNo}
+                    ,#{useYn}                                
+                    ,SYSDATE
+                    ,#{loginId}
+                    ,SYSDATE
+                    ,#{loginId})
+    </insert>
+    
+    <update id="updateConstType" parameterType="constType">
+        UPDATE BIZHDOF_CSTKND
+        SET UPR_CSTKND_NO  = <choose>
+                                 <when test="uprCstkndNo == 0">
+                                    NULL,
+                                 </when>
+                                 <otherwise>
+                                    #{uprCstkndNo},
+                                 </otherwise>
+                             </choose>
+            BIZHDOF_CD     = #{bizhdofCd},
+            CSTKND_NM      = #{cstkndNm},
+            LEVL           = #{levl},
+            DESCRIPTION    = #{description},
+            SORT_NO        = #{sortNo},
+            USE_YN         = #{useYn},
+            UPDT_DM        = SYSDATE,
+            UPDT_ID        = #{loginId}
+        WHERE CSTKND_NO    = #{cstkndNo}
+    </update>
+    
+    <delete id="deleteConstType" parameterType="constType">
+        DELETE FROM BIZHDOF_CSTKND
+        WHERE CSTKND_NO = #{cstkndNo}
+    </delete>
+    
+    <select id="selectOcptGrdList" resultType="camelCaseMap">
+        SELECT OCPT_NO
+              ,BIZ_HDOF_CD
+              ,USE_YN
+              ,OCPT_NM
+              ,CSTKND_NO
+          FROM OCPT
+         WHERE BIZ_HDOF_CD = #{bizHdofCd}
+           AND CSTKND_NO   = #{cstkndNo}
+         ORDER BY sort_no asc, ocpt_nm asc
+    </select>
+
+
+    <insert id="insertOcpt" parameterType="ocpt">
+        INSERT INTO ocpt (ocpt_no
+                         ,biz_hdof_cd
+                         ,use_yn
+                         ,updt_dm
+                         ,updt_id
+                         ,wrtr_dm
+                         ,wrtr_id
+                         ,ocpt_nm
+                         ,cstknd_no)
+                 VALUES ( ocpt_s.nextval
+                         ,#{bizHdofCd}
+                         ,#{useYn}                                
+                         ,SYSDATE
+                         ,#{loginId}
+                         ,SYSDATE
+                         ,#{loginId}
+                         ,#{ocptNm}
+                         ,#{cstkndNo})
+    </insert>
+
+    <update id="updateOcpt" parameterType="ocpt">
+        UPDATE ocpt
+           SET use_yn  = #{useYn}
+              ,updt_dm = SYSDATE
+              ,updt_id = #{loginId}
+              ,ocpt_nm = #{ocptNm}
+         WHERE ocpt_no = #{ocptNo}
+           AND biz_hdof_cd = #{bizHdofCd}
+           AND cstknd_no   = #{cstkndNo}            
+    </update>
+    
+    <delete id="deleteOcpt" parameterType="ocpt">
+        DELETE FROM ocpt
+        WHERE ocpt_no = #{ocptNo}
+    </delete>
+    
+    <!-- LABATD_PCNT 직종번호 사용 확인 조회 -->
+    <select id="selectLabatdPcntCount" resultType="camelCaseMap">
+        SELECT OCPT_NO
+          FROM LABATD_PCNT
+         WHERE OCPT_NO = #{ocptNo}
+    </select>
+    
+    <!-- COPRCP_NO 공종번호 사용 확인 조회 -->
+    <select id="selectCoprcpInfoCount" resultType="camelCaseMap">
+        SELECT CSTKND_NO
+          FROM COPRCP_INFO
+         WHERE CSTKND_NO = #{cstkndNo}
+    </select>
+    
+    <!-- OCPT 공종번호 사용 확인 조회 -->
+    <select id="selectOcptCount" resultType="camelCaseMap">
+        SELECT CSTKND_NO
+          FROM OCPT
+         WHERE CSTKND_NO   = #{cstkndNo}
+    </select>
+
+</mapper>

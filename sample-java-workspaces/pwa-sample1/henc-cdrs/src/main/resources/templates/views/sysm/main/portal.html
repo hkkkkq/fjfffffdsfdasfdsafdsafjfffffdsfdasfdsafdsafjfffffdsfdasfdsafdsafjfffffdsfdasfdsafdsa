@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" 
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" 
+	layout:decorator="/views/common/layout/layout">
+   
+<div layout:fragment="content">
+
+	<script type="text/javascript">
+		/**
+		 *	Height size setting
+		 */
+		function setHeightSize() {
+			jQuery("#main").css("height", ($("#content-wrap", parent.document).height() - 80));
+		}
+	</script>
+		
+	<div id="main">
+		<div align="center">
+			<font size="50">PORTAL MAIN</font>
+		</div>
+	</div>
+
+	<script>
+	jQuery(window).resize(function() {
+		setHeightSize();
+	});
+	</script>
+
+</div>
+
+</html>

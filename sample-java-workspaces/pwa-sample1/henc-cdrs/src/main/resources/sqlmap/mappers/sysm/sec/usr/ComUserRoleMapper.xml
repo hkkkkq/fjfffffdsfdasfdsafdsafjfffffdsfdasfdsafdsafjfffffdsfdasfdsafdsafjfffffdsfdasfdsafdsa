@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper
+	namespace="com.henc.cdrs.sysm.sec.usr.repository.ComUserRoleMapper">
+	<select id="gridUserRoleList" resultType="comUserRole" parameterType="string">
+		SELECT t1.user_id
+		,t1.role_id
+		,pg_com_namespace.get_namespace(t2.nmspc_cd, 'ko') as nmspc_val
+		,t1.main_yn
+		,t1.use_yn
+		,t1.st_dt
+		,t1.end_dt
+		,t2.role_cls_cd
+		,t2.dat_rang_cd
+		,'/assets/ibsheet7/sheet/js/Main/popup.gif' AS dat_Rang_Cd_Btn
+		FROM com_user_role t1
+		,com_role t2
+		WHERE t1.role_id = t2.role_id
+		AND t1.user_id = #{userId}
+	</select>
+
+	<insert id="insertComUserRole" parameterType="comUserRole">
+		INSERT INTO com_user_role (
+		user_id
+		,role_id
+		,use_yn
+		,st_dt
+		,end_dt
+		,main_yn
+		,wrtr_dm
+		,wrtr_id)
+		VALUES (
+		#{userId}
+		,#{roleId}
+		,#{useYn}
+		,#{stDt}
+		,#{endDt}
+		,#{mainYn}
+		,SYSDATE
+		,#{loginId})
+	</insert>
+
+	<update id="updateComUserRole" parameterType="comUserRole">
+		UPDATE com_user_role
+		SET main_yn = #{mainYn}
+		,use_yn = #{useYn}
+		,st_dt = #{stDt}
+		,end_dt = #{endDt}
+		,updt_dm = SYSDATE
+		,updt_id = #{loginId}
+		WHERE user_id = #{userId}
+		AND role_id = #{roleId}
+	</update>
+
+	<delete id="deleteComUserRole" parameterType="comUserRole">
+		DELETE com_user_role
+		WHERE user_id = #{userId}
+		AND role_id = #{roleId}
+	</delete>
+
+	<select id="getUserMenuXmlData" parameterType="java.util.HashMap" statementType="CALLABLE">
+		{ call pg_com_rnr.get_user_role_menu_xml
+		(
+		#{p_role_id, mode=IN, jdbcType=VARCHAR, javaType=java.lang.String},
+		#{p_user_id, mode=IN, jdbcType=VARCHAR, javaType=java.lang.String},
+		#{p_xml_data, mode=OUT, jdbcType=CLOB, javaType=java.lang.String}
+		)
+		}
+	</select>
+
+
+
+</mapper>

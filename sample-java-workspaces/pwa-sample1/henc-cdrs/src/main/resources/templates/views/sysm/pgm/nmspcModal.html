@@ -1,0 +1,108 @@
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layouts/modalLayout">
+<body>
+<div layout:fragment="contents">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="row align-items-center">
+                <div class="col-auto mr-auto">
+                </div>
+                <div class="col-auto mb-2">
+                </div>
+            </div>
+
+            <div class="card mb-4">
+                <div class="card-body">
+
+                    <form class="row form-inline" id="search">
+                        <div class="col mr-auto">
+
+                            <div class="row">
+                                <div class="form-group col-xl-4">
+                                    <label for="">명칭</label>
+                                    <input type="text" class="form-control" id="nmspcVal" name="nmspcVal">
+                                    <input type="hidden" class="form-control" id="rangCd" name="rangCd" value="PGM">
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="col-auto align-self-end">
+                            <button class="btn btn-info btn-sm mb-1" type="submit" id="btnDeptListPopupSearch">조회</button>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+
+            <div class="row align-items-center">
+                <div class="col-auto mr-auto">
+                </div>
+                <div class="col-auto mb-2">
+                    <button type="button" class="btn btn-outline-secondary btn-sm mb-1" id="btnCallbackConfirm">확인</button>
+                </div>
+            </div>
+            <div id="nmspcSheet"></div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" th:fragment="javascript">
+    $(document).ready(function () {
+
+        var nmspcSheetCreate = function () {
+            var headers = [
+                    {Text: "진행상태|선택|범위|네임스페이스|명칭"}
+                ],
+                mode = {
+                    HeaderCheck: true,
+                },
+                columns = [
+                    {Type: "Status", SaveName: "rowStatus", Width: 0, Hidden: true},
+                    {Type: "Radio", SaveName: "check", Width: 60, Align: "center"},
+                    {
+                        Type: "Combo",
+                        SaveName: "rangCd",
+                        Width: 80,
+                        Align: "center",
+                        ComboText: "버튼|기준코드|환경변수|메뉴|메시지|프로그램|프롬프트|권한|시스템",
+                        ComboCode: "BTN|CCD|ECD|MNU|MSG|PGM|PMT|RNR|SYS",
+                        Edit: false
+                    },
+                    {Type: "Text", SaveName: "nmspcCd", Width: 120, Edit: false},
+                    {Type: "Text", SaveName: "koNm", Width: 200, Edit: false}
+                ];
+            createIBSheet2($("#nmspcSheet")[0], "nmspcSheet", "100%", "300px");
+            nmspcSheet.InitHeaders(headers, mode);
+            nmspcSheet.InitColumns(columns);
+
+            window["nmspcSheet_OnDblClick"] = function (Row, Col, Value, CellX, CellY, CellW, CellH) {
+                var data = {
+                    nmspcCd: nmspcSheet.GetCellValue(Row, "nmspcCd"),
+                    nmspcVal: nmspcSheet.GetCellValue(Row, "koNm")
+                };
+                callback(data);
+            };
+        };
+        nmspcSheetCreate();
+
+        //조회
+        var $search = $("#search");
+        $search.on("submit", function (e) {
+            e.preventDefault();
+            $.getJSON("/sysm/pgm/nmspcGridList", $(this).serialize(), function (data) {
+                nmspcSheet.LoadSearchData({"data": data});
+            });
+        });
+
+        $("#btnCallbackConfirm").click(function () {
+            var Row = nmspcSheet.GetSelectRow();
+            var data = {
+                nmspcCd: nmspcSheet.GetCellValue(Row, "nmspcCd"),
+                nmspcVal: nmspcSheet.GetCellValue(Row, "koNm")
+            };
+            callback(data);
+        });
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xml>
+<configuration>
+    <include resource="logback-dream-web.xml" />
+    <logger name="org.springframework.jdbc" level="DEBUG" />
+    <logger name="jdbc" level="OFF" />
+    <logger name="jdbc.sqlonly" level="DEBUG" />
+    <logger name="jdbc.resultsettable" level="DEBUG" />
+    <logger name="com.henc.dream" level="DEBUG" />
+    <logger name="com.henc.cdrs" level="DEBUG" />
+<!--
+    <springProfile name="local">
+      <include resource="logback-dream-web.xml" />
+    </springProfile>
+
+    <springProfile name="local, staging">
+        <logger name="com.henc.cdrsrs" level="DEBUG" />
+    </springProfile>
+-->
+</configuration>

@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.henc.cdrs.daily.repository.DdBrfgMapper">
+
+	<select id="get" parameterType="ddBrfg" resultType="ddBrfg">
+		SELECT dept_cd,
+			   day,
+			   ordr_no,
+			   sta_cd,
+			   weather_cd,
+			   lowest_tempe,
+			   highest_tempe,
+			   ptcl_mtr,
+			   chg_no,
+			   chg_seq,
+			   updt_dm,
+			   updt_id,
+			   wrtr_dm,
+			   wrtr_id
+		FROM dd_brfg
+		WHERE dept_cd = #{deptCd}
+		<if test="day != null">
+		  AND day = #{day}
+		</if>
+		<if test="ordrNo != null">
+		  AND ordr_no = #{ordrNo}
+		</if>
+		<if test="chgNo != null">
+			AND chg_no = #{chgNo}
+		</if>
+		<if test="chgSeq != null">
+			AND chg_seq = #{chgSeq}
+		</if>
+	</select>
+
+	<insert id="insert" parameterType="ddBrfg">
+		<selectKey keyProperty="ordrNo" resultType="int" order="BEFORE">
+			select nvl(max(ordr_no),0) + 1 FROM DD_BRFG WHERE DEPT_CD = #{deptCd} AND DAY = #{day}
+		</selectKey>
+		INSERT INTO DD_BRFG (DEPT_CD, DAY, ORDR_NO, STA_CD, WEATHER_CD, LOWEST_TEMPE, HIGHEST_TEMPE, PTCL_MTR, UPDT_DM, UPDT_ID, WRTR_DM,
+			WRTR_ID, CHG_NO, CHG_SEQ)
+		VALUES (#{deptCd}, #{day}, #{ordrNo}, #{staCd}, #{weatherCd}, #{lowestTempe}, #{highestTempe}, #{ptclMtr}, SYSDATE, #{loginId},
+			SYSDATE, #{loginId}, #{chgNo}, #{chgSeq})
+	</insert>
+
+	<update id="update" parameterType="ddBrfg">
+		UPDATE DD_BRFG
+		SET LOWEST_TEMPE = #{lowestTempe},
+			HIGHEST_TEMPE = #{highestTempe},
+			PTCL_MTR = #{ptclMtr},
+			WEATHER_CD = #{weatherCd},
+			UPDT_DM = sysdate,
+			UPDT_ID = #{loginId}
+		WHERE DAY = #{day}
+		  AND DEPT_CD = #{deptCd}
+		  AND ORDR_NO = #{ordrNo}
+	</update>
+
+	<delete id="delete">
+		DELETE FROM DD_BRFG
+		WHERE DAY = #{day}
+		  AND DEPT_CD = #{deptCd}
+		  AND ORDR_NO = #{ordrNo}
+	</delete>
+
+	<select id="top">
+		SELECT max(ordr_no) as ordr_no
+		FROM dd_brfg
+		WHERE dept_cd = #{deptCd}
+		AND day = #{day}
+	</select>
+
+	<select id="topGet" resultType="ddBrfg" parameterType="searchDailyParams">
+		SELECT nvl(max(dept_cd) KEEP (DENSE_RANK FIRST ORDER BY ordr_no DESC), #{deptCd}) AS dept_cd,
+			   nvl(max(day) KEEP (DENSE_RANK FIRST ORDER BY ordr_no DESC), #{day})        AS day,
+			   max(ordr_no) KEEP (DENSE_RANK FIRST ORDER BY ordr_no DESC)                 AS ordr_no,
+			   max(weather_cd) KEEP (DENSE_RANK FIRST ORDER BY ordr_no DESC)              AS weather_cd,
+			   max(lowest_tempe) KEEP (DENSE_RANK FIRST ORDER BY ordr_no DESC)            AS lowest_tempe,
+			   max(highest_tempe) KEEP (DENSE_RANK FIRST ORDER BY ordr_no DESC)           AS highest_tempe,
+			   max(ptcl_mtr) KEEP (DENSE_RANK FIRST ORDER BY ordr_no DESC)                AS ptcl_mtr,
+			   max(sta_cd) KEEP (DENSE_RANK FIRST ORDER BY ordr_no DESC)                  AS sta_cd,
+			   max(chg_no) KEEP (DENSE_RANK FIRST ORDER BY ordr_no DESC)                  AS chg_no,
+			   max(chg_seq) KEEP (DENSE_RANK FIRST ORDER BY ordr_no DESC)                 AS chg_seq,
+			   max(wrtr_dm) KEEP (DENSE_RANK FIRST ORDER BY ordr_no DESC)                 AS wrtr_dm,
+			   max(wrtr_id) KEEP (DENSE_RANK FIRST ORDER BY ordr_no DESC)                 AS wrtr_id,
+			   max(updt_dm) KEEP (DENSE_RANK FIRST ORDER BY ordr_no DESC)                 AS updt_dm,
+			   max(updt_id) KEEP (DENSE_RANK FIRST ORDER BY ordr_no DESC)                 AS updt_id
+		FROM DD_BRFG
+		WHERE DEPT_CD = #{deptCd}
+		  AND day = #{day}
+	</select>
+
+	<update id="saveApproval" parameterType="saveDailyApprovalParams">
+		UPDATE DD_BRFG
+		SET STA_CD          = #{staCd},
+			UPDT_DM         = sysdate,
+			UPDT_ID         = #{loginId}
+		WHERE DEPT_CD = #{deptCd}
+		AND DAY = #{day}
+		AND ORDR_NO = #{ordrNo}
+	</update>
+
+	<update id="saveApprovalChangedData" parameterType="ddBrfg">
+		UPDATE DD_BRFG
+		SET STA_CD          = #{staCd},
+			UPDT_DM         = sysdate,
+			UPDT_ID         = #{loginId}
+		WHERE DEPT_CD = #{deptCd}
+		AND ORDR_NO = #{ordrNo}
+		AND CHG_NO = #{chgNo}
+	</update>
+
+	<select id="changeAvailiableMasterList" resultType="ddBrfg" parameterType="searchDailyParams">
+		SELECT dept_cd,
+			   day,
+			   max(ordr_no)                                                                   AS ordr_no,
+			   max(sta_cd) KEEP (DENSE_RANK FIRST ORDER BY dept_cd, day, ordr_no DESC)        AS sta_cd,
+			   max(weather_cd) KEEP (DENSE_RANK FIRST ORDER BY dept_cd, day, ordr_no DESC)    AS weather_cd,
+			   max(lowest_tempe) KEEP (DENSE_RANK FIRST ORDER BY dept_cd, day, ordr_no DESC)  AS lowest_tempe,
+			   max(highest_tempe) KEEP (DENSE_RANK FIRST ORDER BY dept_cd, day, ordr_no DESC) AS highest_tempe,
+			   max(ptcl_mtr) KEEP (DENSE_RANK FIRST ORDER BY dept_cd, day, ordr_no DESC)      AS ptcl_mtr
+		FROM DD_BRFG
+		WHERE dept_cd = #{deptCd}
+		  AND day >= #{day}
+		  AND day &lt; (SELECT min(day) AS day
+					 FROM (SELECT dept_cd,
+								  day,
+								  max(ordr_no)                                                            AS ordr_no,
+								  max(sta_cd) KEEP (DENSE_RANK FIRST ORDER BY dept_cd, day, ordr_no DESC) AS sta_cd
+						   FROM DD_BRFG
+						   WHERE dept_cd = #{deptCd}
+						   GROUP BY dept_cd, day)
+					 WHERE sta_cd != '50'
+					   AND day >= #{day})
+		GROUP BY dept_cd, day
+		ORDER BY day ASC
+	</select>
+
+	<select id="changedMasterList" resultType="ddBrfg" parameterType="searchDailyParams">
+		SELECT dept_cd, day, ordr_no, sta_cd, chg_no, chg_seq
+		FROM DD_BRFG
+		WHERE dept_cd = #{deptCd}
+		  AND chg_no = #{chgNo}
+		ORDER BY chg_seq DESC
+	</select>
+
+	<delete id="deleteChanged" parameterType="searchDailyParams">
+		DELETE FROM dd_brfg
+		WHERE dept_cd = #{deptCd}
+		  AND chg_no = #{chgNo}
+	</delete>
+
+	<select id="getChanged" parameterType="saveDailyApprovalParams" resultType="ddBrfg">
+		SELECT dept_cd,
+			   day,
+			   ordr_no,
+			   sta_cd,
+			   chg_no,
+			   chg_seq
+		FROM dd_brfg
+		WHERE dept_cd = #{deptCd}
+		  AND ordr_no = #{ordrNo}
+		  AND chg_no = #{chgNo}
+		ORDER BY chg_seq asc
+	</select>
+
+	<select id="getStaCdCount" parameterType="java.lang.String" resultType="java.lang.Integer">
+		SELECT count(*) AS cnt
+		FROM DD_BRFG
+		WHERE dept_cd = #{deptCd}
+		  AND sta_cd = #{staCd}
+	</select>
+
+</mapper>

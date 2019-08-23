@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.henc.cdrs.sysm.main.menu.repository.MenuMapper">
+
+	<resultMap id="menuResultMap" type="menu">
+		<id property="rn" column="rn"/>
+		<result property="uprMenuId" column="upr_menu_id" typeHandler="com.henc.cdrs.common.mybatis.type.NullStringTypeHandler" />
+		<result property="pgmId" column="pgm_id" typeHandler="com.henc.cdrs.common.mybatis.type.NullStringTypeHandler" />
+		<result property="pgmTypCd" column="pgm_typ_cd" typeHandler="com.henc.cdrs.common.mybatis.type.NullStringTypeHandler" />
+		<result property="uriNm" column="uri_nm" typeHandler="com.henc.cdrs.common.mybatis.type.NullStringTypeHandler" />
+		<result property="nxt" column="nxt" typeHandler="com.henc.cdrs.common.mybatis.type.NullStringTypeHandler" />
+		<result property="nxtUprMenuId" column="nxt_upr_menu_id" typeHandler="com.henc.cdrs.common.mybatis.type.NullStringTypeHandler" />
+		<result property="sysClsCd" column="SYS_CLS_CD" typeHandler="com.henc.cdrs.common.mybatis.type.NullStringTypeHandler" />
+	</resultMap>
+
+	<select id="selectMenuList" resultMap="menuResultMap" parameterType="java.lang.String">
+    <![CDATA[
+		SELECT t.rn
+			 , menu_id
+			 , upr_menu_id
+			 , menu_cls_cd
+			 , menu_seq
+			 , nmspc_cd
+			 , nmspc_val
+			 , ROLE_ID
+			 , pgm_id
+			 , pgm_typ_cd
+			 , uri_nm
+			 , lvl
+			 , is_leaf
+			 , case when SYS_CLS_CD is null then LEAD(SYS_CLS_CD, 1, null) OVER (ORDER BY rn) else SYS_CLS_CD end SYS_CLS_CD
+			 , lag(t.lvl, 1, 0) OVER (ORDER BY rn)                         pre
+			 , LEAD(t.menu_cls_cd, 1, NULL) OVER (ORDER BY rn)             nxt
+			 , LEAD(t.upr_menu_id, 1, NULL) OVER (ORDER BY rn)             nxt_upr_menu_id
+			 , ROW_NUMBER() OVER (PARTITION BY t.upr_menu_id ORDER BY rn ) divider
+		FROM (SELECT rownum AS rn, t.*, LEVEL AS lvl, CONNECT_BY_ISLEAF AS is_leaf
+			  FROM (SELECT t1.menu_id                                        AS menu_id
+						 , t1.upr_menu_id                                    AS upr_menu_id
+						 , t1.menu_cls_cd                                    AS menu_cls_cd
+						 , t1.menu_seq                                       AS menu_seq
+						 , t1.nmspc_cd                                       AS nmspc_cd
+						 , pg_com_namespace.get_namespace(t1.nmspc_cd, 'KO') AS nmspc_val
+						 , t1.role_id
+						 , t1.pgm_id
+						 , t3.pgm_typ_cd
+						 , t3.uri_nm
+						 , t3.SYS_CLS_CD
+					FROM (SELECT it_1.role_id
+							   , it_1.menu_id
+							   , it_1.upr_menu_id
+							   , it_1.menu_cls_cd
+							   , it_1.menu_seq
+							   , it_1.nmspc_cd
+							   , NVL(it_1.pgm_id, it_2.pgm_id)               AS pgm_id
+							   , NVL(it_1.use_yn, nvl(it_2.pgm_use_yn, 'Y')) AS use_yn
+						  FROM com_role_menu it_1
+							 , com_menu_pgm it_2
+						  WHERE it_1.role_id = it_2.role_id(+)
+							AND it_1.menu_id = it_2.menu_id(+)
+							AND it_1.role_id = #{roleId}
+					) t1
+					   , com_pgm t3
+					WHERE t1.pgm_id = t3.pgm_id(+)
+					  AND nvl(t1.use_yn, 'Y') = 'Y'
+				   ) t
+			  START WITH (upr_menu_id IS NULL)
+			  CONNECT BY PRIOR menu_id = upr_menu_id
+			  ORDER SIBLINGS BY menu_seq
+			 ) t
+    ]]>
+	</select>
+
+	<select id="selectActiveMenuId" resultType="camelCaseMap" parameterType="java.lang.String">
+		SELECT  DECODE(PGM.MENU_YN, 'Y', MENU.MENU_ID, MENU.UPR_MENU_ID) AS ACTIVE_MENU_ID
+			  , (SELECT UPR_MENU_ID FROM COM_ROLE_MENU x WHERE X.MENU_ID = DECODE(PGM.MENU_YN, 'Y', MENU.MENU_ID, MENU.UPR_MENU_ID)) AS ACTIVE_PARENT_MENU_ID
+		FROM  COM_PGM PGM
+			, COM_ROLE_MENU MENU
+		WHERE PGM.PGM_ID = MENU.PGM_ID
+		AND   MENU.ROLE_ID = #{roleId}
+		AND   #{uri} like PGM.URI_NM || decode(PGM.URI_NM, '/', '', '%')
+		AND   ROWNUM = 1
+	</select>
+
+	<!-- 메뉴 리스트 조회 -->
+	<select id="selectMenuTagList" resultType="camelCaseMap" parameterType="java.lang.String">
+    <![CDATA[        
+        SELECT t.*
+             , CASE WHEN nxt_upr_menu_id IS NULL THEN
+                  CASE menu_cls_cd
+                      WHEN 'M' THEN
+                          '<li class="nav-item dropdown">' || '<a class="nav-link dropdown-toggle" href="'||nvl(uri_nm, '#')||'">' || nmspc_val ||
+                          '</a></li></ul></li></ul></li>'
+                      WHEN 'P' THEN
+                          '<li><a class="dropdown-item" href="'||nvl(uri_nm, '#')||'">' || nmspc_val ||
+                          '</a></li></ul></li>' || decode(nxt, null, DECODE(lvl, 3, '</ul></li>', ''), '</ul></li>')
+                      WHEN 'L' THEN
+                          '<li><a class="dropdown-item" href="'||nvl(uri_nm, '#')||'">' || nmspc_val ||
+                          '</a></li></ul></li></ul></li>'
+                      WHEN 'PG' THEN
+                          CASE WHEN NMSPC_VAL = 'DIVIDER' THEN
+                                  '<li class="dropdown-divider"></li></ul></li></ul></li>'
+                               ELSE
+                                  '<li><a class="dropdown-item" href="'||nvl(uri_nm, '#')||'">' || nmspc_val ||
+                                  '</a></li></ul></li></ul></li>'
+                           END       
+                       END
+               ELSE
+                  CASE menu_cls_cd
+                      WHEN 'M' THEN
+                          '<li class=''nav-item dropdown''>' || '<a class="nav-link dropdown-toggle" href="'||nvl(uri_nm, '#')||'" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">' || nmspc_val ||'</a>' || 
+                          DECODE(nxt, 'P', '<ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">', 'PG', '<ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">', 'L', '<ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">', '</li>')
+                      WHEN 'P' THEN
+                          '<li><a class="dropdown-item" href="'||nvl(uri_nm, '#')||'">' || nmspc_val || '</a>' || 
+                          CASE WHEN upr_menu_id = nvl(nxt_upr_menu_id, upr_menu_id) THEN
+                                  '</li>'
+                               ELSE
+                                  DECODE(nxt, 'M', DECODE(lvl, 3, '</li></ul></li></ul></li>', '</li></ul></li>'), '</li></ul></li>')
+                           END
+                      WHEN 'L' THEN
+                          '<li><hr/></li>' ||
+                          DECODE(nxt, 'P', '', 'PG', '', 'M', '', 'L', '')
+                      WHEN 'PG' THEN
+                          CASE WHEN NMSPC_VAL = 'DIVIDER' THEN 
+                                  '<li class="dropdown-divider"></li>'
+                               ELSE
+                                  CASE WHEN upr_menu_id = nvl(nxt_upr_menu_id, upr_menu_id) THEN
+                                          '<li><a class="dropdown-item" href="'||nvl(uri_nm, '#')||'">' || nmspc_val || '</a>' ||
+                                          DECODE(nxt, 'P', '</li>', 'PG', '</li>', 'L', '</li>', '</li>')
+                                       ELSE
+                                          '<li><a class="dropdown-item dropdown-toggle" href="'||nvl(uri_nm, '#')||'">' || nmspc_val || '</a>' ||
+                                          DECODE(nxt, 'P', '<ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">', 'PG', '<ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">', 'L', '<ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">', 'M', '</ul></li>', '</li>')
+                                   END
+                           END        
+                                   
+                       END
+                END tag
+          FROM (SELECT t.*
+                     , lag(t.lvl, 1, 0) over(ORDER BY rn) pre
+                     , LEAD(t.menu_cls_cd, 1, NULL) over(ORDER BY rn) nxt
+                     , LEAD(t.upr_menu_id, 1, NULL) over(ORDER BY rn) nxt_upr_menu_id
+                     , ROW_NUMBER() OVER (PARTITION BY t.upr_menu_id ORDER BY rn ) divider
+                  FROM (SELECT rownum AS rn, t.*, LEVEL AS lvl, CONNECT_BY_ISLEAF AS is_leaf
+                          FROM (SELECT t1.menu_id AS menu_id
+                                     , t1.upr_menu_id AS upr_menu_id
+                                     , t1.menu_cls_cd AS menu_cls_cd
+                                     , t1.menu_seq AS menu_seq
+                                     , t1.nmspc_cd AS nmspc_cd
+                                     , pg_com_namespace.get_namespace(t1.nmspc_cd, 'KO') AS nmspc_val
+                                     , t1.role_id
+                                     , t1.pgm_id
+                                     , t3.pgm_typ_cd
+                                     , t3.uri_nm
+                                  FROM (SELECT it_1.role_id
+                                             , it_1.menu_id
+                                             , it_1.upr_menu_id
+                                             , it_1.menu_cls_cd
+                                             , it_1.menu_seq
+                                             , it_1.nmspc_cd
+                                             , NVL(it_1.pgm_id, it_2.pgm_id) AS pgm_id
+                                             , NVL(it_1.use_yn, nvl(it_2.pgm_use_yn, 'Y')) AS use_yn
+                                          FROM com_role_menu it_1
+                                             , com_menu_pgm it_2
+                                         WHERE it_1.role_id = it_2.role_id(+)
+                                           AND it_1.menu_id = it_2.menu_id(+)
+                                           AND it_1.role_id = #{roleId}
+                                       ) t1
+                                     , com_pgm t3
+                                 WHERE t1.pgm_id = t3.pgm_id(+)
+                                   AND nvl(t1.use_yn, 'Y') = 'Y'
+                               ) t
+                         START WITH (upr_menu_id IS NULL) CONNECT BY PRIOR menu_id = upr_menu_id
+                         ORDER SIBLINGS BY menu_seq
+                       ) t
+                ) t
+    ]]>
+	</select>
+
+	<select id="selectUserMenus" resultType="camelCaseMap" parameterType="java.lang.String">
+		SELECT b.uri_nm
+		FROM com_role_menu a
+		inner join com_pgm b
+		on a.PGM_ID = b.PGM_ID
+		WHERE a.role_id = #{menuId}
+		AND a.menu_cls_cd = 'P'
+		ORDER BY a.menu_seq
+	</select>
+</mapper>
+

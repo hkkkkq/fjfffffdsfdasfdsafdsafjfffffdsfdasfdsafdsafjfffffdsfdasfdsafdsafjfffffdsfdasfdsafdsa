@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.henc.cdrs.mgmt.matrial.repository.MatrialMapper">
+
+    <!-- 현장자재 관리 조회 -->
+    <select id="selectMgmtGrdList" resultType="camelCaseMap">
+        
+        SELECT A.MTIL_NO  AS MTIL_NO
+              ,A.MTIL_NM  AS MTIL_NM
+              ,A.SPEC     AS SPEC
+              ,A.UNIT     AS UNIT
+              ,A.APBT_YN  AS APBT_YN
+              ,A.USE_YN   AS USE_YN
+          FROM MAIN_MTIL A
+         WHERE 1=1
+           AND A.bizhdof_cd = #{bizhdofCd}
+           AND A.SAME_MTIL_NO IS NULL
+        <if test="mtilNm != null">
+           AND ( A.MTIL_NM LIKE '%' || #{mtilNm} || '%'
+                 OR A.SPEC LIKE '%' || #{mtilNm} || '%'
+               )
+        </if>
+        <if test="mtilNo != 0">
+            AND A.MTIL_NO = #{mtilNo}
+        </if>
+        <if test="useYn != null">
+           AND  A.USE_YN = #{useYn}  
+        </if>
+        <if test="apbtYn != null">
+           AND  A.APBT_YN = #{apbtYn}  
+        </if>
+        ORDER BY A.MTIL_NO ASC
+        
+    </select>
+
+    <insert id="insertMatrial" parameterType="matrial">
+        <selectKey keyProperty="mtilNo" resultType="int" order="BEFORE">
+            select main_mtil_s.nextval FROM dual
+        </selectKey>
+        INSERT INTO MAIN_MTIL (
+                mtil_no
+               ,bizhdof_cd
+               ,mtil_nm
+               ,spec
+               ,unit
+               ,apbt_yn
+               ,use_yn
+               ,wrtr_dm
+               ,wrtr_id
+               ,updt_dm
+               ,updt_id)
+            VALUES (
+                #{mtilNo}
+               ,#{bizhdofCd}
+               ,#{mtilNm}
+               ,#{spec}
+               ,#{unit}
+               ,#{apbtYn}
+               ,#{useYn}                                
+               ,SYSDATE
+               ,#{loginId}
+               ,SYSDATE
+               ,#{loginId})
+    </insert>
+ 
+	<update id="updateMatrial" parameterType="matrial">
+        UPDATE main_mtil
+           SET mtil_nm = #{mtilNm}
+              ,spec    = #{spec}
+              ,unit    = #{unit}
+              ,apbt_yn = #{apbtYn}
+              ,use_yn  = #{useYn}
+              ,updt_dm = sysdate
+              ,updt_id = #{loginId}
+         WHERE bizhdof_cd = #{bizhdofCd}
+           AND mtil_no = #{mtilNo}
+	</update>
+
+	<delete id="deleteMatrial" parameterType="matrial">
+        DELETE FROM main_mtil
+         WHERE bizhdof_cd = #{bizhdofCd}
+           AND mtil_no    = #{mtilNo}
+	</delete>
+        
+    <!-- Detail 동의어 조회 쿼리 -->
+    <select id="selectMgmtGrdDetlList" resultType="camelCaseMap">
+    
+        SELECT a.mtil_no as mtil_no
+              ,a.mtil_nm as mtil_nm
+              ,a.same_mtil_no as same_mtil_no
+              ,a.spec    as spec
+              ,a.unit    as unit
+          FROM main_mtil a
+         WHERE 1=1
+           AND bizhdof_cd = #{bizhdofCd}
+        <if test="mtilNo != null">
+            and same_mtil_no = #{mtilNo}
+        </if>
+         ORDER BY A.MTIL_NO ASC
+         
+    </select>
+    
+    <!-- 동의어 대상 조회 -->
+    <select id="selectMgmtSynPoplList" resultType="camelCaseMap">
+    
+        SELECT a.mtil_no      as mtil_no
+              ,a.mtil_nm      as mtil_nm
+              ,a.spec         as spec
+              ,a.unit         as unit
+          FROM main_mtil a
+         WHERE 1=1
+           AND bizhdof_cd = #{bizhdofCd}
+        <if test="mtilNm != null">
+            AND A.MTIL_NM LIKE '%' || #{mtilNm} || '%'
+        </if>
+            AND a.same_mtil_no is null
+            AND a.apbt_yn = 'N'
+         ORDER BY A.MTIL_NO ASC
+         
+    </select>
+    
+    <update id="updateMatrialDetail" parameterType="matrialdetl">
+        UPDATE main_mtil
+        <if test="sameMtilNo != 0">
+            SET same_mtil_no = ${sameMtilNo}
+        </if>
+        <if test="sameMtilNo == 0">
+            SET same_mtil_no = NULL
+        </if>       
+         WHERE bizhdof_cd = #{bizhdofCd}
+           AND mtil_no    = ${mtilNo}
+    </update>
+    
+    <update id="updateMatrialSameMtilNoRestore" parameterType="matrialdetl">
+        UPDATE main_mtil
+           SET same_mtil_no = null
+         WHERE bizhdof_cd   = #{bizhdofCd}
+           AND same_mtil_no = #{mtilNo}
+    </update>
+    
+    <select id="selectMatrialSameCount" parameterType="matrial" resultType="integer">
+        SELECT COUNT(*) AS SAME_MTIL_CNT 
+          FROM MAIN_MTIL Z 
+         WHERE 1=1
+           AND Z.BIZHDOF_CD   = #{bizhdofCd}
+           AND Z.SAME_MTIL_NO = #{mtilNo}
+    </select>
+
+    <select id="getMatrial" resultType="camelCaseMap" parameterType="matrial">
+        SELECT *
+        FROM MAIN_MTIL mm
+        WHERE bizhdof_cd = #{bizhdofCd}
+          AND mtil_nm = #{mtilNm}
+          AND spec = #{spec}
+          AND unit = #{unit}
+          AND rownum = 1
+    </select>
+    
+</mapper>

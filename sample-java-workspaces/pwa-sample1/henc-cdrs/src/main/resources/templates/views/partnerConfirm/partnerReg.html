@@ -1,0 +1,335 @@
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta http-equiv="X-UA-Compatible" content="IE=edge" /> <!-- 호환성보기 안먹을시 아파치설정때문에 안될 수도 있음 안되면 다른처리 요망 -->
+<title>공사일보</title>
+<link rel="shortcut icon" th:href="@{/favicon.ico}">
+<link rel="stylesheet" th:href="@{/webjars/bootstrap/4.1.1/css/bootstrap.min.css}" th:fragment="style"/>
+<link rel="stylesheet" th:href="@{/webjars/tempusdominus-bootstrap-4/5.0.0/css/tempusdominus-bootstrap-4.min.css}" th:fragment="style"/>
+
+<link rel="stylesheet" th:replace="dream-static-resources :: style" />
+<link rel="stylesheet" type="text/css" th:href="@{/css/login.css}"/>
+
+<body>
+
+  <form class="form-user">
+      <section class="mb-3">
+          <div class="title d-flex mb-2">
+             <h2 class="mr-auto">본인정보</h2>
+          </div>
+          <div class="form-inline mb-1">
+              <label>성명</label>
+              <input type="text" class="form-control" id="partnerName" placeholder="이름을 입력하세요.">
+          </div>
+          <div class="form-inline mb-1">
+              <label>전화번호</label>
+              <input type="tel" class="form-control" id="partnerTlno" placeholder="010-0000-0000">
+          </div>
+          <div class="form-inline mb-1">
+              <label>비밀번호</label>
+              <input type="password" class="form-control password" id="prtnPwd" name="prtnPwd" placeholder="비밀번호">
+              <input type="hidden" class="form-control password" id="prtnEncPwd" name="prtnEncPwd">
+              <div>
+                  <span id="pwdValid" class="st1"></span>
+                  <!-- <span class="st2">위험</span>-->
+                  <!-- <span class="st3">안전</span>-->
+              </div>
+          </div>
+<!--           <div class="form-inline"> -->
+<!--           <span class="error_next_box" id="pswd1Msg" style="display: none;" role="alert">8~16자 영문 대 소문자, 숫자, 특수문자를 사용하세요.</span> -->
+<!--           </div> -->
+          <div class="form-inline">
+              <label>비밀번호 확인</label>
+              <input type="password" class="form-control password" id="prtnChkPwd" name="prtnChkPwd" placeholder="비밀번호 확인">
+              <div>
+                  <span id="pwdConfirm" class="st2"></span>
+                  <!-- <span class="st1">일치</span>-->
+              </div>
+          </div>
+      </section>
+      
+      <section class="mb-3">
+          <div class="title d-flex mb-2">
+             <h2 class="mr-auto">회사정보</h2>
+          </div>
+          <div class="form-inline mb-1">
+              <label>회사명</label>
+              <input type="email" class="form-control" id="partnerCorpKor" placeholder="회사명을 입력하세요.">
+          </div>
+          <div class="table-area">
+              <table class="table" id="prtnDeptTable">
+                  <colgroup>
+                      <col width="*">
+                      <col width="*">
+                  </colgroup>
+                  <thead>
+                      <tr>
+                          <th>현장</th>
+                          <th>대표현장</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                      <tr name="prtnTr">
+                      </tr>
+                  </tbody>
+              </table>
+          </div><!-- end : table-list -->
+      </section>
+      <hr>
+      <div class="btn-area">
+<!--         <span><a href="#" class="btn btn-dark" id="btnSave">저장</a></span> -->
+        <span><a href="#" class="btn btn-agree" id="btnSave">완료</a></span>
+      </div>
+  </form>
+
+</body>
+<!-- //info -->
+<script th:src="@{/webjars/jquery/3.0.0/jquery.min.js}"></script>
+
+<div th:replace="dream-static-resources :: components"></div>
+<script th:replace="dream-static-resources :: script"></script>
+<script type="text/javascript" th:src="@{/js/encrypt/base64.js}"></script>
+<script type="text/javascript" th:src="@{/js/tree/jquery.jstree.js}"></script>
+<script type="text/javascript" th:src="@{/js/cdrs.js}"></script>
+<script type="text/javascript" th:src="@{/js/jquery.json-2.4.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/jquery-ui/jquery-ui.js}"></script>
+
+<!--<script type="text/javascript" th:src="@{/js/pwa/app.js}"></script>-->
+
+    <form name="frmHidden" id="frmHidden">
+        <input type="hidden" id="vPrtnNm" value=""/>
+        <input type="hidden" id="vPrtnTlno" value=""/>
+        <input type="hidden" id="vPrtnCorpKor" value=""/>
+        <input type="hidden" id="vUserId" value=""/>
+    </form>
+
+<script th:inline="javascript">  
+    /*<![CDATA[*/
+    $(document).ready(function(){
+        var _isPwdOk = false;
+        
+        // 협력사 사용자 본인정보 조회
+        var oParams = {};
+        
+        oParams = getUrlParams();
+          
+        var param = { 
+                     sendId: oParams.info
+                    }
+        
+        $.getJSON("/partnerConfirm/partnerInfoList", param, function (data) {
+            var result = JSON.stringify(data);
+            result = JSON.parse(result);
+            
+            
+            if(result.length <= 0){
+                return;
+            }
+            
+            // form Hidden 셋팅
+            $('#vPrtnNm').val(result[0].name);
+            $('#vPrtnTlno').val(result[0].tlno);
+            $('#vPrtnCorpKor').val(result[0].corpKor);
+            $('#vUserId').val(result[0].userId);
+            
+            
+            // input 셋팅
+            $('#partnerName').val($('#vPrtnNm').val());
+            $('#partnerTlno').val($('#vPrtnTlno').val());
+            $('#partnerCorpKor').val($('#vPrtnCorpKor').val());
+            
+            
+            // 협력사 사용자 현장 리스트 조회  
+            var param = { 
+                    userId: result[0].userId
+                   }
+            
+            $.getJSON("/partnerConfirm/partnerDeptList", param, function (data) {
+                var resultDept = JSON.stringify(data);
+                
+                resultDept = JSON.parse(resultDept);
+                                
+                if(resultDept.length <= 0){
+                    return;
+                }
+                
+                for(i=0; i<resultDept.length; i++){
+                    fnTableAppend(resultDept[i].deptNm, resultDept[i].deptCd, resultDept[i].basDeptYn);
+                }
+                
+                $("input[name=blankRadio]:checked").val();
+            });
+        });
+        
+        $("#btnSave").on("click", function (){
+                       
+            if($('#vUserId').val() == ""){
+                alert("본인 정보를 불러오지 못하였습니다.\n관리팀에 문의하여, 다시 등록URL을 받아보시기 바랍니다.");
+                return false;
+            }
+            
+            var bRtn = $('input:radio[name=blankRadio]').is(':checked');
+           
+            if(bRtn == false){
+                alert("대표현장 한곳을 선택하시기 바랍니다."); 
+                return false;
+            }
+
+            if($("#prtnPwd").val() == "" ){
+                alert("[비밀번호]가 입력되지 않았습니다.");
+                return false;
+            }
+            
+            if($("#prtnPwd").val() != ""){
+
+                // if ((new RegExp(/[^a-z|^0-9]/gi)).test($("#pwd").val())) {
+                //     _.dialog.alert("[비밀번호] 은(는) 영문 또는 숫자만 사용 가능합니다.");
+                //     return false;
+                // }
+
+                if($("#prtnPwd").val().length < 6  || $("#prtnPwd").val().length > 15){
+                    alert("[비밀번호] 은(는) 6자리 이상 15자리 미만이어야 합니다.");
+                    return false;
+                }
+
+                if($("#prtnPwd").val() == $('#vUserId').val()){
+                    alert("[비밀번호] 은(는) [아이디] 와 동일 할 수 없습니다.");
+                    return false;
+                }
+
+                var regexp = /0{3}|1{3}|2{3}|3{3}|4{3}|5{3}|6{3}|7{3}|8{3}|9{3}/g;
+                if($("#prtnPwd").val().match(regexp)  ){
+                    alert("[비밀번호] 은(는) 반복된 3자리 숫자 사용이 불가능합니다.");
+                    return false;
+                }
+
+
+                if($("#prtnPwd").val() != $("#prtnChkPwd").val()){
+                    alert("[비밀번호] 를 다시 한 번 확인해주세요.");
+                    return false;
+                }
+            }
+            
+            /**
+             * 비밀번호 처리
+             */
+            encrypt_data();
+            
+            var deptVal = $("input[name=blankRadio]:checked").val();
+            var pwdVal = $('#prtnEncPwd').val();
+                        
+            var param = {
+                          userId: $('#vUserId').val(),
+                          pwd: pwdVal,
+                          deptCd: deptVal
+                        }
+            
+            $.post("/partnerConfirm/partnerSave", param, function() {
+                
+                location.href = "/security/login";
+                
+                //alert("저장되었습니다.");
+            });
+            
+        });
+                
+        $('#prtnPwd').keyup(function() {
+            var validCnt = 0;
+            
+            if($("#prtnPwd").val().length < 6  || $("#prtnPwd").val().length > 15){   
+                validCnt ++;
+            }
+            
+            if($("#prtnPwd").val() == localStorage.getItem("loginId")){
+                validCnt ++;
+            }
+            
+            var regexp = /0{3}|1{3}|2{3}|3{3}|4{3}|5{3}|6{3}|7{3}|8{3}|9{3}/g;
+            if($("#prtnPwd").val().match(regexp)  ){
+                validCnt ++;
+            }
+                        
+            if(validCnt > 0){
+                $("#pwdValid").attr('class','st2');
+                $("#pwdValid").text("위험");    
+            }else{
+                $("#pwdValid").attr('class','st1');
+                $("#pwdValid").text("양호");  
+            }
+            
+            if($("#prtnChkPwd").val() != ""){
+                validCnt = 0;
+                
+                if($("#prtnPwd").val() != $("#prtnChkPwd").val()){
+                    validCnt ++;
+                }
+                
+                $("#pwdConfirm").attr('class','st2');
+                $("#pwdConfirm").text("불일치");
+            }
+        });
+        
+        $('#prtnChkPwd').keyup(function() {
+            var confirmCnt = 0;
+            
+            if($("#prtnChkPwd").val() == ""){
+                $("#pwdConfirm").attr('class','st2');
+                $("#pwdConfirm").text("불일치");
+            };
+            
+            if($("#prtnPwd").val() != $("#prtnChkPwd").val()){
+                confirmCnt++;
+            }
+            
+            if(confirmCnt > 0){
+                $("#pwdConfirm").attr('class','st2');
+                $("#pwdConfirm").text("불일치");
+            }else{
+                $("#pwdConfirm").attr('class','st1');
+                $("#pwdConfirm").text("일치");
+            }
+        });
+    });
+    
+    // URL SEND_ID 추출 Function 
+    function getUrlParams() {
+        var params = {};
+        window.location.search.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(str, key, value) { params[key] = value; });
+        return params;
+    };
+    
+    // 협력사 사용자 현장 리스트 - TABLE APPEND Function 
+    function fnTableAppend(nameVal, codeVal, chkVal){
+        
+        var addStaffText =  '<tr name="trStaff">'+
+        '   <td>' + nameVal + '</td>'+
+        '   <td class="text-center">'+
+        '       <div class="form-check">'+
+        '       <input class="form-check-input position-static" type="radio" name="blankRadio" value="' + codeVal + '" aria-label="...">'+
+        '       </div>'+
+        '   </td>'+
+        '   </td>'+
+        '</tr>';
+        
+        var trHtml = $( "tr[name=prtnTr]:last" ); //last를 사용하여 trStaff라는 명을 가진 마지막 태그 호출
+         
+        trHtml.after(addStaffText); //마지막 trStaff명 뒤에 붙인다.
+        
+        if(chkVal == "Y"){
+            $('input[name="blankRadio"]').filter("[value='" + codeVal + "']").prop("checked", true);    
+        }
+        
+    }
+    
+    //비밀번호 암호화
+    function encrypt_data() {
+        var strLoginPassword = $("#prtnPwd").val();
+        var strEncryptedLoginPassword = window.btoa(strLoginPassword);
+        $("#prtnEncPwd").val(strEncryptedLoginPassword);
+    }
+    
+    /*]]>*/
+</script>
+
+</html>   

@@ -1,0 +1,148 @@
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layouts/modalLayout">
+<body>
+<div layout:fragment="contents">
+
+          <section class="top-area">
+          </section>
+
+
+          <section class="form-area">
+            <div class="btn-area float-right mb-2">
+              <button type="button" class="btn btn-secondary btn-sm">취소</button>
+              <button type="button" class="btn btn-dark btn-sm">승인</button>
+            </div>
+            <table class="table">
+              <colgroup>
+                <col width="120px">
+                <col width="*">
+              </colgroup>
+              <tbody>
+                <tr>
+                  <th scope="col">날짜</th>
+                  <td>2019-05-01</td>
+                </tr>
+                <tr>
+                  <th scope="col">차상위 결재자</th>
+                  <td>
+                    <select class="form-control form-control-sm">
+                      <option>완료/홍길동(소장)</option>
+                    </select>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </section>
+
+<!-- 
+    <div class="row">
+        <div class="col-md-12">
+            <div class="row align-items-center">
+                <div class="col-auto mr-auto">
+                </div>
+                <div class="col-auto mb-2">
+                </div>
+            </div>
+
+            <div class="card mb-4">
+                <div class="card-body">
+
+                    <form class="row form-inline" id="search">
+                        <div class="col mr-auto">
+
+                            <div class="row">
+                                <div class="form-group col-xl-4">
+                                    <label for="">자재 명</label>
+                                    <input type="text" class="form-control" id="mtilNm" name="mtilNm" th:value="${searchMtilNm}">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-auto align-self-end">
+                            <button class="btn btn-info btn-sm mb-1" type="submit" id="btnDeptListPopupSearch">조회</button>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+
+            <div class="row align-items-center">
+                <div class="col-auto mr-auto">
+                </div>
+                <div class="col-auto mb-2">
+                    <button type="button" class="btn btn-outline-secondary btn-sm mb-1" id="btnDeptListPopupConfirm">확인</button>
+                </div>
+            </div>
+            <div id="mtilListSheet"></div>
+        </div>
+    </div>
+ -->    
+</div>
+<script type="text/javascript" th:fragment="javascript">
+    $(document).ready(function () {
+
+/* 
+        var promise = {
+            acUnitCd: function () {
+                return $.Deferred(function (dfd) {
+                    $.getJSON("/code/getCodeList/BIZHDOF_CD", function (data) {
+                        dfd.resolve(data).promise()
+                    });
+                });
+            },
+        };
+        $.when(promise.acUnitCd()).done(function (codes) {
+            deptListSheetCreate();
+            _.binder.combo("#acUnitCd", codes.acUnitCd, {value: "key", text: "value"});
+        });
+ */
+        var headers = [
+           {Text: "진행상태|자재번호|자재명|규격|단위"}
+        ],
+        mode = {
+           HeaderCheck: true
+        },
+        columns = [
+           {Type: "Status", SaveName: "rowStatus", Width: 0, Align: "center", Hidden: true, Edit: false},
+           {Type: "Int",  SaveName: "mtilNo", Width:200, Align: "center", Hidden: true, Edit: false},
+           {Type: "Text", SaveName: "mtilNm", Width:200, Align: "left", Edit: false},
+           {Type: "Text", SaveName: "spec", Width:200, Align: "left", Edit: false},
+           {Type: "Text", SaveName: "unit", Width:200, Align: "left", Edit: false}
+        ];
+        createIBSheet2($("#mtilListSheet")[0], "mtilListSheet", "100%", "300px");
+        mtilListSheet.InitHeaders(headers, mode);
+        mtilListSheet.InitColumns(columns);
+  
+        //조회
+        var $search = $("#search");
+        $search.on("submit", function (e) {
+            e.preventDefault();
+            $.getJSON("/mgmt/dailySetup/gridMtilPopList", $(this).serialize(), function (data) {
+                mtilListSheet.LoadSearchData({"data": data});
+            });
+        });
+
+        $("#btnDeptListPopupConfirm").click(function () {
+
+            var Row = mtilListSheet.GetSelectRow();
+            
+            if (Row > 0) {
+                var data = {
+                    mtilNo: mtilListSheet.GetCellValue(Row, "mtilNo"),
+                    mtilNm: mtilListSheet.GetCellValue(Row, "mtilNm"),
+                    spec: mtilListSheet.GetCellValue(Row, "spec"),
+                    unit: mtilListSheet.GetCellValue(Row, "unit")
+                    
+                };
+                callback(data);
+            }
+        });
+ 
+        if ($('#mtilNm').val() != '') {
+            $search.submit();
+        }
+          
+    });
+</script>
+</body>
+</html>

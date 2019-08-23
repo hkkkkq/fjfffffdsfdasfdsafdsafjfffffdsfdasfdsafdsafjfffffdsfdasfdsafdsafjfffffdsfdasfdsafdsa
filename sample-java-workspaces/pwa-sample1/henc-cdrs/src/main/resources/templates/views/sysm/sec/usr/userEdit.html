@@ -1,0 +1,473 @@
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layouts/layout">
+<head>
+</head>
+<body>
+<div layout:fragment="contents">
+
+    <section class="top-area">
+        <!-- breadcrumb -->
+        <nav aria-label="breadcrumb" class="float-left">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">시스템</a></li>
+                <li class="breadcrumb-item active" aria-current="page">사용자 계정 정보</li>
+            </ol>
+        </nav>
+        <!-- /breadcrumb -->
+        <!-- Transaction button -->
+        <div class="btn-area float-right">
+            <button type="button" class="btn btn-dark btn-sm" id="btnList">목록</button>
+            <button type="button" class="btn btn-dark btn-sm" id="btnSave">저장</button>
+        </div>
+        <!-- /Transaction button -->
+    </section>
+
+    <section class="form-area mb-3">
+        <form id="form">
+            <input type="hidden" id="coprcpNo" name="coprcpNo" />
+            <div>
+                <table class="table">
+                    <colgroup>
+                        <col width="120px">
+                        <col width="*">
+                        <col width="120px">
+                        <col width="*">
+                        <col width="120px">
+                        <col width="*">
+                    </colgroup>
+                    <tbody>
+                        <tr>
+                            <th scope="col">사용자구분</th>
+                            <td>
+                                <select name="userDivCd" id="userDivCd" class="form-control form-control-sm">
+                                </select>
+                            </td>
+                            <th scope="col">사용자ID</th>
+                            <td>
+                                <input type="text" class="form-control form-control-sm" autocomplete="off" id="tempUid" name="tempUid" required/>
+                                <input type="hidden" name="userId" id="userId" />
+                            </td>
+                            <th scope="col">핸드폰</th>
+                            <td>
+                                <input type="text" class="form-control form-control-sm" name="tlno" id="tlno" autocomplete="off" required/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="col">성명</th>
+                            <td>
+                                <input type="text" class="form-control form-control-sm" autocomplete="off" id="name" name="name" required/>
+                            </td>
+                            <th scope="col">비밀번호</th>
+                            <td>
+                            
+                                <div class="input-group password">
+                                    <input type="text" class="form-control form-control-sm mr-1 password_field" id="pwd" name="pwd" autocomplete="off" required/>
+                                    <input type="hidden" id="encPwd" name="encPwd"/>
+                                    <div class="input-group-append">
+                                        <button class="btn btn-sm" type="button" id="btnPwdChange">비밀번호 변경</button>
+                                    </div>
+                                </div>
+                            
+                            <!-- 
+                                <input type="text" class="form-control form-control-sm mr-1 password_field" id="pwd" name="pwd" autocomplete="off" required/>
+                                <input type="hidden" id="encPwd" name="encPwd"/>
+                                <div class="input-group-append">
+                                    <button class="btn btn-sm" type="button" id="btnPwdChange">비밀번호 변경</button>
+                                </div>                                
+                             -->                               
+                            </td>
+<!--                            <th scope="col">비밀번호 만료일자</th>-->
+<!--                            <td>-->
+<!--                                <div class="input-group dream-date" id="datetimepicker1" data-target-input="nearest">-->
+<!--                                    <input type="text" class="form-control form-control-sm mr-1" name="pwdExpiDt" data-inputmask="'alias': 'yyyy-mm-dd'" data-parsley-type="date" required>-->
+<!--                                    <div class="input-group-append" data-target="#datetimepicker1" data-toggle="datetimepicker">-->
+<!--                                        <button class="btn btn-outline-secondary btn-sm" type="button"><i class="far fa-calendar-alt"></i></button>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                            </td>-->
+<!--                        </tr>-->
+<!--                        <tr>-->
+<!--                            <th scope="col">시작일자</th>-->
+<!--                            <td>-->
+<!--                                <div class="input-group dream-date" id="datetimepicker2" data-target-input="nearest">-->
+<!--                                    <input type="text" class="form-control form-control-sm mr-1" name="stDt" data-inputmask="'alias': 'yyyy-mm-dd'" data-parsley-type="date" required>-->
+<!--                                    <div class="input-group-append" data-target="#datetimepicker2" data-toggle="datetimepicker">-->
+<!--                                        <button class="btn btn-outline-secondary btn-sm" type="button"><i class="far fa-calendar-alt"></i></button>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                            </td>-->
+<!--                            <th scope="col">종료일자</th>-->
+<!--                            <td>-->
+<!--                                <div class="input-group dream-date" id="datetimepicker3" data-target-input="nearest">-->
+<!--                                    <input type="text" class="form-control form-control-sm mr-1" name="endDt" data-inputmask="'alias': 'yyyy-mm-dd'" data-parsley-type="date" required>-->
+<!--                                    <div class="input-group-append" data-target="#datetimepicker3" data-toggle="datetimepicker">-->
+<!--                                        <button class="btn btn-outline-secondary btn-sm" type="button"><i class="far fa-calendar-alt"></i></button>-->
+<!--                                    </div>-->
+<!--                                </div>                                    -->
+<!--                            </td>-->
+                            <th scope="col">직급</th>
+                            <td>
+                                <input type="text" class="form-control form-control-sm" name="pstn" id="pstn" autocomplete="off"/>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </form>
+    </section>
+
+    <section id="grid-area" class="mb-3">
+        <div class="d-flex justify-content-between pb-2 grid-title">
+            <h2>◎ 현장등록</h2>
+            <div class="btn-area">
+                <button type="button" class="btn btn-outline-secondary btn-sm" id="btnAddDept">현장추가</button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-8" style="display: none">
+                <div class="d-flex justify-content-between pb-2">
+                    <h2></h2>
+                    <div class="btn-area">
+                        <button type="button" class="btn btn-outline-secondary btn-sm" id="btnAddRole">권한추가</button>
+                    </div>
+                </div>
+                <div id="roleSheet"></div>
+            </div>
+            <div class="col-md-12">
+                <div id="deptSheet" class="vertical-full2"></div>
+            </div>
+        </div>
+    </section>
+
+</div>
+
+<script type="text/javascript" th:inline="javascript" layout:fragment="script">
+    $(document).ready(function () {
+
+        $.getJSON("/code/getCodeList/ROLE_CLS_CD,DAT_RANG_CD,USE_YN,USER_DIV_CD", function (codes) {
+            var roleClsCd = codes.roleClsCd,
+                datRangCd = codes.datRangCd,
+                useYn = codes.useYn,
+                userDivCd = codes.userDivCd;
+
+            _.binder.combo("#userDivCd", userDivCd, {value: "key", text: "value"});
+
+            roleSheet.SetColProperty(0, "roleClsCd", {
+                ComboText: _.utils.delimiter(roleClsCd, "value"),
+                ComboCode: _.utils.delimiter(roleClsCd, "key")
+            });
+
+            roleSheet.SetColProperty(0, "datRangCd", {
+                ComboText: _.utils.delimiter(datRangCd, "value"),
+                ComboCode: _.utils.delimiter(datRangCd, "key")
+            });
+
+            roleSheet.SetColProperty(0, "useYn", {
+                ComboText: _.utils.delimiter(useYn, "value"),
+                ComboCode: _.utils.delimiter(useYn, "key")
+            });
+        });
+
+        var roleSheetCreate = function () {
+            var headers = [
+                    {Text: "진행상태|삭제|사용자ID|권한|권한분류|데이터 조회 범위|데이터 조회 범위|권한명|주 권한|사용유무|시작 일자|종료 일자"}
+                ],
+                mode = {
+                    HeaderCheck: true
+                },
+                columns = [
+                    {Type: "Status", SaveName: "rowStatus", Width: 0, Align: "center", Hidden: true},
+                    {Type: "DelCheck", SaveName: "rowChecked", Width: 80, Align: "center"},
+                    {Type: "Text", SaveName: "userId", Width: 0, Align: "left", Hidden: true},
+                    {Type: "Text", SaveName: "roleId", Width: 0, Align: "left", Hidden: true},
+                    {Type: "Combo", SaveName: "roleClsCd", Width: 300, Align: "left", Edit: false},
+                    {Type: "Combo", SaveName: "datRangCd", Width: 150, Align: "left", Edit: false, Hidden: true},
+                    {Type: "Image", SaveName: "datRangCdBtn", Width: 20, Align: "center", Hidden: true},
+                    {Type: "Text", SaveName: "nmspcVal", Width: 225, Align: "left", Edit: false},
+                    {Type: "Radio", SaveName: "mainYn", Width: 60, Align: "center", TrueValue: "Y", FalseValue: "N"},
+                    {Type: "Combo", SaveName: "useYn", Width: 60, Align: "left"},
+                    {Type: "Date", SaveName: "stDt", Width: 150, Align: "center", Format: "Ymd"},
+                    {Type: "Date", SaveName: "endDt", Width: 150, Align: "center", Format: "Ymd"}
+                ];
+            createIBSheet2($("#roleSheet")[0], "roleSheet", "100%", "400px");
+            roleSheet.InitHeaders(headers, mode);
+            roleSheet.InitColumns(columns);
+            roleSheet.SetMergeSheet(5);  //헤더만 merge
+            roleSheet.SetDataLinkMouse("nmspcVal", true);
+            roleSheet.SetColFontColor("nmspcVal", "#0000FF");
+            roleSheet.SetDataLinkMouse("datRangCdBtn", true);
+            window["roleSheet_OnClick"] = function (Row, Col, Value, CellX, CellY, CellW, CellH) {
+                if (Row > 0) {
+                    if (roleSheet.ColSaveName(Col) == "datRangCdBtn") {
+                        var param = {
+                            userId: roleSheet.GetCellValue(Row, "userId"),
+                            roleId: roleSheet.GetCellValue(Row, "roleId"),
+                            datRangCd: roleSheet.GetCellValue(Row, "datRangCd")
+                        }
+                        _.dialog.modal(_.url.format("/sysm/sec/usr/userDataRolePopup/{userId}/{roleId}/{datRangCd}", param), {
+                            title: "데이터 조회 권한",
+                            width: "1100px"
+                        }, function (data) {
+                            $('#deptCd').val(data.deptCd);
+                            $('#deptNm').val(data.deptKoNm);
+                        });
+
+                    } else if (roleSheet.ColSaveName(Col) == "nmspcVal") {
+                        var param = {
+                            userId: roleSheet.GetCellValue(Row, "userId"),
+                            roleId: roleSheet.GetCellValue(Row, "roleId")
+                        }
+                        _.dialog.modal(_.url.format("/sysm/sec/usr/userResponsibilityPopup/{userId}/{roleId}", param), {
+                            title: "Role define",
+                            width: "1100px"
+                        }, function (data) {
+                        });
+                    }
+                }
+            };
+        };
+        roleSheetCreate();
+
+        var deptSheetCreate = function () {
+            var headers = [
+                    {Text: "진행상태|삭제|사용자ID|현장코드|현장명|권한|대표현장"}
+                ],
+                mode = {
+                    HeaderCheck: true
+                },
+                columns = [
+                    {Type: "Status", SaveName: "rowStatus", Width: 0, Align: "center", Hidden: false},
+                    {Type: "DelCheck", SaveName: "rowChecked", Width: 80, Align: "center"},
+                    {Type: "Text", SaveName: "userId", Width: 0, Align: "left", Hidden: true},
+                    {Type: "Text", SaveName: "deptCd", Width: 0, Align: "left", Hidden: true, Edit: false},
+                    {Type: "PopupEdit", SaveName: "deptNm", Width: 300, Align: "left", InsertEdit: true, UpdateEdit: false},
+                    {Type: "Combo", SaveName: "roleId", Width: 150, Align: "left", Edit: true, ComboText: _.utils.delimiter([[${roles}]], "nmspcVal"), ComboCode: _.utils.delimiter([[${roles}]], "roleId")},
+                    {Type: "Radio", SaveName: "basDeptYn", Width: 80, Align: "Center", Edit: true, TrueValue: "Y", FalseValue: "N"},
+                ];
+            createIBSheet2($("#deptSheet")[0], "deptSheet", "100%", "400px");
+            deptSheet.InitHeaders(headers, mode);
+            deptSheet.InitColumns(columns);
+            deptSheet.SetMergeSheet(5);  //헤더만 merge
+            deptSheet.SetDataLinkMouse("datRangCdBtn", true);
+
+            window["deptSheet_OnPopupClick"] = function (Row, Col) {
+                if (deptSheet.ColSaveName(Col) == "deptNm") {
+                    _.cdrs.deptDialog(deptSheet, Row, {cd: "deptCd", nm: "deptNm"}, function(data) {console.log(data);});
+                }
+            };
+        };
+        deptSheetCreate();
+
+        _.datepicker.init();
+
+        // autofill workaround.
+        $('#pwd').bind("cut copy paste", function (e) {
+            e.preventDefault();
+            $('#pwd').bind("contextmenu", function (e) {
+            });
+        });
+
+        if (isNew()) {
+            $("#userId").val("");
+            $("#btnPwdChange").hide();
+        } else {
+            $("#tempUid").prop("readonly", true);
+            $("#btnPwdChange").show();
+            $("#userDivCd").attr( 'disabled', true );
+
+            $.getJSON("/sysm/sec/usr/userEdit/getComUser", {userId: getUserId()}, function (data) {
+                _.binder.bind("#form", data);
+                // 사용자ID의 경우 브라우저의 자동완성 기능 때문에 임시 객체를 만들어 사용하므로
+                // tempUid input에 정상적인 userId 값을 설정한다.
+                $("#tempUid").val(getUserId());
+            });
+
+            $.getJSON("/sysm/sec/usr/userEdit/gridUserRoleList", {userId: getUserId()}, function (data) {
+                roleSheet.LoadSearchData({"data": data});
+            });
+
+            $.getJSON("/sysm/sec/usr/userEdit/gridUserDeptList", {userId: getUserId()}, function (data) {
+                deptSheet.LoadSearchData({"data": data});
+            });
+        }
+
+        $("#userDivCd").on("change", function () {
+            if ($(this).val() == 'COPRCP') {
+                _.dialog.info("협력사의 경우 사용자 ID는 자동 생성되며, 핸드폰 번호가 로그인 ID로 사용됩니다.");
+                $("#tempUid").prop("readonly", true);
+                $("#tempUid").prop("required", false);
+
+            } else {
+                $("#tempUid").prop("readonly", false);
+                $("#tempUid").prop("required", true);
+            }
+        });
+
+        // 휴대폰 번호는 숫자만 입력
+        $("#tlno").keyup(function(){ $(this).val($(this).val().replace(/[^0-9]/gi,"") ); });
+
+
+        // 목록 이동
+        $("#btnList").on("click", function () {
+            location.href = "/sysm/sec/usr/userList";
+        });
+
+        // 현장팝업
+        $("#btnDept").on("click", function () {
+            _.dialog.modal("/sysm/com/uscd/comDeptCdList", {title: "시공현장", width: "820px"}, function (data) {
+                $('#deptCd').val(data.deptCd);
+                $('#deptNm').val(data.deptKoNm);
+            });
+        });
+
+        // 비밀번호 변경
+        $("#btnPwdChange").on("click", function () {
+            if ($("#pwd").val() == "") {
+                //_.dialog.alert("비밀번호는 필수 입력 항목 입니다.");
+                _.cdrs.notify.show("변경","비밀번호는 필수 입력 항목 입니다.");
+                $("#pwd").focus();
+                return false;
+            } else {
+                _.dialog.confirm("저장하시겠습니까?", function () {
+                    encrypt_data();
+                    var param = {
+                        userId: $("#userId").val(),
+                        encPwd: $("#encPwd").val()
+                    }
+
+                    $.post("/sysm/sec/usr/updatePwd", param, function (data) {
+                        _.dialog.alert("저장되었습니다.", function () {
+                            $("#pwd").val(data.encPwd);
+                            $("#encPwd").val("");
+                        });
+                    });
+                });
+
+            }
+        });
+
+        $("#btnSave").on("click", function (){
+            var formObj = $("#form");
+            formObj.submit();
+        });
+        // 저장 버튼 클릭
+        $("#form").parsley().on("form:submit", function (form) {
+            if ((roleSheet.RowCount() > 0) && (roleSheet.CheckedRows("mainYn") < 1)) {
+                //_.dialog.alert("권한 중 주권한이 하나는 체크되어야 합니다.");
+                _.cdrs.notify.show("저장","권한 중 주권한이 하나는 체크되어야 합니다.");
+                return false;
+            }
+
+            if ((deptSheet.RowCount() > 0) && (deptSheet.CheckedRows("basDeptYn") < 1)) {
+                //_.dialog.alert("현장 중 대표현장이 하나는 체크되어야 합니다.");
+                _.cdrs.notify.show("저장","현장 중 대표현장이 하나는 체크되어야 합니다.");
+                return false;
+            }
+
+            var comUserRole = roleSheet.GetSaveJson();
+            if (!_.cdrs.ibsheetValid(comUserRole)) {
+                return false;
+            }
+
+            var userDept = deptSheet.GetSaveJson();
+            if (!_.cdrs.ibsheetValid(userDept)) {
+                return false;
+            }
+            
+            encrypt_data();
+
+            _.dialog.confirm("저장하시겠습니까?", function () {
+                // tempUid 값을 userId 에 지정해주어야 함.
+                $("#userId").val($("#tempUid").val());
+                var comUser = form.$element.serializeObject();
+                comUser.tlno = (comUser.tlno).replace("-", "");
+                comUser.comUserRoles = comUserRole.data;
+                comUser.userDepts = userDept.data;
+
+                if (isNew()) {
+                    $.post("/sysm/sec/usr/userInsert", comUser, function (data) {
+                        _.dialog.alert("저장되었습니다.", function () {
+                            location.href = "/sysm/sec/usr/userEdit/" + $("#userId").val();
+                        });
+                    });
+                } else {
+                    $.post("/sysm/sec/usr/userSave", comUser, function (data) {
+                        _.dialog.alert("저장되었습니다.", function () {
+                            roleSheet.LoadSaveData(_.ibsheet.success());
+                            deptSheet.LoadSaveData(_.ibsheet.success());
+                        });
+                    });
+                }
+            });
+            return false;
+        });
+
+        // 권한추가팝업
+        $("#btnAddRole").on("click", function () {
+            _.dialog.modal("/sysm/sec/rnr/roleListPopup", {title: "시스템 권한 선택", width: "820px"}, function (data) {
+                setRoleData(data);
+            });
+        });
+
+        $("#btnAddDept").click(function() {
+            var userId = getUserId();
+            if(userId == null || userId == ""){
+                _.dialog.alert("사용자 저장을 먼저 하세요.", function () {});
+                return false;
+            }
+
+            var newRow = deptSheet.DataInsert(-1);
+            deptSheet.SetCellValue(newRow, "userId", getUserId());
+            _.cdrs.deptDialog(deptSheet, newRow, {cd: "deptCd", nm: "deptNm"}, function(param) {
+                if (deptSheet.ColValueDupRows("deptCd") != "") {
+                    _.dialog.info("이미 존재하는 현장입니다.");
+                    deptSheet.RowDelete( (deptSheet.ColValueDupRows("deptCd")).replace(",", "|")  );
+                }
+            });
+        });
+        resizeContent();
+    });
+
+    //비밀번호 암호화
+    function encrypt_data() {
+        var strLoginPassword = $("#pwd").val();
+        var strEncryptedLoginPassword = window.btoa(strLoginPassword);
+        $("#encPwd").val(strEncryptedLoginPassword);
+    }
+
+    //권한 추가
+    function setRoleData(result) {
+        if (result != null) {
+            var r_data = JSON.parse("[" + result + "]");
+            for (idx = 0; idx < r_data.length; idx++) {
+                var isPass = true;
+                var _roleId = r_data[idx].roleId;
+                for (var i = 1; i <= roleSheet.RowCount(); i++) {
+                    if (_roleId == roleSheet.GetCellValue(i, "roleId")) {
+                        _.dialog.error("선택하신 데이터 " + _roleId + "은(는) 중복되어 추가할 수 없습니다.");
+                        isPass = false;
+                    }
+                }
+                if (isPass) {
+                    var rowIdx = roleSheet.DataInsert(-1);
+                    roleSheet.SetCellValue(rowIdx, "userId", getUserId());
+                    roleSheet.SetCellValue(rowIdx, "roleId", r_data[idx].roleId);
+                    roleSheet.SetCellValue(rowIdx, "roleClsCd", r_data[idx].roleClsCd);
+                    roleSheet.SetCellValue(rowIdx, "datRangCd", r_data[idx].datRangCd);
+                    roleSheet.SetCellValue(rowIdx, "nmspcCd", r_data[idx].nmspcCd);
+                    roleSheet.SetCellValue(rowIdx, "nmspcVal", r_data[idx].nmspcVal);
+                    roleSheet.SetCellValue(rowIdx, "datRangCdBtn", "/assets/ibsheet7/sheet/js/Main/popup.gif");
+                }
+            }
+        }
+    }
+
+    function isNew() {
+        return getUserId() === null;
+    }
+
+    function getUserId() {
+        return [[${userId}]];
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,924 @@
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layouts/layout">
+<head>
+</head>
+<body>
+    <div layout:fragment="contents">
+    
+        <section class="top-area">
+            <!-- breadcrumb -->
+            <nav aria-label="breadcrumb" class="float-left">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="#">시스템</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">권한관리</li>
+                </ol>
+            </nav>
+            <!-- /breadcrumb -->
+            <!-- Transaction button -->
+            <div class="btn-area float-right">
+                <button type="button" class="btn btn-dark btn-sm" id="btnSave">저장</button>
+            </div>
+            <!-- /Transaction button -->
+        </section>
+    
+        <section id="search-area" class="mb-3">
+            <form id="search">    
+                <div class="border">
+                    <div class="form-row">
+                        <div>
+                            <label for="roleClsCd">권한분류</label>
+                            <select class="form-control form-control-sm" name="roleClsCd" id="roleClsCd">
+                                <option value="">전체</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="nmspcCd">권한명</label>
+                            <input type="text" class="form-control form-control-sm" id="nmspcCd" name="nmspcCd">
+                        </div>
+                    </div>
+                </div>
+                <div class="btn-area">
+                    <button class="btn btn-secondary btn-sm" type="submit" id="btnSearch">조회</button>
+                </div>
+            </form>
+        </section>
+        
+        <section id="grid-area" class="mb-3">
+            <div class="d-flex justify-content-between pb-2">
+                <h2>◎ 권한 정보</h2>
+                <div class="btn-area">
+                    <button class="btn btn-outline-secondary btn-sm mb" type="button" id="btnNew">신규</button>
+<!--                    <button class="btn btn-outline-secondary btn-sm mb" type="button" id="btnPrint">출력</button>-->
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div id="comRoleSheet"></div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="grid-area" class="mb-3">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="d-flex justify-content-between pb-2">
+                        <h2>◎ 메뉴구조</h2>
+                        <div class="btn-area">
+                            <button type="button" class="btn btn-outline-secondary btn-sm" id="btnRootMenuNew">메뉴 추가</button>
+<!--                            <button type="button" class="btn btn-outline-secondary btn-sm" id="btnMenuGrpNew">메뉴 그룹 추가</button>-->
+<!--                            <button type="button" class="btn btn-outline-secondary btn-sm" id="btnDivider">DIVIDER 추가</button>-->
+                            <button type="button" class="btn btn-outline-secondary btn-sm" id="btnPgmNew">프로그램 추가</button>
+                            <button type="button" class="btn btn-outline-secondary btn-sm" id="btnMenuDelete">삭제</button>
+                        </div>
+                    </div>
+                    <div class="card mb-4">
+                        <div class="col-auto tree" id="role_tree" style="height:350px;width:100%;overflow:auto;">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <div class="d-flex justify-content-between pb-2">
+                        <h2>◎ 프로그램 연결 정보</h2>
+                        <div class="btn-area">
+<!--                            <button type="button" class="btn btn-outline-secondary btn-sm mb" id="btnMenuSave">저장</button>-->
+                        </div>
+                    </div>
+                    
+                    <form id="formPgm">
+                        <section class="form-area mb-3">
+                            <div>
+                                <table class="table">
+                                    <colgroup>
+                                        <col width="120px">
+                                        <col width="*">
+                                        <col width="120px">
+                                        <col width="*">
+                                        <col width="120px">
+                                        <col width="*">
+                                    </colgroup>
+                                    <tbody>
+                                        <tr>
+                                            <th scope="col">메뉴ID</th>
+                                            <td>
+                                                <input type="text" class="form-control form-control-sm" id="menuId" readonly/>
+                                            </td>
+                                            <th scope="col">메뉴명</th>
+                                            <td>
+                                                <input type="text" class="form-control form-control-sm" id="menuNmspcVal" readonly/>
+                                            </td>
+                                            <th scope="col">프로그램ID</th>
+                                            <td>
+                                                <input type="text" class="form-control form-control-sm" id="pgmId" readonly/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="col">프로그램명</th>
+                                            <td>
+                                                <input type="text" class="form-control form-control-sm" id=pgmNm readonly/>
+                                            </td>
+                                            <th scope="col">메뉴표시</th>
+                                            <td class="input-group">
+                                                <div class="form-check form-check-inline">
+                                                    <input class="form-check-input" type="radio" name="useYn" id="useYn_0" value="Y" disabled="">
+                                                    <label class="form-check-label" for="inlineRadio1">Yes</label>
+                                                </div>
+                                                <div class="form-check form-check-inline">
+                                                    <input class="form-check-input" type="radio" name="useYn" id="useYn_1" value="N" disabled="">
+                                                    <label class="form-check-label" for="inlineRadio2">No</label>
+                                                </div>
+                                            </td>
+                                            <th scope="col">URL명</th>
+                                            <td>
+                                                <input type="text" class="form-control form-control-sm" id="uriNm" readonly/>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </section>
+                    </form>
+                    
+                    <div class="col mr-auto" style="display: none">
+                        <div class="row">
+                            <div id="comPgmBtnSheet"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>    
+        
+        <form name="frmHidden" id="frmHidden">
+            <input type="hidden" id="roleId"/>
+            <input type="hidden" id="testXmlData"/>
+            <input type="hidden" id="menuClsCd"/>
+            <input type="hidden" id="menuSeq"/>
+            <input type="hidden" id="uprMenuId"/>
+            <input type="hidden" id="pgmSaveMode" value=""/>
+            <input type="hidden" id="menuSaveMode" value=""/>
+            <input type="hidden" id="menuNmspcCd" value=""/>
+            <input type="hidden" id="originalPgmId" value=""/>
+            <input type="hidden" id="originalUseYn" value=""/>
+            <input type="hidden" id="roleNote"/>
+            <input type="hidden" id="wrtrDm"/>
+            <input type="hidden" id="wrtrId"/>
+            <input type="hidden" id="updtDm"/>
+            <input type="hidden" id="updtId"/>
+            <input type="hidden" id="migYn"/>
+        </form>
+    </div>  <!-- contents -->
+    
+    <script type="text/javascript" th:inline="javascript" layout:fragment="script">
+        $(document).ready(function () {
+    
+            var comRoleSheetRow;
+            //IBSheet 선택된 셀의 수정 모드 전환을 위한 전역 변수
+            var _sheetEditMode = true;
+            var _sheetFocusedRow = null;
+            var _sheetFocusedCol = null;
+    
+            var comRoleSheetCreate = function() {
+                //comRoleSheet
+                var headers = [
+                        {Text: "진행상태|순번|삭제|권한 ID|권한 분류|데이터 조회 범위|데이터 조회 범위|네임스페이스|권한명|사용유무|비고"}
+                    ],
+                    mode = {
+                        HeaderCheck: true
+                    },
+                    columns = [
+                        {Type: "Status", SaveName: "rowStatus", Width: 0, Align: "center"},
+                        {Type: "Seq", SaveName: "at_Seq", Width: 60, Align: "center"},
+                        {Type: "DelCheck", SaveName: "rowChecked", Width: 0, Align: "center"},
+                        {Type: "Text", SaveName: "roleId", Width: 120, Edit: false, KeyField: true},
+                        {Type: "Combo", SaveName: "roleClsCd", Width: 120},
+                        {Type: "Combo", SaveName: "datRangCd", Width: 100, Hidden:true},
+                        {Type: "Image", SaveName: "datRangCdBtn", Width: 20, Align: "center", Hidden:true},
+                        {Type: "Text", SaveName: "nmspcCd", Width: 200, KeyField: true, Hidden:true},
+                        {Type: "Text", SaveName: "nmspcVal", Width: 200},
+                        {Type: "Combo", SaveName: "useYn", Width: 150, Align: "center"},
+                        {Type: "Text", SaveName: "roleNote", Width: 250}
+                    ];
+                createIBSheet2($("#comRoleSheet")[0], "comRoleSheet", "100%", "300px");
+                comRoleSheet.InitHeaders(headers, mode);
+                comRoleSheet.InitColumns(columns);
+                comRoleSheet.SetMergeSheet(5);  //헤더만 merge
+    
+                window["comRoleSheet_OnClick"] = function (Row, Col, Value, CellX, CellY, CellW, CellH) {
+                    $("#roleId").val(comRoleSheet.GetCellValue(Row, "roleId"));
+    
+                    if (comRoleSheet.ColSaveName(Col) == "rowChecked") { //delChecked
+    
+                    } else if (comRoleSheet.ColSaveName(Col) == "datRangCdBtn") {
+                        var datRangCd = comRoleSheet.GetCellValue(Row, "datRangCd");
+                        var roleId = comRoleSheet.GetCellValue(Row, "roleId");
+    
+                        if (datRangCd == "" || comRoleSheet.GetCellValue(Row, "rowStatus") != "R") {
+    
+                        } else {
+                            dataRoleSetupPopup(roleId, datRangCd);
+                        }
+                    } else {
+                        if (comRoleSheet.GetCellValue(Row, "rowStatus") != "I") {
+                            if (Row != comRoleSheetRow) {
+                                getTreeData($("#roleId").val());
+                            }
+                        }
+                    }
+    
+                    _sheetFocusedRow = Row;
+                    _sheetFocusedCol = Col;
+                    _sheetEditMode = true;
+                    comRoleSheetRow = Row;
+                }
+                window["comRoleSheet_OnChange"] = function (Row, Col, Value, OldValue, RaiseFlag) {
+                    var roleId = comRoleSheet.ColSaveName(Col);
+                    if (comRoleSheet.ColSaveName(Col) == "roleId") {
+                        comRoleSheet.SetCellValue(Row, "nmspcCd", "NS.RNR." + comRoleSheet.GetCellValue(Row, Col));
+                    }
+                };
+            };
+            comRoleSheetCreate();
+    
+            var comPgmBtnSheetCreate = function() {
+                var headers = [
+                        {Text: "진행상태|menuId|roleId|pgmId|그룹ID|버튼ID|버튼|순번|사용유무"}
+                    ],
+                    mode = {
+                        HeaderCheck: true
+                    },
+                    columns = [
+                        {Type: "Status", SaveName: "rowStatus", Width: 0, Align: "center"},
+                        {Type: "Text", SaveName: "menuId", Width: 100, Align: "center", Hidden: true},
+                        {Type: "Text", SaveName: "roleId", Width: 100, Align: "center", Hidden: true},
+                        {Type: "Text", SaveName: "pgmId", Width: 100, Align: "center", Hidden: true},
+                        {Type: "Text", SaveName: "btnGrpId", Width: 100, Align: "center", InsertEdit: false, UpdateEdit: false},
+                        {Type: "Text", SaveName: "btnId", Width: 100, Align: "left", InsertEdit: false, UpdateEdit: false},
+                        {Type: "Text", SaveName: "nmspcVal", Width: 100, Align: "left", InsertEdit: false, UpdateEdit: false},
+                        {Type: "Text", SaveName: "btnSeq", Width: 100, Align: "center", InsertEdit: false, UpdateEdit: false},
+                        {Type: "Combo", SaveName: "btnUseYn", Width: 100, Align: "center"}
+                    ];
+                createIBSheet2($("#comPgmBtnSheet")[0], "comPgmBtnSheet", "100%", "200px");
+                comPgmBtnSheet.InitHeaders(headers, mode);
+                comPgmBtnSheet.InitColumns(columns);
+    
+                $.getJSON("/code/getCodeList/ROLE_CLS_CD,DAT_RANG_CD,USE_YN,SYS_CLS_CD", function (codes) {
+                    var roleClsCd = codes.roleClsCd;
+                    var datRangCd = codes.datRangCd;
+                    var useYn = codes.useYn;
+                    var sysClsCd = codes.sysClsCd;
+    
+                    _.binder.combo("#roleClsCd", roleClsCd, {value: "key", text: "value"});
+                    _.binder.combo("#sysClsCd", sysClsCd, {value: "key", text: "value"});
+    
+                    comRoleSheet.SetColProperty(0, "roleClsCd", {
+                        ComboText: _.utils.delimiter(roleClsCd, "value"),
+                        ComboCode: _.utils.delimiter(roleClsCd, "key")
+                    });
+                    comRoleSheet.SetColProperty(0, "datRangCd", {
+                        ComboText: _.utils.delimiter(datRangCd, "value"),
+                        ComboCode: _.utils.delimiter(datRangCd, "key")
+                    });
+                    comRoleSheet.SetColProperty(0, "useYn", {
+                        ComboText: _.utils.delimiter(useYn, "value"),
+                        ComboCode: _.utils.delimiter(useYn, "key")
+                    });
+                    comPgmBtnSheet.SetColProperty(0, "btnUseYn", {
+                        ComboText: _.utils.delimiter(useYn, "value"),
+                        ComboCode: _.utils.delimiter(useYn, "key")
+                    });
+                });
+            };
+            comPgmBtnSheetCreate();
+    
+    
+            $("#btnSave").on("click", function () {
+                var changeCnt = 0;
+                for (var i = 1; i <= comRoleSheet.RowCount(); i++) {
+                    if (comRoleSheet.GetCellValue(i, "rowStatus") == "I"
+                        || comRoleSheet.GetCellValue(i, "rowStatus") == "U"
+                        || comRoleSheet.GetCellValue(i, "rowStatus") == "D") {
+                        changeCnt++;
+                    }
+                }
+    
+                if (changeCnt == 0) {
+                    $("#confirmModal").modal("hide");
+                    //_.dialog.error("저장할 항목이 없습니다.");
+                    _.cdrs.notify.show("저장","저장할 항목이 없습니다.");
+                    return;
+                }
+    
+                var comRoleList = comRoleSheet.GetSaveJson();
+                if (!_.cdrs.ibsheetValid(comRoleList)) {
+                    return false;
+                }
+                
+                var paramlist = {
+                    roleId: $("#roleId").val(),
+                    datRangCd: "P",
+                    comRoles: comRoleSheet.GetSaveJson().data
+                };
+    
+                _.dialog.confirm("저장하시겠습니까?", function () {
+                    $.post("/sysm/sec/rnr/roleList/saveComRoleList", paramlist, function () {
+                        comRoleSheet.LoadSaveData(_.ibsheet.success());
+                        $("#search").submit();
+                    });
+                });
+    
+            });
+    
+            var $search = $("#search");
+            $search.on("submit", function (e) {
+                e.preventDefault();
+                $.getJSON("/sysm/sec/rnr/roleList/selectComRoleList", $(this).serialize(), function (data) {
+                    comRoleSheet.LoadSearchData({"data": data});
+                });
+            });
+    
+            $("#btnNew").on("click", function () {
+                comRoleSheet.SetCellEditable(comRoleSheet.DataInsert(-1), 3, 1);
+            });
+    
+            $("#btnPrint").on("click", function () {
+
+                var accessToken = /*[[${accessToken}]]*/ null;
+                _.cdrs.birtReport({
+                    reportName: "loigAsgnInfo",
+                    reportParameters: "?userId=CM00005&zoneDiv=10",
+                    accessToken: accessToken
+                });
+
+            });
+    
+            //메뉴추가 모달 창
+            $("#btnRootMenuNew_old").on("click", function () {
+                if ($("#testXmlData").val() == "") {
+                    //_.dialog.alert("메뉴 구조가 조회되지 않았습니다.\n역할을 선택하여주십시오");
+                    _.cdrs.notify.show("확인","메뉴 구조가 조회되지 않았습니다.\n역할을 선택하여주십시오.");
+                } else if ($("#menuSaveMode").val() == "NEW") {
+                    //_.dialog.alert("변경된 내용을 먼저 저장하시기 바랍니다.");
+                    _.cdrs.notify.show("확인","변경된 내용을 먼저 저장하시기 바랍니다.");
+                } else {
+                    _.dialog.modal("/sysm/sec/rnr/rootMenuModal", {title: "메뉴 추가", width: "400px"}, function (data) {
+                        var nmspcCd = data.nmspcCd;
+                        var nmspcVal = data.nmspcVal;
+                        var menuId = data.attributeId1;
+                        var pgmId = data.attributeId2;
+                        var nmspcCode = data.nmspcCode;
+                        var roleId = $("#roleId").val();
+                        var uprMenuId = $("#uprMenuId").val();
+    
+                        if (isEmpty(nmspcCd)) {
+                            return;
+                        }
+    
+                        $("#role_tree").jstree("create", -1, false, {
+                            "attr": {
+                                "id": "NEW",
+                                "parent_id": "",
+                                "rel": "S",
+                                "nmspc_cd": nmspcCode,
+                                "pgm_id": pgmId,
+                                "use_yn": "Y"
+                            }, data: nmspcVal
+                        }, false, true);
+    
+                    });
+                }
+            });
+    
+            //삭제 버튼 클릭
+            $("#btnMenuDelete").on("click", function () {
+                _.dialog.confirm("삭제 하시겠습니까?", function () {
+                    var param = "roleId=" + $("#roleId").val() + "&menuId=" + $("#menuId").val();
+                    $.post("/sysm/sec/rnr/roleList/deleteMenu", param, function () {
+                        pgmId = "";
+                        $("#pgmId").val(pgmId);
+                        //_.dialog.alert("처리되었습니다.");
+                        _.cdrs.notify.show("삭제","처리되었습니다.");
+    
+                        getTreeData($("#roleId").val());
+                    });
+                });
+            });
+    
+            //메뉴 그룹 추가 버튼 클릭
+            $("#btnRootMenuNew, #btnMenuGrpNew").on("click", function () {
+    
+                // console.log($(this).attr("id"));
+                //메뉴추가를 하면 jstree의 rel 값을 'S'으로 하여 메뉴레벨을 생성하도록 한다.
+                if ($(this).attr("id") == "btnRootMenuNew") {
+                    $("#menuClsCd").val("S");
+                }
+    
+                if ($("#testXmlData").val() == "") {
+                    //_.dialog.alert("메뉴 구조가 조회되지 않았습니다.\n역할을 선택하여주십시오.");
+                    _.cdrs.notify.show("확인","메뉴 구조가 조회되지 않았습니다.\n역할을 선택하여주십시오.");
+    
+                } else if ($("#menuSaveMode").val() == "NEW") {
+                    //_.dialog.alert("변경된 내용을 먼저 저장하시기 바랍니다.");
+                    _.cdrs.notify.show("확인","변경된 내용을 먼저 저장하시기 바랍니다.");
+    
+                } else {
+                    _.dialog.modal("/sysm/sec/rnr/menuGrpModal", {title: "메뉴 그룹 추가", width: "820px"}, function (data) {
+                        var nmspcCd = data.nmspcCd;
+                        var nmspcVal = data.nmspcVal;
+                        var roleId = $("#roleId").val();
+                        var uprMenuId = $("#uprMenuId").val();
+                        var menuId = $("#menuId").val();
+                        var pgmId = $("#pgmId").val();
+    
+                        if (isEmpty(nmspcCd) || nmspcCd == -1) {
+                            return;
+                        }
+    
+                        if ($("#menuClsCd").val() == "S") {
+                            $("#role_tree").jstree("create", null, "last", {
+                                "attr": {
+                                    "id": "NEW",
+                                    "parent_id": uprMenuId,
+                                    "rel": "M",
+                                    "nmspc_cd": nmspcCd,
+                                    "pgm_id": "",
+                                    "use_yn": "Y"
+                                }, data: nmspcVal
+                            }, false, true);
+                            $("#menuSaveMode").val("NEW");
+    
+                        } else if ($("#menuClsCd").val() == "M") {
+                            $("#role_tree").jstree("create", null, "last", {
+                                "attr": {
+                                    "id": "NEW",
+                                    "parent_id": uprMenuId,
+                                    "rel": "PG",
+                                    "nmspc_cd": nmspcCd,
+                                    "pgm_id": "",
+                                    "use_yn": "Y"
+                                }, data: nmspcVal
+                            }, false, true);
+                            $("#menuSaveMode").val("NEW");
+    
+                        } else if ($("#menuClsCd").val() == "PG") {
+                            $("#role_tree").jstree("create", null, "last", {
+                                "attr": {
+                                    "id": "NEW",
+                                    "parent_id": uprMenuId,
+                                    "rel": "PG",
+                                    "nmspc_cd": nmspcCd,
+                                    "pgm_id": "",
+                                    "use_yn": "Y"
+                                }, data: nmspcVal
+                            }, false, true);
+                            $("#menuSaveMode").val("NEW");
+    
+                        } else if ($("#menuClsCd").val() == "P") {
+                            $("#role_tree").jstree("create", null, "after", {
+                                "attr": {
+                                    "id": "NEW",
+                                    "parent_id": uprMenuId,
+                                    "rel": "PG",
+                                    "nmspc_cd": nmspcCd,
+                                    "pgm_id": "",
+                                    "use_yn": "Y"
+                                }, data: nmspcVal
+                            }, false, true);
+                            $("#menuSaveMode").val("NEW");
+                        }
+                    });
+                }
+            });
+    
+            //divider 추가
+            $("#btnDivider").on("click", function () {
+                var nmspcCd = "NS.MNU.00002";
+                var nmspcVal = "DIVIDER";
+                var roleId = $("#roleId").val();
+                var uprMenuId = $("#uprMenuId").val();
+                var menuId = $("#menuId").val();
+                var pgmId = $("#pgmId").val();
+    
+                $("#role_tree").jstree("create", null, "after", {
+                    "attr": {
+                        "id": "NEW",
+                        "parent_id": uprMenuId,
+                        "rel": "PG",
+                        "nmspc_cd": nmspcCd,
+                        "pgm_id": "",
+                        "use_yn": "Y"
+                    }, data: nmspcVal
+                }, false, true);
+                $("#menuSaveMode").val("NEW");
+            });
+    
+            //프로그램 추가 버튼 클릭
+            $("#btnPgmNew").on("click", function () {
+                _.dialog.modal("/sysm/sec/rnr/pgmModal", {title: "프로그램 추가", width: "820px"}, function (data) {
+                    var roleId = $("#roleId").val();
+                    var menuId = $("#menuId").val();
+                    var uprMenuId = $("#uprMenuId").val();
+                    var pgmId = data.pgmId;
+                    var pgmNm = data.pgmNm;
+                    var uriNm = data.uriNm;
+                    var nmspcCd = data.nmspcCd;
+                    var pgmTypCd = data.pgmTypCd;
+    
+                    $("#pgmId").val(pgmId);
+                    $("#pgmNm").val(pgmNm);
+                    $("#uriNm").val(uriNm);
+    
+                    if (pgmTypCd == "MAIN") {
+                        $("input:radio[name='useYn']").filter("[value='Y']").attr("checked", true);
+                    } else {
+                        $("input:radio[name='useYn']").filter("[value='N']").attr("checked", true);
+                    }
+    
+                    if ($("#menuClsCd").val() == "S") {
+                        $("#role_tree").jstree("create", null, "last", {
+                            "attr": {
+                                "id": "NEW",
+                                "parent_id": uprMenuId,
+                                "rel": "M",
+                                "nmspc_cd": nmspcCd,
+                                "pgm_id": pgmId,
+                                "use_yn": "Y"
+                            }, data: pgmNm
+                        }, false, true);
+                        $("#menuSaveMode").val("NEW");
+    
+                    } else if ($("#menuClsCd").val() == "M") {
+                        $("#role_tree").jstree("create", null, "last", {
+                            "attr": {
+                                "id": "NEW",
+                                "parent_id": uprMenuId,
+                                "rel": "P",
+                                "nmspc_cd": nmspcCd,
+                                "pgm_id": pgmId,
+                                "use_yn": "Y"
+                            }, data: pgmNm
+                        }, false, true);
+                        $("#menuSaveMode").val("NEW");
+    
+                    } else if ($("#menuClsCd").val() == "PG") {
+                        $("#role_tree").jstree("create", null, "last", {
+                            "attr": {
+                                "id": "NEW",
+                                "parent_id": uprMenuId,
+                                "rel": "P",
+                                "nmspc_cd": nmspcCd,
+                                "pgm_id": pgmId,
+                                "use_yn": "Y"
+                            }, data: pgmNm
+                        }, false, true);
+                        $("#menuSaveMode").val("NEW");
+    
+                    } else if ($("#menuClsCd").val() == "P") {
+                        $("#role_tree").jstree("create", null, "last", {
+                            "attr": {
+                                "id": "NEW",
+                                "parent_id": uprMenuId,
+                                "rel": "P",
+                                "nmspc_cd": nmspcCd,
+                                "pgm_id": pgmId,
+                                "use_yn": "Y"
+                            }, data: pgmNm
+                        }, false, true);
+                        $("#menuSaveMode").val("NEW");
+                    }
+    
+                });
+            });
+    
+            $("#btnMenuSave").on("click", function () {
+                var roleId = $("#roleId").val();
+                var menuId = $("#menuId").val();
+                var pgmId = $("#pgmId").val();
+                var nmspcCd = $("#menuNmspcCd").val();
+                var useYn = $("input[name=useYn]:radio:checked").val();
+    
+                var changeCnt = 0;
+                for (var i = 1; i <= comPgmBtnSheet.RowCount(); i++) {
+                    if (comPgmBtnSheet.GetCellValue(i, "rowStatus") == "I"
+                        || comPgmBtnSheet.GetCellValue(i, "rowStatus") == "U"
+                        || comPgmBtnSheet.GetCellValue(i, "rowStatus") == "D") {
+                        changeCnt++;
+                    }
+                }
+    
+                if (isEmpty(roleId)) {
+                    //_.dialog.alert("RoleID 를 먼저 선택해 주십시오.");
+                    _.cdrs.notify.show("확인","RoleID를 먼저 선택해 주십시오.");
+                } else if (isEmpty(menuId)) {
+                    //_.dialog.alert("Menu 를 먼저 선택해 주십시오.");
+                    _.cdrs.notify.show("확인","Menu 를 먼저 선택해 주십시오.");
+                } else if (isEmpty(pgmId)) {
+                    //_.dialog.alert("프로그램 추가를 통해 메뉴와 연결을 먼저 선택해 주십시오.");
+                    _.cdrs.notify.show("확인","프로그램 추가를 통해 메뉴와 연결을 먼저 선택해 주십시오.");
+                } else {
+                    var pgmSaveMode = "";
+                    if (pgmId == $("#originalPgmId").val()) {
+                        if (useYn == $("#originalUseYn").val()) {
+                            pgmSaveMode = "";
+                        } else {
+                            pgmSaveMode = "CHANGE_USE_YN";
+                        }
+                    } else {
+                        pgmSaveMode = "CHANGE_PGM";
+                    }
+    
+                    if (pgmSaveMode != "") {
+                        var param = "roleId=" + roleId + "&menuId=" + menuId + "&pgmId=" + pgmId + "&nmspcCd=" + nmspcCd
+                            + "&useYn=" + useYn + "&pgmSaveMode=" + pgmSaveMode;
+                        $.put("/sysm/sec/rnr/roleList/modifyRoleMenu", param, function (data) {
+                            if (data.comRoleMenu != null) {
+                                doSaveBtnGridList(pgmSaveMode, changeCnt);
+                            }
+                        });
+                    } else if (pgmSaveMode == "") {
+                        doSaveBtnGridList(pgmSaveMode, changeCnt);
+                    }
+                }
+            });
+    
+        });
+    
+        //버튼 그리드 내역 저장
+        function doSaveBtnGridList(pgmSaveMode, changeCnt) {
+            if (changeCnt > 0) {
+    
+                var comMenuPgmBtn = comPgmBtnSheet.GetSaveJson();
+                if (!_.cdrs.ibsheetValid(comMenuPgmBtn)) {
+                    return false;
+                }
+                
+                var saveJson = comStdCdSheet.GetSaveJson();
+                if (!_.cdrs.ibsheetValid(saveJson)) {
+                    return false;
+                }
+    
+    
+                var paramlist = $("#formPgm").parsley().$element.serializeObject();
+                paramlist.list = comMenuPgmBtn.data;
+    
+                $.post("/sysm/sec/rnr/roleList/btnGridSave", paramlist, function (data) {
+                    _.dialog.alert("저장되었습니다.", function () {
+                        comPgmBtnSheet.LoadSaveData(_.ibsheet.success());
+                    });
+                });
+    
+            } else {
+                if (pgmSaveMode == "") {
+                    //_.dialog.alert("저장할 항목이 없습니다.");
+                    _.cdrs.notify.show("저장","저장할 항목이 없습니다.");
+                    return;
+                }
+            }
+        }
+    
+        function doSearchBtnGridList() {
+            var param = "menuId=" + $("#menuId").val() + "&roleId=" + $("#roleId").val() + "&pgmId=" + $("#pgmId").val();
+            $.getJSON("/sysm/sec/rnr/roleList/btnGridList", param, function (data) {
+                comPgmBtnSheet.LoadSearchData({"data": data});
+            });
+        }
+    
+        /* Tree */
+        function getTreeData(roleId) {
+            $.ajax({
+                url: "/sysm/sec/rnr/roleList/getRoleMenuList",
+                dataType: "text",
+                //contentType : "text/xml; charset=UTF-8",
+                data: {
+                    roleId: roleId
+                },
+                success: function (xmlData) {
+                    $("#testXmlData").val(xmlData);
+                    $("#menuId").val("");
+                    $("#menuNmspcVal").val("");
+                    $("#pgmId").val("");
+                    $("#pgmNm").val("");
+                    $("#uriNm").val("");
+                    $("input:radio[name=useYn][value=Y]").attr("checked", true);
+                    doSearchBtnGridList();
+                    $("#STATUS").val("NEW");
+                    treeInit(xmlData);
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                }
+            });
+        }
+    
+        function treeInit(p_xml_data) {
+            var ready = false;
+            $(function () {
+                $("#role_tree").jstree({
+                    "plugins": ["themes", "xml_data", "ui", "crrm", "dnd", "types"],
+                    "themes": {
+                        "theme": "default",
+                        "dots": true,
+                        "icons": true
+                    },
+                    "xml_data": {
+                        "data": "" + p_xml_data
+                    },
+                    "types": {
+                        "max_depth": -1,
+                        "max_children": -1,
+                        "valid_children": ["S", "M"],
+                        "types": {
+                            "L": {
+                                "valid_children": "none"
+                            },
+                            "P": {
+                                "valid_children": ["P"],
+                                "icon": {
+                                    "image": "/images/tree/p.png"
+                                }
+                            },
+                            "PG": {
+                                "valid_children": ["P"],
+                                "icon": {
+                                    "image": "/images/tree/pg.png"
+                                }
+                            },
+                            "M": {
+                                "valid_children": ["S", "M", "PG", "P"],
+                                "icon": {
+                                    "image": "/images/tree/m.png"
+                                }
+                            },
+                            "S": {
+                                "valid_children": ["M"],
+                                "start_drag": false,
+                                "move_node": false,
+                                "delete_node": false,
+                                "remove": false,
+                                "icon": {
+                                    "image": "/images/tree/s.png"
+                                }
+                            }
+                        }
+                    }
+                })
+                    .bind("select_node.jstree", function (event, data) {
+                        var roleId = $("#roleId").val();
+                        var menuId = data.rslt.obj.attr("id");
+                        var uprMenuId = (data.inst._get_parent(data.rslt.obj) == -1 ? "" : data.inst._get_parent(data.rslt.obj).attr("id"));
+                        var menuSeq = data.rslt.obj.attr("menu_seq");
+                        var menuClsCd = data.rslt.obj.attr("rel");
+                        var pgmId = data.rslt.obj.attr("pgm_id");
+                        var useYn = data.rslt.obj.attr("use_yn");
+                        var nmspcCd = data.rslt.obj.attr("nmspc_cd");
+                        var nmspcVal = data.inst.get_text(data.rslt.obj);
+    
+                        //modifyRoleMenu 호출 시 파라미터 전달을 위한 Value 셋팅
+                        $("#menuNmspcCd").val(nmspcCd);
+    
+                        if (isEmpty(pgmId)) {
+                            pgmId = "";
+                        }
+                        if (isEmpty(useYn)) {
+                            useYn = "N";
+                        }
+    
+                        $("#menuId").val(menuId);
+                        $("#menuNmspcVal").val(nmspcVal);
+    
+                        $("#menuSeq").val(menuSeq);
+                        $("#menuClsCd").val(menuClsCd);
+                        $("#uprMenuId").val(uprMenuId);
+                        $("#pgmId").val(pgmId);
+    
+                        if (menuClsCd == "M" || menuClsCd == "PG") {
+                            $("#changeMenuNmspc").show();
+                        } else {
+                            $("#changeMenuNmspc").hide();
+                        }
+    
+                        if (menuClsCd == "P" || menuClsCd == "S") {
+                            $("#changePgm").show();
+                        } else {
+                            $("#changePgm").hide();
+                        }
+    
+                        getRoleMenuPgm(roleId, menuId, pgmId);
+                    })
+    
+                    .bind("move_node.jstree", function (event, data) {
+                        data.rslt.o.each(function (i) {
+                            var param = "roleId=" + $("#roleId").val() + "&menuId=" + $(this).attr("id") + "&uprMenuId=" + (data.rslt.cr === -1 ? "" : data.rslt.np.attr("id"))
+                                + "&menuSeq=" + (data.rslt.cp + i) + "&title=" + data.rslt.name
+                                + "&copy=" + (data.rslt.cy ? 1 : 0) + "&menu_cls_cd=" + $(this).attr("rel");
+                            $.getJSON("/sysm/sec/rnr/roleList/menuMove", param, function (r, status, xhr) {
+                                if (status == "success") {
+                                    //$(data.rslt.oc).attr("id", r.id);
+                                    if (data.rslt.cy && $(data.rslt.oc).children("UL").length) {
+                                        data.inst.refresh(data.inst._get_parent(data.rslt.oc));
+                                    }
+                                    //_.dialog.alert("처리되었습니다.");
+                                    _.cdrs.notify.show("이동","처리되었습니다.");
+                                } else {
+                                    $.jstree.rollback(data.rlbk);
+                                }
+                            });
+                        });
+                    })
+    
+                    .bind("create.jstree", function (event, data) {
+                        var node = data.rslt.obj;
+                        data.rslt.obj.attr("parent_id", (data.inst._get_parent(data.rslt.obj) == -1 ? "" : data.inst._get_parent(data.rslt.obj).attr("id")));
+                        var menuClsCd = data.rslt.obj.attr("rel");
+                        var uprMenuId = data.rslt.obj.attr("parent_id");
+                        data.rslt.obj.attr("menu_seq", data.rslt.position);
+                        var menuSeq = data.rslt.obj.attr("menu_seq");
+                        var menuNm = data.rslt.name;
+                        var nmspcCd = data.rslt.obj.attr("nmspc_cd");
+                        var pgmId = data.rslt.obj.attr("pgm_id");
+                        var useYn = data.rslt.obj.attr("use_yn");
+                        data.inst.select_node(data.rslt.obj, true);
+    
+                        menuClsCd = menuClsCd.replace("S", "M");
+                        createRoleMenu($("#roleId").val(), uprMenuId, menuSeq, menuClsCd, nmspcCd, pgmId, useYn);
+                    });
+            });
+        }
+    
+        function createRoleMenu(p_role_id, p_upr_menu_id, p_menu_seq, p_menu_cls_cd, p_menu_nmspc_cd, p_pgm_id, p_use_yn) {
+            var param = "roleId=" + p_role_id + "&uprMenuId=" + p_upr_menu_id + "&menuClsCd=" + p_menu_cls_cd
+                + "&menuSeq=" + p_menu_seq + "&nmspcCd=" + p_menu_nmspc_cd + "&pgmId=" + p_pgm_id + "&useYn=" + p_use_yn;
+            $.post("/sysm/sec/rnr/roleList/createMenu", param, function (data) {
+                getTreeData(p_role_id);
+            });
+        }
+    
+        function isEmpty(str) {
+            if (typeof str === undefined) {
+                return true;
+            } else if (str == null || str == "null" || str == "") {
+                return true;
+            } else {
+                return false;
+            }
+        }
+    
+        /**
+         *  ROLE MENU Program 정보 조회
+         */
+        function getRoleMenuPgm(p_roleId, p_menuId, p_pgmId) {
+            var param = "roleId=" + $("#roleId").val() + "&menuId=" + $("#menuId").val() + "&pgmId=" + $("#pgmId").val();
+            $.getJSON("/sysm/sec/rnr/roleList/getRoleMenuPgm", param, function (data) {
+                if (data.pgmId == null) {
+                    $("#pgmId").val("");
+                    $("#pgmNm").val("");
+                    $("#uriNm").val("");
+                    $("#menuSaveMode").val("");
+                } else {
+                    $("#pgmId").val(data.pgmId);
+                    $("#pgmNm").val(data.pgmNm);
+                    $("#uriNm").val(data.uriNm);
+                    $("input:radio[name=useYn][value=" + data.useYn + "]").attr("checked", true);
+                    $("#menuSaveMode").val("");
+    
+                    //메뉴에 연결된 PGM_ID와 변경으로 인한 PGM_ID를 비교하여 저장처리 하기 위함
+                    $("#originalPgmId").val(data.pgmId);
+                    $("#originalUseYn").val(data.useYn);
+    
+                    if (!isEmpty($("#pgmId").val())) {
+                        $("#STATUS").val("MODIFY");
+                    }
+                }
+                _sheetEditMode = false;
+                doSearchBtnGridList();
+            });
+        }
+    
+        /**
+         *  데이터 권한 팝업
+         *  datRangCd : P = Partial(부분)
+         *  datRangCd : I = Indivisual(개별)
+         */
+        function dataRoleSetupPopup(roleId, datRangCd) {
+            var roleId = $("#roleId").val();
+    
+            if (datRangCd == "P") {
+                _.dialog.modal(_.url.format("/sysm/sec/rnr/dataRolePartialModal/{roleId}", {roleId: roleId}), {
+                    title: "데이터 권한",
+                    width: "820px"
+                }, function (roleId) {
+                });
+    
+            } else if (datRangCd == "I") {
+                _.dialog.modal(_.url.format("/sysm/sec/rnr/dataRoleModal/{roleId}", {roleId: roleId}), {
+                    title: "데이터 권한",
+                    width: "820px"
+                }, function (roleId) {
+                });
+            } else if (datRangCd == "A") {
+                //_.dialog.alert("데이터조회 범위: 전체를 선택하셨습니다");
+                _.cdrs.notify.show("확인","데이터조회 범위: 전체를 선택하셨습니다.");
+            }
+        }
+    
+    
+    </script>
+</body>
+</html>

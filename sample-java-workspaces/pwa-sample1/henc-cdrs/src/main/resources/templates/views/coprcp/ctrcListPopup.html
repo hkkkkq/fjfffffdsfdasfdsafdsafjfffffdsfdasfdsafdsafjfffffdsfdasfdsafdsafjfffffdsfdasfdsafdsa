@@ -1,0 +1,92 @@
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layouts/modalLayout">
+<body>
+  <div layout:fragment="contents">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="row align-items-center">
+          <div class="col-auto mr-auto">
+          </div>
+          <div class="col-auto mb-2">
+          </div>
+        </div>       
+        <div class="card mb-4">
+          <div class="card-body">
+            <form class="row form-inline" id="search" > 
+              <div class="col mr-auto">
+                <div class="row">  
+                  <div class="form-group col-xl-4">
+                    <label for="">시공현장 명</label>
+                    <input type="text" class="form-control" id="deptNm" name="deptNm">
+                  </div>
+                </div>  
+              </div>
+              <div class="col-auto align-self-end">         
+                <button class="btn btn-info btn-sm mb-1" type="submit" id="btnDeptListPopupSearch">조회</button>
+              </div>
+            </form>
+          </div>
+        </div>
+        <div class="row align-items-center">
+          <div class="col-auto mr-auto">            
+          </div>
+          <div class="col-auto mb-2">
+            <button type="button" class="btn btn-outline-secondary btn-sm mb-1" id="btnDeptListPopupConfirm">확인</button>
+          </div>
+        </div>
+        <div id="deptListPopupSheet"></div>
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript" th:fragment="javascript">
+  $(document).ready(function() {
+      
+      var headers = [
+          {Text: "코드|시공현장 명(한글)|시공현장 명(영문)"}
+      ],
+      mode = {
+          HeaderCheck: true
+      },
+      columns = [              
+          {Type: "Text", SaveName: "deptCd", Width: 100, Align: "center"},
+          {Type: "Text", SaveName: "deptKoNm", Width: 250, Align: "left"},
+          {Type: "Text", SaveName: "deptEnNm", Width: 250, Align: "left"}
+      ];
+      createIBSheet2($("#deptListPopupSheet")[0], "deptListPopupSheet", "100%", "300px");
+      deptListPopupSheet.InitHeaders(headers, mode);
+      deptListPopupSheet.InitColumns(columns);     
+      deptListPopupSheet.SetEditable(false);
+      window["deptListPopupSheet_OnDblClick"] = function(Row, Col, Value, CellX, CellY, CellW, CellH) {
+          if (Row > 0) {
+              var data = {
+                  deptCd: deptListPopupSheet.GetCellValue(Row, "deptCd"),
+                  deptKoNm: deptListPopupSheet.GetCellValue(Row, "deptKoNm"),
+                  deptEnNm: deptListPopupSheet.GetCellValue(Row, "deptEnNm")               
+              }
+              callback(data);   
+          }
+      }
+
+      //조회
+      var $search = $("#search");
+      $search.on("submit", function(e) {
+          e.preventDefault();          
+          $.getJSON("/sysm/com/uscd/comDeptCdGridList", $(this).serialize(), function (data) {
+              deptListPopupSheet.LoadSearchData({"data": data});
+          });
+      });   
+        
+      $("#btnDeptListPopupConfirm").click(function() {
+          var Row = deptListPopupSheet.GetSelectRow();    
+          if (Row > 0) {
+              var data = {
+                  deptCd: deptListPopupSheet.GetCellValue(Row, "deptCd"),
+                  deptKoNm: deptListPopupSheet.GetCellValue(Row, "deptKoNm"),
+                  deptEnNm: deptListPopupSheet.GetCellValue(Row, "deptEnNm")
+              }
+              callback(data);
+          }
+      });
+  });
+  </script>
+</body>
+</html>

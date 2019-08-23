@@ -1,0 +1,335 @@
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layouts/layout">
+<head>
+</head>
+<body>
+    <div layout:fragment="contents">
+    
+        <section class="top-area">
+            <nav aria-label="breadcrumb" class="float-left">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="#">시스템</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">기준코드 관리</li>
+                </ol>
+            </nav>
+            <div class="btn-area float-right">
+            </div>
+        </section>
+    
+        <section id="search-area" class="mb-3">
+            <form id="search">
+    
+                <div class="border">
+                    <div class="form-row">
+                        <div>
+                            <label for="stdCd">기준 코드</label>
+                            <input type="text" class="form-control form-control-sm" id="stdCd" name="stdCd"/>
+                        </div>
+                        <div>
+                            <label for="nmspcVal">기준 코드 명</label>
+                            <input type="text" class="form-control form-control-sm" id="nmspcVal"
+                                   name="nmspcVal"/>
+                        </div>
+<!--                        <div>-->
+<!--                            <label for="nmspcCd">네임스페이스</label>-->
+<!--                            <input type="text" class="form-control form-control-sm" id="nmspcCd"-->
+<!--                                   name="nmspcCd"/>-->
+<!--                        </div>-->
+                        <div>
+                            <label for="cdNote">비고</label>
+                            <input type="text" class="form-control form-control-sm" id="cdNote" name="cdNote"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="btn-area">
+                    <button class="btn btn-secondary btn-sm" type="submit" id="btnSearch">조회</button>
+                </div>
+            </form>
+        </section>
+                
+        <section id="grid-area" class="mb-3">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="d-flex justify-content-between pb-2">
+                        <h2>◎ 기준코드 등록</h2>
+                        <div class="btn-area">
+                            <button type="button" class="btn btn-outline-secondary btn-sm" id="btnNew">신규</button>
+                            <button type="button" class="btn btn-outline-secondary btn-sm" id="btnSave">저장</button>
+                        </div>
+                    </div>
+                    <div id="comStdCdSheet"></div>      
+                </div>   
+            </div>
+        </section>
+
+        <section id="grid-area" class="mb-3">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="d-flex justify-content-between pb-2">
+                        <h2>◎ 상세코드 관리</h2>
+                        <div class="btn-area">
+                            <button type="button" class="btn btn-outline-secondary btn-sm" id="btnDetailNew">신규</button>
+                            <button type="button" class="btn btn-outline-secondary btn-sm" id="btnDetailSave">저장</button>
+                        </div>
+                    </div>
+                    <div id="codeDetailSheet"></div>      
+                </div>   
+            </div>
+        </section>
+    </div>
+
+    <script type="text/javascript" th:inline="javascript" layout:fragment="script">
+        var comStdCdSheetRow;
+        var codeDetailSheetRow;
+    
+        //IBSheet 선택된 셀의 수정 모드 전환을 위한 전역 변수
+        var _sheetFocusedRow = null;
+        var _sheetFocusedCol = null;
+    
+        $(document).ready(function () {
+    
+            //comStdCdSheet
+            var stdCdSheetCreate = function () {
+                var headers = [
+                        {Text: "진행상태|순번|삭제|기준 코드|기준 코드 명|네임스페이스|비고|보조정보"}
+                    ],
+                    mode = {
+                        HeaderCheck: true
+                    },
+                    columns = [
+                        {Type: "Status", SaveName: "rowStatus", Width: 0, Align: "center", Hidden: true},
+                        {Type: "Seq", SaveName: "at_Seq", Width: 60, Align: "center"},
+                        {Type: "DelCheck", SaveName: "rowChecked", Width: 0, Align: "center"},
+                        {
+                            Type: "Text",
+                            SaveName: "stdCd",
+                            Width: 150,
+                            Align: "left",
+                            UpdateEdit: false,
+                            InputCaseSensitive: 1,
+                            KeyField: true
+                        },
+                        {Type: "Text", SaveName: "nmspcVal", Width: 150, Align: "left", UpdateEdit: false, KeyField: true},
+                        {
+                            Type: "Text",
+                            SaveName: "nmspcCd",
+                            Width: 150,
+                            Align: "left",
+                            UpdateEdit: false,
+                            InputCaseSensitive: 1,
+                            KeyField: true,
+                            Hidden: true
+                        },
+                        {Type: "Text", SaveName: "cdNote", Width: 160, Align: "left"},
+                        {
+                            Type: "Text",
+                            SaveName: "etcInfo",
+                            Width: 100,
+                            Align: "center",
+                            Edit: false,
+                            Cursor: "Pointer",
+                            HoverUnderline: true
+                        }
+                    ];
+                createIBSheet2($("#comStdCdSheet")[0], "comStdCdSheet", "100%", "300px");
+                comStdCdSheet.InitHeaders(headers, mode);
+                comStdCdSheet.InitColumns(columns);
+                window["comStdCdSheet_OnClick"] = function (Row, Col, Value, CellX, CellY, CellW, CellH) {
+                    if (comStdCdSheet.GetCellValue(Row, "rowStatus") == "I") return;
+    
+                    _sheetFocusedRow = Row;
+                    _sheetFocusedCol = Col;
+    
+                    comStdCdSheetRow = Row;
+    
+                    var param = {
+                        stdCd: comStdCdSheet.GetCellValue(Row, "stdCd")
+                    }
+    
+                    $.getJSON("/sysm/stdcd/gridDetailList", param, function (data) {
+                        codeDetailSheet.LoadSearchData({"data": data});
+                        codeDetailSheet.SetFocusAfterProcess(false);
+                    });
+    
+                    if (comStdCdSheet.ColSaveName(Col) == "etcInfo") {
+                        _.dialog.modal(_.url.format("/sysm/stdcd/etcInfoModal/{stdCd}", param), {
+                            title: "기준코드 보조정보(" + comStdCdSheet.GetCellValue(comStdCdSheetRow, "stdCd") + ")",
+                            width: "1000px"
+                        }, function () {
+                        });
+                    }
+                };
+                window["comStdCdSheet_OnChange"] = function (Row, Col, Value) {
+                    var baseNmspcCd = "NS.CCD.";
+                    var newNmspcCd = "";
+                    if (comStdCdSheet.ColSaveName(Col) == "stdCd") {
+                        newNmspcCd = baseNmspcCd + comStdCdSheet.GetCellValue(Row, "stdCd");
+                        comStdCdSheet.SetCellValue(Row, "nmspcCd", newNmspcCd)
+                    }
+                };
+            };
+            stdCdSheetCreate();
+    
+            var detailSheetCreate = function () {
+                //codeDetailSheet
+                var headers = [
+                        {Text: "진행상태|순번|삭제|기준 코드|상세 코드|네임스페이스|상세 코드 명|순서|비고|사용여부|보조정보설정"}
+                    ],
+                    mode = {
+                        HeaderCheck: true
+                    },
+                    columns = [
+                        {Type: "Status", SaveName: "rowStatus", Width: 0, Align: "center", Hidden: true},
+                        {Type: "Seq", SaveName: "at_Seq", Width: 60, Align: "center"},
+                        {Type: "DelCheck", SaveName: "rowChecked", Width: 0, Align: "left"},
+                        {
+                            Type: "Text",
+                            SaveName: "stdCd",
+                            Width: 150,
+                            Align: "left",
+                            Hidden: true,
+                            UpdateEdit: false,
+                            InsertEdit: false
+                        },
+                        {
+                            Type: "Text",
+                            SaveName: "stdDetlCd",
+                            Width: 150,
+                            Align: "left",
+                            UpdateEdit: false,
+                            InputCaseSensitive: 1,
+                            KeyField: 1
+                        },
+                        {
+                            Type: "Text", SaveName: "nmspcCd", Width: 150, Align: "left", Edit: false, InputCaseSensitive: 1, Hidden: true
+                        },
+                        {Type: "Text", SaveName: "nmspcVal", Width: 150, Align: "left", UpdateEdit: false},
+                        {Type: "Text", SaveName: "detlCdSeq", Width: 60, Align: "center", EditLen: 3},
+                        {Type: "Text", SaveName: "detlCdNote", Width: 100, Align: "left", EditLen: 200},
+                        {
+                            Type: "Combo",
+                            SaveName: "useYn",
+                            Width: 70,
+                            Align: "center",
+                            ComboCode: "N|Y",
+                            ComboText: "아니오|예"
+                        },
+                        {
+                            Type: "Text",
+                            SaveName: "etcInfoSet",
+                            Width: 100,
+                            Align: "center",
+                            Edit: false,
+                            Cursor: "Pointer",
+                            HoverUnderline: true
+                        }
+                    ];
+    
+                createIBSheet2($("#codeDetailSheet")[0], "codeDetailSheet", "100%", "300px");
+                codeDetailSheet.InitHeaders(headers, mode);
+                codeDetailSheet.InitColumns(columns);
+    
+                window["codeDetailSheet_OnClick"] = function (Row, Col, Value, CellX, CellY, CellW, CellH) {
+                    codeDetailSheetRow = Row;
+    
+                    var param = {
+                        stdCd: comStdCdSheet.GetCellValue(comStdCdSheet.GetSelectRow(), "stdCd"),
+                        stdDetlCd: codeDetailSheet.GetCellValue(Row, "stdDetlCd")
+                    }
+    
+                    if (codeDetailSheet.ColSaveName(Col) == "etcInfoSet") {
+                        _.dialog.modal(_.url.format("/sysm/stdcd/etcInfoSetModal/{stdCd}/{stdDetlCd}", param), {
+                            title: "기준코드 보조정보 설정(" + codeDetailSheet.GetCellValue(codeDetailSheetRow, "stdDetlCd") + ")",
+                            width: "820px"
+                        }, function () {
+                        });
+                    }
+                };
+    
+                window["codeDetailSheet_OnChange"] = function (Row, Col, Value) {
+                    var baseStdDetlCd = "NS.CCD." + codeDetailSheet.GetCellValue(Row, "stdCd") + ".";
+                    var newStdDetlCd = "";
+                    if (codeDetailSheet.ColSaveName(Col) == "stdDetlCd") {
+                        newStdDetlCd = baseStdDetlCd + codeDetailSheet.GetCellValue(Row, "stdDetlCd");
+                        codeDetailSheet.SetCellValue(Row, "nmspcCd", newStdDetlCd)
+                    }
+                };
+            };
+            detailSheetCreate();
+    
+            var $search = $("#search");
+            $search.on("submit", function (e) {
+                e.preventDefault();
+                $.getJSON("/sysm/stdcd/gridList", $(this).serialize(), function (data) {
+                    comStdCdSheet.LoadSearchData({"data": data});
+                    codeDetailSheet.RemoveAll();
+                });
+            });
+    
+            //신규 버튼 클릭
+            $("#btnNew").on("click", function () {
+                comStdCdSheet.DataInsert(-1);
+                codeDetailSheet.RemoveAll();
+            });
+    
+            //저장 버튼 클릭
+            $("#btnSave").on("click", function () {
+    
+                if (!comStdCdSheet.IsDataModified()) {
+                    //_.dialog.alert("저장할 항목이 없습니다.");
+                    _.cdrs.notify.show("저장","저장할 항목이 없습니다.");
+                    return false;
+                }
+    
+                var saveJson = comStdCdSheet.GetSaveJson();
+                if (!_.cdrs.ibsheetValid(saveJson)) {
+                    return false;
+                }
+    
+                var param = $("#search").serializeObject();
+                param.stdCds = saveJson.data;
+    
+                _.dialog.confirm("저장하시겠습니까?", function () {
+                    $.post("/sysm/stdcd/gridSave", param, function () {
+                        //_.dialog.alert("저장되었습니다.");
+                        _.cdrs.notify.show("저장","저장되었습니다.");
+                        comStdCdSheet.LoadSaveData(_.ibsheet.success());
+                    });
+                });
+            });
+    
+            //하단 신규 버튼 클릭
+            $("#btnDetailNew").on("click", function () {
+                var row = codeDetailSheet.DataInsert();
+                codeDetailSheet.SetCellValue(row, "stdCd", comStdCdSheet.GetCellValue(comStdCdSheetRow, "stdCd"));
+            });
+    
+            //하단 저장 버튼 클릭
+            $("#btnDetailSave").on("click", function () {
+    
+                if (!codeDetailSheet.IsDataModified()) {
+                    //_.dialog.alert("저장할 항목이 없습니다.");
+                    _.cdrs.notify.show("저장","저장할 항목이 없습니다.");
+                    return;
+                }
+    
+                var saveJson = codeDetailSheet.GetSaveJson();
+                if (!_.cdrs.ibsheetValid(saveJson)) {
+                    return;
+                }
+    
+                var param = $("#search").serializeObject();
+                param.stdDetlCds = saveJson.data;
+    
+                _.dialog.confirm("저장하시겠습니까?", function () {
+                    $.post("/sysm/stdcd/gridDetailSave", param, function () {
+                        //_.dialog.alert("저장되었습니다.");
+                        _.cdrs.notify.show("저장","저장되었습니다.");
+                        codeDetailSheet.LoadSaveData(_.ibsheet.success());
+                    });
+                });
+            });
+        });
+    </script>
+</body>
+</html>    

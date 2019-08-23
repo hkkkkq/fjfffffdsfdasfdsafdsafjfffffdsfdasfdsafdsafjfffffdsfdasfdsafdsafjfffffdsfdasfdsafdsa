@@ -1,0 +1,127 @@
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layouts/layout">
+<head>
+</head>
+<body>
+
+    <div layout:fragment="contents">
+    
+        <section class="top-area">
+            <!-- breadcrumb -->
+            <nav aria-label="breadcrumb" class="float-left">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="#">시스템</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">사용자 관리</li>
+                </ol>
+            </nav>
+            <!-- /breadcrumb -->
+            <!-- Transaction button -->
+            <div class="btn-area float-right">
+            </div>
+            <!-- /Transaction button -->
+        </section>
+        
+        <section id="search-area" class="mb-3">
+            <form id="search">
+                <div class="border">
+                    <div class="form-row">
+                        <div>
+                            <label for="searchDeptNm">현장</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control form-control-sm mr-1" id="searchDeptCd" name="searchDeptCd" readonly="readonly">
+                                <input type="text" class="form-control form-control-sm min mr-1" id="searchDeptNm" name="searchDeptNm">
+                                <div class="input-group-append">
+                                    <button class="btn btn-sm" type="button" id="btnDept"><i class="fas fa-search"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label for="searchUserId">사번</label>
+                            <input type="text" class="form-control form-control-sm" id="searchUserId" name="searchUserId"/>
+                        </div>
+                        <div>
+                            <label for="searchName">한글명</label>
+                            <input type="text" class="form-control form-control-sm" id="searchName" name="searchName"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="btn-area">
+                    <button class="btn btn-secondary btn-sm" type="submit" id="btnSearch">조회</button>
+                </div> 
+            </form>
+        </section>
+        
+        <section id="grid-area" class="mb-3">
+            <div class="d-flex justify-content-between pb-2 grid-title">
+                <h2>◎ 사용자 정보</h2>
+                <div class="btn-area">
+                    <button type="button" class="btn btn-outline-secondary btn-sm" id="btnNew">신규</button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div id="mySheet" class="vertical-full1"></div>
+                </div>
+            </div>
+        </section>
+        
+    </div>
+    
+    <script type="text/javascript" th:inline="javascript" layout:fragment="script">
+        $(document).ready(function () {
+            var headers = [
+                    {Text: "진행상태|순번|사용자ID|성명|연락처|만료일자|시작일자|종료일자"}
+                ],
+                mode = {
+                    HeaderCheck: true
+                },
+                columns = [
+                    {Type: "Status", SaveName: "rowStatus", Width: 0, Align: "center", Hidden: true},
+                    {Type: "Seq", SaveName: "sSeq", Width: 60, Align: "center"},
+                    {Type: "Text", SaveName: "userId", Width: 100, Align: "center", FontColor: "#0054FF", Cursor: "Pointer", HoverUnderline: true},
+                    {Type: "Text", SaveName: "name", Width: 100, Align: "center"},
+                    {Type: "Text", SaveName: "tlno", Width: 100, Align: "center"},
+                    {Type: "Text", SaveName: "pwdExpiDt", Width: 100, Align: "center", Format: "Ymd", Hidden: true},
+                    {Type: "Text", SaveName: "stDt", Width: 100, Align: "center", Format: "Ymd", Hidden: true},
+                    {Type: "Text", SaveName: "endDt", Width: 100, Align: "center", Format: "Ymd", Hidden: true}
+                ];
+            createIBSheet2($("#mySheet")[0], "mySheet", "100%", "496px");
+            mySheet.InitHeaders(headers, mode);
+            mySheet.InitColumns(columns);
+            mySheet.SetEditable(false);
+            window["mySheet_OnClick"] = function (Row, Col, Value, CellX, CellY, CellW, CellH) {
+                if (mySheet.ColSaveName(Col) == "userId" && Row >= 1) {
+                    var uri = _.url.format("/sysm/sec/usr/userEdit/{userId}", {userId: mySheet.GetCellValue(Row, "userId")});
+                    location.href = uri;
+                }
+            };
+    
+            var $search = $("#search");
+            $search.on("submit", function (e) {
+                e.preventDefault();
+                $.getJSON("/sysm/sec/usr/gridList", $(this).serialize(), function (data) {
+                    mySheet.LoadSearchData({"data": data});
+                });
+            });
+    
+            //신규 버튼 클릭
+            $('#btnNew').click(function () {
+                location.href = "/sysm/sec/usr/userEdit";
+            });
+    
+            //현장팝업
+            $("#btnDept").click(function () {
+                _.cdrs.deptInputDialog({cd: $('#searchDeptCd'), nm: $('#searchDeptNm'), search: $("#searchDeptNm").val()});
+            });
+    
+            $("#searchDeptNm").on('keydown', function (e) {
+                if (e.keyCode == 13) {
+                    $("#btnDept").click();
+                }
+            });
+            resizeContent();
+        });
+    </script>
+</body>
+</html>   

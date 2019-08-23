@@ -1,0 +1,60 @@
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layouts/modalLayout">
+<body>
+  <div layout:fragment="contents">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="row align-items-center">
+          <div class="col-auto mr-auto">
+            <form class="form-inline">
+              <div class="form-group">   
+                <label>추가할 메뉴</label>
+                <select class="form-control" name="sysClsCd" id="sysClsCd">
+                </select>
+              </div>
+            </form>  
+          </div>        
+        </div>          
+        <div class="row align-items-center">
+          <div class="col-auto mr-auto">            
+          </div>
+          <div class="col-auto mb-2">
+            <button type="button" class="btn btn-outline-secondary btn-sm mb-1" id="btnRootMenuConfirm">확인</button>
+          </div>
+        </div>              
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript" th:fragment="javascript">
+  $(document).ready(function() {
+      $.getJSON("/code/getCodeList/SYS_CLS_CD", function(codes) {  
+          var sysClsCd = codes.sysClsCd;
+          _.binder.combo("#sysClsCd", sysClsCd, {value: "key", text: "value"});
+      }); 
+      
+      $("#btnRootMenuConfirm").on("click", function() {
+          var param = {
+              stdCd: "SYS_CLS_CD",
+              stdDetlCd: $("#sysClsCd").val() 
+          }
+          
+          $.getJSON("/code/getCodeAttributeList", param, function(code) {  
+              if (code.length>0) {
+                  var data = {
+                      nmspcCd: $("#sysClsCd").val(),
+                      nmspcVal: $("#sysClsCd option:selected").text(),
+                      nmspcCode: code[0].nmspcCd,
+                      attributeId1: code[0].attributeId1,
+                      attributeId2: code[0].attributeId2
+                  }
+                  callback(data);
+              } else {
+                  _.dialog.error("메뉴 코드의 입력된 값이 없습니다.");
+                  return false;
+              }
+          });
+            
+      });
+  });
+  </script>
+</body>
+</html>

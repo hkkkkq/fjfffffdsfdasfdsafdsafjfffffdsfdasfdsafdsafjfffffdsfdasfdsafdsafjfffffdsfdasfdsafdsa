@@ -1,0 +1,212 @@
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layouts/modalLayout">
+<body>
+<div layout:fragment="contents">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="row align-items-center">
+                <div class="col-auto mr-auto">
+                </div>
+                <div class="col-auto mb-2">
+                    <button type="button" class="btn btn-primary btn-sm" id="btnMenuGrpModalDelete">삭제</button>
+                    <button type="button" class="btn btn-primary btn-sm" id="btnMenuGrpModalSave">저장</button>
+                </div>
+            </div>
+            <div class="card mb-4">
+                <div class="card-body">
+                    <form class="row form-inline" id="frmMenuGrp">
+                        <div class="col mr-auto">
+                            <div class="row">
+                                <div class="form-group col-xl-4">
+                                    <label for="">한글 명</label>
+                                    <input class="form-control" type="text" id="koNm" name="koNm" value=""/>
+                                    <input type="hidden" name="rangCd" id="rangCd" value="MNU" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-auto align-self-end">
+                            <button type="button" class="btn btn-info btn-sm mb-1" id="btnMenuGrpModalSearch">조회
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="row align-items-center">
+                <div class="col-auto mr-auto">
+                </div>
+                <div class="col-auto mb-2">
+                    <button type="button" class="btn btn-outline-secondary btn-sm mb-1" id="btnMenuGrpModalNew">신규</button>
+                    <button type="button" class="btn btn-outline-secondary btn-sm mb-1" id="btnMenuGrpModalConfirm">확인</button>
+                </div>
+            </div>
+            <div id="nameSpaceSheet"></div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" th:fragment="javascript">
+    $(document).ready(function () {
+
+        $.getJSON("/code/getCodeList/USE_YN", function (codes) {
+            var useYn = codes.useYn;
+            var info = {ComboText: _.utils.delimiter(useYn, "value"), ComboCode: _.utils.delimiter(useYn, "key")};
+            nameSpaceSheet.SetColProperty(0, "apbtYn", info);
+        });
+
+        var headers = [
+                {Text: "진행상태|선택|네임스페이스|한글 명|비고|한글 명|한글 약어|영문 명|영문 약어|승인|승인 일자|범위"}
+            ],
+            mode = {
+                HeaderCheck: true,
+            },
+            columns = [
+                {Type: "Status", SaveName: "rowStatus", Width: 80, Align: "center"},
+                {Type: "Radio", SaveName: "check", Width: 60, Align: "center"},
+                {Type: "Text", SaveName: "nmspcCd", Width: 120, UpdateEdit: false, InsertEdit: false},
+                {
+                    Type: "Combo",
+                    SaveName: "sopCd",
+                    Width: 80,
+                    Align: "center",
+                    ComboText: "버튼|기준코드|환경변수|메뉴|메시지|프로그램|프롬프트|권한|시스템",
+                    ComboCode: "BTN|CCD|ECD|MNU|MSG|PGM|PMT|RNR|SYS",
+                    Hidden: true
+                },
+                {Type: "Text", SaveName: "nmspcCnte", Width: 80},
+                {Type: "Text", SaveName: "koNm", Width: 120},
+                {Type: "Text", SaveName: "koAbbrNm", Width: 80, Hidden: true},
+                {Type: "Text", SaveName: "enNm", Width: 120},
+                {Type: "Text", SaveName: "enAbbrNm", Width: 80, Hidden: true},
+                {Type: "Combo", SaveName: "apbtYn", Width: 80, Align: "center"},
+                {Type: "Text", SaveName: "apbtDm", Width: 80, Align: "center", Hidden: true},
+                {Type: "Text", SaveName: "rangCd", Width: 80, Align: "center", DefaultValue: "MNU", Hidden: true}
+            ];
+        createIBSheet2($("#nameSpaceSheet")[0], "nameSpaceSheet", "100%", "200px");
+        nameSpaceSheet.InitHeaders(headers, mode);
+        nameSpaceSheet.InitColumns(columns);
+        window["nameSpaceSheet_OnChange"] = function (Row, Col, Value) {
+            if (nameSpaceSheet.ColSaveName(Col) == "sopCd") {
+                if (Value == "CCD") {
+                    nameSpaceSheet.SetCellEditable(Row, "nmspcCd", true);
+                } else {
+                    nameSpaceSheet.SetCellEditable(Row, "nmspcCd", false);
+                }
+            }
+        }
+
+        //조회 버큰 클릭
+        $("#btnMenuGrpModalSearch").on("click", function () {
+            $.getJSON("/sysm/sec/rnr/roleList/menuGrpList", $("#frmMenuGrp").serialize(), function (data) {
+                nameSpaceSheet.LoadSearchData({"data": data});
+            });
+        });
+
+        //신규버튼 클릭
+        $("#btnMenuGrpModalNew").on("click", function () {
+            var rowIdx = nameSpaceSheet.DataInsert(-1);
+            nameSpaceSheet.SetCellValue(rowIdx, "rangCd", "MNU");
+            nameSpaceSheet.SetCellValue(rowIdx, "apbtYn", "N");
+
+            var koNm = $("#koNm").val();
+            var enNm = $("#enNm").val();
+            nameSpaceSheet.SetCellValue(rowIdx, "koNm", koNm);
+            nameSpaceSheet.SetCellValue(rowIdx, "koAbbrNm", koNm);
+            nameSpaceSheet.SetCellValue(rowIdx, "enNm", "(ENG)" + (enNm == "" ? koNm : enNm));
+            nameSpaceSheet.SetCellValue(rowIdx, "enAbbrNm", enNm == "" ? koNm : enNm);
+
+            nameSpaceSheet.SetCellValue(rowIdx, "apbtYn", "N");
+        });
+
+        //저장 버튼 클릭
+        $("#btnMenuGrpModalSave").on("click", function () {
+            var changeCnt = 0;
+            for (var i = 1; i <= nameSpaceSheet.RowCount(); i++) {
+                if (nameSpaceSheet.GetCellValue(i, "rowStatus") == "I"
+                    || nameSpaceSheet.GetCellValue(i, "rowStatus") == "U") {
+                    changeCnt++;
+                }
+            }
+            if (changeCnt == 0) {
+                _.dialog.alert("저장할 항목이 없습니다.");
+                return;
+            }
+
+            _.dialog.confirm("저장하시겠습니까?", function () {
+
+                var comNmspcInfo = $("#frmMenuGrp").serializeObject();
+                comNmspcInfo.comNmspcInfos = nameSpaceSheet.GetSaveJson().data;
+
+                $.post("/sysm/sec/rnr/roleList/saveNameSpaceList", comNmspcInfo, function () {
+                    _.dialog.alert("저장되었습니다.", function () {
+                        nameSpaceSheet.LoadSaveData(_.ibsheet.success());
+                    });
+                });
+            });
+        });
+
+        //삭제 버튼 클릭
+        $("#btnMenuGrpModalDelete").on("click", function () {
+            var rowIndex = nameSpaceSheet.GetSelectRow();
+            if (rowIndex <= 0) {
+                _.dialog.alert("선택된 항목이 없습니다.");
+                return;
+            }
+            nameSpaceSheet.SetCellValue(rowIndex, "rowStatus", "D");
+
+            var comNmspcInfo = $("#frmMenuGrp").serializeObject();
+            comNmspcInfo.comNmspcInfos = nameSpaceSheet.GetSaveJson().data;
+
+            $.post("/sysm/sec/rnr/roleList/saveNameSpaceList", comNmspcInfo, function () {
+                _.dialog.alert("삭제되었습니다.", function () {
+                    nameSpaceSheet.LoadSaveData(_.ibsheet.success());
+                });
+            });
+        });
+
+        //확인 버튼 클릭
+        $("#btnMenuGrpModalConfirm").on("click", function () {
+
+            var cRow = nameSpaceSheet.FindCheckedRow("check");
+            var arrRow = cRow.split("|");
+            var nmspcCd = nameSpaceSheet.GetCellValue(arrRow[0], "nmspcCd");
+            var nmspcVal = nameSpaceSheet.GetCellValue(arrRow[0], "koNm");
+            var roleId = $("#roleId").val();
+            var uprMenuId = $("#uprMenuId").val();
+            var menuId = $("#menuId").val();
+            var pgmId = $("#pgmId").val();
+
+            var data = {
+                nmspcCd: nameSpaceSheet.GetCellValue(arrRow[0], "nmspcCd"),
+                nmspcVal: nameSpaceSheet.GetCellValue(arrRow[0], "koNm")
+            }
+
+            callback(data);
+
+            /*
+            if (isEmpty(nmspcCd)||nmspcCd == -1) {
+                return;
+            }
+
+
+
+            if ($("#menuClsCd").val() == "S") {
+                $("#role_tree").jstree("create", null, "last", { "attr" : {"id":"NEW", "parent_id":uprMenuId, "rel":"M", "nmspc_cd":nmspcCd, "pgm_id":"", "use_yn":"Y" }, data: nmspcVal }, false, true);
+                $("#menuSaveMode").val("NEW");
+
+            } else if ($("#menuClsCd").val() == "M") {
+                $("#role_tree").jstree("create", null, "last", { "attr" : {"id":"NEW", "parent_id":uprMenuId, "rel":"PG", "nmspc_cd":nmspcCd, "pgm_id":"", "use_yn":"Y" }, data: nmspcVal }, false, true);
+                $("#menuSaveMode").val("NEW");
+
+            } else if ($("#menuClsCd").val() == "PG") {
+                $("#role_tree").jstree("create", null, "last", { "attr" : {"id":"NEW", "parent_id":uprMenuId, "rel":"PG", "nmspc_cd":nmspcCd, "pgm_id":"", "use_yn":"Y" }, data: nmspcVal }, false, true);
+                $("#menuSaveMode").val("NEW");
+
+            } else if ($("#menuClsCd").val() == "P") {
+                $("#role_tree").jstree("create", null, "after", { "attr" : {"id":"NEW", "parent_id":uprMenuId, "rel":"PG", "nmspc_cd":nmspcCd, "pgm_id":"", "use_yn":"Y" }, data: nmspcVal }, false, true);
+                $("#menuSaveMode").val("NEW");
+            }
+             */
+        });
+
+    });
+</script>
+</body>
+</html>

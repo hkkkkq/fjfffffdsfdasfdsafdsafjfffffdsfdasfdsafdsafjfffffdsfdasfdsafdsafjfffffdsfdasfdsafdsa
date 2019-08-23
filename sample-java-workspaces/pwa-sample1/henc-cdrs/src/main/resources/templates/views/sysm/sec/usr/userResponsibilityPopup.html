@@ -1,0 +1,412 @@
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layouts/modalLayout">
+<body>
+<div layout:fragment="contents">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="row align-items-center">
+                <div class="col-auto mr-auto">
+                </div>
+                <div class="col-auto mb-2">
+                    <button type="button" class="btn btn-primary btn-sm" id="btnSave">저장</button>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="row align-items-center pt-4">
+                <div class="col-auto mr-auto">
+                    <h2 class="h6">메뉴구조</h2>
+                </div>
+            </div>
+            <div class="card mb-4">
+                <div class="col-auto tree" id="role_tree" style="height: 525px;width: 100%; overflow: auto;">
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <div class="row align-items-center pt-4">
+                <div class="col-auto mr-auto">
+                    <h2 class="h6">프로그램 연결 정보</h2>
+                </div>
+            </div>
+            <div>
+                <form id="form">
+                    <table class="table table-bordered table-sm" id="tbl">
+                        <colgroup>
+                            <col width="120"/>
+                            <col width="200"/>
+                            <col width="120"/>
+                            <col width="*"/>
+                        </colgroup>
+                        <tbody>
+                        <tr>
+                            <th>개별 정의</th>
+                            <td>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="userDefineUseYn"
+                                           id="userDefineUseYn_Y" value="Y"/>
+                                    <label class="form-check-label" for="userDefineUseYn_Y">Yes</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="userDefineUseYn"
+                                           id="userDefineUseYn_N" value="N"/>
+                                    <label class="form-check-label" for="userDefineUseYn_N">No</label>
+                                </div>
+                            </td>
+                            <th>메뉴 표시 여부</th>
+                            <td>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="chgMenuUseYn" id="chgMenuUseYn_Y"
+                                           value="Y"/>
+                                    <label class="form-check-label" for="chgMenuUseYn_Y">Yes</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="chgMenuUseYn" id="chgMenuUseYn_N"
+                                           value="N"/>
+                                    <label class="form-check-label" for="chgMenuUseYn_N">No</label>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="col">메뉴ID</th>
+                            <td colspan="3"><input type="text" class="form-control form-control-sm" id="menuId"
+                                                   name="menuId" disabled/></td>
+                        </tr>
+                        <tr>
+                            <th>메뉴명</th>
+                            <td colspan="3">
+                                <input type="text" class="form-control form-control-sm" id="menuNmspcVal"
+                                       name="menuNmspcVal" disabled/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>네임스페이스</th>
+                            <td colspan="3">
+                                <input type="text" class="form-control" id="menuNmspcCd" name="menuNmspcCd" disabled/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>프로그램</th>
+                            <td colspan="3">
+                                <input type="text" class="form-control" id="pgmNm" name="pgmNm" disabled/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>프로그램 ID</th>
+                            <td colspan="3"><input type="text" class="form-control" id="pgmId" name="pgmId" disabled/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>URI 명</th>
+                            <td colspan="3"><input type="text" class="form-control" id="uriNm" name="uriNm" disabled/>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                    <input type="hidden" id="userId" name="userId" th:value="${userId}"/>
+                    <input type="hidden" id="roleId" name="${roleId}" th:value="${roleId}"/>
+                    <input type="hidden" id="chgMenuClsCd"/>
+                    <input type="hidden" id="chgMenuSeq"/>
+                    <input type="hidden" id="chgUprMenuId"/>
+
+                </form>
+            </div>
+            <div id="comUserChgMenuBtnSheet"></div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" th:fragment="javascript">
+    $(document).ready(function () {
+
+        var headers = [
+                {Text: "status|userId|menuId|roleId|pgmId|Original 개별 사용|개별정의|그룹ID|버튼ID|버튼|순번|사용유무"}
+            ],
+            mode = {
+                HeaderCheck: true
+            },
+            columns = [
+                {Type: "Status", SaveName: "rowStatus", Width: 0, Align: "center", Hidden: true},
+                {Type: "Text", SaveName: "userId", Width: 100, Align: "center", Hidden: true},
+                {Type: "Text", SaveName: "menuId", Width: 100, Align: "center", Hidden: true},
+                {Type: "Text", SaveName: "roleId", Width: 100, Align: "center", Hidden: true},
+                {Type: "Text", SaveName: "pgmId", Width: 100, Align: "center", Hidden: true},
+                {Type: "Int", SaveName: "originalUseYn", Width: 80, Align: "center", Hidden: true},
+                {Type: "CheckBox", SaveName: "useYn", Width: 80, Align: "center"},
+                {Type: "Text", SaveName: "btnGrpId", Width: 60, Align: "center", Edit: false},
+                {Type: "Text", SaveName: "btnId", Width: 100, Align: "left", Edit: false},
+                {Type: "Text", SaveName: "nmspcVal", Width: 100, Align: "left", Edit: false},
+                {Type: "Text", SaveName: "btnSeq", Width: 60, Align: "center", Edit: false},
+                {
+                    Type: "Combo",
+                    SaveName: "userBtnUseYn",
+                    Width: 80,
+                    Align: "center",
+                    ComboCode: "N|Y",
+                    ComboText: "아니오|예"
+                }
+            ];
+        createIBSheet2($("#comUserChgMenuBtnSheet")[0], "comUserChgMenuBtnSheet", "100%", "300px");
+        comUserChgMenuBtnSheet.InitHeaders(headers, mode);
+        comUserChgMenuBtnSheet.InitColumns(columns);
+        window["comUserChgMenuBtnSheet_OnChange"] = function (Row, Col, Value, OldValue, RaiseFlag) {
+            if (comUserChgMenuBtnSheet.ColSaveName(Col) == "useYn") {
+                if (Value == 1) {
+                    comUserChgMenuBtnSheet.SetCellEditable(Row, "userBtnUseYn", true);
+                } else {
+                    comUserChgMenuBtnSheet.SetCellEditable(Row, "userBtnUseYn", false);
+                }
+            }
+        }
+        window["comUserChgMenuBtnSheet_OnSearchEnd"] = function (code, message) {
+            if (code == 0) {
+                //조회 후 작업 수행
+                if (comUserChgMenuBtnSheet.RowCount() > 0) {
+                    for (var i = 1; i <= comUserChgMenuBtnSheet.RowCount(); i++) {
+                        if (comUserChgMenuBtnSheet.GetCellValue(i, 'useYn') == 0) {
+                            comUserChgMenuBtnSheet.SetCellEditable(i, 'userBtnUseYn', false);
+                        } else {
+                            comUserChgMenuBtnSheet.SetCellEditable(i, 'userBtnUseYn', true);
+                        }
+                    }
+                }
+            }
+        }
+
+        getTreeData($('#userId').val(), $('#roleId').val());
+
+        //저장
+        $("#btnSave").click(function () {
+            if ($("#menuId").val() == "" || $("#menuId").val() == null) {
+                _.dialog.error("메뉴ID가 존재하지 않습니다.");
+                return false;
+            }
+            var changeCnt = 0;
+            for (var i = 1; i <= comUserChgMenuBtnSheet.RowCount(); i++) {
+                if (comUserChgMenuBtnSheet.GetCellValue(i, "useYn") == 0 &&
+                    comUserChgMenuBtnSheet.GetCellValue(i, "originalUseYn") == 1) {
+                    comUserChgMenuBtnSheet.SetCellValue(i, "rowStatus", "D", 0);
+                }
+            }
+
+            _.dialog.confirm("저장하시겠습니까?", function () {
+                var comUserChgMenu = {
+                    userId: $("#userId").val(),
+                    roleId: $("#roleId").val(),
+                    menuId: $("#menuId").val(),
+                    chgMenuSeq: $("#chgMenuSeq").val(),
+                    chgMenuClsCd: $("#chgMenuClsCd").val(),
+                    userDefineUseYn: $("input[name='userDefineUseYn']:checked").val(),
+                    chgMenuUseYn: $("input[name='chgMenuUseYn']:checked").val(),
+                    chgUprMenuId: $("#chgUprMenuId").val(),
+                    menuNmspcCd: $("#menuNmspcCd").val(),
+                    comUserChgMenuBtns: comUserChgMenuBtnSheet.GetSaveJson().data
+                };
+
+                $.post("/sysm/sec/usr/comUserChgMenuSave", comUserChgMenu, function (data) {
+                    _.dialog.alert("저장되었습니다.", function () {
+                        comUserChgMenuBtnSheet.LoadSaveData(_.ibsheet.success());
+                        getTreeData($('#userId').val(), $('#roleId').val());
+                    });
+                });
+
+            });
+
+        });
+
+        $("input[name=userDefineUseYn]:radio").click(function () {
+            var radioValue = $("input[name=userDefineUseYn]:radio:checked").val();
+            if (radioValue == "N") {
+                $("input[name='chgMenuUseYn']:radio").each(function (i) {
+                    $(this).prop("disabled", "disabled");
+                });
+
+            } else {
+                $("input[name='chgMenuUseYn']:radio").each(function (i) {
+                    $(this).removeAttr("disabled");
+                });
+            }
+        });
+
+        $("input[name='chgMenuUseYn']:radio").each(function (i) {
+            $(this).prop("disabled", "disabled");
+        });
+
+    });
+
+    /* Tree */
+    function getTreeData(userId, roleId) {
+
+        $.ajax({
+            url: "/sysm/sec/usr/getUserRoleMenuTreeData",
+            dataType: "text",
+            data: {
+                "userId": userId
+                , "roleId": roleId
+            },
+            success: function (xmlData, status) {
+                $("#pgmId").val("");
+                $("#pgmNm").val("");
+                $("#uriNm").val("");
+                $("input:radio[name=useYn][value=Y]").prop("checked", true);
+                treeInit(xmlData);
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+
+            }
+        });
+    }
+
+    function treeInit(p_xml_data) {
+        $("#menuId").val("");
+        $("#chgMenuSeq").val("");
+        $("#chgMenuClsCd").val("");
+        $("#chgUprMenuId").val("");
+        $("#menuNmspcCd").val("");
+        $("#menuNmspcVal").val("");
+        $("#pgmId").val("");
+        $("#pgmNm").val("");
+        $("#uriNm").val("");
+        doSearchBtnGridList();
+
+        $(function () {
+            $("#role_tree").jstree({
+                "plugins": ["themes", "xml_data", "ui", "crrm", "dnd", "types"],
+                "themes": {
+                    "theme": "default",
+                    "dots": "true",
+                    "icons": "true"
+                },
+                "xml_data": {
+                    "data": "" + p_xml_data
+                },
+                "types": {
+                    "max_depth": -1,
+                    "max_children": -1,
+                    "valid_children": ["S"],
+                    "types": {
+                        "L": {
+                            "valid_children": "none"
+                        },
+                        "P": {
+                            "valid_children": "none",
+                            "icon": {
+                                "image": "/img/tree/p.png"
+                            }
+                        },
+                        "PG": {
+                            "valid_children": ["P"],
+                            "icon": {
+                                "image": "/img/tree/pg.png"
+                            }
+                        },
+                        "M": {
+                            "valid_children": ["PG", "P"],
+                            "icon": {
+                                "image": "/img/tree/m.png"
+                            }
+                        },
+                        "S": {
+                            "valid_children": ["M"],
+                            "start_drag": false,
+                            "move_node": false,
+                            "delete_node": false,
+                            "remove": false,
+                            "icon": {
+                                "image": "/img/tree/s.png"
+                            }
+                        }
+                    }
+                }
+            })
+
+                .bind("select_node.jstree", function (event, data) {
+                    var roleId = $("#roleId").val();
+                    var menuId = data.rslt.obj.attr("id");
+                    var uprMenuId = (data.inst._get_parent(data.rslt.obj) == -1 ? "" : data.inst._get_parent(data.rslt.obj).attr("id"));
+                    var menuSeq = data.rslt.obj.attr("chg_menu_seq");
+                    var chgMenuUseYn = data.rslt.obj.attr("chg_menu_use_yn");
+                    var menuClsCd = data.rslt.obj.attr("rel");
+                    var nmspcCd = data.rslt.obj.attr("nmspc_cd");
+                    var pgmId = data.rslt.obj.attr("pgm_id");
+                    var uriNm = data.rslt.obj.attr("uri_nm");
+                    var chgYn = data.rslt.obj.attr("chg_yn");
+
+                    $("#menuId").val(menuId);
+                    $("#chgMenuSeq").val(menuSeq);
+                    $("#chgMenuClsCd").val(menuClsCd);
+                    $("#chgUprMenuId").val(uprMenuId);
+                    $("#menuNmspcCd").val(nmspcCd);
+                    $("#menuNmspcVal").val(data.inst.get_text(data.rslt.obj));
+                    $("input:radio[name=userDefineUseYn][value=" + chgYn + "]").prop("checked", true);
+                    $("input:radio[name=chgMenuUseYn][value=" + chgMenuUseYn + "]").prop("checked", true);
+
+                    if (chgYn == "N") {
+                        $("input:radio[name=chgMenuUseYn]").each(function (i) {
+                            $(this).prop("disabled", "disabled");
+                        });
+
+                    } else {
+                        $("input:radio[name=chgMenuUseYn]").each(function (i) {
+                            $(this).removeAttr("disabled");
+                        });
+                    }
+
+                    if (pgmId == undefined || pgmId == null) {
+                        $("#pgmId").val("");
+                        $("#pgmNm").val("");
+                        $("#uriNm").val("");
+                        doSearchBtnGridList();
+                    } else {
+                        $("#pgmId").val(pgmId);
+                        $("#pgmNm").val(data.inst.get_text(data.rslt.obj));
+                        $("#uriNm").val(uriNm);
+                        doSearchBtnGridList();
+                    }
+                })
+
+                .bind("move_node.jstree", function (event, data) {
+                    data.rslt.o.each(function (i) {
+                        var param = {
+                            "userId": $("#userId").val(),
+                            "roleId": $("#roleId").val(),
+                            "id": $(this).attr("id"),
+                            "parent_id": data.rslt.cr === -1 ? 1 : data.rslt.np.attr("id"),
+                            "position": data.rslt.cp + i,
+                            "title": data.rslt.name,
+                            "copy": data.rslt.cy ? 1 : 0,
+                            "menu_cls_cd": $(this).attr("rel")
+                        }
+
+                        $.getJSON("/sysm/sec/rnr/roleList/menuMove", param, function (r, status, xhr) {
+                            if (status == "success") {
+                                $(data.rslt.oc).attr("id", r.id);
+                                if (data.rslt.cy && $(data.rslt.oc).children("UL").length) {
+                                    data.inst.refresh(data.inst._get_parent(data.rslt.oc));
+                                }
+                                _.dialog.alert("처리되었습니다.");
+                            } else {
+                                $.jstree.rollback(data.rlbk);
+                            }
+                        });
+                    });
+                })
+        });
+    }
+
+    //조회
+    function doSearchBtnGridList() {
+        var param = {
+            userId: $("#userId").val(),
+            menuId: $("#menuId").val(),
+            roleId: $("#roleId").val(),
+            pgmId: $("#pgmId").val()
+        }
+
+        $.getJSON("/sysm/sec/usr/comUserChgMenuBtnGridList", param, function (data) {
+            comUserChgMenuBtnSheet.LoadSearchData({"data": data});
+        });
+    }
+</script>
+</body>
+</html>

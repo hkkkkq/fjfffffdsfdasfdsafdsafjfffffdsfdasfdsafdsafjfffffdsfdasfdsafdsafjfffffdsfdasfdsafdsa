@@ -1,0 +1,113 @@
+html, body {height: 100%;}
+body {display: -ms-flexbox; display: flex; -ms-flex-align: center; align-items: center; padding-bottom: 40px; background-color: #f5f6f7; font-family: "맑은고딕", sans-serif; font-size: 13px; color: #333; line-height: 1.5;}
+ul li {list-style: none;}
+
+.btn-sm {font-size: .75rem; padding: 3px 8px;}
+
+/* 로그인 */
+.form-signin {width: 100%; max-width: 400px; padding: 10px; margin: auto;}
+.form-signin img {width: 90px;}
+.form-signin h1 {font-size: 32px; font-weight:600;}
+.form-signin .btn {background-color: #f37321; color: #fff; padding: 13px; font-size: 20px;}
+.form-signin .checkbox {font-weight: 400;}
+.form-signin .form-control {position: relative; box-sizing: border-box; height: auto; padding: 12px; font-size: 15px;}
+.form-signin .form-control:focus {z-index: 2;}
+.form-signin .form-inline {line-height: 26px;}
+.form-signin input {border-radius: 0; margin-bottom: 10px;}
+.custom-control-label::before {border: 1px solid #ccc;}
+
+.custom-checkbox .custom-control-input:checked ~ .custom-control-label::before {background-color: #f37321;}
+.custom-control-input:focus ~ .custom-control-label::before {box-shadow: none;}
+
+a.forgot-password {color: #999}
+
+@media (max-width: 767px) {
+  .form-signin {max-width: 320px;}
+  .form-signin img {width: 70px;}
+  .form-signin h1 {font-size: 27px; font-weight:600;}
+  .form-signin .btn {padding: 10px; font-size: 18px}
+  .form-signin .form-control {padding: 10px; font-size: 14px;}
+}
+
+/* 개인정보 수집 */
+.form-privacy {width: 100%; max-width: 400px; padding: 10px; margin: auto;}
+.form-privacy .title h2 {font-weight: 600; font-size: 16px}
+.form-privacy .custom-control {line-height: 24px;}
+.form-privacy .content {border: 1px solid #ddd; height: 100px; overflow-y: auto; padding: 12px; background: #fff; color: #666; font-size: 12px; margin-top: 10px; line-height: 20px;}
+.form-privacy .content h3 {font-size: 13px; font-weight: 600;}
+.form-privacy .content p {margin-bottom: 10px;}
+.form-privacy .content ul {padding-left: 0; margin-bottom: 10px;}
+.form-privacy .sign {border: 1px solid #ddd; background: #fff; color: #333; margin-top: 10px; text-align: center; width: 100%; overflow: hidden; height: 150px;}
+.form-privacy .sign canvas {width: 400px; height: 150px;}
+.form-privacy .btn-area {margin: 0 -5px 0; overflow: hidden;}
+.form-privacy .btn-area > span {width: 50%; display: block; float: left;}
+.form-privacy .btn-area > span .btn {color: #fff; margin: 0 5px; width: auto; display: block; padding: 10px;}
+.form-privacy .btn-area > span .btn.btn-default {background-color: #8e8e8e;}
+.form-privacy .btn-area > span .btn.btn-agree {background-color: #f37321;}
+
+@media (max-width: 767px) {
+  .form-privacy {max-width: 320px; padding: 20px;}
+  .form-privacy .title h2 {font-weight: 600; font-size: 14px}
+  .form-privacy .content {padding: 10px; margin-top: 5px; height: 88px}
+  .form-privacy .content h3 {font-size: 12px;}
+  .form-privacy .sign {height: 140px;}
+  .form-privacy .sign canvas {width: 320px; height: 140px;}
+  .form-privacy .btn-area > span .btn {padding: 8px 10px;}
+}
+
+/* 비밀번호 찾기 팝업 */
+.form-password .form-group label {font-size: 14px; font-weight: 600;}
+.form-password .form-group input {font-size: 13px; border-radius: 0;}
+.form-password .certification ul {padding-left: 0; display: block; overflow: hidden; margin-bottom: 0;}
+.form-password .certification ul li {float: left; width: 50%; margin-bottom: 5px; line-height: 40px; height: 40px; font-size: 14px}
+.form-password .certification ul li input {border-radius: 0; height: 100%; font-size: 14px;}
+.form-password .certification ul li.code {text-align: center;background-color: #333;}
+.form-password .certification ul li.code a {color: #fff;}
+.form-password .result {margin-top: 10px; padding: 25px; background-color: #f2f2f2; text-align: center; font-size: 13px;}
+.form-password .result div {display: none;}
+.form-password .result .find {color: #999;}
+.form-password .result .find p, .form-password .result .failure p {margin-bottom: 0;}
+.form-password .result .success .span-password {font-weight: 600; color: #f37321;}
+.form-password .result .success a {text-decoration: underline;}
+
+/* 사용자 등록 */
+.form-user {width: 100%; max-width: 400px; padding: 10px; margin: auto;}
+.form-user .title h2 {font-weight: 600; font-size: 16px}
+
+.form-user .form-inline label {width: 130px; justify-content: flex-start; background-color: #ced4da; font-weight: 600; height: 32px; padding-left: 20px; margin-bottom: 0;}
+.form-user .btn-area {margin: 0 -5px 0; overflow: hidden;}
+.form-user .form-control {font-size: .75rem; padding: 0.375rem 0.5rem; height: auto;}
+.form-user .form-inline input {border-radius: 0; width: calc(100% - 130px);}
+.form-user .form-inline input.password {width: calc(80% - 130px)}
+.form-user .form-inline input.password + div {width: calc(20%); border: 1px solid #ced4da; height: 32px; background-color: #fff; border-left: 0; font-weight: 600; text-align: center; line-height: 30px;}
+.form-user .form-inline input.password + div span.st1 {color: blue;}
+.form-user .form-inline input.password + div span.st2 {color: red;}
+.form-user .form-inline input.password + div span.st3 {color: #39b54a;}
+.form-user table {font-size: 13px;}
+.form-user table th {background-color: #ced4da !important; border-color: #666;}
+.form-user table td {background-color: #fff;}
+.form-user table td, .form-user table th {border: 1px solid #d6d6d6; vertical-align: middle; padding: 5px 10px}
+.form-user .btn-area > span {width: 100%; /*width: 50%;*/ display: block; float: left;}
+.form-user .btn-area > span .btn {color: #fff; margin: 0 5px; width: auto; display: block; padding: 10px;}
+.form-user .btn-area > span .btn.btn-default {background-color: #8e8e8e;}
+.form-user .btn-area > span .btn.btn-agree {background-color: #f37321;}
+
+@media (max-width: 767px) {
+  .form-user {max-width: 320px; padding: 20px;}
+  .form-user .title h2 {font-weight: 600; font-size: 14px}
+  .form-user .form-inline label {line-height: 32px;}
+  .form-user .btn-area {margin: 0 -5px 0; overflow: hidden;}
+  .form-user .form-inline input {border-radius: 0; width: calc(100% - 130px)}
+  .form-user .form-inline input.password {width: calc(80% - 130px)}
+  .form-user .form-inline input.password + div {width: calc(20%); border: 1px solid #ced4da; height: 32px; background-color: #fff; border-left: 0; font-weight: 600; text-align: center; line-height: 30px;}
+  .form-user .btn-area > span .btn {padding: 8px 10px;}
+}
+
+/* modal */
+.modal {padding-left: 0!important;}
+.modal-dialog {margin: 0 auto;}
+.modal-dialog.modal-xl {max-width: 100%; height: 100%; padding: 10px;}
+.modal-content {border-radius: 0; height: 100%;}
+.modal-header {background-color: #555; color: #fff; border-radius: 0; padding: 10px 15px;}
+.modal-header h5 {font-size: 16px;}
+.modal-header .close {padding: 10px; margin: -12px -15px -15px auto; color: #fff; text-shadow: none; opacity: .8}

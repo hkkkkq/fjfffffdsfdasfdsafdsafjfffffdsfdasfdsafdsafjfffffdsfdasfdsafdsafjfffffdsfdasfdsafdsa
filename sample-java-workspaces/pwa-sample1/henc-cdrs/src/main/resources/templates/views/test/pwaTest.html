@@ -1,0 +1,36 @@
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layouts/layout">
+<body>
+<div layout:fragment="contents">
+    <div class="row">
+        <div class="col-md-4 offset-md-4 mt-4">
+            <button type="button" class="btn btn-primary btn-lg btn-block" id="subscribeButton" onclick="subscribe()">Subscribe!</button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4 offset-md-4 mt-2">
+            <button type="button" class="btn btn-success btn-lg btn-block" id="pushButton" onclick="push()">Push!</button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4 offset-md-4 mt-2 mb-4">
+            <button type="button" class="btn btn-info btn-lg btn-block" id="installButton" onclick="addToHomeScreen()">ADD TO HOME SCREEN</button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4 offset-md-4 mt-2 mb-4">
+            <button type="button" class="btn btn-info btn-lg btn-block" id="reportButton" onclick="reportOpen()">REPORT Open</button>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" th:inline="javascript" layout:fragment="script">
+    // function reportOpen(){
+    //     // alert([[${#session.getAttribute("poc.login.accessToken")}]]);
+    // }
+
+    $(document).ready(function () {
+       console.log("aaa");
+    });
+
+</script>
+</body>
+</html>

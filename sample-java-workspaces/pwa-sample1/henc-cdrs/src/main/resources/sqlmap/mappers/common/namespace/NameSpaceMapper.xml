@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper
+	namespace="com.henc.cdrs.common.namespace.repository.NameSpaceMapper">
+
+	<select id="getNameSpace" resultType="camelCaseMap"
+		parameterType="java.lang.String">
+		SELECT nmspc_cd
+		,rang_cd
+		,nmspc_cnte
+		,ko_nm
+		,ko_abbr_nm
+		,en_nm
+		,en_abbr_nm
+		FROM com_nmspc_info
+		WHERE nmspc_cd = #{nmspcCd}
+	</select>
+
+</mapper>

@@ -1,0 +1,135 @@
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layouts/layout">
+<body>
+<div layout:fragment="contents">
+
+    <div id="calendar">
+        <section id="title-area">
+            <div class="left">
+                <h1>일보</h1>
+                <ul class="d-none d-lg-block">
+                    <li><span class="bg-success">완료</span></li>
+                    <li><span class="bg-primary">제출</span></li>
+                    <li><span class="bg-warning">반려</span></li>
+                    <li><span class="bg-secondary">작성</span></li>
+                </ul>
+            </div><!-- end : left -->
+            <div class="right">
+                <div class="calendar-icon">
+                    <button class="btn btn-sm" id="btnToDate"><i class="far fa-calendar-alt"></i></button>
+                </div>
+                <div class="date_view">
+                    <span class="pre"><button class="btn btn-sm" id="btnPrevMonth"><i class="fas fa-chevron-left"></i></button></span>
+                    <span class="date"><strong><span id="year-text"></span></strong><span id="month-text"></span><i class="fas fa-caret-down top-calendar-open"></i></span>
+                    <span class="next"><button class="btn btn-sm" id="btnNextMonth"><i class="fas fa-chevron-right"></i></button></span>
+                    <span class="month">열기</span>
+                </div><!-- end : date_view -->
+            </div><!-- end : right -->
+            <div class="top-calendar">
+                <table class="table table-bordered table-sm" id="top-calendar-table">
+                    <colgroup>
+                        <col width="*">
+                        <col width="*">
+                        <col width="*">
+                        <col width="*">
+                        <col width="*">
+                        <col width="*">
+                    </colgroup>
+                    <thead>
+                    <tr>
+                        <th scope="row">일</th>
+                        <th scope="row">월</th>
+                        <th scope="row">화</th>
+                        <th scope="row">수</th>
+                        <th scope="row">목</th>
+                        <th scope="row">금</th>
+                        <th scope="row">토</th>
+                    </tr>
+                    </thead>
+                    <tbody id="top-calendar-body" data-calendar_type="mobile_only">
+                    </tbody>
+                </table>
+            </div>
+        </section><!-- end : title-area -->
+
+        <section id="partners">
+            <div class="box-area">
+                <table class="table calendar-table" id="calendar-table">
+                    <colgroup>
+                        <col width="*">
+                        <col width="*">
+                        <col width="*">
+                        <col width="*">
+                        <col width="*">
+                        <col width="*">
+                    </colgroup>
+                    <thead>
+                    <tr>
+                        <th scope="row">일</th>
+                        <th scope="row">월</th>
+                        <th scope="row">화</th>
+                        <th scope="row">수</th>
+                        <th scope="row">목</th>
+                        <th scope="row">금</th>
+                        <th scope="row">토</th>
+                    </tr>
+                    </thead>
+                    <tbody id="calendar-body">
+                    </tbody>
+                </table>
+            </div><!-- end :box-area -->
+        </section><!-- end : partners -->
+
+        <section id="partnerDailySection" class="collapse-area animated fade-right">
+            <div class="title-area">
+                <div class="float-left">
+                    <h1 id="date_text">일자 요일</h1>
+                </div>
+                <div class="btn-area">
+                    <button type="button" class="btn btn-secondary btn-sm calenda_table_toggler"><span>목록</span><i class="fas fa-arrow-left"></i></button>
+                </div><!-- end : btn-toolba -->
+            </div>
+
+            <div class="accordion" id="accordionExample">
+                <!--
+                협력사의 계약정보를 동적으로 생성.
+                freemarker template 방법으로 사용하였습니다.
+                -->
+                <div id="partnerCtrcsWrapper">
+                </div>
+            </div>
+
+        </section>
+    </div><!-- end : calendar -->
+
+</div>
+<script type="text/javascript" th:inline="javascript" layout:fragment="script">
+    $(document).ready(function () {
+        // 공사일보 메인 달력 초기화.
+        Calendar.init($("#calendar-body"), $("#top-calendar-body"));
+
+        $("#btnPrevMonth").on("click", function(e) {
+            e.preventDefault();
+            Calendar.previous();
+        });
+        $("#btnNextMonth").on("click", function(e) {
+            e.preventDefault();
+            Calendar.next();
+        });
+        $("textarea[perdd_main_work]").on("change", function(){
+
+        });
+
+        $("#btnToDate").on("click", function(e) {
+            e.preventDefault();
+            Calendar.toDate();
+        });
+
+        // 공사일보 모바일 달력 토글.
+        $(document.body).on("click", ".top-calendar-open", function (e) {
+            $("#calendar #title-area").toggleClass("expanded");
+        });
+    });
+</script>
+<script type="text/javascript" th:src="@{/js/cdrs.daily.partner.js}" th:fragment="javascript"></script>
+</body>
+</html>

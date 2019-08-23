@@ -1,0 +1,127 @@
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layouts/layout">
+<head>
+</head>
+<body>
+
+    <div layout:fragment="contents">
+    
+        <section class="top-area">
+            <nav aria-label="breadcrumb" class="float-left">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="#">시스템</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">프로그램 관리</li>
+                </ol>
+            </nav>
+            <div class="btn-area float-right">
+            </div>
+        </section>
+        
+        <section id="search-area" class="mb-3">
+            <form id="search">
+                <div class="border">
+                    <div class="form-row">
+                        <div>
+                            <label for="sysClsCd">시스템 분류</label>
+                            <select class="form-control form-control-sm" name="sysClsCd" id="sysClsCd">
+                                <option selected="selected" value="">전체</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="nmspcCd">프로그램</label>
+                            <input type="text" class="form-control form-control-sm" id="nmspcCd" name="nmspcCd">
+                        </div>
+                        <div>
+                            <label for="uriNm">URI명</label>
+                            <input type="text" class="form-control form-control-sm" id="uriNm" name="uriNm"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="btn-area">
+                    <button class="btn btn-secondary btn-sm" type="submit" id="btnSearch">조회</button>
+                </div>
+            </form>
+        </section>
+        
+        <section id="grid-area" class="mb-3">
+            <div class="d-flex justify-content-between pb-2 grid-title">
+                <h2>◎ 프로그램 등록</h2>
+                <div class="btn-area">
+                    <button type="button" class="btn btn-outline-secondary btn-sm" id="btnNew">신규</button>
+                </div>
+            </div>    
+            <div class="row">
+                <div class="col-md-12">
+                    <div id="comPgmSheet" class="vertical-full1"></div>
+                </div>
+            </div>
+        </section>
+    </div>
+    
+    <script type="text/javascript" th:inline="javascript" layout:fragment="script">
+        $(document).ready(function () {
+            console.log(_.cdrs.storage.deptCd);
+            $.getJSON("/code/getCodeList/SYS_CLS_CD", function (codes) {
+                var sysClsCd = codes.sysClsCd;
+                _.binder.combo("#sysClsCd", sysClsCd, {value: "key", text: "value"});
+                comPgmSheet.SetColProperty(0, "sysClsCd", {
+                    ComboText: _.utils.delimiter(sysClsCd, "value"),
+                    ComboCode: _.utils.delimiter(sysClsCd, "key")
+                });
+            });
+    
+            var headers = [
+                    {Text: "진행상태|순번|프로그램 ID|시스템 분류|네임스페이스|☞프로그램|프로그램 유형|URI 명|메인 프로그램 ID"}
+                ],
+                mode = {
+                    HeaderCheck: true
+                },
+                columns = [
+                    {Type: "Status", SaveName: "rowStatus", Width: 0, Align: "center", Hidden: true},
+                    {Type: "Seq", SaveName: "at_Seq", Width: 60, Align: "center"},
+                    {Type: "Text", SaveName: "pgmId", Width: 100, Align: "center"},
+                    {Type: "Combo", SaveName: "sysClsCd", Width: 100, Align: "center"},
+                    {Type: "Text", SaveName: "nmspcCd", Width: 120, Align: "left", Hidden: true},
+                    {
+                        Type: "Text",
+                        SaveName: "nmspcVal",
+                        Width: 250,
+                        Align: "left",
+                        TreeCol: 1,
+                        FontColor: "#0054FF",
+                        Cursor: "Pointer",
+                        HoverUnderline: true
+                    },
+                    {Type: "Text", SaveName: "pgmTypCd", Width: 0, Align: "center"},
+                    {Type: "Text", SaveName: "uriNm", Width: 300, Align: "left"},
+                    {Type: "Text", SaveName: "mainPgmId", Width: 100, Align: "center", Hidden: true},
+                ];
+            createIBSheet2($("#comPgmSheet")[0], "comPgmSheet", "100%", "300px");
+            comPgmSheet.InitHeaders(headers, mode);
+            comPgmSheet.InitColumns(columns);
+            comPgmSheet.SetEditable(false);
+            window["comPgmSheet_OnClick"] = function (Row, Col, Value, CellX, CellY, CellW, CellH) {
+                if (comPgmSheet.ColSaveName(Col) == "nmspcVal") {
+                    var uri = _.url.format("/sysm/pgm/pgmForm/{pgmId}", {pgmId: comPgmSheet.GetCellValue(Row, "pgmId")});
+                    location.href = uri;
+                }
+            }
+    
+            var $search = $("#search");
+            $search.on("submit", function (e) {
+                e.preventDefault();
+                $.getJSON("/sysm/pgm/pgmGridList", $(this).serialize(), function (data) {
+                    comPgmSheet.LoadSearchData({"data": data});
+                });
+            });
+    
+            //신규 버튼 클릭
+            $("#btnNew").on("click", function () {
+                location.href = "/sysm/pgm/pgmForm";
+            });
+
+            resizeContent();
+        });
+    </script>
+</body>
+</html>

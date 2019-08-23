@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<!--
+  ~ Copyright (c) 2018.
+  ~ IBUpload7 적용 프로젝트 (Sunyoup Kim)
+  -->
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layouts/sampleLayout">
+<head>
+</head>
+<body>
+<div layout:fragment="contents">
+    <div class="row align-items-center pt-4">
+      <div class="col-auto mr-auto">
+        <!-- breadcrumb -->
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item">Sample</li>
+            <li class="breadcrumb-item active font-weight-bold" aria-current="page">IB7 Upload</li>
+          </ol>
+        </nav>
+        <!-- /breadcrumb -->
+      </div>
+    </div>
+    
+    <div class="container-fluid">
+
+        <div class="ibu7-sample1">
+            <form name="ibuForm1" id="ibuForm1">
+                <div class="alert alert-info" role="alert">
+                    업로드를 하고나면 IBUpload7 업로드 결과를 JSON 형태의 Object 로 반환됩니다.<br>
+                    본 샘플은 업로드 후 db처리 등을 담당할 uploadPostProcess()를 직접 호출하여 한번에 처리합니다.<br>
+                    파일업로드 후 콜백처리를 별도로 구현 할 수 있습니다.
+                </div>
+                <input type="hidden" name="fileGrpId" id="fileGrpId1" value="">
+                <input type="hidden" name="fileSetId" id="fileSetId1" value="">
+                <input type="hidden" name="ibu7Result" id="ibu7Result" value="">
+                <table class="table table-bordered">
+                    <tbody>
+                    <tr>
+                        <th>파일그룹조회</th>
+                        <td>
+                            <select class="fileGrpList" id="fileGrpIdList">
+                                <!-- Test 자료 -->
+                                <option value="">파일그룹을 선택하십시오</option>
+                                <option value="178061">178061</option>
+                                <option value="178062">178062</option>
+                                <option value="178063">178063</option>
+                                <option value="178064">178064</option>
+                                <option value="178065">178065</option>
+                                <option value="178066">178066</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>첨부파일</th>
+                        <td>
+                            <!-- Module button -->
+                            <div id="ibFileAction1" class="col-auto mb-2">
+                            <button type="button" class="btn btn-outline-secondary btn-sm file_add" onclick="doAction('add')" data-action='add'>신규</button>
+                            <button type="button" class="btn btn-outline-secondary btn-sm file_delete" onclick="doAction('delete')" data-action='delete'>삭제</button>
+                            <button type="button" class="btn btn-outline-secondary btn-sm file_download" onclick="doAction('download')" data-action='download'>다운로드</button>
+                            <button type="button" class="btn btn-outline-secondary btn-sm file_upload" onclick="doAction('upload')" data-action='upload'>업로드</button>
+                            </div>
+                            <!-- /Module button -->
+     
+                            <div id="ibFileArea1" class="ibFileArea"></div>
+                            <div id="ibFileAreaFooter1" class="ibFileAreaFooter">
+                                <div class="ibFileStatus">
+                                    <div>
+                                        <span class="cnt">0 개체</span>,
+                                        <span class="size">0KB 첨부됨</span>
+                                    </div>
+                                </div>
+                                <div class="ibFileLimit">
+                                    <div>
+                                        <span class="cnt"></span>,
+                                        <span class="size"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                    <tfoot>
+                    <tr>
+                        <th>파일처리 반환 값</th>
+                        <td>
+                            <div class="output"><textarea id="output" class="form-control"></textarea></div>
+                        </td>
+                    </tr>
+                    </tfoot>
+                </table>
+            </form>
+        </div>
+    </div>
+ </div>  
+   <script type="text/javascript" layout:fragment="script">
+
+        /**
+         * IBUpload7 Object
+         */
+        var ibu7;
+
+        $(document).ready(function () {
+
+            ibu7 = Henc.ibu7.createObject($('#ibFileArea1'), {
+                file_grp_id: 178061, //Example
+                file_set_id: 16, //Example
+                limit_file: {count: 20, size: 50, unit: 'MB', extension: 'jpg, jpeg, gif, png, pdf'},
+                is_autoload_files: false,
+                
+                $extra_form: $('#ibuForm1'),
+                $context_actions: $('#ibFileAction1'),
+                $footer_statusbar: $('#ibFileAreaFooter1'),
+                
+                uploaded_callback: function (res) {
+                    console.log(res.ibupload);
+                    var ibu7Result = {uploadFiles: [], deleteFiles: []};
+                    ibu7Result.uploadFiles = res.ibupload.files;
+                    ibu7Result.deleteFiles = res.ibupload.etcdata.deleteFiles;
+
+                    $('#ibu7Result').val(JSON.stringify(ibu7Result));
+                    $('#output').val(JSON.stringify(ibu7Result));
+                }
+            });
+
+            $('#fileGrpIdList').change(function() {
+                $('#fileGrpId1').val($(this).val());
+                ibu7.resetOptions({file_grp_id: $('#fileGrpId1').val()});
+                ibu7.setFiles($('#fileGrpId1').val(), '');
+            });
+
+        });
+
+        function doAction(event) {
+            switch (event) {
+                case "add":
+                    break;
+                case "delete":
+                    break;
+                case "download":
+                    break;
+                case "upload":
+                    break;
+                case "save":
+                    break;
+            }
+        }
+
+    </script>
+
+</body>
+</html>

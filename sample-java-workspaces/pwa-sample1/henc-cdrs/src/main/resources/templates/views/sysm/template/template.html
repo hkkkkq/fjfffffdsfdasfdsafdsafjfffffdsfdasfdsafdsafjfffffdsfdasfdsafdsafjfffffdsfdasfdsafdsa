@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" 
+    xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" 
+    layout:decorator="/views/common/layout/layout">   
+
+<div layout:fragment="content">
+
+<script type="text/javascript" th:inline="javascript">
+    var templateSheet = new ibsheetObject();    
+    
+    $(document).ready(function(){
+        ib.comm.createIBSheet( document.getElementById("templateSheet_div"), "templateSheet" , "100%" , "100%");
+
+        //시트 초기화 변수
+        var initSheet = {};
+        initSheet.Cfg = {FrozenCol:3,SearchMode:smLazyLoad};
+        initSheet.HeaderMode = {Sort:1,ColMove:1,ColResize:1};
+        initSheet.Cols = [
+            {Header:'진행상태',Type:"Status", SaveName:"sStatus", Width:0, Align:"Center" , Hidden:1},
+            {Header:'삭제',Type:"DelCheck", SaveName:"delCheck", Width:0, Align:"Center"},
+            {Header:'템플릿명',Type:"Text", SaveName:"templateName", Width:100, Align:"Left",UpdateEdit:0},
+            {Header:'템플릿 URL',Type:"Text", SaveName:"templateUrl", Width:250, Align:"Left",UpdateEdit:0}
+        ];       
+       
+        //시트 초기화
+        ib.comm.IBS_InitSheet(templateSheet,initSheet);
+        templateSheet.SetDataLinkMouse(5, 1);
+        setGridSize();
+        
+        /****************************************************************************************************************************************** 
+         ** 메인 폼 이벤트 start
+         ******************************************************************************************************************************************/                 
+        $("#btnSearch").click(function() {
+            templateListSearch();
+        });
+        
+        $('#btnSave').click(function() {
+            if (pcommon.isEmpty($('#templateName').val())) {
+                pcommon.autoCloseModal({message:'템플릿명을 입력하세요.'});
+                $('#templateName').focus();
+                return;          
+            }
+            
+            if (pcommon.isEmpty($('#templateUrl').val())) {
+                pcommon.autoCloseModal({message:'템플릿URL 을 입력하세요.'});
+                $('#templateUrl').focus();
+                return;          
+            } 
+            
+            pcommon.confirmModal({
+                message: "등록하시겠습니까?",
+                callback: function(result, event, formData, ExtraData, rootDiv) {
+                    if (result === 'true') {                       
+                        $.ajax({
+                            type : "POST",
+                            url : '/sysm/template/templateSave',
+                            data : $("#frm").serialize(),
+                            success : function (jsonData, status) {
+                                pcommon.autoCloseModal({message:'처리 되었습니다.'});
+                                templateListSearch();
+                            },
+                            error : function (jqXHR, textStatus, errorThrown) {
+                                pcommon.alertModal({message:'에러가 발생했습니다.' + errorThrown});
+                            }
+                        });
+                    }
+                },
+            }); 
+        });
+        
+        //삭제
+        $('#btnDelete').click(function() {
+            var changeCnt = 0;
+            for (var i=1; i<=templateSheet.RowCount(); i++) {
+                if (templateSheet.GetCellValue(i,"sStatus") == "D" 
+                        || templateSheet.GetCellValue(i,"sStatus") == "U") {
+                    changeCnt++;
+                }
+            }
+            if (changeCnt == 0) {
+                pcommon.alertModal({autoCloseModal:'삭제할 항목이 없습니다.'});
+                return;
+            }
+            
+            pcommon.confirmModal({
+                message: "삭제하시겠습니까?",
+                callback: function(result, event, formData, ExtraData, rootDiv) {
+                    if (result === 'true') {                       
+                        var param = {url:"/sysm/template/templateDelete"
+                            ,subparam:FormQueryStringEnc(document.frm)
+                            ,sheet:"templateSheet"
+                            ,quest:false
+                            };
+                        ib.comm.save( param ); 
+                    }
+                },
+            }); 
+            
+        });
+        
+        templateListSearch();
+        /****************************************************************************************************************************************** 
+         ** 메인 폼 이벤트 end
+         ******************************************************************************************************************************************/        
+	});
+	
+    
+    function templateSheet_OnClick(Row, Col, Value, CellX, CellY, CellW, CellH) {
+        
+        if (templateSheet.ColSaveName(Col) != "delCheck") {
+          //$("#frm").attr('action', templateSheet.GetCellValue(Row, 'templateUrl'));
+          $("#frm").attr('action', "/sysm/template/iframeCall");
+          $('#frm').attr("target", "templateFrame");
+          $('#submitUrl').attr('value',"views" + templateSheet.GetCellValue(Row, 'templateUrl') );
+          $("#frm").submit();
+          /* $("#frm").submit(function(){
+              //$('#submitUrl').attr('value',templateSheet.GetCellValue(Row, 'templateUrl') );
+          }); */     
+        }
+    }     
+        
+    function templateListSearch() {
+        var param = {url:"/sysm/template/templateSearch"
+            ,subparam:FormQueryStringEnc(document.frm)
+            ,sheet:templateSheet
+            ,mapping:{templateSheet:"templateSheet"}};
+          ib.comm.search( param );         
+    }
+    
+    function setGridSize() {             
+        $("#templateSheet_div").css("height", ($("#content-wrap", parent.document).height() - $("#templateSheet_div").height()) - 50);
+        $("#template_div").css("height", $("#templateSheet_div").height()); 
+    }           
+    
+</script>
+
+  <div class="container-fluid">   
+    <div class="row">    
+      <div class="col-xs-12 col-lg-12">      
+        <div class="panel panel-default" id="main">          
+          <form class="form-inline" id="frm" name="frm">            
+            <div class="form-group form-group-sm">
+              <div class="col-xs-10">
+                <label for="templateName" class="control-label">템플릿명</label>
+              </div>
+              <div class="col-xs-10">              
+                <input type="text" class="form-control" id="templateName" name="templateName">
+              </div>
+            </div>
+            <div class="form-group form-group-sm">
+              <label for="templateUrl">템플릿URL</label>
+              <input type="text" class="form-control" id="templateUrl" name="templateUrl">
+              <input type="hidden" class="form-control" id="submitUrl" name="submitUrl">
+            </div>            
+            <div class="form-group form-group-sm col-xs-2 pull-right ">
+              <button class="btn btn-default btn-sm" type="button" id="btnSave">등록</button>
+              <button class="btn btn-default btn-sm" type="button" id="btnDelete">삭제</button>
+              <button class="btn btn-default btn-sm" type="button" id="btnSearch">조회</button>
+            </div>                                
+          </form> 
+        </div>  
+      </div>                           
+    </div>
+    <div class="row">    
+      <div class="col-lg-2 col-xs-2">
+        <div id="templateSheet_div"></div>
+      </div>
+      <div class="col-lg-10 col-xs-10">
+        <div id="template_div">
+          <iframe id="templateFrame" name="templateFrame" src="/sysm/pgm/pgmList" 
+            tabIndex="-1" 
+            marginwidth="10" 
+            marginheight="10" 
+            scrolling="no"
+            width="100%"
+            height="100%"
+            frameBorder="0" 
+            style="marginLeft:0px;width:100%;height:100%;">
+          </iframe>
+        </div>
+      </div>      
+    </div>
+  </div>
+  <script> 
+      $(window).resize(function() {
+          setGridSize();
+      });
+       
+  </script>  
+</div>
+</html>

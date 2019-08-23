@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.henc.cdrs.daily.repository.DdBrfgMtilMapper">
+
+	<select id="dailyList" resultType="ddBrfgMtil" parameterType="searchDailyParams">
+		SELECT dbm.partner_no,
+			   dbm.dept_cd,
+			   dbm.day,
+			   dbm.ordr_no,
+			   dbm.ctrc_no,
+			   dbm.mtil_no,
+			   mm.bizhdof_cd,
+			   mm.mtil_nm,
+			   mm.spec,
+			   mm.unit,
+			   dbm.qty,
+			   nvl(sum.qty, 0) AS before_sum_qty,
+			   nvl(dbm.qty, 0) + nvl(sum.qty, 0) as sum_qty,
+			   dbm.updt_dm,
+			   dbm.updt_id,
+			   dbm.wrtr_dm,
+			   dbm.wrtr_id,
+			   rownum as row_id
+		FROM dd_brfg_mtil dbm
+				 INNER JOIN main_mtil mm ON dbm.MTIL_NO = mm.MTIL_NO
+				 LEFT OUTER JOIN (SELECT mtil_no, nvl(sum(qty), 0) AS qty
+								  FROM dd_brfg_mtil
+								  WHERE (dept_cd, day, ordr_no) IN (SELECT dept_cd, day, max(ordr_no) AS ordr_no
+																	FROM DD_BRFG
+																	WHERE dept_cd = #{deptCd}
+																	  AND day &lt; #{day}
+																	  AND sta_cd = '50'
+																	GROUP BY dept_cd, day)
+									AND partner_no = #{partnerNo}
+									AND ctrc_no = #{ctrcNo}
+								  GROUP BY mtil_no) sum ON dbm.MTIL_NO = sum.mtil_no
+		WHERE dept_cd = #{deptCd}
+		  AND day = #{day}
+		  AND ordr_no = #{ordrNo}
+		  AND partner_no = #{partnerNo}
+		  AND ctrc_no = #{ctrcNo}
+		ORDER BY mm.MTIL_NM
+	</select>
+
+	<select id="dailyGroupList" resultType="camelCaseMap" parameterType="searchDailyParams">
+		SELECT mm.MTIL_NM,
+			   mm.UNIT,
+			   mm.SPEC,
+			   nvl(dbm.bef_qty, 0)                       AS bef_qty,
+			   nvl(dbm.cur_qty, 0)                       AS cur_qty,
+			   nvl(dbm.bef_qty, 0) + nvl(dbm.cur_qty, 0) AS tot_qty,
+			   mms.DEPT_CD,
+			   mms.mtil_no
+		FROM (SELECT mms.dept_cd,
+					 mms.aply_term,
+					 mms.sort_no,
+					 mms.mtil_no,
+					 #{day} AS day
+			  FROM MAIN_MTIL_SET mms
+			  WHERE mms.dept_cd = #{deptCd}
+				AND mms.aply_term = (
+				  SELECT max(aply_term) AS aply_term
+				  FROM MAIN_MTIL_SET
+				  WHERE dept_cd = #{deptCd}
+					AND APLY_TERM &lt;= #{day})
+			  ORDER BY mms.sort_no) mms
+				 LEFT OUTER JOIN (SELECT dbm.dept_cd,
+										 dbm.mtil_no,
+										 sum(CASE
+												 WHEN to_date(#{day}, 'YYYYMMDD') > to_date(dbm.day, 'YYYYMMDD') THEN nvl(dbm.qty, 0)
+												 ELSE 0 END) AS bef_qty,
+										 sum(CASE
+												 WHEN to_date(#{day}, 'YYYYMMDD') = to_date(dbm.day, 'YYYYMMDD') THEN nvl(dbm.qty, 0)
+												 ELSE 0 END) AS cur_qty
+								  FROM DD_BRFG_MTIL dbm
+										   INNER JOIN dd_brfg_comp comp ON dbm.dept_cd = comp.dept_cd AND dbm.day = comp.day AND
+																		   dbm.ORDR_NO = comp.ORDR_NO AND
+																		   dbm.CTRC_NO = comp.CTRC_NO
+								  WHERE (dbm.dept_cd, dbm.day, dbm.ordr_no) IN (
+									  SELECT dept_cd, day, max(ordr_no) AS ordr_no
+									  FROM DD_BRFG
+									  WHERE DEPT_CD = #{deptCd}
+										AND ((day &lt; #{day} AND sta_cd IN ('50')) OR (day = #{day}))
+									  GROUP BY dept_cd, day
+								  )
+									AND comp.sta_cd = '50'
+								  GROUP BY dbm.dept_cd, dbm.MTIL_NO) dbm
+								 ON mms.DEPT_CD = dbm.DEPT_CD AND mms.MTIL_NO = dbm.MTIL_NO
+				 LEFT OUTER JOIN main_mtil mm ON mms.mtil_no = mm.MTIL_NO
+		ORDER BY mtil_nm, unit, spec
+	</select>
+
+	<insert id="insert" parameterType="ddBrfgMtil">
+		INSERT INTO DD_BRFG_MTIL ( PARTNER_NO
+                         , MTIL_NO
+                         , UPDT_DM
+                         , UPDT_ID
+                         , WRTR_DM
+                         , WRTR_ID
+                         , CTRC_NO
+                         , QTY
+                         , DEPT_CD
+                         , DAY
+                         , ORDR_NO)
+		VALUES ( #{partnerNo}
+			   , #{mtilNo}
+			   , sysdate
+			   , #{loginId}
+			   , sysdate
+			   , #{loginId}
+			   , #{ctrcNo}
+			   , #{qty}
+			   , #{deptCd}
+			   , #{day}
+			   , #{ordrNo})
+	</insert>
+
+	<update id="update" parameterType="ddBrfgMtil">
+		UPDATE DD_BRFG_MTIL
+		SET
+			QTY = #{qty},
+			UPDT_DM   = sysdate,
+			UPDT_ID   = #{loginId}
+		WHERE PARTNER_NO = #{partnerNo}
+		  AND DEPT_CD = #{deptCd}
+		  AND DAY = #{day}
+		  AND ORDR_NO = #{ordrNo}
+		  AND MTIL_NO = #{mtilNo}
+		  AND CTRC_NO = #{ctrcNo}
+	</update>
+
+	<delete id="delete" parameterType="ddBrfgMtil">
+		DELETE FROM DD_BRFG_MTIL
+		WHERE PARTNER_NO = #{partnerNo}
+		  AND DEPT_CD = #{deptCd}
+		  AND DAY = #{day}
+		  AND ORDR_NO = #{ordrNo}
+		  AND CTRC_NO = #{ctrcNo}
+		  AND MTIL_NO = #{mtilNo}
+	</delete>
+
+	<delete id="deleteAll" parameterType="searchDailyParams">
+		DELETE FROM DD_BRFG_MTIL
+		WHERE DEPT_CD = #{deptCd}
+		  AND DAY = #{day}
+		  AND ORDR_NO = #{ordrNo}
+		  AND PARTNER_NO = #{partnerNo}
+		  AND CTRC_NO = #{ctrcNo}
+	</delete>
+
+	<insert id="copyHistoryCreate" parameterType="historyDailyCopyParams">
+		INSERT INTO DD_BRFG_MTIL (PARTNER_NO, MTIL_NO, UPDT_DM, UPDT_ID, WRTR_DM, WRTR_ID, CTRC_NO, QTY, DEPT_CD, DAY, ORDR_NO)
+		SELECT hst.PARTNER_NO,
+			   hst.MTIL_NO,
+			   sysdate,
+			   #{loginId},
+			   sysdate,
+			   #{loginId},
+			   hst.CTRC_NO,
+			   hst.QTY,
+			   hst.DEPT_CD,
+			   #{targetDayParams.day},
+			   hst.ORDR_NO
+		FROM DD_BRFG_MTIL hst
+		WHERE hst.dept_cd = #{copyDayParams.deptCd}
+		  AND hst.day = #{copyDayParams.day}
+		  AND hst.ordr_no = #{copyDayParams.ordrNo}
+		  AND hst.partner_no = #{copyDayParams.partnerNo}
+		  AND hst.ctrc_no = #{copyDayParams.ctrcNo}
+	</insert>
+
+	<select id="quickSearchList" resultType="camelCaseMap" parameterType="searchDailyParams">
+		SELECT *
+		FROM (SELECT 'PARENT'                                    AS GB,
+					 A.MTIL_NO,
+					 A.MTIL_NM,
+					 A.SPEC,
+					 A.UNIT,
+					 A.MTIL_NM || ' ' || A.SPEC || ' ' || A.UNIT AS label,
+					 A.MTIL_NO                                   AS PARENT_MTIL_NO,
+					 A.MTIL_NM                                   AS "value",
+					 A.SPEC                                      AS PARENT_SPEC,
+					 A.UNIT                                      AS PARENT_UNIT,
+					 A.BIZHDOF_CD
+			  FROM MAIN_MTIL A
+			  WHERE A.USE_YN = 'Y'
+				AND A.SAME_MTIL_NO is null
+			  UNION ALL
+			  SELECT 'CHILD'                              AS GB,
+					 A.MTIL_NO,
+					 A.MTIL_NM,
+					 A.SPEC,
+					 A.UNIT,
+					 A.MTIL_NM || ' ' || A.SPEC || A.UNIT AS label,
+					 B.MTIL_NO                            AS PARENT_MTIL_NO,
+					 B.MTIL_NM                            AS "value",
+					 B.SPEC                               AS PARENT_SPEC,
+					 B.UNIT                               AS PARENT_UNIT,
+					 A.BIZHDOF_CD
+			  FROM MAIN_MTIL A
+					   INNER JOIN MAIN_MTIL B ON A.SAME_MTIL_NO = B.MTIL_NO AND B.USE_YN = 'Y'
+			  WHERE A.USE_YN = 'Y'
+				AND A.APBT_YN = 'N'
+				AND A.SAME_MTIL_NO IS NOT NULL)
+		WHERE BIZHDOF_CD = #{bizhdofCd}
+		<if test="autocompleteSearchParams != null">
+			<choose >
+				<when test="autocompleteSearchParams.type.equals('mtil_nm')">
+					AND MTIL_NM like '%' || #{autocompleteSearchParams.term} || '%'
+				</when>
+				<when test="autocompleteSearchParams.type.equals('spec')">
+					AND SPEC like '%' || #{autocompleteSearchParams.term} || '%'
+				</when>
+				<when test="autocompleteSearchParams.type.equals('unit')">
+					AND UNIT like '%' || #{autocompleteSearchParams.term} || '%'
+				</when>
+			</choose>
+		</if>
+		ORDER BY MTIL_NM ASC, SPEC ASC, UNIT ASC
+	</select>
+
+	<select id="getListInChange" resultType="ddBrfgMtil" parameterType="ddBrfg">
+		SELECT dept_cd, day, ordr_no, partner_no, ctrc_no, qty, mtil_no
+		FROM dd_brfg_mtil
+		WHERE dept_cd = #{deptCd}
+		  AND day = #{day}
+		  AND ordr_no = #{ordrNo}
+		ORDER BY dept_cd, day, ordr_no, partner_no, ctrc_no
+	</select>
+
+	<delete id="deleteChanged" parameterType="ddBrfg">
+		DELETE FROM dd_brfg_mtil
+		WHERE DEPT_CD = #{deptCd}
+		  AND DAY = #{day}
+		  AND ORDR_NO = #{ordrNo}
+	</delete>
+
+</mapper>

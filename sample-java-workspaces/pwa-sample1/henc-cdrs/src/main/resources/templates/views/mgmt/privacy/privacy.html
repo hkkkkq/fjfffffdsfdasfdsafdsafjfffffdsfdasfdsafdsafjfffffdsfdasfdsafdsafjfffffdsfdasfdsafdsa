@@ -1,0 +1,186 @@
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta http-equiv="X-UA-Compatible" content="IE=edge" /> <!-- 호환성보기 안먹을시 아파치설정때문에 안될 수도 있음 안되면 다른처리 요망 -->
+<title>공사일보</title>
+<link rel="shortcut icon" th:href="@{/favicon.ico}">
+<link rel="stylesheet" th:href="@{/webjars/bootstrap/4.1.1/css/bootstrap.min.css}" th:fragment="style"/>
+<link rel="stylesheet" th:href="@{/webjars/tempusdominus-bootstrap-4/5.0.0/css/tempusdominus-bootstrap-4.min.css}" th:fragment="style"/>
+
+<link rel="stylesheet" th:replace="dream-static-resources :: style" />
+<link rel="stylesheet" type="text/css" th:href="@{/css/login.css}"/>
+
+<body>
+
+    <form id="frm" class="form-privacy">
+    
+        <input name="signData" id="signData" type="hidden"/>
+        <input name="signDataBase64" id="signDataBase64" type="hidden" />
+    
+        <section class="mb-3">
+            <div class="title d-flex">
+                <h2 class="mr-auto">개인정보 수집 및 이용 동의</h2>
+                <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" name="clctAgreeYn" id="clctAgreeYn">
+                    <label class="custom-control-label" for="clctAgreeYn">동의</label>
+                </div>
+            </div>
+            <div class="content">
+                <h3>1.개인정보 수집∙이용 목적</h3>
+                <p>㈜한화건설은 공사일보 업무의 원활한 진행을 위하여 최소한의 개인정보를 수집합니다.  공사일보 업무 외의 목적으로 사용되지 않습니다.</p>
+                <p>■ 필수 수집항목 : 성명,  소속회사, 연락처, 이메일 주소</p>
+                <h3>2.보유 및 이용 기간</h3>
+                <p>개인정보의 수집 및 이용 목적이 달성된 이후에는 지체없이 파기합니다.</p>
+            </div>
+        </section>
+        <section class="mb-3">
+            <div class="title d-flex">
+                <h2 class="mr-auto">개인정보 처리 위탁 동의</h2>
+                <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" name="entrustAgreeYn" id="entrustAgreeYn">
+                    <label class="custom-control-label" for="entrustAgreeYn">동의</label>
+                </div>
+            </div>
+            <div class="content">
+                <p>검측 업무의 원활한 진행을 위하여 다음과 같은 업체에 개인정보를 위탁하고 있습니다.</p>
+                <ul>
+                    <li>1.위탁받는 업체 : SDCIT</li>
+                    <li>2.위탁하는 개인정보의 항목 : 성명, 연락처, 이메일주소</li>
+                </ul>
+                <h3>2.보유 및 이용 기간</h3>
+                <p>개인정보의 수집 및 이용 목적이 달성된 이후에는 지체없이 파기합니다.</p>
+            </div>
+        </section>
+        <section id="signature-pad" class="signature-pad">
+            <div class="title d-flex">
+                <h2 class="mr-auto">서명등록</h2>
+                <div class="signature-pad--footer">
+                    <div class="signature-pad--actions">
+                        <div>
+                            <button type="button" class="btn btn-secondary btn-sm clear" data-action="clear">Clear</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="sign">
+                <div>
+                    <div class="signature-pad--body">
+                        <canvas height="150" width="400"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <hr>
+        <div class="btn-area">
+            <span><a href="#" class="btn btn-default" id="btnCancel">취소</a></span>
+            <span><a href="#" class="btn btn-agree" id="btnOk">동의</a></span>
+        </div>
+    </form>
+
+</body>
+<!-- //info -->
+<script th:src="@{/webjars/jquery/3.0.0/jquery.min.js}"></script>
+
+<div th:replace="dream-static-resources :: components"></div>
+<script th:replace="dream-static-resources :: script"></script>
+<script type="text/javascript" th:src="@{/js/encrypt/base64.js}"></script>
+<script type="text/javascript" th:src="@{/js/tree/jquery.jstree.js}"></script>
+<script type="text/javascript" th:src="@{/js/cdrs.js}"></script>
+<script type="text/javascript" th:src="@{/js/jquery.json-2.4.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/jquery-ui/jquery-ui.js}"></script>
+
+<script type="text/javascript" th:src="@{/js/signature_pad.umd.js}"></script>
+<script type="text/javascript" th:src="@{/js/cdrs.signature.js}"></script>
+
+<!--<script type="text/javascript" th:src="@{/js/pwa/app.js}"></script>-->
+
+<script th:inline="javascript">  
+    /*<![CDATA[*/
+    $(document).ready(function(){
+        
+        $("#btnOk").on('click', function(){
+            
+            var clctAgrYn = $('input:checkbox[id="clctAgreeYn"]').is(":checked");
+            var entrustAgrYn = $('input:checkbox[id="entrustAgreeYn"]').is(":checked");
+            
+            if(clctAgrYn != true || entrustAgrYn != true){
+                alert("개인정보 수집 및 이용 / 개인정보 처리위탁에 대한 안내 모두 동의해주세요.");
+                return;
+            }else{
+                $("#clctAgreeYn").val("Y");
+                $("#entrustAgreeYn").val("Y");
+            }
+            
+            if(confirm('동의 완료하시겠습니까?')){
+                /**
+                 * sign 이미지 데이터화
+                 */
+                canvasToData();
+                
+                const param = $("#frm").serializeObject();
+                
+                $.post("/mgmt/privacy/privacySave", param, function(sucess, status) {
+                    alert("개인정보 동의 완료되었습니다.");
+                    location.href = "/";
+                });
+            }
+        });
+        
+        $("#btnCancel").on('click', function(){
+            localStorage.removeItem("menu");
+            localStorage.removeItem("loginInfo");
+            localStorage.removeItem("userRoles");
+            localStorage.removeItem("roleId");
+            localStorage.removeItem("userDepts");
+            localStorage.removeItem("mainDeptCd");
+            localStorage.removeItem("mainBizhdofCd");
+            location.href = "/security/sign_out";
+        });
+        
+    });
+    
+    function canvasToData(){
+        var imageData = canvas.toDataURL("image/png");
+        $("#signData").val(imageData);
+    }
+
+    function loadImageToCanvas() {
+        let signImage = null;
+
+        //canvas img 로드
+        const signData = $('#signDataBase64').val();
+
+        if (signImage == null) {
+            signImage = new Image();
+            signImage.onload = function() {
+                document.getElementById("signCanvas").getContext("2d").drawImage(signImage, 0, 0, $("#signCanvas").width(), $("#signCanvas").height());
+                //document.getElementById("signCanvas").getContext("2d").drawImage(signImage, 0, 0, 336, 168);
+            }
+        }
+        if (signData != '') {
+            signImage.src = signData;
+        }
+    }
+
+    function attachSignImage(el) {
+        var reader = new FileReader();
+        reader.onload = function (event) {
+            signImage.src = event.target.result;
+            $("#signChgYn").val("Y");
+        }
+        reader.readAsDataURL(el.files[0]);
+    }
+
+    function drawBinary(){
+        let image = new Image();
+        image.src = $("#signDataBase64").val();
+
+        let context = canvas.getContext("2d");
+        context.drawImage(image, image.width, image.height);
+    }
+    
+    /*]]>*/
+</script>
+
+</html>   

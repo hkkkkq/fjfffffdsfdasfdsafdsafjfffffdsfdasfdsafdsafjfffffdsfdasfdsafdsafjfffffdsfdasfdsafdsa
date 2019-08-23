@@ -1,0 +1,8 @@
+html {position: relative; min-height: 100%;}
+*, *::before, *::after {-webkit-box-sizing: border-box; box-sizing: border-box;}
+body {margin: 0; font-family: "맑은고딕", sans-serif; color: #333; line-height: 1.5; height: 100%; font-size: 13px;}
+a {color: #333;}
+a:hover {color: #f37321; text-decoration: none;}
+a:focus {outline: none;}
+ul li {list-style: none;}
+textarea {resize: none;}

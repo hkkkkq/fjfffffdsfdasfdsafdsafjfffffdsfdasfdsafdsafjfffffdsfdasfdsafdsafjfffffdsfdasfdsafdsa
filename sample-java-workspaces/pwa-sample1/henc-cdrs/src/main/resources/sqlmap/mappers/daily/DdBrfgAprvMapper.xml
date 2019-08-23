@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.henc.cdrs.daily.repository.DdBrfgAprvMapper">
+
+	<select id="get" parameterType="ddBrfgAprv" resultType="ddBrfgAprv">
+		SELECT aprv.*
+		FROM (
+				 SELECT emp_no,
+						name_ko,
+						position_code,
+						position_name,
+						jikgub_cd,
+						jikgub_nm,
+						'A' AS source
+				 FROM HANWHA_PORTAL
+				 WHERE service_kind = '10'
+				   AND acct_kind IN ('1')
+				 UNION
+				 SELECT user_id,
+						name,
+						'',
+						pstn,
+						'',
+						'',
+						'B' AS source
+				 FROM com_user cu
+				 WHERE user_div_cd = 'HENC') u
+				 RIGHT OUTER JOIN (SELECT DEPT_CD,
+										  DAY,
+										  ORDR_NO,
+										  SEQ,
+										  EMPE_NO,
+										  STA_CD,
+										  APRV_DT,
+										  RSN,
+										  UPDT_DM,
+										  UPDT_ID,
+										  WRTR_DM,
+										  WRTR_ID
+								   FROM DD_BRFG_APRV
+								   WHERE dept_cd = #{deptCd}
+									 AND day = #{day}
+									 AND ordr_no = #{ordrNo}
+									 AND seq = #{seq}) aprv ON u.emp_no = aprv.empe_no
+	</select>
+
+	<select id="getCurrentSigner" parameterType="ddBrfg" resultType="ddBrfgAprv">
+		SELECT DEPT_CD, DAY, ORDR_NO, SEQ, EMPE_NO, STA_CD, APRV_DT, RSN, UPDT_DM, UPDT_ID, WRTR_DM, WRTR_ID
+		FROM DD_BRFG_APRV
+		WHERE dept_cd = #{deptCd}
+		  AND day = #{day}
+		  AND ordr_no = #{ordrNo}
+		  AND seq = (
+			SELECT max(seq) AS seq
+			FROM DD_BRFG_APRV aprv
+			WHERE dept_cd = #{deptCd}
+			  AND day = #{day}
+			  AND ordr_no = #{ordrNo}
+			  AND sta_cd IS NULL
+			  AND aprv_dt IS NULL)
+	</select>
+
+	<select id="getFirstSigner" parameterType="ddBrfgAprv" resultType="ddBrfgAprv">
+		SELECT DEPT_CD,
+			   DAY,
+			   ORDR_NO,
+			   SEQ,
+			   EMPE_NO,
+			   STA_CD,
+			   APRV_DT,
+			   RSN,
+			   UPDT_DM,
+			   UPDT_ID,
+			   WRTR_DM,
+			   WRTR_ID
+		FROM DD_BRFG_APRV
+		WHERE dept_cd = #{deptCd}
+		  AND day = #{day}
+		  AND ordr_no = #{ordrNo}
+		  AND seq = 1
+	</select>
+
+	<select id="getNextSigner" parameterType="ddBrfgAprv" resultType="ddBrfgAprv">
+		SELECT *
+		FROM (SELECT DEPT_CD,
+					 DAY,
+					 ORDR_NO,
+					 SEQ,
+					 EMPE_NO,
+					 STA_CD,
+					 APRV_DT,
+					 RSN,
+					 UPDT_DM,
+					 UPDT_ID,
+					 WRTR_DM,
+					 WRTR_ID
+			  FROM DD_BRFG_APRV
+			  WHERE dept_cd = #{deptCd}
+				AND day = #{day}
+				AND ordr_no = #{ordrNo}
+				AND seq &gt; #{seq}
+			  ORDER BY seq ASC) aprv
+		WHERE rownum = 1
+	</select>
+
+	<insert id="insert" parameterType="ddBrfgAprv">
+		<selectKey keyProperty="seq" resultType="int" order="BEFORE">
+			select nvl(max(seq),0) + 1 FROM DD_BRFG_APRV WHERE DEPT_CD = #{deptCd} AND DAY = #{day} AND ordr_no = #{ordrNo}
+		</selectKey>
+		insert into DD_BRFG_APRV (DEPT_CD, DAY, ORDR_NO, SEQ, EMPE_NO, STA_CD, APRV_DT, RSN, UPDT_DM, UPDT_ID, WRTR_DM, WRTR_ID)
+		values (#{deptCd}, #{day}, #{ordrNo}, #{seq}, #{empeNo}, #{staCd}, #{aprvDt}, #{rsn}, sysdate, #{loginId}, sysdate, #{loginId})
+	</insert>
+
+	<update id="saveApproval">
+		UPDATE DD_BRFG_APRV
+		SET STA_CD  = #{staCd},
+			APRV_DT = sysdate,
+			RSN = #{rsn},
+			UPDT_DM = sysdate,
+			UPDT_ID = #{loginId}
+		WHERE DEPT_CD = #{deptCd}
+		  AND DAY = #{day}
+		  AND ORDR_NO = #{ordrNo}
+		  AND SEQ = #{seq}
+	</update>
+
+	<select id="aprvUsers" parameterType="ddBrfg" resultType="camelCaseMap">
+		SELECT aprv.DEPT_CD,
+			   aprv.DAY,
+			   aprv.ORDR_NO,
+			   aprv.SEQ,
+			   aprv.EMPE_NO,
+			   aprv.STA_CD,
+			   aprv.APRV_DT,
+			   aprv.RSN,
+			   aprv.UPDT_DM,
+			   aprv.UPDT_ID,
+			   aprv.WRTR_DM,
+			   aprv.WRTR_ID,
+			   nvl(portal.name_ko, cu.NAME) AS name
+		FROM DD_BRFG_APRV aprv,
+			 HANWHA_PORTAL portal,
+			 com_user cu
+		WHERE aprv.EMPE_NO = portal.emp_no(+)
+		  AND aprv.EMPE_NO = cu.user_id(+)
+		  AND aprv.dept_cd = #{deptCd}
+		  AND aprv.day = #{day}
+		  AND aprv.ordr_no = #{ordrNo}
+		ORDER BY aprv.seq ASC
+	</select>
+
+	<delete id="deleteChanged" parameterType="searchDailyParams">
+		DELETE FROM dd_brfg_aprv
+		WHERE DEPT_CD = #{deptCd}
+		  AND DAY = #{day}
+		  AND ORDR_NO = #{ordrNo}
+	</delete>
+
+	<delete id="deletePastData" parameterType="ddBrfgAprv">
+		DELETE FROM dd_brfg_aprv
+		WHERE DEPT_CD = #{deptCd}
+		  AND DAY = #{day}
+		  AND ORDR_NO = #{ordrNo}
+	</delete>
+
+</mapper>

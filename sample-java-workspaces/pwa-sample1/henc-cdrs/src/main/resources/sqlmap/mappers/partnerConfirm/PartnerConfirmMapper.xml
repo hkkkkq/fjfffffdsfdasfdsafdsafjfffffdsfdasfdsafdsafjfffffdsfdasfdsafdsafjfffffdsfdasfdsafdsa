@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.henc.cdrs.partnerConfirm.repository.PartnerConfirmMapper">
+
+	<select id="selectPartnerInfo" resultType="camelCaseMap">
+        SELECT A.user_id
+              ,A.name
+              ,A.tlno
+              ,A.coprcp_no
+              ,C.corp_kor
+          FROM com_user A
+              ,reg_req_send B
+              ,coprcp C
+         WHERE A.user_id = B.user_id
+           AND A.coprcp_no = C.corp_id
+           AND B.send_id = #{sendId}
+	</select>
+
+	<update id="updatePartnerInfo" parameterType="partnerInfo">
+    
+        UPDATE com_user
+           SET pwd = #{pwd}
+         WHERE user_id = #{userId}
+    
+	</update>
+
+
+    <select id="selectPartnerDept" resultType="camelCaseMap">
+    
+        SELECT a.dept_cd      as dept_cd
+              ,b.dept_nm      as dept_nm
+              ,a.bas_dept_yn  as bas_dept_yn
+          FROM user_dept a
+              ,dept b
+         WHERE user_id = #{userId}
+           AND a.dept_cd = b.dept_cd
+    
+    </select>
+
+    <update id="updatePartnerDept" parameterType="partnerInfo">
+        UPDATE user_dept
+           SET bas_dept_yn = CASE WHEN dept_cd = #{deptCd} THEN 'Y'
+                                  ELSE 'N'
+                             END
+         WHERE user_id = #{userId}
+    </update>
+
+</mapper>

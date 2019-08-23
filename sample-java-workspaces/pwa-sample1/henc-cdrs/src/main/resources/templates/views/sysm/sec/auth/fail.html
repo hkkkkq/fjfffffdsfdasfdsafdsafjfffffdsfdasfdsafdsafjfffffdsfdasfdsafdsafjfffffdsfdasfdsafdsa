@@ -1,0 +1,51 @@
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<title>공사일보</title>
+<link rel="shortcut icon" th:href="@{/images/icon/favicon.ico}">
+<div layout:fragment="content">
+<script th:src="@{/webjars/jquery/3.0.0/jquery.min.js}"></script>
+
+  <script th:inline="javascript">
+  $(document).ready(function(){
+    
+    var formObj = $("#frm");
+    var logFail = [[${param.logFail}]];
+    var userId = [[${param.userId}]];
+    
+    if(logFail == 'P'){//비밀번호 불일치
+    	alert('사용자 이름 또는 비밀번호가 유효하지 않습니다.');
+
+    } else if (logFail == 'R'){//권한 X
+    	alert('사용자에게 지정된 권한이 없습니다.');
+
+    } else if (logFail == 'N'){
+    	alert('존재하지 않은 사용자 입니다.');
+
+    } else if (logFail == 'L'){
+      alert('사용자의 계정은 휴면계정입니다.\n관리자에게 문의 바랍니다.');
+
+    } else if (logFail == 'E'){
+        // alert('패스워드 유효기간이 만료가 되었습니다. 수정하시기 바랍니다.');
+        alert('사용자 이름 또는 비밀번호가 유효하지 않습니다.');
+        $("#logFail").val(logFail);
+        $("#userId").val(userId);
+    }     
+	
+	formObj.attr("action", "/security/login");
+	formObj.attr("target", "");
+	formObj.attr("method", "post");
+	formObj.submit();
+	
+  });
+  </script>
+
+  <form id='frm' name="frm" method="post" action="">
+    <input type="hidden" id="logFail" name="logFail" value=""/>
+    <input type="hidden" id="userId" name="userId" value=""/>
+  </form>
+  
+</div>
+<!--  end fragment -->

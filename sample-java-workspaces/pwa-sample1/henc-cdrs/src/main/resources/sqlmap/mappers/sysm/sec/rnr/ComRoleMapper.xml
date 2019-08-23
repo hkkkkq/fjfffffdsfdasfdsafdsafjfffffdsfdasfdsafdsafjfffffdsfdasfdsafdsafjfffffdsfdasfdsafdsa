@@ -1,0 +1,443 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.henc.cdrs.sysm.rnr.repository.ComRoleMapper">
+	<select id="selectComRoleList" resultType="camelCaseMap">
+		SELECT a.role_id
+		,nmspc_cd
+		,pg_com_namespace.get_namespace(nmspc_cd, 'ko') as nmspc_val
+		,role_cls_cd
+		,dat_rang_cd
+		,'/assets/ibsheet7/sheet/js/Main/popup.gif' AS dat_Rang_Cd_Btn
+		,role_note
+		,wrtr_dm
+		,wrtr_id
+		,updt_dm
+		,updt_id
+		,USE_YN
+		FROM com_role a
+		,(select role_id, count(1) cnt
+		from com_user_role
+		group by role_id) b
+		WHERE a.role_id = b.role_id(+)
+		<if test="roleId != null">
+			AND a.role_id = #{roleId}
+		</if>
+		<if test="nmspcCd != null">
+			AND nmspc_cd in (SELECT nmspc_cd FROM com_nmspc_info WHERE rang_cd =
+			'RNR' and DECODE(UPPER('KO'), 'KO', ko_nm, en_nm) LIKE '%' ||
+			#{nmspcCd} || '%')
+		</if>
+		<if test="roleClsCd != null">
+			AND role_cls_cd = #{roleClsCd}
+		</if>
+		ORDER BY NVL(b.cnt, -1) DESC
+	</select>
+
+	<select id="getComRoleMenuPgm" resultType="camelCaseMap">
+		SELECT t1.ROLE_ID
+		,t1.MENU_ID
+		,t1.PGM_ID
+		,pg_com_namespace.get_namespace(t2.nmspc_cd, 'ko') as pgm_nm
+		,t2.URI_NM
+		,t1.USE_YN
+		FROM com_role_menu t1
+		,com_pgm t2
+		WHERE t1.pgm_id = t2.pgm_id
+		AND t1.ROLE_ID = #{roleId}
+		AND t1.MENU_ID = #{menuId}
+		AND t1.PGM_ID = #{pgmId}
+	</select>
+
+	<select id="selectComMenuPgmBtnList" parameterType="map" resultType="camelCaseMap">
+		SELECT nvl(t2.menu_id, #{menuId}) as menu_id
+		,nvl(t2.role_id, #{roleId}) as role_id
+		,t1.pgm_id
+		,t1.btn_grp_id
+		,t1.btn_id
+		,pg_com_namespace.get_namespace(t1.nmspc_cd, 'ko') as nmspc_val
+		,t1.btn_seq
+		,nvl(t2.btn_use_yn, 'Y') as btn_use_yn
+		,t2.wrtr_dm
+		,t2.wrtr_id
+		,t2.updt_dm
+		,t2.updt_id
+		FROM com_pgm_btn t1
+		,com_menu_pgm_btn t2
+		WHERE t1.pgm_id = t2.pgm_id(+)
+		AND t1.btn_id = t2.btn_id(+)
+		AND t2.menu_id(+) = #{menuId}
+		AND t2.role_id(+) = #{roleId}
+		AND t1.pgm_id = #{pgmId}
+		ORDER BY t1.btn_grp_id, t1.btn_seq
+	</select>
+
+	<insert id="insertComRole" parameterType="comRole">
+		INSERT INTO com_role
+		( role_id
+		, nmspc_cd
+		, role_cls_cd
+		, role_note
+		, wrtr_dm
+		, wrtr_id
+		, updt_dm
+		, updt_id
+		, dat_rang_cd
+		, use_yn
+		)
+		VALUES
+		( #{roleId}
+		, #{nmspcCd}
+		, #{roleClsCd}
+		, #{roleNote}
+		, SYSDATE
+		, #{loginId}
+		, SYSDATE
+		, #{loginId}
+		, #{datRangCd}
+		, #{useYn}
+		)
+	</insert>
+
+	<update id="updateComRole" parameterType="comRole">
+		UPDATE com_role
+		SET nmspc_cd = #{nmspcCd}
+		,role_cls_cd = #{roleClsCd}
+		,role_note = #{roleNote}
+		,updt_dm = SYSDATE
+		,updt_id = 'SYSTEM'
+		,dat_rang_cd = #{datRangCd}
+		,use_yn = #{useYn}
+		WHERE role_id = #{roleId}
+	</update>
+
+	<delete id="deleteComRole" parameterType="comRole">
+		DELETE com_role
+		WHERE role_id = #{roleId}
+	</delete>
+
+	<insert id="mergeRoleNamespace" parameterType="comRole">
+		MERGE INTO com_nmspc_info
+		USING DUAL ON(nmspc_cd = #{nmspcCd})
+		WHEN MATCHED THEN
+		UPDATE
+		SET ko_nm = #{nmspcVal}
+		,ko_abbr_nm = #{nmspcVal}
+		,en_nm = #{nmspcVal}
+		,en_abbr_nm = #{nmspcVal}
+		,updt_dm = SYSDATE
+		,updt_id = #{loginId}
+		WHEN NOT MATCHED THEN
+		INSERT (
+		nmspc_cd
+		,rang_cd
+		,ko_nm
+		,ko_abbr_nm
+		,en_nm
+		,en_abbr_nm
+		,wrtr_dm
+		,wrtr_id
+		,updt_dm
+		,updt_id)
+		VALUES(
+		#{nmspcCd}
+		,'RNR'
+		,#{nmspcVal}
+		,#{nmspcVal}
+		,#{nmspcVal}
+		,#{nmspcVal}
+		,SYSDATE
+		,#{loginId}
+		,SYSDATE
+		,#{loginId})
+	</insert>
+
+	<delete id="deleteRoleNamespace" parameterType="comRole">
+		DELETE com_nmspc_info
+		WHERE nmspc_cd = #{nmspcCd}
+	</delete>
+
+	<select id="getRoleMenuList" parameterType="java.util.HashMap"
+		statementType="CALLABLE">
+		{ CALL pg_com_rnr.get_role_menu_xml
+		(
+		#{p_role_id, mode=IN, jdbcType=VARCHAR, javaType=java.lang.String},
+		#{p_xml_data, mode=OUT, jdbcType=CLOB, javaType=java.lang.String}
+		)
+		}
+	</select>
+
+	<!-- 메누 추가 -->
+	<select id="createComRoleMenu" parameterType="comRoleMenu"
+		statementType="CALLABLE">
+		{ CALL pg_com_rnr.create_menu
+		(
+		#{roleId, mode=IN, jdbcType=VARCHAR, javaType=java.lang.String},
+		#{uprMenuId, mode=IN, jdbcType=VARCHAR, javaType=java.lang.String},
+		#{menuSeq, mode=IN, jdbcType=VARCHAR, javaType=int},
+		#{menuClsCd, mode=IN, jdbcType=VARCHAR, javaType=java.lang.String},
+		#{nmspcCd, mode=IN, jdbcType=VARCHAR, javaType=java.lang.String},
+		#{pgmId, mode=IN, jdbcType=VARCHAR, javaType=java.lang.String},
+		#{useYn, mode=IN, jdbcType=VARCHAR, javaType=java.lang.String}
+		)
+		}
+	</select>
+
+	<!-- 메뉴 삭제 -->
+	<select id="deleteComRoleMenu" parameterType="comRoleMenu"
+		statementType="CALLABLE">
+		{ CALL pg_com_rnr.delete_menu
+		(
+		#{roleId, mode=IN, jdbcType=VARCHAR, javaType=java.lang.String},
+		#{menuId, mode=IN, jdbcType=VARCHAR, javaType=java.lang.String}
+		)
+		}
+	</select>
+
+	<!-- 네임스페이스 조회 -->
+	<select id="selectNameSpaceList" resultType="camelCaseMap">
+		SELECT nmspc_cd
+		,rang_cd
+		,nmspc_cnte
+		,ko_nm
+		,ko_abbr_nm
+		,en_nm
+		,en_abbr_nm
+		FROM com_nmspc_info
+		WHERE 1=1
+		<if test="nmspcCd != null and !nmspcCd.equals('')">
+			AND nmspc_cd LIKE '%'|| #{nmspcCd}||'%'
+		</if>
+		<if test="rangCd != null and !rangCd.equals('')">
+			AND rang_cd = #{rangCd}
+		</if>
+		<if test="koNm != null and !koNm.equals('')">
+			AND UPPER(ko_nm) LIKE '%'|| UPPER(#{koNm})||'%'
+		</if>
+		<if test="enNm != null and !enNm.equals('')">
+			AND UPPER(en_nm) LIKE '%'|| UPPER(#{enNm})||'%'
+		</if>
+		ORDER BY DECODE(rang_cd,'CCD',nmspc_cd,'ECD',nmspc_cd,ko_nm)
+	</select>
+
+	<insert id="insertComNmspcInfo" parameterType="comNmspcInfo">
+		INSERT INTO com_nmspc_info
+		( nmspc_cd
+		, rang_cd
+		, nmspc_cnte
+		, ko_nm
+		, ko_abbr_nm
+		, en_nm
+		, en_abbr_nm
+		, wrtr_dm
+		, wrtr_id
+		) values
+		(
+		<choose>
+			<when test="rangCd == 'BTN'">
+				'NS.BTN.'|| com_nmspc_info_btn_s.NEXTVAL
+			</when>
+			<when test="rangCd == 'MNU'">
+				'NS.MNU.'|| com_nmspc_info_mnu_s.NEXTVAL
+			</when>
+			<when test="rangCd == 'MSG'">
+				'NS.MSG.'|| com_nmspc_info_msg_s.NEXTVAL
+			</when>
+			<when test="rangCd == 'PGM'">
+				'NS.PGM.'|| com_nmspc_info_pgm_s.NEXTVAL
+			</when>
+			<when test="rangCd == 'PMT'">
+				'NS.PMT.'|| com_nmspc_info_pmt_s.NEXTVAL
+			</when>
+		</choose>
+		, #{rangCd}
+		, #{nmspcCnte}
+		, #{koNm}
+		, #{koAbbrNm}
+		, #{enNm}
+		, #{enAbbrNm}
+		, SYSDATE
+		, 'SYSTEM'
+		)
+	</insert>
+
+	<update id="updateComNmspcInfo" parameterType="comNmspcInfo">
+		UPDATE com_nmspc_info
+		SET rang_cd = #{rangCd}
+		,nmspc_cnte = #{nmspcCnte}
+		,ko_nm = #{koNm}
+		,ko_abbr_nm = #{koAbbrNm}
+		,en_nm = #{enNm}
+		,en_abbr_nm = #{enAbbrNm}
+		WHERE nmspc_cd = #{nmspcCd}
+	</update>
+
+	<delete id="deleteComNmspcInfo" parameterType="comNmspcInfo">
+		DELETE com_nmspc_info
+		WHERE nmspc_cd = #{nmspcCd}
+	</delete>
+
+	<!-- 프로그램 관리 조회 -->
+	<select id="selectComPgmList" resultType="camelCaseMap">
+		SELECT pgm_id
+		,sys_cls_cd
+		,nmspc_cd
+		,pg_com_namespace.get_namespace(nmspc_cd, 'ko') as nmspc_val
+		,pgm_note
+		,pgm_typ_cd
+		,menu_yn
+		,uri_nm
+		,main_pgm_id
+		,level
+		,wrtr_dm
+		,wrtr_id
+		,updt_dm
+		,updt_id
+		FROM com_pgm t
+		WHERE sys_cls_cd LIKE #{sysClsCd}
+		AND nmspc_cd IN (SELECT nmspc_cd
+		FROM com_nmspc_info B
+		WHERE (ko_nm LIKE '%'|| #{nmspcCd} || '%'
+		OR en_nm LIKE '%'|| #{nmspcCd} || '%')
+		AND rang_cd = 'PGM'
+		)
+		START WITH t.main_pgm_id IS NULL
+		CONNECT BY PRIOR t.pgm_id = t.main_pgm_id
+		ORDER SIBLINGS BY nvl(main_pgm_id, pgm_id)
+	</select>
+
+	<delete id="deleteComMenuPgmBtn" parameterType="comMenuPgmBtn">
+		DELETE com_menu_pgm_btn
+		WHERE menu_id = #{menuId}
+		AND role_id = #{roleId}
+		AND pgm_id = #{pgmId}
+		AND btn_id = #{btnId}
+	</delete>
+
+	<update id="updateComRoleMenu" parameterType="comRoleMenu">
+		UPDATE com_role_menu
+		SET nmspc_cd = #{nmspcCd}
+		,pgm_id = #{pgmId}
+		,use_yn = #{useYn}
+		,updt_dm = SYSDATE
+		,updt_id = 'SYSTEM'
+		WHERE role_id = #{roleId}
+		AND menu_id = #{menuId}
+	</update>
+
+	<insert id="insertComMenuPgmBtn" parameterType="comMenuPgmBtn">
+		INSERT INTO com_menu_pgm_btn
+		( menu_id
+		, role_id
+		, pgm_id
+		, btn_id
+		, btn_use_yn
+		, wrtr_dm
+		, wrtr_id
+		, updt_dm
+		, updt_id)
+		VALUES
+		( #{menuId}
+		, #{roleId}
+		, #{pgmId}
+		, #{btnId}
+		, #{btnUseYn}
+		, SYSDATE
+		, 'SYSTEM'
+		, SYSDATE
+		, 'SYSTEM'
+		)
+	</insert>
+
+	<!-- 메뉴 이동 -->
+	<select id="moveComRoleMenu" parameterType="comRoleMenu" statementType="CALLABLE">
+		{ CALL pg_com_rnr.move_menu
+		(
+		#{roleId, mode=IN, jdbcType=VARCHAR, javaType=java.lang.String},
+		#{uprMenuId, mode=IN, jdbcType=VARCHAR, javaType=java.lang.String},
+		#{menuId, mode=IN, jdbcType=VARCHAR, javaType=java.lang.String},
+		#{menuSeq, mode=IN, jdbcType=VARCHAR, javaType=int}
+		)
+		}
+	</select>
+
+	<select id="selectComRoleDeptList" resultType="camelCaseMap">
+		SELECT role_id
+		,dat_rang_cd
+		,seq
+		,attribute1
+		,attribute2
+		,attribute3
+		,attribute4
+		,attribute5
+		,dept_cd
+		,pg_com_deptcd.get_dept_nm('ko', dept_cd) as dept_nm
+		,wrtr_dm
+		,wrtr_id
+		,updt_dm
+		,updt_id
+		FROM com_role_dept
+		WHERE role_id = #{roleId}
+		AND dat_rang_cd = #{datRangCd}
+	</select>
+
+	<delete id="deleteComRoleDeptList" parameterType="comRoleDept">
+		DELETE com_role_dept
+		WHERE role_id = #{roleId}
+		AND dat_rang_cd = #{datRangCd}
+		AND seq = #{seq}
+	</delete>
+
+	<update id="updateComRoleDeptList" parameterType="comRoleDept">
+		UPDATE com_role_dept
+		SET attribute1 = #{attribute1}
+		,attribute2 = #{attribute2}
+		,attribute3 = #{attribute3}
+		,attribute4 = #{attribute4}
+		,attribute5 = #{attribute5}
+		,updt_dm = SYSDATE
+		,updt_id = #{loginId}
+		WHERE role_id = #{roleId}
+		AND dat_rang_cd = #{datRangCd}
+		AND seq = #{seq}
+	</update>
+
+	<insert id="insertComRoleDeptList" parameterType="comRoleDept">
+		INSERT INTO com_role_dept
+		( role_id
+		, dat_rang_cd
+		, seq
+		, attribute1
+		, attribute2
+		, dept_cd
+		, wrtr_dm
+		, wrtr_id
+		, updt_dm
+		, updt_id
+		)
+		VALUES
+		( #{roleId, jdbcType=VARCHAR}
+		, #{datRangCd, jdbcType=VARCHAR}
+		, com_role_dept_seq_s.NEXTVAL
+		, #{attribute1, jdbcType=VARCHAR}
+		, #{attribute2, jdbcType=VARCHAR}
+		, #{deptCd}
+		, SYSDATE
+		, #{loginId}
+		, SYSDATE
+		, #{loginId}
+		)
+	</insert>
+
+	<!-- 부서코드 리스트 조회 -->
+	<select id="selectComDeptCdList" resultType="camelCaseMap">
+		SELECT org_cd AS dept_cd
+		,org_nm as dept_nm
+		,level
+		,prior_org_cd AS upr_dept_cd
+		FROM zbhr.ad_org_dept_v t1
+		START WITH org_cd = #{deptCd}
+		CONNECT BY PRIOR org_cd = prior_org_cd
+	</select>
+
+</mapper>

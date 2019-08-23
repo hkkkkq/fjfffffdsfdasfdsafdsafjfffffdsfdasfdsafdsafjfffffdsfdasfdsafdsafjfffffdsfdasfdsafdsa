@@ -1,0 +1,253 @@
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layouts/layout">
+<head></head>
+<body>
+
+<div layout:fragment="contents">
+
+    <section class="top-area">
+        <nav aria-label="breadcrumb" class="float-left">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">협력사</a></li>
+                <li class="breadcrumb-item active" aria-current="page">협력사 노무자 정보</li>
+            </ol>
+        </nav>
+        <div class="btn-area float-right">
+        </div>
+    </section>
+
+    <section id="search-area" class="mb-3">
+        <form id="search">
+                <div class="border">
+                    <div class="form-row">
+                        <div> 
+                            <label for="searchCorpKor">협력사</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control form-control-sm mr-1" id="partnerNo" name="partnerNo" readonly="readonly">
+                                <input type="text" class="form-control form-control-sm min mr-1" id="corpKor" name="corpKor">
+                                <div class="input-group-append">
+                                    <button class="btn btn-sm" type="button" id="btnPartner"><i class="fas fa-search"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <label for="name">성명</label>
+                            <input type="text" class="form-control form-control-sm" id="name" name="name"/>
+                        </div>
+                        <div>
+                            <label for="ocptNo">직종</label>
+                            <select class="form-control form-control-sm" name="ocptNo" id="ocptNo">
+                                <option selected="selected" value="">전체</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="btn-area">
+                      <button class="btn btn-secondary btn-sm" type="submit" id="btnSearch">조회</button>               
+                    </div>
+                </div>
+        </form>
+    </section>
+    
+    <section id="grid-area" class="mb-3">
+        <div class="d-flex justify-content-between pb-2 grid-title">
+            <h2>◎  협력사 사용자 관리</h2>
+            <div class="btn-area">
+                <button type="button" class="btn btn-outline-secondary btn-sm" id="btnNew">신규</button>
+                <button type="button" class="btn btn-outline-secondary btn-sm" id="btnSave">저장</button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="vertical-full1" id="applicantListSheet"></div>
+            </div>
+        </div>
+    </section>
+    
+</div>
+
+<script type="text/javascript" th:inline="javascript" layout:fragment="script">
+    $(document).ready(function(){
+        
+        resizeContent();
+        
+        $.getJSON("/partners/applicant/getComboTest", function (data) {
+            var ocptNo = data;
+
+            _.binder.combo("#ocptNo", ocptNo, {value: "key", text: "value"});
+            
+            applicantListSheet.SetColProperty(0, "ocptNo", {
+                ComboText: _.utils.delimiter(ocptNo, "value"),
+                ComboCode: _.utils.delimiter(ocptNo, "key")
+            });
+        });
+        
+        $("#corpKor").keydown(function() {
+            if (event.keyCode === 13) {
+                event.preventDefault();
+            };
+        });  
+        
+        // 해당 index item 삭제하기
+        $("#ocptNo option:eq(1)").remove();
+        
+        var is_deptCd = _.cdrs.storage.deptCd();
+        
+        $("#btnNew").attr('disabled', true);
+        $("#btnSave").attr('disabled', true);
+        
+        var headers = [
+            {Text: "상태|순번|삭제|협력사|성명|직종|생년월일|비고|협력사PK|계약번호PK|현장코드"}
+        ],
+        mode = {
+            HeaderCheck: true
+        },
+        columns = [
+            {Type: "Status", SaveName: "rowStatus", Width:0, Align: "center", Hidden: true},
+            {Type: "Seq", SaveName: "rowSeq", Width:30, Align: "center", Hidden: false},
+            {Type: "DelCheck", SaveName: "rowChecked", Width: 30, Align: "left", Hidden: false},
+            {Type: "Text", SaveName: "corpKor", Width:150, Align: "left", Edit: false, EditLen: 50},
+            {Type: "Text", SaveName: "name", Width:50, Align: "left", Edit: true, EditLen: 50, KeyField: true},
+            {Type: "Combo", SaveName: "ocptNo", Width:50, Align: "center", Edit: true, KeyField: false, DefaultValue: "", KeyField: true},
+            {Type: "Text", SaveName: "brtdy", Width:50, Align: "center", Edit: true, EditLen: 8, KeyField: true, Format: "Ymd"},
+            {Type: "Text", SaveName: "note", Width:0, Align: "left", Edit: true, EditLen: 200, Hidden: true},
+            {Type: "Int", SaveName: "labatdPcntNo", Width:0, Align: "center", Hidden: true, DefaultValue: 0},
+            {Type: "Text", SaveName: "partnerNo", Width:0, Align: "center", Hidden: true, DefaultValue: 0},
+            {Type: "Text", SaveName: "deptCd", Width:0, Align: "center", Hidden: true}
+        ];
+        createIBSheet2($("#applicantListSheet")[0], "applicantListSheet", "100%", "496px");
+        applicantListSheet.InitHeaders(headers, mode);
+        applicantListSheet.InitColumns(columns);
+        
+        window["applicantListSheet_OnSearchEnd"] = function (Code, Msg, StCode, StMsg) {            
+            if($('#partnerNo').val() != '' && $('#corpKor').val() != ''){
+                $("#btnNew").attr('disabled', false);
+                $("#btnSave").attr('disabled', false);
+            }else{
+                $("#btnNew").attr('disabled', true);
+                $("#btnSave").attr('disabled', true);
+            }
+        };
+        
+        var $search = $("#search");
+        $search.on("submit", function(e) {
+            e.preventDefault();
+            $.getJSON("/partners/applicant/gridList", $(this).serialize(), function (data) {
+                applicantListSheet.LoadSearchData({"data": data});
+            });
+        });
+        
+//         // 조회조건 INPUT 값 체크 버튼 비활성화 처리 
+//         $("#corpKor").on("propertychange change keyup paste  input", function() {
+//             if ($('#corpKor').prop('readonly') == false) {
+//                 var currentVal = $(this).val();
+//                 var coprcpNo = $('#partnerNo').val('');
+                        
+//                 if(coprcpNo != ''){
+//                     $('#partnerNo').val('');
+                    
+//                     $("#btnNew").attr('disabled', true);
+//                     $("#btnSave").attr('disabled', true);
+//                 }
+//             }
+//         });
+
+        // 조회조건 INPUT 값 체크 버튼 비활성화 처리 
+        $("#corpKor").on("propertychange change keyup paste input", function(e) {
+            
+            var corpKorVal = $(this).val();
+            var corpNoVal = $('#partnerNo').val();
+            
+            if(e.keyCode == 13){
+                if((corpNoVal != '' && corpKorVal != '') || (corpNoVal == '' && corpKorVal == '')){
+                    $search.trigger("submit");
+                }else{
+                    $("#btnPartner").click();
+                }
+            }else{
+                $('#partnerNo').val('');
+                
+                $("#btnNew").attr('disabled', true);
+                $("#btnSave").attr('disabled', true);
+                $("#btnDelete").attr('disabled', true);
+                $("#btnUrlSend").attr('disabled', true);
+                
+                $("#btnAddDept").attr('disabled', true);
+                $("#btnSaveDept").attr('disabled', true);
+            }
+        });
+        
+        //현장팝업
+        $("#btnPartner").click(function () {
+            var argCorpKor = $('#corpKor').val();
+            param = {searchExceptYn: "N"
+                    ,searchPartnerNm: argCorpKor};
+
+            // 협력사  팝업
+            var modal = _.dialog.modal( _.url.format("/partners/users/partnerListModal/{searchExceptYn}/{searchPartnerNm}", param), {title: "협력사", width: "450px"}, function (data) {
+                $('#partnerNo').val(data.corpId);
+                $('#corpKor').val(data.corpKor);
+            });
+        });
+   
+        //신규 버튼 클릭
+        $("#btnNew").on("click", function() {
+            lRow = applicantListSheet.DataInsert(-1);
+            applicantListSheet.SelectCell(lRow,"name");
+            
+            applicantListSheet.SetCellValue(lRow, "partnerNo", $('#partnerNo').val());
+            applicantListSheet.SetCellValue(lRow, "corpKor", $('#corpKor').val());
+            applicantListSheet.SetCellValue(lRow, "deptCd", is_deptCd);
+        });
+   
+        //저장 버튼 클릭
+        $("#btnSave").on("click", function() {
+                     
+           var changeCnt = 0;
+           for (var i=1; i<=applicantListSheet.RowCount(); i++) {
+               if (applicantListSheet.GetCellValue(i,"rowStatus") == "I" 
+                || applicantListSheet.GetCellValue(i,"rowStatus") == "U"
+                || applicantListSheet.GetCellValue(i,"rowStatus") == "D") {
+                   changeCnt++;
+               }
+           }
+           
+           if (changeCnt == 0) {
+               //_.dialog.alert("저장할 항목이 없습니다.");
+               _.cdrs.notify.show("저장","저장할 항목이 없습니다.");
+               return false;
+           }
+           
+           var applcList = applicantListSheet.GetSaveJson();
+           if (!_.cdrs.ibsheetValid(applcList)) {
+               return false;
+           }
+           
+           var param = $("#search").serializeObject();
+           param.applicants = applicantListSheet.GetSaveJson().data;
+           
+           _.dialog.confirm("저장하시겠습니까?", function() {
+               $.post("/partners/applicant/gridSave", param, function() {
+                   //_.dialog.alert("저장되었습니다.");
+                   _.cdrs.notify.show("저장","저장되었습니다.");
+                   applicantListSheet.LoadSaveData(_.ibsheet.success());
+                   $search.trigger("submit");
+               });
+           });
+        });
+
+        var userDetail = /*[[${userDetail}]]*/ null;
+        var prtnInfo = /*[[${prtnInfo}]]*/ null;
+
+        if(userDetail.userDivCd == "COPRCP"){
+            $("#btnPartner").hide();
+            $('#corpKor').prop('readonly', true);
+            
+            $("#partnerNo").val(prtnInfo.coprcpNo);
+            $("#corpKor").val(prtnInfo.corpKor);
+        }
+
+
+    });
+</script>
+
+</body>
+</html>   

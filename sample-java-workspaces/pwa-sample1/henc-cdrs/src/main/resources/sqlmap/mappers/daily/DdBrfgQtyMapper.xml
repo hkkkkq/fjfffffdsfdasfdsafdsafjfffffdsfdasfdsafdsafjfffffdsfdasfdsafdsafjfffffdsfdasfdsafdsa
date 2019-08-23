@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.henc.cdrs.daily.repository.DdBrfgQtyMapper">
+
+	<select id="dailyList" resultType="ddBrfgQty" parameterType="searchDailyParams">
+		SELECT dbq.qty_no,
+			   dbq.dept_cd,
+			   dbq.day,
+			   dbq.ordr_no,
+			   dbq.partner_no,
+			   dbq.ctrc_no,
+			   dbq.qty_no,
+			   cq.qty_nm,
+			   cq.spec,
+			   cq.unit,
+			   nvl(sum.qty, 0) AS before_sum_qty,
+			   dbq.plan_qty,
+			   dbq.perdd_qty,
+			   dbq.prgr_pscd,
+			   rownum as row_id
+		FROM dd_brfg_qty dbq
+				 INNER JOIN CNST_QTY cq ON dbq.QTY_NO = cq.QTY_NO
+				 LEFT OUTER JOIN (SELECT qty_no, nvl(sum(perdd_qty), 0) AS qty
+								  FROM dd_brfg_qty
+								  WHERE (dept_cd, day, ordr_no) IN (SELECT dept_cd, day, max(ordr_no) AS ordr_no
+																	FROM DD_BRFG
+																	WHERE dept_cd = #{deptCd}
+																	  AND day &lt; #{day}
+																	  AND sta_cd = #{staCd}
+																	GROUP BY dept_cd, day)
+									AND partner_no = #{partnerNo}
+									AND ctrc_no = #{ctrcNo}
+								  GROUP BY qty_no) sum ON dbq.QTY_NO = sum.qty_no
+		WHERE dbq.dept_cd = #{deptCd}
+		  AND dbq.day = #{day}
+		  AND dbq.ordr_no = #{ordrNo}
+		  AND dbq.partner_no = #{partnerNo}
+		  AND dbq.ctrc_no = #{ctrcNo}
+		ORDER BY cq.qty_nm
+	</select>
+
+	<select id="dailyGroupList" resultType="camelCaseMap" parameterType="searchDailyParams">
+		<![CDATA[
+		SELECT cq.QTY_NM,
+			   cq.UNIT,
+			   cq.SPEC,
+			   nvl(dbq.cur_plan_qty, 0)                  AS cur_plan_qty,
+			   nvl(dbq.bef_qty, 0)                       AS bef_qty,
+			   nvl(dbq.cur_qty, 0)                       AS cur_qty,
+			   nvl(dbq.bef_qty, 0) + nvl(dbq.cur_qty, 0) AS tot_qty,
+			   decode(nvl(dbq.cur_plan_qty, 0), 0, 0,
+					  nvl2(dbq.cur_plan_qty, ((nvl(dbq.bef_qty, 0) + nvl(dbq.cur_qty, 0)) / dbq.cur_plan_qty) * 100,
+						   0))                           AS prgr_pscd,
+			   mqs.DEPT_CD,
+			   mqs.qty_no
+		FROM (SELECT mqs.dept_cd,
+					 mqs.aply_term,
+					 mqs.sort_no,
+					 mqs.qty_no,
+					 #{day} AS day
+			  FROM MAIN_CNST_QTY_SET mqs
+			  WHERE mqs.dept_cd = #{deptCd}
+				AND mqs.aply_term = (
+				  SELECT max(aply_term) AS aply_term
+				  FROM MAIN_CNST_QTY_SET
+				  WHERE dept_cd = #{deptCd}
+					AND APLY_TERM <= #{day})
+			  ORDER BY mqs.sort_no) mqs
+				 LEFT OUTER JOIN (SELECT dbq.dept_cd,
+										 dbq.qty_no,
+										 sum(CASE
+												 WHEN to_date(#{day}, 'YYYYMMDD') > to_date(dbq.day, 'YYYYMMDD') THEN nvl(dbq.perdd_qty, 0)
+												 ELSE 0 END) AS bef_qty,
+										 sum(CASE
+												 WHEN to_date(#{day}, 'YYYYMMDD') = to_date(dbq.day, 'YYYYMMDD') THEN nvl(dbq.perdd_qty, 0)
+												 ELSE 0 END) AS cur_qty,
+										 sum(CASE
+												 WHEN to_date(#{day}, 'YYYYMMDD') = to_date(dbq.day, 'YYYYMMDD') THEN nvl(dbq.plan_qty, 0)
+												 ELSE 0 END) AS cur_plan_qty
+								  FROM DD_BRFG_QTY dbq
+										   INNER JOIN dd_brfg_comp comp ON dbq.dept_cd = comp.dept_cd AND dbq.day = comp.day AND
+																		   dbq.ORDR_NO = comp.ORDR_NO AND
+																		   dbq.CTRC_NO = comp.CTRC_NO
+								  WHERE (dbq.dept_cd, dbq.day, dbq.ordr_no) IN (
+									  SELECT dept_cd, day, max(ordr_no) AS ordr_no
+									  FROM DD_BRFG
+									  WHERE DEPT_CD = #{deptCd}
+										AND ((day < #{day} AND sta_cd IN ('50')) OR (day = #{day}))
+									  GROUP BY dept_cd, day
+								  )
+									AND comp.sta_cd = '50'
+								  GROUP BY dbq.dept_cd, dbq.qty_no) dbq
+								 ON mqs.DEPT_CD = dbq.DEPT_CD AND mqs.qty_no = dbq.qty_no
+				 LEFT OUTER JOIN cnst_qty cq ON mqs.qty_no = cq.qty_no
+		ORDER BY qty_nm, unit, spec
+		]]>
+	</select>
+
+	<insert id="insert" parameterType="ddBrfgQty">
+		INSERT INTO DD_BRFG_QTY ( QTY_NO
+                        , PARTNER_NO
+                        , CTRC_NO
+                        , PLAN_QTY
+                        , PERDD_QTY
+                        , PRGR_PSCD
+                        , DEPT_CD
+                        , DAY
+                        , ORDR_NO)
+		VALUES ( #{qtyNo}
+			   , #{partnerNo}
+			   , #{ctrcNo}
+			   , #{planQty}
+			   , #{perddQty}
+			   , #{prgrPscd}
+			   , #{deptCd}
+			   , #{day}
+			   , #{ordrNo})
+	</insert>
+
+	<update id="update" parameterType="ddBrfgQty">
+		UPDATE DD_BRFG_QTY
+		SET PLAN_QTY  = #{planQty},
+			PERDD_QTY = #{perddQty},
+			PRGR_PSCD = #{prgrPscd}
+		WHERE DEPT_CD = #{deptCd}
+		  AND DAY = #{day}
+		  AND ORDR_NO = #{ordrNo}
+		  AND PARTNER_NO = #{partnerNo}
+		  AND CTRC_NO = #{ctrcNo}
+		  AND QTY_NO    = #{qtyNo}
+	</update>
+
+	<delete id="delete" parameterType="ddBrfgQty">
+		DELETE FROM DD_BRFG_QTY
+		WHERE DEPT_CD = #{deptCd}
+		  AND DAY = #{day}
+		  AND ORDR_NO = #{ordrNo}
+		  AND PARTNER_NO = #{partnerNo}
+		  AND CTRC_NO = #{ctrcNo}
+		  AND QTY_NO    = #{qtyNo}
+	</delete>
+
+	<insert id="insertCnstQty" parameterType="ddBrfgQty">
+		<selectKey keyProperty="qtyNo" resultType="int" order="BEFORE">
+			select CNST_QTY_S.nextval FROM dual
+		</selectKey>
+		INSERT INTO CNST_QTY ( QTY_NO
+                        , DEPT_CD
+                        , QTY_NM
+                        , SPEC
+                        , UNIT
+                        , USE_YN)
+		VALUES ( #{qtyNo}
+			   , #{deptCd}
+			   , #{qtyNm}
+			   , #{spec}
+			   , #{unit}
+			   , #{useYn})
+	</insert>
+
+	<delete id="deleteAll" parameterType="searchDailyParams">
+		DELETE FROM DD_BRFG_QTY
+		WHERE DEPT_CD = #{deptCd}
+		  AND DAY = #{day}
+		  AND ORDR_NO = #{ordrNo}
+		  AND PARTNER_NO = #{partnerNo}
+		  AND CTRC_NO = #{ctrcNo}
+	</delete>
+
+	<insert id="copyHistoryCreate" parameterType="historyDailyCopyParams">
+		INSERT INTO DD_BRFG_QTY (QTY_NO, PARTNER_NO, CTRC_NO, PLAN_QTY, PERDD_QTY, PRGR_PSCD, DEPT_CD, DAY, ORDR_NO, UPDT_DM, UPDT_ID, WRTR_DM, WRTR_ID)
+		SELECT hst.QTY_NO,
+			   hst.PARTNER_NO,
+			   hst.CTRC_NO,
+			   hst.PLAN_QTY,
+			   hst.PERDD_QTY,
+			   hst.PRGR_PSCD,
+			   hst.DEPT_CD,
+			   #{targetDayParams.day},
+			   hst.ORDR_NO,
+			   sysdate,
+			   #{loginId},
+			   sysdate,
+			   #{loginId}
+		FROM dd_brfg_qty hst
+		WHERE hst.dept_cd = #{copyDayParams.deptCd}
+		  AND hst.day = #{copyDayParams.day}
+		  AND hst.ordr_no = #{copyDayParams.ordrNo}
+		  AND hst.partner_no = #{copyDayParams.partnerNo}
+		  AND hst.ctrc_no = #{copyDayParams.ctrcNo}
+	</insert>
+
+	<select id="quickSearchList" resultType="camelCaseMap" parameterType="searchDailyParams">
+		SELECT QTY_NO,
+			   DEPT_CD,
+			   QTY_NM,
+			   QTY_NM                               AS "value",
+			   SPEC,
+			   UNIT,
+			   QTY_NM || ' ' || SPEC || ' ' || UNIT AS label,
+			   USE_YN
+		FROM CNST_QTY
+		WHERE dept_cd = #{deptCd}
+		  AND use_yn = 'Y'
+		<if test="autocompleteSearchParams != null">
+			<choose >
+				<when test="autocompleteSearchParams.type.equals('qty_nm')">
+					AND QTY_NM like '%' || #{autocompleteSearchParams.term} || '%'
+				</when>
+				<when test="autocompleteSearchParams.type.equals('spec')">
+					AND SPEC like '%' || #{autocompleteSearchParams.term} || '%'
+				</when>
+				<when test="autocompleteSearchParams.type.equals('unit')">
+					AND UNIT like '%' || #{autocompleteSearchParams.term} || '%'
+				</when>
+			</choose>
+		</if>
+		ORDER BY QTY_NM ASC, SPEC ASC, UNIT ASC
+	</select>
+
+	<select id="getListInChange" resultType="ddBrfgQty" parameterType="ddBrfg">
+		SELECT dept_cd, day, ordr_no, partner_no, ctrc_no, plan_qty, perdd_qty, prgr_pscd, qty_no
+		FROM dd_brfg_qty
+		WHERE dept_cd = #{deptCd}
+		  AND day = #{day}
+		  AND ordr_no = #{ordrNo}
+		ORDER BY dept_cd, day, ordr_no, partner_no, ctrc_no
+	</select>
+
+	<delete id="deleteChanged" parameterType="ddBrfg">
+		DELETE FROM dd_brfg_qty
+		WHERE DEPT_CD = #{deptCd}
+		  AND DAY = #{day}
+		  AND ORDR_NO = #{ordrNo}
+	</delete>
+
+</mapper>

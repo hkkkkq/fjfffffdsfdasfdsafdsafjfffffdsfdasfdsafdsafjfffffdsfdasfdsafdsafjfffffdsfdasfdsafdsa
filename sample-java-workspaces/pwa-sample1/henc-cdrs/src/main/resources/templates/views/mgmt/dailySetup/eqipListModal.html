@@ -1,0 +1,142 @@
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layouts/modalLayout">
+<body>
+<div layout:fragment="contents">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="row align-items-center">
+                <div class="col-auto mr-auto">
+                </div>
+                <div class="col-auto mb-2">
+                </div>
+            </div>
+
+            <div class="card mb-4">
+                <div class="card-body">
+
+                    <form class="row form-inline" id="search">
+                        <div class="col mr-auto">
+
+                            <div class="row">
+                                <div class="form-group col-xl-4">
+                                    <label for="">장비 명</label>
+                                    <input type="text" class="form-control" id="eqipNm" name="eqipNm" th:value="${searchEqipNm}">
+                                </div>
+<!-- 
+                                <div class="form-group col-xl-4">
+                                    <label for="">현장 상태</label>
+                                    <select name="status">
+                                        <option value="">전체</option>
+                                        <option value="0" selected>진행</option>
+                                        <option value="1">종료</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group col-xl-4">
+                                    <label for="">사업본부</label>
+                                    <select name="acUnitCd" id="acUnitCd">
+                                        <option selected="selected" value="">전체</option>
+                                    </select>
+                                </div>
+ -->
+
+                            </div>
+                        </div>
+
+                        <div class="col-auto align-self-end">
+                            <button class="btn btn-info btn-sm mb-1" type="submit" id="btnDeptListPopupSearch">조회</button>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+
+            <div class="row align-items-center">
+                <div class="col-auto mr-auto">
+                </div>
+                <div class="col-auto mb-2">
+                    <button type="button" class="btn btn-outline-secondary btn-sm mb-1" id="btnDeptListPopupConfirm">확인</button>
+                </div>
+            </div>
+            <div id="eqipListSheet"></div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" th:fragment="javascript">
+    $(document).ready(function () {
+
+/* 
+        var promise = {
+            acUnitCd: function () {
+                return $.Deferred(function (dfd) {
+                    $.getJSON("/code/getCodeList/BIZHDOF_CD", function (data) {
+                        dfd.resolve(data).promise()
+                    });
+                });
+            },
+        };
+        $.when(promise.acUnitCd()).done(function (codes) {
+            deptListSheetCreate();
+            _.binder.combo("#acUnitCd", codes.acUnitCd, {value: "key", text: "value"});
+        });
+ */
+        var headers = [
+           {Text: "진행상태|선택|장비번호|장비명|규격|단위"}
+        ],
+        mode = {
+           HeaderCheck: true
+        },
+        columns = [
+           {Type: "Status", SaveName: "rowStatus", Width: 0, Align: "center", Hidden: true, Edit: false},
+           {Type: "CheckBox", SaveName: "at_Chk", Width: 0, Align: "center"}, 
+           {Type: "Int",  SaveName: "eqipNo", Width:200, Align: "center", Hidden: true, Edit: false},
+           {Type: "Text", SaveName: "eqipNm", Width:200, Align: "left", Edit: false},
+           {Type: "Text", SaveName: "spec", Width:200, Align: "left", Edit: false},
+           {Type: "Text", SaveName: "unit", Width:200, Align: "left", Edit: false}
+        ];
+        createIBSheet2($("#eqipListSheet")[0], "eqipListSheet", "100%", "300px");
+        eqipListSheet.InitHeaders(headers, mode);
+        eqipListSheet.InitColumns(columns);
+  
+        //조회
+        var $search = $("#search");
+        $search.on("submit", function (e) {
+            e.preventDefault();
+            $.getJSON("/mgmt/dailySetup/gridEqipPopList", $(this).serialize(), function (data) {
+                eqipListSheet.LoadSearchData({"data": data});
+            });
+        });
+
+        $("#btnDeptListPopupConfirm").click(function () {
+
+            var cRow = eqipListSheet.FindCheckedRow("at_Chk");
+            var arrRow = cRow.split("|");
+            
+            if (cRow == "undefined" || cRow == null || cRow == "") {
+                _.dialog.error("선택된 항목이 없습니다.");
+            } else {
+                var eqipJson = "";
+                for (idx = 0; idx < arrRow.length; idx++) {
+                    eqipJson += '{';
+                    eqipJson += '"eqipNo":"' + eqipListSheet.GetCellValue(arrRow[idx], 'eqipNo') + '",';
+                    eqipJson += '"eqipNm":"' + eqipListSheet.GetCellValue(arrRow[idx], 'eqipNm') + '",';
+                    eqipJson += '"spec":"'   + eqipListSheet.GetCellValue(arrRow[idx], 'spec')   + '",';
+                    eqipJson += '"unit":"'   + eqipListSheet.GetCellValue(arrRow[idx], 'unit')   + '"';
+                    eqipJson += '},';
+                }
+                if (eqipJson.charAt(eqipJson.length - 1) == ",") {
+                    eqipJson = eqipJson.substring(0, (eqipJson.length - 1));
+                }
+            
+                callback(eqipJson);
+            }
+        });
+ 
+        if ($('#eqipNm').val() != '') {
+            $search.submit();
+        }
+          
+    });
+</script>
+</body>
+</html>

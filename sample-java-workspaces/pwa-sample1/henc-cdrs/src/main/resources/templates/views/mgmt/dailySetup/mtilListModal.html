@@ -1,0 +1,157 @@
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layouts/modalLayout">
+<body>
+<div layout:fragment="contents">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="row align-items-center">
+                <div class="col-auto mr-auto">
+                </div>
+                <div class="col-auto mb-2">
+                </div>
+            </div>
+
+            <div class="card mb-4">
+                <div class="card-body">
+
+                    <form class="row form-inline" id="search">
+                        <div class="col mr-auto">
+
+                            <div class="row">
+                                <div class="form-group col-xl-4">
+                                    <label for="">자재 명</label>
+                                    <input type="text" class="form-control" id="mtilNm" name="mtilNm" th:value="${searchMtilNm}">
+                                </div>
+<!-- 
+                                <div class="form-group col-xl-4">
+                                    <label for="">현장 상태</label>
+                                    <select name="status">
+                                        <option value="">전체</option>
+                                        <option value="0" selected>진행</option>
+                                        <option value="1">종료</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group col-xl-4">
+                                    <label for="">사업본부</label>
+                                    <select name="acUnitCd" id="acUnitCd">
+                                        <option selected="selected" value="">전체</option>
+                                    </select>
+                                </div>
+ -->
+
+                            </div>
+                        </div>
+
+                        <div class="col-auto align-self-end">
+                            <button class="btn btn-info btn-sm mb-1" type="submit" id="btnDeptListPopupSearch">조회</button>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+
+            <div class="row align-items-center">
+                <div class="col-auto mr-auto">
+                </div>
+                <div class="col-auto mb-2">
+                    <button type="button" class="btn btn-outline-secondary btn-sm mb-1" id="btnDeptListPopupConfirm">확인</button>
+                </div>
+            </div>
+            <div id="mtilListSheet"></div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" th:fragment="javascript">
+    $(document).ready(function () {
+
+/* 
+        var promise = {
+            acUnitCd: function () {
+                return $.Deferred(function (dfd) {
+                    $.getJSON("/code/getCodeList/BIZHDOF_CD", function (data) {
+                        dfd.resolve(data).promise()
+                    });
+                });
+            },
+        };
+        $.when(promise.acUnitCd()).done(function (codes) {
+            deptListSheetCreate();
+            _.binder.combo("#acUnitCd", codes.acUnitCd, {value: "key", text: "value"});
+        });
+ */
+        var headers = [
+           {Text: "진행상태|선택|자재번호|자재명|규격|단위"}
+        ],
+        mode = {
+           HeaderCheck: true
+        },
+        columns = [
+           {Type: "Status", SaveName: "rowStatus", Width: 0, Align: "center", Hidden: true, Edit: false},
+           {Type: "CheckBox", SaveName: "at_Chk", Width: 0, Align: "center"}, 
+           {Type: "Int",  SaveName: "mtilNo", Width:200, Align: "center", Hidden: true, Edit: false},
+           {Type: "Text", SaveName: "mtilNm", Width:200, Align: "left", Edit: false},
+           {Type: "Text", SaveName: "spec", Width:200, Align: "left", Edit: false},
+           {Type: "Text", SaveName: "unit", Width:200, Align: "left", Edit: false}
+        ];
+        createIBSheet2($("#mtilListSheet")[0], "mtilListSheet", "100%", "300px");
+        mtilListSheet.InitHeaders(headers, mode);
+        mtilListSheet.InitColumns(columns);
+  
+        //조회
+        var $search = $("#search");
+        $search.on("submit", function (e) {
+            e.preventDefault();
+            $.getJSON("/mgmt/dailySetup/gridMtilPopList", $(this).serialize(), function (data) {
+                mtilListSheet.LoadSearchData({"data": data});
+            });
+        });
+
+        $("#btnDeptListPopupConfirm").click(function () {
+
+            var cRow = mtilListSheet.FindCheckedRow("at_Chk");
+            var arrRow = cRow.split("|");
+            
+            if (cRow == "undefined" || cRow == null || cRow == "") {
+                _.dialog.error("선택된 항목이 없습니다.");
+            } else {
+                var mtilJson = "";
+                for (idx = 0; idx < arrRow.length; idx++) {
+                    mtilJson += '{';
+                    mtilJson += '"mtilNo":"' + mtilListSheet.GetCellValue(arrRow[idx], 'mtilNo') + '",';
+                    mtilJson += '"mtilNm":"' + mtilListSheet.GetCellValue(arrRow[idx], 'mtilNm') + '",';
+                    mtilJson += '"spec":"'   + mtilListSheet.GetCellValue(arrRow[idx], 'spec')   + '",';
+                    mtilJson += '"unit":"'   + mtilListSheet.GetCellValue(arrRow[idx], 'unit')   + '"';
+                    mtilJson += '},';
+                }
+                if (mtilJson.charAt(mtilJson.length - 1) == ",") {
+                    mtilJson = mtilJson.substring(0, (mtilJson.length - 1));
+                }
+            
+                callback(mtilJson);
+            }
+        });
+            
+            
+//             var Row = mtilListSheet.GetSelectRow();
+            
+//             if (Row > 0) {
+//                 var data = {
+//                     mtilNo: mtilListSheet.GetCellValue(Row, "mtilNo"),
+//                     mtilNm: mtilListSheet.GetCellValue(Row, "mtilNm"),
+//                     spec: mtilListSheet.GetCellValue(Row, "spec"),
+//                     unit: mtilListSheet.GetCellValue(Row, "unit")
+                    
+//                 };
+//                 callback(data);
+//             }
+//         });
+ 
+        if ($('#mtilNm').val() != '') {
+            $search.submit();
+        }
+          
+    });
+</script>
+</body>
+</html>

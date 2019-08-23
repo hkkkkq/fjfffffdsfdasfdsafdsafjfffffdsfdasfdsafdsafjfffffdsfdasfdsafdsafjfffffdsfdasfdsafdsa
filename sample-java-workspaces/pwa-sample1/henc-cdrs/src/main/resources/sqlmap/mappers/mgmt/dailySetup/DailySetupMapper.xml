@@ -1,0 +1,466 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.henc.cdrs.mgmt.dailySetup.repository.DailySetupMapper">
+
+    <!-- 적용기간  SELECT-->
+    <select id="selectAplyTermGrdList" resultType="camelCaseMap">
+        SELECT DEPT_CD                                 --현장 코드
+              ,APLY_TERM                               --적용 기간
+              ,UPDT_DM                                 --수정 일시
+              ,UPDT_ID                                 --수정자 ID
+              ,WRTR_DM                                 --작성 일시
+              ,WRTR_ID                                 --작성자 ID
+          FROM MAIN_BSNS_SET
+         WHERE DEPT_CD   = #{deptCd}
+           AND APLY_TERM BETWEEN REPLACE(#{aplyFromDt},'-','') AND REPLACE(#{aplyToDt},'-','')
+         ORDER BY APLY_TERM ASC
+    </select>
+
+
+    <!-- 적용기간  INSERT -->
+    <insert id="insertAplyTerm" parameterType="dsMainBsnsSet">
+        INSERT INTO MAIN_BSNS_SET
+                    ( DEPT_CD
+                     ,APLY_TERM
+                     ,UPDT_DM  
+                     ,UPDT_ID  
+                     ,WRTR_DM  
+                     ,WRTR_ID
+                    )
+             VALUES (
+                     #{deptCd}
+                     ,#{aplyTerm}
+                     ,SYSDATE
+                     ,#{loginId}
+                    ,SYSDATE
+                    ,#{loginId}
+                    )
+    </insert>
+  
+<!--     <update id="updateAplyTerm" parameterType="dsMainBsnsSet">     -->
+<!--     </update> -->
+   
+    <!-- 적용기간  DELETE -->
+    <delete id="deleteAplyTerm" parameterType="dsMainBsnsSet">
+        DELETE FROM MAIN_BSNS_SET
+        WHERE  DEPT_CD   = #{deptCd}
+          AND  APLY_TERM = #{aplyTerm}
+    </delete>
+    
+    
+    
+    <!-- 주요자재 조회 쿼리 -->    
+    <select id="selectMainMtilSetGrdList" resultType="camelCaseMap">
+        SELECT A.MTIL_NO
+              ,A.SORT_NO
+              ,B.MTIL_NM
+              ,B.SPEC
+              ,B.UNIT
+              ,A.DEPT_CD
+              ,A.APLY_TERM
+              ,A.MTIL_NO AS MTIL_NO_OLD
+              ,'/assets/ibsheet7/sheet/js/Main/popup.gif' AS MTIL_NM_BTN
+          FROM MAIN_MTIL_SET A
+              ,MAIN_MTIL B
+         WHERE A.MTIL_NO = B.MTIL_NO
+           AND A.DEPT_CD = #{deptCd}
+           AND A.APLY_TERM = #{aplyTerm}
+    </select>
+
+
+    <!--  주요자재 INSERT 쿼리 -->    
+    <insert id="insertMainMtilSet" parameterType="dsMainMtilSet">
+        INSERT INTO MAIN_MTIL_SET
+                    ( MTIL_NO
+                     ,SORT_NO
+                     ,UPDT_DM
+                     ,UPDT_ID
+                     ,WRTR_DM
+                     ,WRTR_ID
+                     ,DEPT_CD
+                     ,APLY_TERM   
+                    )
+             VALUES (
+                     #{mtilNo}
+                    ,#{sortNo}
+                    ,SYSDATE
+                    ,#{loginId}
+                    ,SYSDATE
+                    ,#{loginId}
+                    ,#{deptCd}
+                    ,#{aplyTerm}
+                    )
+    </insert>
+
+
+    <!-- 주요자재 업데이트 쿼리 -->    
+    <update id="updateMainMtilSet" parameterType="dsMainMtilSet">
+        UPDATE MAIN_MTIL_SET
+           SET MTIL_NO = #{mtilNo}
+              ,SORT_NO = #{sortNo}
+         WHERE DEPT_CD = #{deptCd}
+           AND APLY_TERM = #{aplyTerm}
+           AND MTIL_NO   = #{mtilNoOld}
+    </update>
+    
+    
+    <!-- 자재 삭제 쿼리 -->    
+    <delete id="deleteMainMtilSet" parameterType="dsMainMtilSet">
+        DELETE FROM MAIN_MTIL_SET
+        WHERE DEPT_CD   = #{deptCd}
+          AND APLY_TERM = #{aplyTerm}
+          AND MTIL_NO   = #{mtilNo}
+    </delete>
+    
+    
+    
+    
+    <!--  직영장비,지입장비 조회 쿼리     -->
+    <select id="selectMainEqipSetGrdList" resultType="camelCaseMap">
+        SELECT  A.EQIP_NO             EQIP_NO                    --장비 번호
+               ,A.DIRECT_OPER_DIV_CD  DIRECT_OPER_DIV_CD         --직영 구분 코드
+               ,A.SORT_NO             SORT_NO                    --정렬
+               ,A.DEPT_CD             AS DEPT_CD                 --현장 코드
+               ,A.APLY_TERM           AS APLY_TERM               --적용 기간
+               ,B.EQIP_NM             AS EQIP_NM
+               ,B.SPEC                AS SPEC
+               ,B.UNIT                AS UNIT
+          FROM  MAIN_EQIP_SET A
+               ,MAIN_EQIP B
+         WHERE  A.EQIP_NO = B.EQIP_NO
+           AND  A.DEPT_CD = #{deptCd}
+           AND  A.APLY_TERM = #{aplyTerm}
+           AND  A.DIRECT_OPER_DIV_CD = #{directOperDivCd}
+    </select>
+    
+    
+    <!-- 직영장비,지입장비 INSERT 쿼리 -->
+    <insert id="insertMainEqipSet" parameterType="dsMainEqipSet">
+        INSERT INTO MAIN_EQIP_SET
+                    ( EQIP_NO                                 --장비 번호
+                     ,DIRECT_OPER_DIV_CD                      --직영 구분 코드
+                     ,SORT_NO                                 --정렬
+                     ,UPDT_DM                                 --수정 일시
+                     ,UPDT_ID                                 --수정자 ID
+                     ,WRTR_DM                                 --작성 일시
+                     ,WRTR_ID                                 --작성자 ID
+                     ,DEPT_CD                                 --현장 코드
+                     ,APLY_TERM                               --적용 기간
+                    )
+             VALUES (
+                      #{eqipNo}
+                     ,#{directOperDivCd}
+                     ,#{sortNo}
+                     ,SYSDATE
+                     ,#{loginId}
+                     ,SYSDATE
+                     ,#{loginId}
+                     ,#{deptCd}
+                     ,#{aplyTerm}
+                    )
+    </insert>
+
+
+    <!-- 직영장비,지입장비 업데이트 쿼리     -->
+    <update id="updateMainEqipSet" parameterType="dsMainEqipSet">
+        UPDATE MAIN_EQIP_SET
+           SET EQIP_NO = #{eqipNo}
+              ,SORT_NO = #{sortNo}
+              ,APLY_TERM = #{aplyTerm}
+         WHERE DEPT_CD = #{deptCd}
+           AND DIRECT_OPER_DIV_CD = #{directOperDivCd}
+           AND APLY_TERM = #{aplyTerm}
+           AND EQIP_NO = #{eqipNo}
+    </update>
+
+
+    <!-- 직영장비,지입장비 삭제 쿼리 -->
+    <delete id="deleteMainEqipSet" parameterType="dsMainEqipSet">
+        DELETE FROM MAIN_EQIP_SET
+        WHERE DEPT_CD   = #{deptCd}
+          AND APLY_TERM = #{aplyTerm}
+          AND DIRECT_OPER_DIV_CD = #{directOperDivCd}
+          AND EQIP_NO = #{eqipNo}
+    </delete>    
+
+
+
+
+    <!-- 공사진행항목 조회 쿼리 -->
+    <select id="selectMainCnstQtySetGrdList" resultType="camelCaseMap">
+        SELECT  A.QTY_NO                                  --물량 번호
+               ,A.SORT_NO                                 --정렬
+               ,A.UPDT_DM                                 --수정 일시
+               ,A.UPDT_ID                                 --수정자 ID
+               ,A.WRTR_DM                                 --작성 일시
+               ,A.WRTR_ID                                 --작성자 ID
+               ,A.DEPT_CD                                 --현장 코드
+               ,A.APLY_TERM                               --적용 기간
+               ,B.QTY_NM                                  --물량 명
+               ,B.SPEC                                    --규격
+               ,B.UNIT                                    --단위
+         FROM  MAIN_CNST_QTY_SET A
+              ,CNST_QTY B
+         WHERE A.QTY_NO    = B.QTY_NO
+           AND A.DEPT_CD   = #{deptCd}
+           AND A.APLY_TERM = #{aplyTerm}           
+    </select>
+    
+    
+    <!--  공사진행항목 INSERT 쿼리 -->
+    <insert id="insertMainCnstQtySet" parameterType="dsMainCnstSet">
+        INSERT INTO MAIN_CNST_QTY_SET
+                    ( QTY_NO                                  --물량 번호
+                     ,SORT_NO                                 --정렬
+                     ,UPDT_DM                                 --수정 일시
+                     ,UPDT_ID                                 --수정자 ID
+                     ,WRTR_DM                                 --작성 일시
+                     ,WRTR_ID                                 --작성자 ID
+                     ,DEPT_CD                                 --현장 코드
+                     ,APLY_TERM                               --적용 기간
+                    )
+             VALUES (  #{qtyNo}
+                      ,#{sortNo}
+                      ,SYSDATE
+                      ,#{loginId}
+                      ,SYSDATE
+                      ,#{loginId}
+                      ,#{deptCd}
+                      ,#{aplyTerm}
+                    )
+    </insert>
+    
+    
+    <!--  공사진행항목 업데이트 쿼리 -->
+    <update id="updateMainCnstQtySet" parameterType="dsMainCnstSet">
+        UPDATE MAIN_CNST_QTY_SET
+           SET QTY_NO = #{qtyNo}
+              ,SORT_NO = #{sortNo}
+              ,APLY_TERM = #{aplyTerm}
+         WHERE DEPT_CD = #{deptCd}
+           AND APLY_TERM = #{aplyTerm}
+           AND QTY_NO = #{qtyNo}
+    </update>
+    
+    
+    <!--  공사진행항목 삭제 쿼리 -->
+    <delete id="deleteMainCnstQtySet" parameterType="dsMainCnstSet">
+        DELETE FROM MAIN_CNST_QTY_SET
+        WHERE DEPT_CD = #{deptCd}
+          AND APLY_TERM = #{aplyTerm}
+          AND QTY_NO = #{qtyNo}
+    </delete>
+    
+    
+    
+    <!-- 주요자재 팝업 조회 -->
+    <select id="selectMtilListPopup" resultType="camelCaseMap">
+         
+        SELECT A.MTIL_NO  AS MTIL_NO
+              ,A.MTIL_NM  AS MTIL_NM
+              ,A.SPEC     AS SPEC
+              ,A.UNIT     AS UNIT
+              ,A.APBT_YN  AS APBT_YN
+              ,A.USE_YN   AS USE_YN
+          FROM MAIN_MTIL A
+         WHERE 1=1
+           AND A.BIZHDOF_CD = #{bizhdofCd}
+        <if test="mtilNm != null">
+           AND A.MTIL_NM LIKE '%' || #{mtilNm} || '%'
+        </if>
+           AND A.SAME_MTIL_NO IS NULL
+           AND A.APBT_YN = 'Y'
+           AND A.USE_YN  = 'Y'
+        ORDER BY A.MTIL_NO ASC
+        
+    </select>
+    
+    <!-- 장비 팝업 조회 -->
+    <select id="selectEqipListPopup" resultType="camelCaseMap">
+         
+        SELECT A.EQIP_NO  AS EQIP_NO
+              ,A.EQIP_NM  AS EQIP_NM
+              ,A.SPEC     AS SPEC
+              ,A.UNIT     AS UNIT
+              ,A.APBT_YN  AS APBT_YN
+              ,A.USE_YN   AS USE_YN
+          FROM MAIN_EQIP A
+         WHERE 1=1
+           AND A.BIZHDOF_CD = #{bizhdofCd}
+        <if test="eqipNm != null">
+           AND A.EQIP_NM LIKE '%' || #{eqipNm} || '%'
+        </if>
+           AND A.SAME_EQIP_NO IS NULL
+           AND A.APBT_YN = 'Y'
+           AND A.USE_YN  = 'Y'
+        ORDER BY A.EQIP_NO ASC
+        
+    </select>
+    
+    <select id="selectCnstQtyListPopup" resultType="camelCaseMap">
+    
+        SELECT  QTY_NO                                  --물량 번호
+               ,DEPT_CD                                 --현장 코드
+               ,QTY_NM                                  --물량 명
+               ,SPEC                                    --규격
+               ,UNIT                                    --단위
+               ,UPDT_DM                                 --수정 일시
+               ,UPDT_ID                                 --수정자 ID
+               ,WRTR_DM                                 --작성 일시
+               ,WRTR_ID                                 --작성자 ID
+               ,USE_YN                                  --사용 여부
+         FROM  CNST_QTY
+         WHERE 1=1
+           AND DEPT_CD = #{deptCd}
+        <if test="qtyNm != null">
+           AND QTY_NM LIKE '%' || #{qtyNm} || '%'
+        </if>
+           AND USE_YN = 'Y'
+         ORDER BY QTY_NO ASC
+    
+    </select>
+    
+    <select id="selectDailCheckList" parameterType="dsCopyParams" resultType="java.lang.Integer">
+    
+        <!-- 복사대상일자에 DAILY 생성 판단 조회 쿼리 -->
+        SELECT A.CNT + B.CNT + C.CNT AS DAILY_CNT
+        FROM  (
+               SELECT COUNT(*) AS CNT
+                 FROM MAIN_BSNS_SET
+                WHERE 1=1
+                  AND DEPT_CD   = #{targetDayParams.deptCd}
+                  AND APLY_TERM = REPLACE(#{targetDayParams.aplyDt},'-','')
+              ) A,
+              (
+               SELECT COUNT(*) AS CNT
+                 FROM MAIN_MTIL_SET
+                WHERE 1=1
+                  AND DEPT_CD   = #{targetDayParams.deptCd}
+                  AND APLY_TERM = REPLACE(#{targetDayParams.aplyDt},'-','')
+              ) B,
+              (
+               SELECT COUNT(*) AS CNT
+                 FROM MAIN_EQIP_SET
+                WHERE 1=1
+                  AND DEPT_CD   = #{targetDayParams.deptCd}
+                  AND APLY_TERM = REPLACE(#{targetDayParams.aplyDt},'-','')
+              ) C,
+              (
+               SELECT COUNT(*) AS CNT
+                 FROM MAIN_CNST_QTY_SET
+                WHERE 1=1
+                  AND DEPT_CD   = #{targetDayParams.deptCd}
+                  AND APLY_TERM = REPLACE(#{targetDayParams.aplyDt},'-','')
+              ) D
+         WHERE 1=1
+    
+    </select>
+    
+    <insert id="insertBsnsDailyCopySet"  parameterType="dsCopyParams">
+    
+        <!-- 적용기간 DAILY COPY INSERT 쿼리 -->
+        INSERT INTO MAIN_BSNS_SET
+                    ( DEPT_CD
+                     ,APLY_TERM
+                     ,UPDT_DM  
+                     ,UPDT_ID  
+                     ,WRTR_DM  
+                     ,WRTR_ID
+                    )
+        SELECT DEPT_CD                                   --현장 코드
+              ,REPLACE(#{targetDayParams.aplyDt},'-','') --적용 기간
+              ,UPDT_DM                                   --수정 일시
+              ,UPDT_ID                                   --수정자 ID
+              ,WRTR_DM                                   --작성 일시
+              ,WRTR_ID                                   --작성자 ID
+          FROM MAIN_BSNS_SET
+         WHERE DEPT_CD   = #{copyDayParams.deptCd}
+           AND APLY_TERM = REPLACE(#{copyDayParams.aplyDt},'-','')
+         ORDER BY APLY_TERM ASC
+         
+    </insert>
+    
+    <insert id="insertMtilDailyCopySet" parameterType="dsCopyParams">
+    
+        <!-- 주요자재 DAILY COPY INSERT 쿼리 -->
+        INSERT INTO MAIN_MTIL_SET(
+                                  MTIL_NO
+                                 ,SORT_NO
+                                 ,UPDT_DM
+                                 ,UPDT_ID
+                                 ,WRTR_DM
+                                 ,WRTR_ID
+                                 ,DEPT_CD
+                                 ,APLY_TERM
+                                 )
+        SELECT MTIL_NO                                   --자재 번호
+              ,SORT_NO                                   --정렬
+              ,SYSDATE                                   --작성 일시
+              ,#{loginId}                                --작성자 ID
+              ,SYSDATE                                   --작성 일시
+              ,#{loginId}                                --작성자 ID
+              ,DEPT_CD                                   --현장 코드
+              ,REPLACE(#{targetDayParams.aplyDt},'-','') --복사 일자
+          FROM MAIN_MTIL_SET
+         WHERE 1=1
+           AND DEPT_CD   = #{copyDayParams.deptCd}
+           AND APLY_TERM = REPLACE(#{copyDayParams.aplyDt},'-','')
+    
+    </insert>
+
+    <insert id="insertEqipDailyCopySet" parameterType="dsCopyParams">
+        <!-- 직영,지입 장비 DAILY COPY INSERT 쿼리. -->
+        INSERT INTO MAIN_EQIP_SET(
+                                  EQIP_NO
+                                 ,DIRECT_OPER_DIV_CD                     
+                                 ,SORT_NO                               
+                                 ,UPDT_DM                              
+                                 ,UPDT_ID                              
+                                 ,WRTR_DM                                 
+                                 ,WRTR_ID                                 
+                                 ,DEPT_CD                                 
+                                 ,APLY_TERM
+                                 )
+        SELECT  EQIP_NO                                   --장비 번호
+               ,DIRECT_OPER_DIV_CD                        --직영 구분 코드
+               ,SORT_NO                                   --정렬
+               ,SYSDATE                                   --작성 일시
+               ,#{loginId}                                --작성자 ID
+               ,SYSDATE                                   --작성 일시
+               ,#{loginId}                                --작성자 ID
+               ,DEPT_CD                                   --현장 코드
+               ,REPLACE(#{targetDayParams.aplyDt},'-','') --적용 기간
+          FROM MAIN_EQIP_SET
+         WHERE 1=1
+           AND DEPT_CD   = #{copyDayParams.deptCd}
+           AND APLY_TERM = REPLACE(#{copyDayParams.aplyDt},'-','')
+    </insert>
+    
+    <insert id="insertCnstQtyDailyCopySet" parameterType="dsCopyParams">
+        <!-- 현장진행설정 DAILY COPY INSERT 쿼리. -->
+        INSERT INTO MAIN_CNST_QTY_SET(
+                                      QTY_NO
+                                     ,SORT_NO
+                                     ,UPDT_DM
+                                     ,UPDT_ID
+                                     ,WRTR_DM
+                                     ,WRTR_ID
+                                     ,DEPT_CD
+                                     ,APLY_TERM
+                                     )
+        SELECT  QTY_NO                                    --물량 번호
+               ,SORT_NO                                   --정렬
+               ,SYSDATE                                   --작성 일시
+               ,#{loginId}                                --작성자 ID
+               ,SYSDATE                                   --작성 일시
+               ,#{loginId}                                --작성자 ID
+               ,DEPT_CD                                   --현장 코드
+               ,REPLACE(#{targetDayParams.aplyDt},'-','') --적용 기간
+          FROM MAIN_CNST_QTY_SET
+         WHERE DEPT_CD   = #{copyDayParams.deptCd}
+           AND APLY_TERM = REPLACE(#{copyDayParams.aplyDt},'-','')
+    </insert>     
+        
+</mapper>

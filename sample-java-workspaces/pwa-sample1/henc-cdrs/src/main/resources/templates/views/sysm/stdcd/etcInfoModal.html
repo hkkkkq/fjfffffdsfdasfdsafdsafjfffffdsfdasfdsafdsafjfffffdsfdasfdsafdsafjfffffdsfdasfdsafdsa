@@ -1,0 +1,129 @@
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layouts/modalLayout">
+<body>
+  <div layout:fragment="contents">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="row align-items-center">
+          <div class="col-auto mr-auto">
+          </div>
+          <div class="col-auto mb-2">
+            <button type="button" class="btn btn-primary btn-sm" id="btnEtcInfoModalSave">저장</button>
+          </div>
+        </div>       
+        <div class="card mb-4">
+          <div class="card-body">
+            <form class="row form-inline" id="search" > 
+              <div class="col mr-auto">
+                <div class="row">  
+                  <input type="text" class="form-control form-control-sm" id="stdCd" name="stdCd" th:value=${stdCd} hidden="true">
+                </div>  
+              </div>
+              <div class="col-auto align-self-end">         
+                <button type="button" class="btn btn-info btn-sm mb-1" id="btnEtcInfoModalSearch">조회</button>
+              </div>
+            </form>
+          </div>
+        </div>
+        <div class="row align-items-center">
+          <div class="col-auto mr-auto">            
+          </div>
+          <div class="col-auto mb-2">
+            <button type="button" class="btn btn-outline-secondary btn-sm mb-1" id="btnEtcInfoModalNew">신규</button>
+          </div>
+        </div>         
+        <div id="comAttributeDefiSheet"></div>
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript" th:fragment="javascript">
+  $(document).ready(function() {
+     
+      var headers = [
+          {Text: "상태|valCnt|삭제|STD_CD|ATTRIBUTE_ID|ATTRIBUTE_NM|ATTRIBUTE_TYPE|ATTRIBUTE_FRM|ATTRIBUTE_SEQ|ATTRIBUTE_DESC|WRTR_DM|WRTR_ID|UPDT_DM|UPDT_ID"}
+      ],
+      mode = {
+          HeaderCheck: true
+      },
+      columns = [              
+          {Type: "Status", SaveName: "rowStatus", Width: 0, Align: "center" , Hidden: true},
+          {Type: "Text", SaveName: "valCnt", Width: 0, Align: "center", Hidden: true},
+          {Type: "DelCheck", SaveName: "rowChecked", Width: 0, Align: "center"},
+          {Type: "Text", SaveName: "stdCd", Width: 0, Edit:0, Align: "left"},
+          {Type: "Text", SaveName: "attributeId", Width: 0, Format: "number", EditLen: 9, Align: "left", UpdateEdit: false},
+          {Type: "Text", SaveName: "attributeNm", Width: 100, Align: "left"},
+          {Type: "Text", SaveName: "attributeType", Width: 0, Align: "left"},
+          {Type: "Text", SaveName: "attributeFrm", Width: 0, Align: "left"},
+          {Type: "Text", SaveName: "attributeSeq", Width: 100, Format: "number", EditLen: 3,Align: "left"},
+          {Type: "Text", SaveName: "attributeDesc", Width: 100, Align: "left"}
+      ];
+      createIBSheet2($("#comAttributeDefiSheet")[0], "comAttributeDefiSheet", '100%', "400px");
+      comAttributeDefiSheet.InitHeaders(headers, mode);
+      comAttributeDefiSheet.InitColumns(columns);
+      
+      //조회 버튼 클릭
+      $("#btnEtcInfoModalSearch").on("click", function() {          
+          $.getJSON("/sysm/stdcd/gridcomAttributeDefiList", $("#search").serializeObject(), function(data) {                       
+              comAttributeDefiSheet.LoadSaveData({"data": data});
+          });                      
+      });         
+      $("#btnEtcInfoModalSearch").trigger("click");
+      
+      //신규 버튼 클릭
+      $("#btnEtcInfoModalNew").on("click", function() {
+          var row = comAttributeDefiSheet.DataInsert(-1);
+          comAttributeDefiSheet.SetCellValue(row, "stdCd", $("#stdCd").val());
+      });         
+            
+      //저장 버튼 클릭
+      $("#btnEtcInfoModalSave").on("click", function() {
+          
+          var changeCnt = 0;
+
+          for (var i=1; i <= comAttributeDefiSheet.RowCount(); i++) {
+              if (comAttributeDefiSheet.GetCellValue(i , "rowStatus") == "I" 
+                      || comAttributeDefiSheet.GetCellValue(i,"rowStatus") == "U"
+                      || comAttributeDefiSheet.GetCellValue(i , "rowStatus") == "D") {
+                  changeCnt++;
+              }
+              if (comAttributeDefiSheet.GetCellValue(i , "rowStatus") == "I" 
+                  || comAttributeDefiSheet.GetCellValue(i,"rowStatus") == "U"){
+                  if(comAttributeDefiSheet.RowCount() != 0){
+                      for (var j=1; j <= comAttributeDefiSheet.RowCount(); j++) {
+                              if(i != j){
+                                  if(comAttributeDefiSheet.GetCellValue(i,"attributeId")==comAttributeDefiSheet.GetCellValue(j,"attributeId")){
+                                      _.dialog.error("attributeId 중복되었습니다.");
+                                      return;
+                                  }
+                              }
+                          }
+                      }
+                  }
+              if (comAttributeDefiSheet.GetCellValue(i , "rowStatus") == "D" ){
+                  if(comAttributeDefiSheet.GetCellValue(i,"valCnt")>0){
+                      _.dialog.error("보조세부정보 존재합니다.");
+                      return;
+                  }
+              }
+          }
+          
+          if (changeCnt == 0) {
+              _.dialog.alert("저장할 항목이 없습니다.");
+              return;
+          }             
+          
+          var paramlist = {              
+              attributeDefis: comAttributeDefiSheet.GetSaveJson().data
+          };           
+          
+          _.dialog.confirm("저장하시겠습니까?", function() {
+              $.post("/sysm/stdcd/gridAttributeDefiSave", paramlist, function() {  
+                  _.dialog.alert("저장되었습니다.");
+                  comAttributeDefiSheet.LoadSaveData(_.ibsheet.success());
+              });            
+          });                       
+      });            
+      
+  });
+  </script>
+</body>
+</html>

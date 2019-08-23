@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.henc.cdrs.partners.users.repository.PartnerUsersMapper">
+
+    <!-- 협력사 정보 조회 -->
+    <select id="selectUsersGrdList" resultType="camelCaseMap">
+        SELECT  A.USER_ID             AS USER_ID                --사용자 ID
+               ,A.PWD                 AS PWD                    --비밀 번호
+               ,A.PWD_EXPI_DT         AS PWD_EXPI_DT            --비밀번호 만료 일자
+               ,A.ST_DT               AS ST_DT                  --시작 일자
+               ,A.END_DT              AS END_DT                 --종료 일자
+               ,A.LAST_CONN_TM        AS LAST_CONN_TM           --최종 접속 시간
+               ,A.LAST_CONN_IP        AS LAST_CONN_IP           --최종 접속 IP
+               ,A.USER_DIV_CD         AS USER_DIV_CD            --사용자 구분 코드
+               ,A.COPRCP_NO           AS COPRCP_NO              --협력사 번호
+               ,A.TLNO                AS TLNO                   --전화번호
+               ,A.NAME                AS NAME                   --성명
+               ,nvl(A.PUSH_USE_YN, 'N') AS PUSH_USE_YN            --알림 사용 여부
+               ,A.USE_YN              AS USE_YN                 --사용 여부
+               ,A.UPDT_DM             AS UPDT_DM                --수정 일시
+               ,A.UPDT_ID             AS UPDT_ID                --수정자 ID
+               ,A.WRTR_DM             AS WRTR_DM                --작성 일시
+               ,A.WRTR_ID             AS WRTR_ID                --작성자 ID
+               ,B.CORP_KOR            AS CORP_KOR               --업체명
+               ,CASE WHEN LENGTH(E.USER_ID) > 0 THEN '동의등록'
+                     WHEN LENGTH(D.USER_ID) > 0 THEN 'URL발송'
+                     ELSE ''
+                END AS reg_status
+          FROM COM_USER A
+              ,COPRCP B
+              ,( SELECT COPRCP_NO
+                   FROM COPRCP_INFO
+                  WHERE DEPT_CD = #{deptCd}
+                  GROUP BY COPRCP_NO
+               ) C
+              ,(
+                select user_id
+                  from reg_req_send
+                 group by user_id
+               ) D
+              ,agreement E
+         WHERE 1=1
+           AND A.COPRCP_NO = B.CORP_ID
+           AND B.CORP_ID   = C.COPRCP_NO
+           AND A.USER_ID = D.USER_ID(+)
+           AND A.USER_ID = E.USER_ID(+)
+         <if test="coprcpNo != null">
+           AND A.COPRCP_NO   = #{coprcpNo}
+         </if>
+         <if test="corpKor != null">
+           AND B.CORP_KOR   like '%'||#{corpKor}||'%'
+         </if>
+           AND USER_DIV_CD = 'COPRCP'
+         <if test="telName != null">
+           AND ( NAME LIKE '%'||#{telName}||'%'
+                 OR TLNO LIKE #{telName} ||'%'
+               )
+         </if>
+         ORDER BY B.CORP_KOR ASC, A.NAME ASC
+    </select>
+
+    <select id="selectUserSeq" resultType="java.lang.String">
+        SELECT 'P'||COM_USER_S.NEXTVAL             
+          FROM DUAL
+    </select>
+
+    <!-- 협력사 등록 -->
+    <insert id="insertPartnerUsers" parameterType="users">
+        INSERT INTO COM_USER (
+                              USER_ID                                 --사용자 ID
+                             ,PWD                                     --비밀 번호
+                             ,PWD_EXPI_DT                             --비밀번호 만료 일자
+                             ,ST_DT                                   --시작 일자
+                             ,END_DT                                  --종료 일자
+                             ,LAST_CONN_TM                            --최종 접속 시간
+                             ,LAST_CONN_IP                            --최종 접속 IP
+                             ,USER_DIV_CD                             --사용자 구분 코드
+                             ,COPRCP_NO                               --협력사 번호
+                             ,TLNO                                    --전화번호
+                             ,NAME                                    --성명
+                             ,PUSH_USE_YN                             --알림 사용 여부
+                             ,USE_YN                                  --사용 여부
+                             ,UPDT_DM                                 --수정 일시
+                             ,UPDT_ID                                 --수정자 ID
+                             ,WRTR_DM                                 --작성 일시
+                             ,WRTR_ID                                 --작성자 ID
+                             )
+                    VALUES (
+                             #{userId}
+                            ,#{pwd}
+                            ,#{pwdExpiDt}
+                            ,#{stDt}
+                            ,#{endDt}
+                            ,#{lastConnTm}
+                            ,#{lastConnIp}
+                            ,'COPRCP'
+                            ,#{coprcpNo}
+                            ,#{tlno}
+                            ,#{name}
+                            ,#{pushUseYn}
+                            ,#{useYn}
+                            ,SYSDATE
+                            ,#{loginId}
+                            ,SYSDATE
+                            ,#{loginId})
+    </insert>
+    
+    
+    <!-- 협력사 수정 -->
+    <update id="updatePartnerUsers" parameterType="users">    
+        UPDATE COM_USER
+           SET NAME = #{name}
+              ,TLNO = #{tlno}
+              ,PUSH_USE_YN = #{pushUseYn}
+              ,USE_YN = #{useYn}
+              ,ST_DT = #{stDt}
+              ,END_DT = #{endDt}
+              ,PWD_EXPI_DT = #{pwdExpiDt}
+         WHERE COPRCP_NO = #{coprcpNo}
+           AND USER_ID = #{userId}
+           AND USER_DIV_CD = 'COPRCP'
+    </update>
+   
+   
+   <!-- 협력사 삭제 -->
+    <delete id="deletePartnerUsers" parameterType="users">
+        DELETE FROM COM_USER
+         WHERE USER_ID = #{userId}
+           AND USER_DIV_CD = 'COPRCP'
+    </delete>
+    
+    <!-- 협력업체 조회 팝업 -->
+    <select id="selectPartnerPopList" resultType="camelCaseMap">
+         
+        SELECT A.CORP_ID           -- 협력업체 ID
+              ,A.CORP_KOR          -- 협력업체 명
+          FROM COPRCP A
+              ,COPRCP_INFO B
+         WHERE A.CORP_ID = B.COPRCP_NO
+           AND B.DEPT_CD = #{deptCd}
+           <if test="corpId != null">
+           AND A.CORP_ID = #{corpId}
+           </if>
+           <if test="corpKor != null">
+           AND A.CORP_KOR LIKE '%'||#{corpKor}||'%'
+           </if>
+           <if test="except != null">
+           AND A.CORP_ID not in (DECODE(#{except}, 'Y','T00001','X'))
+           </if>
+           AND B.USE_YN = 'Y'
+         GROUP BY A.CORP_ID
+                 ,A.CORP_KOR
+         ORDER BY MAX(B.SORT_NO) ASC, A.CORP_KOR ASC
+           
+    </select>
+    
+    <insert id="insertPartnerUserDept" parameterType="users">
+        INSERT INTO USER_DEPT (USER_ID, DEPT_CD, BAS_DEPT_YN, UPDT_DM, UPDT_ID, WRTR_DM, WRTR_ID, ROLE_ID)
+        VALUES (#{userId}, #{deptCd}, 'Y', sysdate, #{loginId}, sysdate, #{loginId}, 'ROLE_COPRCP')
+    </insert>
+
+    <delete id="deletePartnerUserDept" parameterType="users">
+        DELETE FROM USER_DEPT WHERE user_id = #{userId} AND dept_cd = #{deptCd}
+    </delete>
+    
+    <select id="selectDupCheck" resultType="camelCaseMap">
+    
+        SELECT A.USER_ID
+              ,A.COPRCP_NO
+              ,b.CORP_KOR
+              ,A.NAME
+              ,A.TLNO
+          FROM COM_USER A
+              ,COPRCP B
+         WHERE A.COPRCP_NO = B.CORP_ID
+           AND A.USER_DIV_CD = 'COPRCP'
+           AND A.USE_YN = 'Y'
+ 
+    </select>
+    
+</mapper>

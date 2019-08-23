@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.henc.cdrs.daily.repository.DdBrfgEqipMapper">
+
+	<select id="dailyList" resultType="ddBrfgEqip" parameterType="searchDailyParams">
+		SELECT dbe.partner_no,
+			   dbe.dept_cd,
+			   dbe.day,
+			   dbe.ctrc_no,
+			   dbe.ordr_no,
+			   dbe.eqip_no,
+			   me.bizhdof_cd,
+			   me.eqip_nm,
+			   me.spec,
+			   me.unit,
+			   dbe.qty,
+			   nvl(sum.qty, 0) AS before_sum_qty,
+			   nvl(dbe.qty, 0) + nvl(sum.qty, 0) as sum_qty,
+			   dbe.updt_dm,
+			   dbe.updt_id,
+			   dbe.wrtr_dm,
+			   dbe.wrtr_id,
+			   rownum as row_id
+		FROM dd_brfg_eqip dbe
+				 INNER JOIN MAIN_EQIP me ON dbe.EQIP_NO = me.EQIP_NO
+				 LEFT OUTER JOIN (SELECT eqip_no, nvl(sum(qty), 0) AS qty
+								  FROM dd_brfg_eqip
+								  WHERE (dept_cd, day, ordr_no) IN (SELECT dept_cd, day, max(ordr_no) AS ordr_no
+																	FROM DD_BRFG
+																	WHERE dept_cd = #{deptCd}
+																	  AND day &lt; #{day}
+																	  AND sta_cd = '50'
+																	GROUP BY dept_cd, day)
+									AND partner_no = #{partnerNo}
+									AND ctrc_no = #{ctrcNo}
+								  GROUP BY eqip_no) sum ON dbe.EQIP_NO = sum.EQIP_NO
+		WHERE dbe.dept_cd = #{deptCd}
+		  AND dbe.day = #{day}
+		  AND dbe.ordr_no = #{ordrNo}
+		  AND dbe.partner_no = #{partnerNo}
+		  AND dbe.ctrc_no = #{ctrcNo}
+		ORDER BY me.eqip_nm
+	</select>
+
+	<select id="dailyGroupList" resultType="camelCaseMap" parameterType="searchDailyParams">
+		<![CDATA[
+		SELECT mes.DIRECT_OPER_DIV_CD,
+			   me.eqip_nm,
+			   me.UNIT,
+			   me.SPEC,
+			   nvl(dbe.bef_qty, 0)                       AS bef_qty,
+			   nvl(dbe.cur_qty, 0)                       AS cur_qty,
+			   nvl(dbe.bef_qty, 0) + nvl(dbe.cur_qty, 0) AS tot_qty,
+			   mes.DEPT_CD,
+			   mes.eqip_no
+		FROM (SELECT mes.dept_cd,
+					 mes.aply_term,
+					 mes.sort_no,
+					 mes.eqip_no,
+					 mes.DIRECT_OPER_DIV_CD,
+					 #{day} AS day
+			  FROM MAIN_EQIP_SET mes
+			  WHERE mes.dept_cd = #{deptCd}
+				AND mes.aply_term = (
+				  SELECT max(aply_term) AS aply_term
+				  FROM MAIN_EQIP_SET
+				  WHERE dept_cd = #{deptCd}
+					AND APLY_TERM <= #{day})
+			  ORDER BY mes.sort_no) mes
+				 LEFT OUTER JOIN (SELECT dbe.dept_cd,
+										 dbe.eqip_no,
+										 sum(CASE
+												 WHEN to_date(#{day}, 'YYYYMMDD') > to_date(dbe.day, 'YYYYMMDD') THEN nvl(dbe.qty, 0)
+												 ELSE 0 END) AS bef_qty,
+										 sum(CASE
+												 WHEN to_date(#{day}, 'YYYYMMDD') = to_date(dbe.day, 'YYYYMMDD') THEN nvl(dbe.qty, 0)
+												 ELSE 0 END) AS cur_qty
+								  FROM DD_BRFG_EQIP dbe
+										   INNER JOIN dd_brfg_comp comp ON dbe.dept_cd = comp.dept_cd AND dbe.day = comp.day AND
+																		   dbe.ORDR_NO = comp.ORDR_NO AND
+																		   dbe.CTRC_NO = comp.CTRC_NO
+								  WHERE (dbe.dept_cd, dbe.day, dbe.ordr_no) IN (
+									  SELECT dept_cd, day, max(ordr_no) AS ordr_no
+									  FROM DD_BRFG
+									  WHERE DEPT_CD = #{deptCd}
+										AND ((day < #{day} AND sta_cd IN ('50')) OR (day = #{day}))
+									  GROUP BY dept_cd, day
+								  )
+									AND comp.sta_cd = '50'
+								  GROUP BY dbe.dept_cd, dbe.eqip_no) dbe
+								 ON mes.DEPT_CD = dbe.DEPT_CD AND mes.eqip_no = dbe.eqip_no
+				 LEFT OUTER JOIN main_eqip me ON mes.eqip_no = me.eqip_no
+		ORDER BY DIRECT_OPER_DIV_CD, eqip_nm, unit, spec
+		]]>
+	</select>
+
+	<insert id="insert" parameterType="ddBrfgEqip">
+		INSERT INTO DD_BRFG_EQIP ( PARTNER_NO
+                         , EQIP_NO
+                         , QTY
+                         , UPDT_DM
+                         , UPDT_ID
+                         , WRTR_DM
+                         , WRTR_ID
+                         , CTRC_NO
+                         , DEPT_CD
+                         , DAY
+                         , ORDR_NO)
+		VALUES ( #{partnerNo}
+			   , #{eqipNo}
+			   , #{qty}
+			   , sysdate
+			   , #{loginId}
+			   , sysdate
+			   , #{loginId}
+			   , #{ctrcNo}
+			   , #{deptCd}
+			   , #{day}
+			   , #{ordrNo})
+	</insert>
+
+	<update id="update" parameterType="ddBrfgEqip">
+		UPDATE DD_BRFG_EQIP
+		SET QTY = #{qty},
+			UPDT_DM   = sysdate,
+			UPDT_ID   = #{loginId}
+		WHERE PARTNER_NO = #{partnerNo}
+		  AND EQIP_NO = #{eqipNo}
+		  AND CTRC_NO = #{ctrcNo}
+		  AND DEPT_CD = #{deptCd}
+		  AND DAY = #{day}
+		  AND ORDR_NO = #{ordrNo}
+	</update>
+
+	<delete id="delete" parameterType="ddBrfgEqip">
+		DELETE FROM DD_BRFG_EQIP
+		WHERE PARTNER_NO = #{partnerNo}
+		  AND DEPT_CD = #{deptCd}
+		  AND DAY = #{day}
+		  AND ORDR_NO = #{ordrNo}
+		  AND CTRC_NO = #{ctrcNo}
+		  AND EQIP_NO = #{eqipNo}
+	</delete>
+
+	<delete id="deleteAll" parameterType="searchDailyParams">
+		DELETE FROM DD_BRFG_EQIP
+		WHERE DEPT_CD = #{deptCd}
+		  AND DAY = #{day}
+		  AND ORDR_NO = #{ordrNo}
+		  AND PARTNER_NO = #{partnerNo}
+		  AND CTRC_NO = #{ctrcNo}
+	</delete>
+
+	<insert id="copyHistoryCreate" parameterType="historyDailyCopyParams">
+		INSERT INTO DD_BRFG_EQIP (PARTNER_NO, EQIP_NO, QTY, UPDT_DM, UPDT_ID, WRTR_DM, WRTR_ID, CTRC_NO, DEPT_CD, DAY, ORDR_NO)
+		SELECT hst.PARTNER_NO,
+			   hst.EQIP_NO,
+			   hst.QTY,
+			   sysdate,
+			   #{loginId},
+			   sysdate,
+			   #{loginId},
+			   hst.CTRC_NO,
+			   hst.DEPT_CD,
+			   #{targetDayParams.day},
+			   hst.ORDR_NO
+		FROM DD_BRFG_EQIP hst
+		WHERE hst.dept_cd = #{copyDayParams.deptCd}
+		  AND hst.day = #{copyDayParams.day}
+		  AND hst.ordr_no = #{copyDayParams.ordrNo}
+		  AND hst.partner_no = #{copyDayParams.partnerNo}
+		  AND hst.ctrc_no = #{copyDayParams.ctrcNo}
+	</insert>
+
+	<select id="quickSearchList" resultType="camelCaseMap" parameterType="searchDailyParams">
+		SELECT *
+		FROM (SELECT 'PARENT'                             AS GB,
+					 A.EQIP_NO,
+					 A.EQIP_NM,
+					 A.SPEC,
+					 A.UNIT,
+					 A.EQIP_NM || ' ' || A.SPEC || A.UNIT AS label,
+					 A.EQIP_NO                            AS PARENT_EQIP_NO,
+					 A.EQIP_NM                            AS "value",
+					 A.SPEC                               AS PARENT_SPEC,
+					 A.UNIT                               AS PARENT_UNIT,
+					 A.BIZHDOF_CD
+			  FROM MAIN_EQIP A
+			  WHERE A.USE_YN = 'Y'
+				AND A.SAME_EQIP_NO is null
+			  UNION ALL
+			  SELECT 'CHILD'                                     AS GB,
+					 A.EQIP_NO,
+					 A.EQIP_NM,
+					 A.SPEC,
+					 A.UNIT,
+					 A.EQIP_NM || ' ' || A.SPEC || ' ' || A.UNIT AS label,
+					 B.EQIP_NO                                   AS PARENT_EQIP_NO,
+					 B.EQIP_NM                                   AS "value",
+					 B.SPEC                                      AS PARENT_SPEC,
+					 B.UNIT                                      AS PARENT_UNIT,
+					 A.BIZHDOF_CD
+			  FROM MAIN_EQIP A
+					   INNER JOIN MAIN_EQIP B ON A.SAME_EQIP_NO = B.EQIP_NO AND B.USE_YN = 'Y'
+			  WHERE A.USE_YN = 'Y'
+				AND A.APBT_YN = 'N'
+				AND A.SAME_EQIP_NO IS NOT NULL)
+		WHERE BIZHDOF_CD = #{bizhdofCd}
+		<if test="autocompleteSearchParams != null">
+			<choose >
+				<when test="autocompleteSearchParams.type.equals('eqip_nm')">
+					AND EQIP_NM like '%' || #{autocompleteSearchParams.term} || '%'
+				</when>
+				<when test="autocompleteSearchParams.type.equals('spec')">
+					AND SPEC like '%' || #{autocompleteSearchParams.term} || '%'
+				</when>
+				<when test="autocompleteSearchParams.type.equals('unit')">
+					AND UNIT like '%' || #{autocompleteSearchParams.term} || '%'
+				</when>
+			</choose>
+		</if>
+		ORDER BY EQIP_NM ASC, SPEC ASC, UNIT ASC
+	</select>
+
+	<select id="getListInChange" resultType="ddBrfgEqip" parameterType="ddBrfg">
+		SELECT dept_cd, day, ordr_no, partner_no, ctrc_no, qty, eqip_no
+		FROM dd_brfg_eqip
+		WHERE dept_cd = #{deptCd}
+		  AND day = #{day}
+		  AND ordr_no = #{ordrNo}
+		ORDER BY dept_cd, day, ordr_no, partner_no, ctrc_no
+	</select>
+
+	<delete id="deleteChanged" parameterType="ddBrfg">
+		DELETE FROM dd_brfg_eqip
+		WHERE DEPT_CD = #{deptCd}
+		  AND DAY = #{day}
+		  AND ORDR_NO = #{ordrNo}
+	</delete>
+</mapper>

@@ -1,0 +1,1219 @@
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layouts/layout">
+<head></head>
+<body>
+
+<div layout:fragment="contents">
+
+    <section class="top-area">
+        <nav aria-label="breadcrumb" class="float-left">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">관리</a></li>
+                <li class="breadcrumb-item active" aria-current="page">현장일보 설정</li>
+            </ol>
+        </nav>
+        <div class="btn-area float-right">
+        </div>
+    </section>
+     
+    <section id="search-area" class="form-area mb-3">
+        <form id="search">
+            <div class="border">
+                <div class="form-row">
+                    <div class="month_term">
+                        <label for="">적용기간</label>   
+                        <div class="input-group" >
+                          
+                            <input type="text" class="form-control form-control-sm mr-1 dream-date" id="datetimepicker1" data-target-input="nearest" name="aplyFromDt" data-inputmask="'alias': 'yyyy-mm-dd'" data-parsley-type="date" required>
+                            <div class="input-group-append" data-target="#datetimepicker1" data-toggle="datetimepicker">
+                                <button class="btn btn-outline-secondary btn-sm" type="button"><i class="far fa-calendar-alt"></i></button>
+                            </div>
+                            
+                            <i>~</i>
+       
+                            <input type="text" class="form-control form-control-sm mr-1 dream-date" id="datetimepicker2" data-target-input="nearest" name="aplyToDt" data-inputmask="'alias': 'yyyy-mm-dd'" data-parsley-type="date" required>
+                            <div class="input-group-append" data-target="#datetimepicker2" data-toggle="datetimepicker">
+                                <button class="btn btn-outline-secondary btn-sm" type="button"><i class="far fa-calendar-alt"></i></button>
+                            </div>
+                            
+                        </div>    
+                    </div>
+                </div>
+                <div class="btn-area">
+                    <button type="submit" class="btn btn-secondary btn-sm" id="btnSearch">조회</button>
+                </div>
+            </div>
+        </form>
+    </section>
+     
+    <!-- end : search-area -->
+    <section id="grid-area">
+        <div class="row">
+            <div class="col-md-2">
+                <div class="d-flex justify-content-between pb-2">
+                    <h2></h2>
+                    <div class="btn-area">
+                        <button type="button" class="btn btn-outline-secondary btn-sm" data-toggle="modal" data-target="#modal-approval" data-backdrop="static" id="btnCopy">복사</button>
+                        <button type="button" class="btn btn-outline-secondary btn-sm" id="btnNew">신규</button>
+                        <button type="button" class="btn btn-outline-secondary btn-sm" id="btnSave">저장</button>
+                    </div>
+                </div>
+                <div id=aplyTermListSheet></div>
+            </div>
+   
+            <div class="col-md-10">
+                <div class="d-flex justify-content-between pb-2">
+                    <h2></h2>
+                    <div class="btn-area">
+                        <button type="button" class="btn btn-outline-secondary btn-sm" id="btnDetailNew">신규</button>
+                        <button type="button" class="btn btn-outline-secondary btn-sm" id="btnDetailSave">저장</button>
+                    </div>
+                </div>
+                <div class="tab-content" id="nav-tabContent">
+                    <div class="tab-pane fade show active" id="list1">
+                        <ul class="nav nav-pills nav-fill" id="myTab">
+                            <li class="nav-item">
+                                <a id="mtil" class="nav-link active show" data-sheetid=1 data-toggle="tab" href="#content1" aria-selected="true">주요자재</a>
+                            </li>
+                            <li class="nav-item">
+                                <a id="eqipDm" class="nav-link"  data-sheetid=2 data-toggle="tab" href="#content2" aria-selected="false">직영장비</a>
+                            </li>
+                            <li class="nav-item">
+                                 <a id="eqipPc" class="nav-link" data-sheetid=3  data-toggle="tab" href="#content3" aria-selected="false">지입장비</a>
+                            </li>
+                            <li class="nav-item">
+                                 <a id="cnstQty" class="nav-link" data-sheetid=4  data-toggle="tab" href="#content4" aria-selected="false">공사진행현황</a>
+                            </li>
+                        </ul>
+                        
+                        <div class="tab-content mt-3">
+                            <div class="tab-pane fade show active" id="content1">
+                                <div class="d-flex justify-content-between pb-2">
+                                    <h3>◎ 주요자재 설정</h3>
+                                    <div class="btn-area">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div id=matrialListSheet></div>
+                                    </div>
+                                </div>
+                            </div>
+                          <div class="tab-pane fade" id="content2">
+                              <div class="d-flex justify-content-between pb-2">
+                                  <h3>◎ 직영장비 설정</h3>
+                                  <div class="btn-area">
+                                  </div>
+                              </div>
+                              <div class="row">
+                                  <div class="col-md-12">
+                                      <div id=equipmentDmListSheet></div>
+                                  </div>
+                              </div>
+                          </div>
+                          <div class="tab-pane fade" id="content3">
+                              <div class="d-flex justify-content-between pb-2">
+                                  <h3>◎ 지입장비 설정</h3>
+                                  <div class="btn-area">
+                                  </div>
+                              </div>
+                              <div class="row">
+                                  <div class="col-md-12">
+                                      <div id=equipmentPcListSheet></div>
+                                  </div>
+                              </div>
+                          </div>
+                          <div class="tab-pane fade" id="content4">
+                              <div class="d-flex justify-content-between pb-2">
+                                  <h3>◎ 공사진행현황 설정</h3>
+                                  <div class="btn-area">
+                                  </div>
+                              </div>
+                              <div class="row">
+                                  <div class="col-md-12">
+                                      <div id=cnstQtyListSheet></div>
+                                  </div>
+                              </div>
+                          </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="list2">2</div>
+                    <div class="tab-pane fade" id="list3">3</div>
+                    <div class="tab-pane fade" id="list4">4</div>
+                </div>
+            </div>
+            <!-- //ibsheet -->
+        </div>
+    </section>
+
+    <div class="modal fade" id="modal-approval" style="display: none;" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">일보 복사</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                         <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <section class="form-area">
+                        <div class="btn-area float-right mb-2">
+                            <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal"  aria-label="Close" id="btnClose">취소</button>
+                            <button type="button" class="btn btn-dark btn-sm" id="btnOk">승인</button>
+                        </div>
+                    <table class="table">
+                        <colgroup>
+                            <col width="60px">
+                            <col width="120px">
+                            <col width="60px">
+                            <col width="120px">
+                        </colgroup>
+                        <tbody>
+                            <tr>
+                                <th scope="col">복사일자</th>
+                                <td>
+                                    <div class="input-group dream-date" id="datetimepicker3" data-target-input="nearest">
+                                        <input type="text" class="form-control form-control-sm mr-1" id="fromDt" name="copyDt" data-inputmask="'alias': 'yyyy-mm-dd'" data-parsley-type="date" required>
+                                        <div class="input-group-append" data-target="#datetimepicker3" data-toggle="datetimepicker">
+                                            <button class="btn btn-outline-secondary btn-sm" type="button"><i class="far fa-calendar-alt"></i></button>
+                                        </div>
+                                    </div>
+                                </td>
+                                <th scope="col">적용일자</th>
+                                <td>
+                                    <div class="input-group dream-date" id="datetimepicker4" data-target-input="nearest">
+                                        <input type="text" class="form-control form-control-sm mr-1" id="toDt"  name="aplyDt" data-inputmask="'alias': 'yyyy-mm-dd'" data-parsley-type="date" required>
+                                        <div class="input-group-append" data-target="#datetimepicker4" data-toggle="datetimepicker">
+                                            <button class="btn btn-outline-secondary btn-sm" type="button"><i class="far fa-calendar-alt"></i></button>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                      </table>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <form name="frmHidden" id="frmHidden">
+        <input type="hidden" id="deptCd" value=""/>
+        <input type="hidden" id="aplyDt" value=""/>
+        <input type="hidden" id="copyDt" value=""/>
+    </form>
+
+</div>
+
+<script type="text/javascript" th:inline="javascript" layout:fragment="script">
+
+$(document).ready(function(){
+    
+    // 달력 초기 설정 
+    _.datepicker.init();
+    
+    var is_mainDeptCd = _.cdrs.storage.deptCd();
+    var date = new Date();
+
+    var toDay    = getFormatDate(date);
+    var preMonth = getLastMonth(date);
+    var fromDay  = getFormatDate(preMonth);
+
+    $('#datetimepicker1').val(fromDay);  
+    $('#datetimepicker2').val(toDay);
+    
+    var headers = [
+        {Text: "상태|순번|삭제|적용기간|현장코드PK"}
+    ],
+    mode = {
+        HeaderCheck: true
+    },
+    columns = [
+        {Type: "Status", SaveName: "rowStatus", Width:0, Align: "center", Hidden: true},
+        {Type: "Seq", SaveName: "rowSeq", Width:60, Align: "center", Hidden: true},
+        {Type: "DelCheck", SaveName: "rowChecked", Width: 0, Align: "left", Hidden: false},
+        {Type: "Date", SaveName: "aplyTerm", Width:200, Align: "center", Hidden: false, Edit: true, EditLen: 8, KeyField: true},
+        {Type: "Text", SaveName: "deptCd", Width:0, Align: "center", Hidden: true, KeyField: true}
+    ];
+    createIBSheet2($("#aplyTermListSheet")[0], "aplyTermListSheet", "100%", "496px");
+    aplyTermListSheet.InitHeaders(headers, mode);
+    aplyTermListSheet.InitColumns(columns);
+    
+    window["aplyTermListSheet_OnClick"] = function (Row, Col, Value, CellX, CellY, CellW, CellH) { 
+
+        if (aplyTermListSheet.GetCellValue(Row, "rowStatus") == "I"){
+            matrialListSheet.RemoveAll();
+            equipmentDmListSheet.RemoveAll();
+            equipmentPcListSheet.RemoveAll();
+            cnstQtyListSheet.RemoveAll();
+            
+            return;
+        }
+        
+        tabId = $('#myTab').find('a.nav-link.active.show').attr('data-sheetid');
+
+        switch (tabId) {
+          case '1'  : 
+              $("#mtil").trigger("click");       
+              break;
+          case '2'  :
+              $("#eqipDm").trigger("click");
+              break;
+          case '3'  :
+              $("#eqipPc").trigger("click");
+              break;
+          case '4'  :
+              $("#cnstQty").trigger("click");
+              break;
+          default :
+              break;
+        } 
+    }
+    
+    
+    window["aplyTermListSheet_OnSearchEnd"] = function (Code, Msg, StCode, StMsg) {
+
+        if (aplyTermListSheet.RowCount() > 0) {
+            for (var i = 1; i <= aplyTermListSheet.RowCount(); i++) {
+                
+                if (aplyTermListSheet.GetCellValue(i, "rowStatus") == "R" ) {
+//                     aplyTermListSheet.SetRowEditable(i, 0);
+                    aplyTermListSheet.SetCellEditable(i, "aplyTerm", 0);
+                }
+            }
+        }
+         
+        
+        if(Code == 0) {
+
+            var tabId = $('#myTab').find('a.nav-link.active.show').attr('data-sheetid');
+            
+            if(tabId != "undefined"){
+                var rowCnt = aplyTermListSheet.RowCount();
+                if(rowCnt > 0){
+                    switch (tabId) {
+                      case '1'  : 
+                          $("#mtil").trigger("click");       
+                          break;
+                      case '2'  :
+                          $("#eqipDm").trigger("click");
+                          break;
+                      case '3'  :
+                          $("#eqipPc").trigger("click");
+                          break;
+                      case '4'  :
+                          $("#cnstQty").trigger("click");
+                          break;
+                      default :
+                          break;
+                    }    
+                }
+            }
+        }    
+    };
+    
+    var $search = $("#search");
+    $search.on("submit", function(e) {
+        e.preventDefault();
+        $.getJSON("/mgmt/dailySetup/gridList", $(this).serialize(), function (data) {
+            aplyTermListSheet.LoadSearchData({"data": data});
+        });
+    });    
+
+    $("#btnOk").click(function(){
+        
+        var dsDeptCd = $('#deptCd').val();
+        var copyDt = $('#fromDt').val();
+        var aplyDt = $('#toDt').val();
+        
+        var dsCopyParams = {
+                // 신규대상
+                targetDayParams: {
+                    deptCd: dsDeptCd,
+                    aplyDt: aplyDt
+                },
+                // 복사대상
+                copyDayParams: {
+                    deptCd: dsDeptCd,
+                    aplyDt: copyDt
+                }
+            };
+        
+        _.dialog.confirm("복사하시겠습니까?", function() {
+            $.post("/mgmt/dailySetup/dailyCopySave", dsCopyParams, function() {
+                //_.dialog.alert("복사되었습니다.");
+                _.cdrs.notify.show("복사","복사되었습니다.");
+                 $('#modal-approval').modal("hide"); //닫기 
+//                 aplyTermListSheet.LoadSaveData(_.ibsheet.success());
+                 $search.trigger("submit");
+            });
+        });
+    });
+    
+    $('#modal-approval').on('show.bs.modal', function() {
+        $('#fromDt').val($('#copyDt').val());
+        $('#toDt').val($('#aplyDt').val());
+    });
+    
+        
+    // TAB 클릭 이벤트 :: ( 주요자재 )
+    $("#mtil").click(function(){
+        var sRow = aplyTermListSheet.GetSelectRow();
+        
+        var param = {
+                deptCd: aplyTermListSheet.GetCellValue(sRow, "deptCd")
+               ,aplyTerm: aplyTermListSheet.GetCellValue(sRow, "aplyTerm")
+            }
+            
+            $.getJSON("/mgmt/dailySetup/gridMtilList", param, function (data) {
+                matrialListSheet.LoadSearchData({"data": data});
+                matrialListSheet.SetFocusAfterProcess(false);
+            });
+    });
+    
+    
+    // TAB 클릭 이벤트 :: ( 직영장비 )
+    $("#eqipDm").click(function(){
+        var sRow = aplyTermListSheet.GetSelectRow();
+        
+        var param = {
+                deptCd: aplyTermListSheet.GetCellValue(sRow, "deptCd")
+               ,aplyTerm: aplyTermListSheet.GetCellValue(sRow, "aplyTerm")
+               ,directOperDivCd: "10"
+            }
+            
+            $.getJSON("/mgmt/dailySetup/gridEqipList", param, function (data) {
+                equipmentDmListSheet.LoadSearchData({"data": data});
+                equipmentDmListSheet.SetFocusAfterProcess(false);
+            });
+    });
+    
+    // TAB 클릭 이벤트 :: ( 지입장비 )
+    $("#eqipPc").click(function(){
+        var sRow = aplyTermListSheet.GetSelectRow();
+        
+        var param = {
+                deptCd: aplyTermListSheet.GetCellValue(sRow, "deptCd")
+               ,aplyTerm: aplyTermListSheet.GetCellValue(sRow, "aplyTerm")
+               ,directOperDivCd: "20"
+            }
+            
+            $.getJSON("/mgmt/dailySetup/gridEqipList", param, function (data) {
+                equipmentPcListSheet.LoadSearchData({"data": data});
+                equipmentPcListSheet.SetFocusAfterProcess(false);
+            });
+    });
+    
+    // TAB 클릭 이벤트 :: ( 공사진행현황 )
+    $("#cnstQty").click(function(){
+        var sRow = aplyTermListSheet.GetSelectRow();
+        
+        var param = {
+                deptCd: aplyTermListSheet.GetCellValue(sRow, "deptCd")
+               ,aplyTerm: aplyTermListSheet.GetCellValue(sRow, "aplyTerm")
+            }
+            
+            $.getJSON("/mgmt/dailySetup/gridCnstQtyList", param, function (data) {
+                cnstQtyListSheet.LoadSearchData({"data": data});
+                cnstQtyListSheet.SetFocusAfterProcess(false);
+            });
+    });
+    
+    
+    //신규 버튼 클릭
+    $("#btnNew").on("click", function() {
+        lRow = aplyTermListSheet.DataInsert(-1);
+        aplyTermListSheet.SelectCell(lRow,"aplyTerm");
+        aplyTermListSheet.SetCellValue(lRow, "deptCd", is_mainDeptCd);
+    });
+
+    //저장 버튼 클릭
+    $("#btnSave").on("click", function() {
+                 
+       var changeCnt = 0;
+       for (var i=1; i<=aplyTermListSheet.RowCount(); i++) {
+           if (aplyTermListSheet.GetCellValue(i,"rowStatus") == "I" 
+            || aplyTermListSheet.GetCellValue(i,"rowStatus") == "U"
+            || aplyTermListSheet.GetCellValue(i,"rowStatus") == "D") {
+               changeCnt++;
+           }
+       }
+       
+       if (changeCnt == 0) {
+           //_.dialog.alert("저장할 항목이 없습니다.");
+           _.cdrs.notify.show("저장","저장할 항목이 없습니다.");
+           return false;
+       }
+       
+       var aplyList = aplyTermListSheet.GetSaveJson();
+       if (!_.cdrs.ibsheetValid(aplyList)) {
+           return false;
+       }
+       
+       var sRow = aplyTermListSheet.GetSelectRow();
+       var dsDeptCd = aplyTermListSheet.GetCellValue(sRow, "deptCd");
+       var aplyTerm = aplyTermListSheet.GetCellValue(sRow, "aplyTerm");
+       
+       var param = $("#search").serializeObject();
+       param.dsMainBsnsSets = aplyTermListSheet.GetSaveJson().data;
+         
+//        alert(JSON.stringify(param));
+//        {"aplyFromDt":"2019-06-17","aplyToDt":"2019-07-17","dsMainBsnsSets":[{}]}
+       _.dialog.confirm("저장하시겠습니까?", function() {
+           $.post("/mgmt/dailySetup/gridSave", param, function() {
+               //_.dialog.alert("저장되었습니다.");
+               _.cdrs.notify.show("저장","저장되었습니다.");
+               aplyTermListSheet.LoadSaveData(_.ibsheet.success());
+               $search.trigger("submit");
+           });
+       });
+    });    
+    
+    $("#btnCopy").on("click", function() {
+        
+        var sRow = aplyTermListSheet.GetSelectRow();
+        var rowStatus = aplyTermListSheet.GetCellValue(sRow, "rowStatus");
+        var dsDeptCd = aplyTermListSheet.GetCellValue(sRow, "deptCd");
+        var copyDt = aplyTermListSheet.GetCellValue(sRow, "aplyTerm");
+        
+        if(sRow == -1 || rowStatus == "I") return false;
+        
+        $('#deptCd').val(dsDeptCd);
+        $('#copyDt').val(copyDt);
+        $('#aplyDt').val(copyDt);
+        
+    });
+    
+    // maeterialSheet 주요자재 
+    var headers = [
+        {Text: "상태|순번|삭제|자재명|규격|단위|정렬순서|자재PK|적용일자|현장코드|OLD자재PK"}
+    ],
+    mode = {
+        HeaderCheck: true
+    },
+    columns = [
+        {Type: "Status", SaveName: "rowStatus", Width:0, Align: "center", Hidden: true},
+        {Type: "Seq", SaveName: "rowSeq", Width:60, Align: "center"},
+        {Type: "DelCheck", SaveName: "rowChecked", Width: 0, Align: "left"},
+        {Type: "PopupEdit", SaveName: "mtilNm", Width: 300, Align: "left", Edit: false, EditLen: 100, KeyField: true},
+        {Type: "Text", SaveName: "spec", Width:200, Align: "left", Edit: false},
+        {Type: "Text", SaveName: "unit", Width:200, Align: "left", Edit: false},
+        {Type: "Int", SaveName: "sortNo", Width:0, Align: "center", Hidden: false, DefaultValue: 0},
+        {Type: "Int", SaveName: "mtilNo", Width:0, Align: "center", Hidden: true, DefaultValue: 0},
+        {Type: "Date", SaveName: "aplyTerm", Width:200, Align: "center", Hidden: true},
+        {Type: "Text", SaveName: "deptCd", Width:0, Align: "center", Hidden: true},
+        {Type: "Int", SaveName: "mtilNoOld", Width:0, Align: "center", Hidden: true, DefaultValue: 0}
+    ];
+    createIBSheet2($("#matrialListSheet")[0], "matrialListSheet", "100%", "412px");
+    matrialListSheet.InitHeaders(headers, mode);
+    matrialListSheet.InitColumns(columns);
+    matrialListSheet.SetEditEnterBehavior("none");
+    matrialListSheet.SetEnterBehavior("edit");
+    //matrialListSheet.SetMergeSheet(5);  //헤더만 merge
+    //matrialListSheet.SetFocusEditMode(1);
+
+    
+    // equipmentDmListSheet 직영장비 
+    var headers = [
+        {Text: "상태|순번|삭제|장비명|규격|단위|정렬순서|장비PK|장비설정|현장코드|적용일자"}
+    ],
+    mode = {
+        HeaderCheck: true
+    },
+    columns = [
+        {Type: "Status", SaveName: "rowStatus", Width:0, Align: "center", Hidden: true},
+        {Type: "Seq", SaveName: "rowSeq", Width:60, Align: "center"},
+        {Type: "DelCheck", SaveName: "rowChecked", Width: 0, Align: "left"},
+        {Type: "PopupEdit", SaveName: "eqipNm", Width: 300, Align: "left", Edit: false, EditLen: 200, KeyField: true},
+        {Type: "Text", SaveName: "spec", Width:200, Align: "left", Edit: false},
+        {Type: "Text", SaveName: "unit", Width:200, Align: "left", Edit: false},
+        {Type: "Int", SaveName: "sortNo", Width:0, Align: "center", Hidden: false, DefaultValue: 0},
+        {Type: "Int", SaveName: "eqipNo", Width:0, Align: "center", Hidden: true, DefaultValue: 0},
+        {Type: "Int", SaveName: "directOperDivCd", Width:0, Align: "center", Hidden: true, DefaultValue: 0},
+        {Type: "Text", SaveName: "deptCd", Width:0, Align: "center", Hidden: true},
+        {Type: "Date", SaveName: "aplyTerm", Width:0, Align: "center", Hidden: true, DefaultValue: 0}
+    ];
+    createIBSheet2($("#equipmentDmListSheet")[0], "equipmentDmListSheet", "100%", "412px");
+    equipmentDmListSheet.InitHeaders(headers, mode);
+    equipmentDmListSheet.InitColumns(columns);
+    equipmentDmListSheet.SetEditEnterBehavior("none");
+    
+    
+
+    // equipmentPcListSheet 지입장비
+    var headers = [
+        {Text: "상태|순번|삭제|장비명|규격|단위|정렬순서|장비PK|장비설정|현장코드|적용일자"}
+    ],
+    mode = {
+        HeaderCheck: true
+    },
+    columns = [
+        {Type: "Status", SaveName: "rowStatus", Width:0, Align: "center", Hidden: true},
+        {Type: "Seq", SaveName: "rowSeq", Width:60, Align: "center"},
+        {Type: "DelCheck", SaveName: "rowChecked", Width: 0, Align: "left"},
+//        {Type: "Text", SaveName: "eqipNm", Width:200, Align: "left", Edit: true, EditLen: 200, KeyField: true},
+        {Type: "PopupEdit", SaveName: "eqipNm", Width: 300, Align: "left", Edit: false, EditLen: 100, KeyField: true},
+        {Type: "Text", SaveName: "spec", Width:200, Align: "left", Edit: false},
+        {Type: "Text", SaveName: "unit", Width:200, Align: "left", Edit: false},
+        {Type: "Int", SaveName: "sortNo", Width:0, Align: "center", Hidden: false, DefaultValue: 0},
+        {Type: "Int", SaveName: "eqipNo", Width:0, Align: "center", Hidden: true, DefaultValue: 0},
+        {Type: "Int", SaveName: "directOperDivCd", Width:0, Align: "center", Hidden: true, DefaultValue: 0},
+        {Type: "Text", SaveName: "deptCd", Width:0, Align: "center", Hidden: true},
+        {Type: "Date", SaveName: "aplyTerm", Width:0, Align: "center", Hidden: true, DefaultValue: 0}
+    ];
+    createIBSheet2($("#equipmentPcListSheet")[0], "equipmentPcListSheet", "100%", "412px");
+    equipmentPcListSheet.InitHeaders(headers, mode);
+    equipmentPcListSheet.InitColumns(columns);
+    equipmentPcListSheet.SetEditEnterBehavior("none");
+    
+    
+    // cnstQtyListSheet 공사진행현황
+    var headers = [
+        {Text: "상태|순번|삭제|Activity|Specification|Unit|정렬순서|공종번호|현장코드|적용일자|물량PK"}
+    ],
+    mode = {
+        HeaderCheck: true
+    },
+    columns = [
+        {Type: "Status", SaveName: "rowStatus", Width:0, Align: "center", Hidden: true},
+        {Type: "Seq", SaveName: "rowSeq", Width:60, Align: "center"},
+        {Type: "DelCheck", SaveName: "rowChecked", Width: 0, Align: "left"},
+//         {Type: "Text", SaveName: "qtyNm", Width:200, Align: "left", Edit: true, EditLen: 200, KeyField: true},
+        {Type: "PopupEdit", SaveName: "qtyNm", Width: 200, Align: "left", Edit: false, EditLen: 100, KeyField: true},
+        {Type: "Text", SaveName: "spec", Width:200, Align: "left", Edit: false},
+        {Type: "Text", SaveName: "unit", Width:200, Align: "left", Edit: false},
+        {Type: "Int", SaveName: "sortNo", Width:0, Align: "center", Hidden: false, DefaultValue: 0},
+        {Type: "Text", SaveName: "deptCd", Width:0, Align: "center", Hidden: true},
+        {Type: "Date", SaveName: "aplyTerm", Width:0, Align: "center", Hidden: true, DefaultValue: 0},
+        {Type: "Int", SaveName: "qtyNo", Width:0, Align: "center", Hidden: true, DefaultValue: 0}
+    ];
+    createIBSheet2($("#cnstQtyListSheet")[0], "cnstQtyListSheet", "100%", "412px");
+    cnstQtyListSheet.InitHeaders(headers, mode);
+    cnstQtyListSheet.InitColumns(columns);
+    cnstQtyListSheet.SetEditEnterBehavior("none");
+
+    
+    //신규 Detail 버튼 클릭
+    $("#btnDetailNew").on("click", function() {
+        var lRow = aplyTermListSheet.GetSelectRow();
+        
+        if(lRow == -1){
+            return false;
+        }
+        
+        if(aplyTermListSheet.GetCellValue(lRow, "rowStatus") == "I"){
+            //_.dialog.alert("적용기간 저장 후에 진행하시기 바랍니다.");
+            _.cdrs.notify.show("입력","적용기간 저장 후에 진행하시기 바랍니다.");
+            return;
+        }
+
+        tabId = $('#myTab').find('a.nav-link.active.show').attr('data-sheetid');
+
+        switch (tabId) {
+          case '1'  : 
+              fnInsert(matrialListSheet);           
+              break;
+          case '2'  :
+              fnInsert(equipmentDmListSheet); 
+              break;
+          case '3'  :
+              fnInsert(equipmentPcListSheet);
+              break;
+          case '4'  :
+              fnInsert(cnstQtyListSheet);
+              break;
+          default :
+              break;
+        }
+
+    });
+
+    //저장 Detail 버튼 클릭
+    $("#btnDetailSave").on("click", function() {
+        
+        tabId = $('#myTab').find('a.nav-link.active.show').attr('data-sheetid');
+
+        switch (tabId) {
+          case '1'  : 
+              fnSave(matrialListSheet, "gridMtilSave");            
+              break;
+          case '2'  :
+              fnSave(equipmentDmListSheet, "gridEqipSave"); 
+              break;
+          case '3'  :
+              fnSave(equipmentPcListSheet, "gridEqipSave"); 
+              break;
+          case '4'  :
+              fnSave(cnstQtyListSheet, "gridCnstQtySave"); 
+              break;
+          default :
+              break;
+        }
+    });
+/*    
+    // 주요자재 :: OnPopupClick Event
+    window["matrialListSheet_OnPopupClick"] = function (Row, Col) {
+        if (matrialListSheet.ColSaveName(Col) == "mtilNm") {
+
+            var argMtilNm = matrialListSheet.GetCellValue(Row,"mtilNm");
+            
+            input = {search: argMtilNm};
+
+            //자재  팝업
+            var modal = _.dialog.modal( _.url.format("/mgmt/dailySetup/mtilListModal/{searchMtilNm}", {searchMtilNm: input.search }), {title: "주요자재", width: "820px", sheetId:matrialListSheet}, function (data) {
+                
+                matrialListSheet.SetCellValue(Row, "mtilNo", data.mtilNo);
+                matrialListSheet.SetCellValue(Row, "mtilNm", data.mtilNm);
+                matrialListSheet.SetCellValue(Row, "spec", data.spec);
+                matrialListSheet.SetCellValue(Row, "unit", data.unit);
+                
+                if (matrialListSheet.ColValueDupRows("mtilNo") != "") {
+                    _.dialog.info("이미 존재하는 자재입니다.");
+                    matrialListSheet.RowDelete( (matrialListSheet.ColValueDupRows("mtilNo")).replace(",", "|")  );
+                }
+            });  
+        }
+    };
+*/    
+/*     // 주요자재 :: OnKeyUp Event
+    window["matrialListSheet_OnKeyUp"] = function (Row, Col, KeyCode, Shift) {
+
+        if(KeyCode==13 && Col==3){
+            
+            var argMtilNm = matrialListSheet.GetCellValue(Row,"mtilNm");
+            
+            input = {search: argMtilNm};
+
+            //자재  팝업
+            _.dialog.modal( _.url.format("/mgmt/dailySetup/mtilListModal/{searchMtilNm}", {searchMtilNm: input.search }), {title: "주요자재", width: "820px", sheetId:matrialListSheet}, function (data) {
+                
+                matrialListSheet.SetCellValue(Row, "mtilNo", data.mtilNo);
+                matrialListSheet.SetCellValue(Row, "mtilNm", data.mtilNm);
+                matrialListSheet.SetCellValue(Row, "spec", data.spec);
+                matrialListSheet.SetCellValue(Row, "unit", data.unit);
+                
+                if (matrialListSheet.ColValueDupRows("mtilNo") != "") {
+                    _.dialog.info("이미 존재하는 자재입니다.");
+                    matrialListSheet.RowDelete( (matrialListSheet.ColValueDupRows("mtilNo")).replace(",", "|")  );
+                }
+            });            
+        }
+        
+        if(KeyCode==13 && Col==6){
+            fnInsert(matrialListSheet,"mtilNm");    
+        }
+    }
+*/
+/*     
+    // 직영장비 :: OnPopupClick Event
+    window["equipmentDmListSheet_OnPopupClick"] = function (Row, Col) {
+        if (equipmentDmListSheet.ColSaveName(Col) == "eqipNm") {
+            var argMtilNm = equipmentDmListSheet.GetCellValue(Row,"eqipNm");
+            
+            input = {search: argMtilNm};
+
+            //자재  팝업
+            var modal = _.dialog.modal( _.url.format("/mgmt/dailySetup/eqipListModal/{searchMtilNm}", {searchEqipNm: input.search }), {title: "주요자재", width: "820px", sheetId:equipmentDmListSheet}, function (data) {
+                
+                equipmentDmListSheet.SetCellValue(Row, "eqipNo", data.eqipNo);
+                equipmentDmListSheet.SetCellValue(Row, "eqipNm", data.eqipNm);
+                equipmentDmListSheet.SetCellValue(Row, "spec", data.spec);
+                equipmentDmListSheet.SetCellValue(Row, "unit", data.unit);
+                
+                if (equipmentDmListSheet.ColValueDupRows("eqipNo") != "") {
+                    _.dialog.info("이미 존재하는 자재입니다.");
+                    equipmentDmListSheet.RowDelete( (equipmentDmListSheet.ColValueDupRows("eqipNo")).replace(",", "|")  );
+                }
+            });  
+        }
+    };
+*/
+/*
+    // 직영장비 :: OnKeyUp Event
+    window["equipmentDmListSheet_OnKeyUp"] = function (Row, Col, KeyCode, Shift) {
+
+        if(KeyCode==13 && Col==3){
+
+            var argMtilNm = equipmentDmListSheet.GetCellValue(Row,"eqipNm");
+            
+            input = {search: argMtilNm};
+
+            //자재  팝업
+            _.dialog.modal( _.url.format("/mgmt/dailySetup/eqipListModal/{searchEqipNm}", {searchEqipNm: input.search }), {title: "장비", width: "820px", sheetId:equipmentDmListSheet}, function (data) {
+                
+                equipmentDmListSheet.SetCellValue(Row, "eqipNo", data.eqipNo);
+                equipmentDmListSheet.SetCellValue(Row, "eqipNm", data.eqipNm);
+                equipmentDmListSheet.SetCellValue(Row, "spec", data.spec);
+                equipmentDmListSheet.SetCellValue(Row, "unit", data.unit);
+                
+                if (equipmentDmListSheet.ColValueDupRows("eqipNo") != "") {
+                    _.dialog.info("이미 존재하는 장비입니다.");
+                    equipmentDmListSheet.RowDelete( (equipmentDmListSheet.ColValueDupRows("eqipNo")).replace(",", "|")  );
+                }
+            });            
+        }
+        
+        if(KeyCode==13 && Col==6){
+            fnInsert(equipmentDmListSheet,"eqipNm");    
+        }
+    }
+*/    
+/*    
+    // 직영장비 :: OnPopupClick Event
+    window["equipmentPcListSheet_OnPopupClick"] = function (Row, Col) {
+        if (equipmentPcListSheet.ColSaveName(Col) == "eqipNm") {
+            var argEqipNm = equipmentPcListSheet.GetCellValue(Row,"eqipNm");
+            
+            input = {search: argEqipNm};
+
+            //장비  팝업
+            _.dialog.modal( _.url.format("/mgmt/dailySetup/eqipListModal/{searchEqipNm}", {searchEqipNm: input.search }), {title: "장비", width: "820px", sheetId:equipmentPcListSheet}, function (data) {
+                
+                equipmentPcListSheet.SetCellValue(Row, "eqipNo", data.eqipNo);
+                equipmentPcListSheet.SetCellValue(Row, "eqipNm", data.eqipNm);
+                equipmentPcListSheet.SetCellValue(Row, "spec", data.spec);
+                equipmentPcListSheet.SetCellValue(Row, "unit", data.unit);
+                
+                if (equipmentPcListSheet.ColValueDupRows("eqipNo") != "") {
+                    _.dialog.info("이미 존재하는 장비입니다.");
+                    equipmentPcListSheet.RowDelete( (equipmentPcListSheet.ColValueDupRows("eqipNo")).replace(",", "|")  );
+                }
+            });   
+        }
+    };
+*/
+/*
+    // 직영장비 :: OnKeyUp Event
+    window["equipmentPcListSheet_OnKeyUp"] = function (Row, Col, KeyCode, Shift) {
+
+        if(KeyCode==13 && Col==3){
+
+            var argEqipNm = equipmentPcListSheet.GetCellValue(Row,"eqipNm");
+            
+            input = {search: argEqipNm};
+
+            //장비  팝업
+            _.dialog.modal( _.url.format("/mgmt/dailySetup/eqipListModal/{searchEqipNm}", {searchEqipNm: input.search }), {title: "장비", width: "820px", sheetId:equipmentPcListSheet}, function (data) {
+                
+                equipmentPcListSheet.SetCellValue(Row, "eqipNo", data.eqipNo);
+                equipmentPcListSheet.SetCellValue(Row, "eqipNm", data.eqipNm);
+                equipmentPcListSheet.SetCellValue(Row, "spec", data.spec);
+                equipmentPcListSheet.SetCellValue(Row, "unit", data.unit);
+                
+                if (equipmentPcListSheet.ColValueDupRows("eqipNo") != "") {
+                    _.dialog.info("이미 존재하는 장비입니다.");
+                    equipmentPcListSheet.RowDelete( (equipmentPcListSheet.ColValueDupRows("eqipNo")).replace(",", "|")  );
+                }
+            });            
+        }
+        
+        if(KeyCode==13 && Col==6){
+            fnInsert(equipmentPcListSheet,"eqipNm");    
+        }
+    }
+*/
+/*    
+    // 공사진행항목 :: OnPopupClick Event
+    window["cnstQtyListSheet_OnPopupClick"] = function (Row, Col) {
+        if (cnstQtyListSheet.ColSaveName(Col) == "qtyNm") {
+            var argQtyNm = cnstQtyListSheet.GetCellValue(Row,"qtyNm");
+            
+            input = {search: argQtyNm};
+
+            //자재  팝업
+            var modal = _.dialog.modal( _.url.format("/mgmt/dailySetup/cnstQtyListModal/{searchCnstQtyNm}", {searchCnstQtyNm: input.search }), {title: "공사진행항목", width: "820px", sheetId:cnstQtyListSheet}, function (data) {
+                
+                cnstQtyListSheet.SetCellValue(Row, "qtyNo", data.qtyNo);
+                cnstQtyListSheet.SetCellValue(Row, "qtyNm", data.qtyNm);
+                cnstQtyListSheet.SetCellValue(Row, "spec", data.spec);
+                cnstQtyListSheet.SetCellValue(Row, "unit", data.unit);
+                
+                if (cnstQtyListSheet.ColValueDupRows("qtyNo") != "") {
+                    _.dialog.info("이미 존재하는 자재입니다.");
+                    cnstQtyListSheet.RowDelete( (cnstQtyListSheet.ColValueDupRows("qtyNo")).replace(",", "|")  );
+                }
+            });  
+        }
+    };
+*/
+/*
+    // 공사진행항목 :: OnKeyUp Event
+    window["cnstQtyListSheet_OnKeyUp"] = function (Row, Col, KeyCode, Shift) {
+
+        if(KeyCode==13 && Col==3){
+
+            var argQtyNm = cnstQtyListSheet.GetCellValue(Row,"qtyNm");
+            
+            input = {search: argQtyNm};
+
+            //자재  팝업
+            var modal = _.dialog.modal( _.url.format("/mgmt/dailySetup/cnstQtyListModal/{searchCnstQtyNm}", {searchCnstQtyNm: input.search }), {title: "공사진행항목", width: "820px", sheetId:cnstQtyListSheet}, function (data) {
+                
+                cnstQtyListSheet.SetCellValue(Row, "qtyNo", data.qtyNo);
+                cnstQtyListSheet.SetCellValue(Row, "qtyNm", data.qtyNm);
+                cnstQtyListSheet.SetCellValue(Row, "spec", data.spec);
+                cnstQtyListSheet.SetCellValue(Row, "unit", data.unit);
+                
+                if (cnstQtyListSheet.ColValueDupRows("qtyNo") != "") {
+                    _.dialog.info("이미 존재하는 공사진행항목 입니다.");
+                    cnstQtyListSheet.RowDelete( (cnstQtyListSheet.ColValueDupRows("qtyNo")).replace(",", "|")  );
+                }
+            });            
+        }
+        
+        if(KeyCode==13 && Col==6){
+            fnInsert(equipmentPcListSheet,"qtyNm");    
+        }
+    }
+*/    
+    
+    /**
+     * fnInsert 저장
+     * @param argSheetObj : sheet 객체
+     */
+    function fnInsert(argSheetObj){
+
+        switch (argSheetObj) {
+          case matrialListSheet  :
+              //자재  팝업
+              var modal = _.dialog.modal("/mgmt/dailySetup/mtilListModal/", {title: "주요자재", width: "820px", autoClose: true, sheetId:matrialListSheet}, function (data) {
+                  setRoleDataMtil(data, modal);
+              });            
+              break;
+          case equipmentDmListSheet  :
+              //직영장비  팝업
+              var modal = _.dialog.modal("/mgmt/dailySetup/eqipListModal/", {title: "직영장비", width: "820px", autoClose: true, sheetId:equipmentDmListSheet}, function (data) {
+                  setRoleDataEquipDm(data, modal);
+              }); 
+              break;
+          case equipmentPcListSheet  :
+              //지입  팝업
+              var modal = _.dialog.modal("/mgmt/dailySetup/eqipListModal/", {title: "지입장비", width: "820px", autoClose: true, sheetId:equipmentPcListSheet}, function (data) {
+                  setRoleDataEquipPc(data, modal);
+              }); 
+              break;
+          case cnstQtyListSheet  :
+              //공사진행현황  팝업
+              var modal = _.dialog.modal("/mgmt/dailySetup/cnstQtyListModal/", {title: "공사진행현황", width: "820px", autoClose: true, sheetId:cnstQtyListSheet}, function (data) {
+                  setRoleDataCnstQty(data, modal);
+              }); 
+              break;
+          default :
+              break;
+        }
+    }
+
+    
+    /**
+    * fnSave 저장
+    * @param argSheetObj : sheet 객체
+    * @param argSection  : url 위치
+    */
+    function fnSave(argSheetObj, argSection){
+        
+        var changeCnt = 0;
+        for (var i=1; i<=argSheetObj.RowCount(); i++) {
+            if (argSheetObj.GetCellValue(i , "rowStatus") == "I" 
+                    || argSheetObj.GetCellValue(i , "rowStatus") == "U"
+                    || argSheetObj.GetCellValue(i,"rowStatus") == "D") {
+                changeCnt++;
+            }
+        }
+        
+        if (changeCnt == 0) {
+            //_.dialog.alert("저장할 항목이 없습니다.");
+            _.cdrs.notify.show("저장","저장할 항목이 없습니다.");
+            return false;
+        }           
+        
+        var chkSheet = argSheetObj.GetSaveJson();
+        if (!_.cdrs.ibsheetValid(chkSheet)) {
+            return false;
+        }
+        
+        var param = $("#search").serializeObject();
+        
+        switch (argSheetObj) {
+        case matrialListSheet  :
+            param.dsMainMtilSets = argSheetObj.GetSaveJson().data;          
+            break;
+        case equipmentDmListSheet  :
+            param.dsMainEqipSets = argSheetObj.GetSaveJson().data;
+            break;
+        case equipmentPcListSheet  :             
+            param.dsMainEqipSets = argSheetObj.GetSaveJson().data;
+            break;
+        case cnstQtyListSheet  :             
+            param.dsMainCnstSets = argSheetObj.GetSaveJson().data;
+            break;
+        default :
+            break;
+        }
+        
+        _.dialog.confirm("저장하시겠습니까?", function() {
+            $.post("/mgmt/dailySetup/"+argSection, param, function() {
+                //_.dialog.alert("저장되었습니다.");
+                _.cdrs.notify.show("저장","저장되었습니다.");
+                argSheetObj.LoadSaveData(_.ibsheet.success());
+                $search.trigger("submit");
+            });
+        });
+    }
+
+    /**
+     *  yyyyMMdd 포맷으로 반환
+    */
+    function getFormatDate(date){
+
+        var year = date.getFullYear();      //yyyy
+        var month = (1 + date.getMonth());  //M
+        var day = date.getDate();           //d
+        
+        month = month >= 10 ? month : '0' + month;  //month 두자리로 저장
+        day = day >= 10 ? day : '0' + day;          //day 두자리로 저장
+        
+        return  year + '' + month + '' + day;
+    }
+
+    /**
+     *  오늘로부터 1개월전 날짜 반환 
+    */
+    function getLastMonth(date) {
+      var monthOfYear = date.getMonth();
+      
+      date.setMonth(monthOfYear - 1);
+      
+      return date;
+    }
+    
+    // 주여자재 중복 체크 , 등록 처리 
+    function setRoleDataMtil(result, modal) {
+        if (result != null) {
+            var r_data = JSON.parse("[" + result + "]");
+
+            var lRow = aplyTermListSheet.GetSelectRow();
+            var aplyTermVal = aplyTermListSheet.GetCellValue(lRow, "aplyTerm");
+            
+            var mtilNmDup = "";
+            var chkNum = 0;
+            for (idx = 0; idx < r_data.length; idx++) {
+                
+                var isPass = true;
+                var _mtilNo = r_data[idx].mtilNo;
+                
+                for (var i = 1; i <= matrialListSheet.RowCount(); i++) {
+                    if (_mtilNo == matrialListSheet.GetCellValue(i, "mtilNo")) {
+
+                        chkNum++;
+                        
+                        if(chkNum == 1){
+                            mtilNmDup += "※ 중복 데이터" + "\n";
+                            mtilNmDup += "자재 명 : " + r_data[idx].mtilNm + ",";
+                        }else{
+                            mtilNmDup += r_data[idx].mtilNm + ",";
+                        }
+                        
+                        isPass = false;
+                    }
+                }
+
+                if (isPass) {
+                    var rowIdx = matrialListSheet.DataInsert(-1);
+                    var sortNoVal   = matrialListSheet.GetCellValue(rowIdx, "rowSeq");
+                    
+                    matrialListSheet.SetCellValue(rowIdx, "mtilNo", r_data[idx].mtilNo);
+                    matrialListSheet.SetCellValue(rowIdx, "mtilNm", r_data[idx].mtilNm);
+                    matrialListSheet.SetCellValue(rowIdx, "spec",   r_data[idx].spec);
+                    matrialListSheet.SetCellValue(rowIdx, "unit",   r_data[idx].unit);
+                                        
+                    matrialListSheet.SetCellValue(rowIdx, "deptCd", is_mainDeptCd);
+                    matrialListSheet.SetCellValue(rowIdx, "aplyTerm", aplyTermVal);
+                    matrialListSheet.SetCellValue(rowIdx, "sortNo", sortNoVal);
+                    
+                    modal.modal("hide");
+                }
+            }
+            
+            if(chkNum > 0){
+                mtilNmDup = mtilNmDup.slice(0,-1);
+               _.dialog.error(mtilNmDup + "\n\n" + "※ 위 데이터는 중복되어 추가할 수 없습니다.");
+            }
+        }
+    }
+
+    // 직영장비 중복 체크 , 등록 처리 
+    function setRoleDataEquipDm(result, modal) {
+        if (result != null) {
+            var r_data = JSON.parse("[" + result + "]");
+           
+            var lRow = aplyTermListSheet.GetSelectRow();
+            var aplyTermVal = aplyTermListSheet.GetCellValue(lRow, "aplyTerm");
+            
+            var eqipNmDup = "";
+            var chkNum = 0;
+            
+            for (idx = 0; idx < r_data.length; idx++) {
+                
+                var isPass = true;
+                var _eqipNo = r_data[idx].eqipNo;
+                
+                for (var i = 1; i <= equipmentDmListSheet.RowCount(); i++) {
+                    if (_eqipNo == equipmentDmListSheet.GetCellValue(i, "eqipNo")) {
+
+                        chkNum++;
+                        
+                        if(chkNum == 1){
+                            eqipNmDup += "※ 중복 데이터" + "\n";
+                            eqipNmDup += "직영장비 명 : " + r_data[idx].eqipNm + ",";
+                        }else{
+                            eqipNmDup += r_data[idx].eqipNm + ",";
+                        }
+                        
+                        isPass = false;
+                    }
+                }
+
+                if (isPass) {
+                    var rowIdx = equipmentDmListSheet.DataInsert(-1);
+                    var sortNoVal   = equipmentDmListSheet.GetCellValue(rowIdx, "rowSeq");
+                    
+                    equipmentDmListSheet.SetCellValue(rowIdx, "eqipNo", r_data[idx].eqipNo);
+                    equipmentDmListSheet.SetCellValue(rowIdx, "eqipNm", r_data[idx].eqipNm);
+                    equipmentDmListSheet.SetCellValue(rowIdx, "spec",   r_data[idx].spec);
+                    equipmentDmListSheet.SetCellValue(rowIdx, "unit",   r_data[idx].unit);
+                    
+                    equipmentDmListSheet.SetCellValue(rowIdx, "deptCd", is_mainDeptCd);
+                    equipmentDmListSheet.SetCellValue(rowIdx, "aplyTerm", aplyTermVal);
+                    equipmentDmListSheet.SetCellValue(rowIdx, "sortNo", sortNoVal);
+                    equipmentDmListSheet.SetCellValue(lRow, "directOperDivCd", "10");
+                    
+                    modal.modal("hide");
+                }
+            }
+            
+            if(chkNum > 0){
+                eqipNmDup = eqipNmDup.slice(0,-1);
+               _.dialog.error(eqipNmDup + "\n\n" + "※ 위 데이터는 중복되어 추가할 수 없습니다.");
+            }
+        }
+    }
+    
+    // 지입장비 중복 체크 , 등록 처리 
+    function setRoleDataEquipPc(result, modal) {
+        if (result != null) {
+            var r_data = JSON.parse("[" + result + "]");
+
+            var lRow = aplyTermListSheet.GetSelectRow();
+            var aplyTermVal = aplyTermListSheet.GetCellValue(lRow, "aplyTerm");
+            
+            var eqipNmDup = "";
+            var chkNum = 0;
+            
+            for (idx = 0; idx < r_data.length; idx++) {
+                
+                var isPass = true;
+                var _eqipNo = r_data[idx].eqipNo;
+                
+                for (var i = 1; i <= equipmentPcListSheet.RowCount(); i++) {
+                    if (_eqipNo == equipmentPcListSheet.GetCellValue(i, "eqipNo")) {
+
+                        chkNum++;
+                        
+                        if(chkNum == 1){
+                            eqipNmDup += "※ 중복 데이터" + "\n";
+                            eqipNmDup += "지입장비 명 : " + r_data[idx].eqipNm + ",";
+                        }else{
+                            eqipNmDup += r_data[idx].eqipNm + ",";
+                        }
+                        
+                        isPass = false;
+                    }
+                }
+
+                if (isPass) {
+                    var rowIdx = equipmentPcListSheet.DataInsert(-1);
+                    var sortNoVal   = equipmentPcListSheet.GetCellValue(rowIdx, "rowSeq");
+                    
+                    equipmentPcListSheet.SetCellValue(rowIdx, "eqipNo", r_data[idx].eqipNo);
+                    equipmentPcListSheet.SetCellValue(rowIdx, "eqipNm", r_data[idx].eqipNm);
+                    equipmentPcListSheet.SetCellValue(rowIdx, "spec",   r_data[idx].spec);
+                    equipmentPcListSheet.SetCellValue(rowIdx, "unit",   r_data[idx].unit);
+                    
+                    equipmentPcListSheet.SetCellValue(rowIdx, "deptCd", is_mainDeptCd);
+                    equipmentPcListSheet.SetCellValue(rowIdx, "aplyTerm", aplyTermVal);
+                    equipmentPcListSheet.SetCellValue(rowIdx, "sortNo", sortNoVal);
+                    equipmentPcListSheet.SetCellValue(lRow, "directOperDivCd", "20");
+                                        
+                    modal.modal("hide");
+                }
+            }
+            
+            if(chkNum > 0){
+                eqipNmDup = eqipNmDup.slice(0,-1);
+               _.dialog.error(eqipNmDup + "\n\n" + "※ 위 데이터는 중복되어 추가할 수 없습니다.");
+            }
+        }
+    }
+    
+    // 공사진행현황 중복 체크 , 등록 처리 
+    function setRoleDataCnstQty(result, modal) {
+        if (result != null) {
+            var r_data = JSON.parse("[" + result + "]");
+            
+            var lRow = aplyTermListSheet.GetSelectRow();
+            var aplyTermVal = aplyTermListSheet.GetCellValue(lRow, "aplyTerm");
+            
+            var cnstQtyNmDup = "";
+            var chkNum = 0;
+            
+            for (idx = 0; idx < r_data.length; idx++) {
+                
+                var isPass = true;
+                var _qtyNo = r_data[idx].qtyNo;
+                
+                for (var i = 1; i <= cnstQtyListSheet.RowCount(); i++) {
+                    if (_qtyNo == cnstQtyListSheet.GetCellValue(i, "qtyNo")) {
+
+                        chkNum++;
+                        
+                        if(chkNum == 1){
+                            cnstQtyNmDup += "※ 중복 데이터" + "\n";
+                            cnstQtyNmDup += "Activity 명 : " + r_data[idx].qtyNm + ",";
+                        }else{
+                            cnstQtyNmDup += r_data[idx].qtyNm + ",";
+                        }
+                        
+                        isPass = false;
+                    }
+                }
+
+                if (isPass) {
+                    var rowIdx = cnstQtyListSheet.DataInsert(-1);
+                    var sortNoVal   = cnstQtyListSheet.GetCellValue(rowIdx, "rowSeq");
+                    
+                    cnstQtyListSheet.SetCellValue(rowIdx, "qtyNo", r_data[idx].qtyNo);
+                    cnstQtyListSheet.SetCellValue(rowIdx, "qtyNm", r_data[idx].qtyNm);
+                    cnstQtyListSheet.SetCellValue(rowIdx, "spec",   r_data[idx].spec);
+                    cnstQtyListSheet.SetCellValue(rowIdx, "unit",   r_data[idx].unit);
+
+                    cnstQtyListSheet.SetCellValue(rowIdx, "deptCd", is_mainDeptCd);
+                    cnstQtyListSheet.SetCellValue(rowIdx, "aplyTerm", aplyTermVal);
+                    cnstQtyListSheet.SetCellValue(rowIdx, "sortNo", sortNoVal);   
+                    
+                    modal.modal("hide");
+                }
+            }
+            
+            if(chkNum > 0){
+                cnstQtyNmDup = cnstQtyNmDup.slice(0,-1);
+               _.dialog.error(cnstQtyNmDup + "\n\n" + "※ 위 데이터는 중복되어 추가할 수 없습니다.");
+            }
+        }
+    }
+    
+});
+
+</script>
+
+</body>
+</html>   

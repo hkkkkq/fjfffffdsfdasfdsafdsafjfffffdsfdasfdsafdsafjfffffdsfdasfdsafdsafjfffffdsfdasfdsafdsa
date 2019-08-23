@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.henc.cdrs.daily.repository.DdBrfgChgMtrMapper">
+
+	<select id="get">
+		SELECT chg_no         --변경 번호
+			 , chg_seq        --변경 순번
+			 , sta_cd         --상태 코드
+			 , updt_dm        --수정 일시
+			 , updt_id        --수정자 id
+			 , wrtr_dm        --작성 일시
+			 , wrtr_id        --작성자 id
+		FROM dd_brfg_chg_mtr
+		WHERE chg_no = #{chgNo}
+		AND chg_seq = #{chgSeq}
+	</select>
+
+	<select id="maxChgNo" resultType="int">
+		select nvl(max(CHG_NO),0) + 1 FROM DD_BRFG_CHG_MTR
+	</select>
+
+	<select id="getChanged" parameterType="java.lang.Integer" resultType="ddBrfgChgMtr">
+		SELECT chg_no, chg_seq, sta_cd
+		FROM dd_brfg_chg_mtr
+		WHERE chg_no = #{chgNo}
+		ORDER BY chg_seq asc
+	</select>
+
+	<insert id="insert" parameterType="ddBrfgChgMtr">
+		INSERT INTO DD_BRFG_CHG_MTR ( CHG_NO
+                            , CHG_SEQ
+                            , STA_CD
+                            , UPDT_DM
+                            , UPDT_ID
+                            , WRTR_DM
+                            , WRTR_ID
+                            )
+		VALUES ( #{chgNo}
+			   , #{chgSeq}
+			   , #{staCd}
+			   , sysdate
+			   , #{loginId}
+			   , sysdate
+			   , #{loginId}
+			   )
+	</insert>
+
+	<update id="update" parameterType="ddBrfgChgMtr">
+		UPDATE DD_BRFG_CHG_MTR
+		SET STA_CD         = #{staCd},
+			UPDT_DM        = sysdate,
+			UPDT_ID        = #{loginId}
+		WHERE chg_no = #{chgNo}
+		  AND chg_seq = #{chgSeq}
+	</update>
+
+	<delete id="delete">
+		DELETE FROM DD_BRFG_CHG_MTR
+		WHERE chg_no = #{chgNo}
+		  AND chg_seq = #{chgSeq}
+	</delete>
+
+	<delete id="deleteChanged" parameterType="searchDailyParams">
+		DELETE FROM DD_BRFG_CHG_MTR
+		WHERE chg_no = #{chgNo}
+	</delete>
+</mapper>

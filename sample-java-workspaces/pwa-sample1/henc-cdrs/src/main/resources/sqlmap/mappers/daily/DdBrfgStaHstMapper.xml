@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.henc.cdrs.daily.repository.DdBrfgStaHstMapper">
+
+	<insert id="insert" parameterType="ddBrfgStaHst">
+		<selectKey keyProperty="seq" resultType="int" order="BEFORE">
+			select DD_BRFG_STA_HST_S.NEXTVAL FROM dual
+		</selectKey>
+
+		INSERT INTO DD_BRFG_STA_HST (DEPT_CD, DAY, ORDR_NO, SEQ, BF_STA_CD, CHG_STA_CD, BF_UPDT_ID, CHG_UPDT_ID, CHG_UPDT_NAME,
+                             CHG_RSN, UPDT_DM, UPDT_ID, WRTR_DM, WRTR_ID)
+		VALUES (#{deptCd}, #{day}, #{ordrNo}, #{seq}, #{bfStaCd}, #{chgStaCd}, #{bfUpdtId}, #{chgUpdtId}, #{chgUpdtName},
+				#{chgRsn}, sysdate, #{loginId}, sysdate, #{loginId})
+	</insert>
+
+	<select id="top" resultType="ddBrfgStaHst" parameterType="ddBrfg">
+		SELECT *
+		FROM (SELECT seq,
+					 bf_sta_cd,
+					 chg_sta_cd,
+					 bf_updt_id,
+					 chg_updt_id,
+					 chg_updt_name,
+					 chg_rsn,
+					 dept_cd,
+					 day,
+					 ordr_no
+			  FROM dd_brfg_sta_hst
+			  WHERE dept_cd = #{deptCd}
+				AND day = #{day}
+				AND ordr_no = #{ordrNo}
+			  ORDER BY seq DESC)
+		WHERE ROWNUM = 1
+	</select>
+
+	<delete id="deleteChanged" parameterType="ddBrfg">
+		DELETE FROM dd_brfg_sta_hst
+		WHERE DEPT_CD = #{deptCd}
+		  AND DAY = #{day}
+		  AND ORDR_NO = #{ordrNo}
+	</delete>
+
+</mapper>

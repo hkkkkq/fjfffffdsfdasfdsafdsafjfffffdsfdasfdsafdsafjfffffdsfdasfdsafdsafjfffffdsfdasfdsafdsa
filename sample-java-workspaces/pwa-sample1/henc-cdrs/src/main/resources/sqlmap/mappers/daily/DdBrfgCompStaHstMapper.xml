@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.henc.cdrs.daily.repository.DdBrfgCompStaHstMapper">
+
+	<select id="get">
+		SELECT seq         --seq
+			 , bf_sta_cd   --이전 상태 코드
+			 , chg_sta_cd  --변경 상태 코드
+			 , bf_updt_id  --이전 수정자 id
+			 , chg_updt_id --변경 수정자 id
+			 , chg_updt_name
+			 , chg_rsn     --변경 사유
+			 , partner_no  --협력사 번호
+			 , updt_dm     --수정 일시
+			 , updt_id     --수정자 id
+			 , wrtr_dm     --작성 일시
+			 , wrtr_id     --작성자 id
+			 , ctrc_no   --공종 번호
+			 , FN_GET_CSTKND_NM(CTRC_NO) as cstknd_nm
+			 , dept_cd     --현장 코드
+			 , day         --일자
+			 , ordr_no     --차수 번호
+		FROM dd_brfg_comp_sta_hst
+		WHERE dept_cd = #{deptCd}
+		AND day = #{day}
+		AND ordr_no = #{ordrNo}
+		AND partner_no = #{partnerNo}
+		AND ctrc_no = #{ctrcNo}
+		AND seq = #{seq}
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO DD_BRFG_COMP_STA_HST ( SEQ
+                                 , BF_STA_CD
+                                 , CHG_STA_CD
+                                 , BF_UPDT_ID
+                                 , CHG_UPDT_ID
+                                 , CHG_UPDT_NAME
+                                 , CHG_RSN
+                                 , PARTNER_NO
+                                 , UPDT_DM
+                                 , UPDT_ID
+                                 , WRTR_DM
+                                 , WRTR_ID
+                                 , CTRC_NO
+                                 , DEPT_CD
+                                 , DAY
+                                 , ORDR_NO)
+		VALUES ( #{seq}
+			   , #{bfStaCd}
+			   , #{chgStaCd}
+			   , #{bfUpdtId}
+			   , #{chgUpdtId}
+			   , #{chgUpdtName}
+			   , #{chgRsn}
+			   , #{partnerNo}
+			   , sysdate
+			   , #{loginId}
+			   , sysdate
+			   , #{loginId}
+			   , #{ctrcNo}
+			   , #{deptCd}
+			   , #{day}
+			   , #{ordrNo})
+	</insert>
+
+	<update id="update">
+		UPDATE DD_BRFG_COMP_STA_HST
+		SET BF_STA_CD   = #{bfStaCd},
+			CHG_STA_CD  = #{chgStaCd},
+			BF_UPDT_ID  = #{bfUpdtId},
+			CHG_UPDT_ID = #{chgUpdtId},
+			CHG_UPDT_NAME = #{chgUpdtName},
+			CHG_RSN     = #{chgRsn},
+			PARTNER_NO  = #{partnerNo},
+			UPDT_DM     = sysdate,
+			UPDT_ID     = #{loginId}
+		WHERE CTRC_NO = #{ctrcNo}
+		  AND DEPT_CD = #{deptCd}
+		  AND DAY = #{day}
+		  AND ORDR_NO = #{ordrNo}
+		  AND SEQ = #{seq}
+	</update>
+
+	<delete id="delete">
+		DELETE FROM DD_BRFG_COMP_STA_HST
+		WHERE CTRC_NO = #{ctrcNo}
+		  AND DEPT_CD = #{deptCd}
+		  AND DAY = #{day}
+		  AND ORDR_NO = #{ordrNo}
+		  AND SEQ = #{seq}
+	</delete>
+
+	<select id="top" resultType="ddBrfgCompStaHst" parameterType="ddBrfgComp">
+		SELECT *
+		FROM (SELECT seq,
+					 bf_sta_cd,
+					 chg_sta_cd,
+					 bf_updt_id,
+					 chg_updt_id,
+					 chg_updt_name,
+					 chg_rsn,
+					 partner_no,
+					 ctrc_no,
+					 dept_cd,
+					 day,
+					 ordr_no
+			  FROM dd_brfg_comp_sta_hst
+			  WHERE dept_cd = #{deptCd}
+				AND day = #{day}
+				AND ordr_no = #{ordrNo}
+				AND partner_no = #{partnerNo}
+				AND ctrc_no = #{ctrcNo}
+			  ORDER BY seq DESC)
+		WHERE ROWNUM = 1
+	</select>
+
+	<select id="latestSubmitter" resultType="ddBrfgCompStaHst" parameterType="ddBrfgComp">
+		SELECT *
+		FROM (SELECT seq,
+					 bf_sta_cd,
+					 chg_sta_cd,
+					 bf_updt_id,
+					 chg_updt_id,
+					 chg_updt_name,
+					 chg_rsn,
+					 partner_no,
+					 ctrc_no,
+					 dept_cd,
+					 day,
+					 ordr_no
+			  FROM dd_brfg_comp_sta_hst
+			  WHERE dept_cd = #{deptCd}
+				AND day = #{day}
+				AND ordr_no = #{ordrNo}
+				AND partner_no = #{partnerNo}
+				AND ctrc_no = #{ctrcNo}
+				AND chg_sta_cd = '20'
+			  ORDER BY seq DESC)
+		WHERE ROWNUM = 1
+	</select>
+
+	<select id="getListInChange" resultType="ddBrfgCompStaHst" parameterType="ddBrfg">
+		SELECT dept_cd,
+			   day,
+			   ordr_no,
+			   partner_no,
+			   ctrc_no,
+			   seq,
+			   bf_sta_cd,
+			   chg_sta_cd,
+			   bf_updt_id,
+			   chg_updt_id,
+			   chg_updt_name,
+			   chg_rsn
+		FROM dd_brfg_comp_sta_hst
+		WHERE dept_cd = #{deptCd}
+		  AND day = #{day}
+		  AND ordr_no = #{ordrNo}
+		ORDER BY dept_cd, day, ordr_no, partner_no, ctrc_no, seq
+	</select>
+
+	<delete id="deleteChanged" parameterType="ddBrfg">
+		DELETE FROM dd_brfg_comp_sta_hst
+		WHERE DEPT_CD = #{deptCd}
+		  AND DAY = #{day}
+		  AND ORDR_NO = #{ordrNo}
+	</delete>
+
+	<select id="getChangedHistories" resultType="ddBrfgCompStaHst" parameterType="searchDailyParams">
+		SELECT dept_cd,
+			   day,
+			   ordr_no,
+			   partner_no,
+			   ctrc_no,
+			   seq,
+			   bf_sta_cd,
+			   chg_sta_cd,
+			   bf_updt_id,
+			   chg_updt_id,
+			   chg_updt_name,
+			   chg_rsn,
+			   to_char(wrtr_dm, 'YYYY-MM-DD HH:MI:SS') as wrtr_dm
+		FROM dd_brfg_comp_sta_hst
+		WHERE dept_cd = #{deptCd}
+		  AND day = #{day}
+		  AND ordr_no = #{ordrNo}
+		  AND partner_no = #{partnerNo}
+		  AND ctrc_no = #{ctrcNo}
+		ORDER BY dept_cd, day, ordr_no, partner_no, ctrc_no, seq desc
+	</select>
+
+</mapper>

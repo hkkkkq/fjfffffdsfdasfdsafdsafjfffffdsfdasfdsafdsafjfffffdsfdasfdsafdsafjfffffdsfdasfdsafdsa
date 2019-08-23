@@ -1,0 +1,108 @@
+spring:
+  profiles:
+    active: local
+  jackson:
+    time-zone: Asia/Seoul
+  messages:
+    basename: i18n/message
+  devtools:
+    livereload:
+      enabled: true
+
+mybatis:
+  mapper-locations: classpath*:sqlmap/mappers/**/*.xml  
+  type-aliases-package: com.henc.cdrs
+  type-handlers-package: com.henc.cdrs.common.mybatis.type
+
+henc:
+  security:
+    jwt:
+      tokenExpirationTime: 15
+      refreshTokenExpTime: 150
+      tokenIssuer: https://test.sdcit.co.kr
+      tokenSigningKey: xm8aV1cY0DRAC2SEJUN1WqMsS
+
+
+  cdrs:
+    callback-tel-no: 1588-1112
+    report-url: http://localhost:8089/pdfResult
+
+  exchange:
+    sender:
+      id: no-reply@hanwha.com
+      password: m4790m4790
+      url: autodiscover.hanwha.com
+
+dream:
+  multi-datasource:
+    base-packages: com.henc.cdrs
+    default-datasource-name: cdrs
+    datasources:
+      cdrs:
+        driver-class-name: oracle.jdbc.driver.OracleDriver
+#        url: jdbc:oracle:thin:@sdcittest.cixjmisye4xs.ap-northeast-2.rds.amazonaws.com:1532:ORCLTEST
+#        username: sdcit
+#        password: sdcitap911
+        url: jdbc:oracle:thin:@172.17.211.217:1598:HECINT5
+        username: ZBPMIS
+        password: 2019!pmis
+  log4jdbc:
+    enabled: true
+#server:
+#  ssl:
+#    enabled: true
+#    key-store: /home/ec2-user/cdrs/ssl/test_sdcit_co_kr.pfx
+#    key-store-password: 57836
+#    key-store-type: PKCS12
+#    protocol: TLS
+#  port: 443
+#server:
+#  ssl:
+#    enabled: true
+#    key-store: /Users/sdcit_mac/PROJECT/PWA/workspace/pwa-weather/src/main/resources/i-zeda_com.pfx
+#    key-store-password: 75006
+#    key-store-type: PKCS12
+#    protocol: TLS
+#  port: 443
+
+
+---
+spring:
+  profiles: staging
+dream:
+  multi-datasource:
+    base-packages: com.henc.cdrs
+    default-datasource-name: cdrs
+    datasources:
+      cdrs:
+        driver-class-name: oracle.jdbc.driver.OracleDriver
+        url: jdbc:oracle:thin:@sdcittest.cixjmisye4xs.ap-northeast-2.rds.amazonaws.com:1532:ORCLTEST
+        username: sdcit
+        password: sdcitap911
+        #        url: jdbc:oracle:thin:@172.17.211.217:1598:HECINT5
+        #        url: jdbc:oracle:thin:@172.17.211.211:1571:HECPROD #운영
+#        username: ZBPMIS
+#        password: 2019!pmis
+server:
+  ssl:
+    enabled: true
+    key-store: /home/ec2-user/cdrs/ssl/test_sdcit_co_kr.pfx
+    key-store-password: 57836
+    key-store-type: PKCS12
+    protocol: TLS
+#  port: 443
+---
+spring:
+  profiles: prodution
+dream:
+  multi-datasource:
+    base-packages: com.henc.cdrs
+    default-datasource-name: cdrs
+    datasources:
+      cdrs:
+        driver-class-name: oracle.jdbc.driver.OracleDriver
+        url: jdbc:oracle:thin:@172.17.211.217:1598:HECINT5
+        username: ZBPMIS
+        password: 2019!pmis
+#      cdrs:
+#        jndi-name: cdrs_ds

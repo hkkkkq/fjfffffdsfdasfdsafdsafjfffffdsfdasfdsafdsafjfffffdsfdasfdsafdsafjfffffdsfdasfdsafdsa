@@ -1,0 +1,244 @@
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layouts/layout">
+<head></head>
+<body>
+
+<div layout:fragment="contents">
+
+    <section class="top-area">
+        <nav aria-label="breadcrumb" class="float-left">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">관리</a></li>
+                <li class="breadcrumb-item active" aria-current="page">공사진행항목관리</li>
+            </ol>
+        </nav>
+        <div class="btn-area float-right">
+        </div>
+    </section>
+
+    <section id="search-area" class="mb-3">
+        <form id="search">
+                <div class="border">
+                    <div class="form-row">
+                        <div>
+                            <label for="qtyNm">Item 명/규격</label>       
+                            <input type="text" class="form-control form-control-sm" id="qtyNm" name="qtyNm"/>     
+                        </div>
+                        <div>
+                            <label for="">사용여부</label>
+                            <div class="input-group">
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="useYn" id="useYnAll" value="" checked="checked">
+                                    <label class="form-check-label" for="useYnAll">전체</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="useYn" id="useYnY" value="Y">
+                                    <label class="form-check-label" for="useYnY">예</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="useYn" id="useYnN" value="N">
+                                    <label class="form-check-label" for="useYnN">아니오</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="btn-area">
+                      <button class="btn btn-secondary btn-sm" type="submit" id="btnSearch">조회</button>               
+                    </div>
+                </div>
+        </form>
+    </section>
+    
+    <section id="grid-area" class="mb-3">
+        <div class="d-flex justify-content-between pb-2 grid-title">
+            <h2>◎  공사진행항목관리</h2>
+            <div class="btn-area">
+                <button type="button" class="btn btn-outline-secondary btn-sm" id="btnNew">신규</button>
+                <button type="button" class="btn btn-outline-secondary btn-sm" id="btnSave">저장</button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="vertical-full1" id="progressListSheet"></div>
+            </div>
+        </div>
+    </section>
+    
+</div>
+
+<script type="text/javascript" th:inline="javascript" layout:fragment="script">
+    $(document).ready(function(){
+        
+        resizeContent();
+        
+        var headers = [
+            {Text: "상태|순번|삭제|현장코드|Activity|Specification|Unit|사용여부|물량PK"}
+        ],
+        mode = {
+            HeaderCheck: true
+        },
+        columns = [
+            {Type: "Status", SaveName: "rowStatus", Width:0, Align: "center", Hidden: true},
+            {Type: "Seq", SaveName: "rowSeq", Width:60, Align: "center"},
+            {Type: "DelCheck", SaveName: "rowChecked", Width: 0, Align: "left"},
+            {Type: "Text", SaveName: "deptCd", Width:200, Align: "left", Hidden: true, Edit: true, EditLen: 200, KeyField: true},
+            {Type: "Text", SaveName: "qtyNm", Width:200, Align: "left", Edit: true, EditLen: 75, KeyField: true},
+            {Type: "Text", SaveName: "spec", Width:200, Align: "left", Edit: true, EditLen: 100, KeyField: true},
+            {Type: "Text", SaveName: "unit", Width:200, Align: "left", Edit: true, EditLen: 10, KeyField: true},
+            {Type: "CheckBox", SaveName: "useYn", Width:80, Align: "center", Edit: true, TrueValue: 'Y', FalseValue: 'N', DefaultValue: 'N'},
+            {Type: "Int", SaveName: "qtyNo", Width:0, Align: "center", Hidden: true, DefaultValue: 0}
+        ];
+        createIBSheet2($("#progressListSheet")[0], "progressListSheet", "100%", "496px");
+        progressListSheet.InitHeaders(headers, mode);
+        progressListSheet.InitColumns(columns);
+        
+        var $search = $("#search");
+        $search.on("submit", function(e) {
+            e.preventDefault();
+            $.getJSON("/mgmt/progress/gridList", $(this).serialize(), function (data) {
+                progressListSheet.LoadSearchData({"data": data});
+            });
+        });
+        
+         
+        //테스트 버튼 클릭
+        $("#btnTest").on("click", function() { 
+  //          var dRow = materialListSheet.FindStatusRow("U");
+  //          var arrow = dRow.split(";");
+  
+  //          alert(arrow);
+        });
+     
+   
+        //신규 버튼 클릭
+        $("#btnNew").on("click", function() {
+            var mainDeptCd = _.cdrs.storage.deptCd();
+            
+            lRow = progressListSheet.DataInsert(-1);
+            progressListSheet.SelectCell(lRow,"qtyNm");
+            progressListSheet.SetCellValue(lRow, "deptCd", mainDeptCd);
+            
+        });
+   
+        //저장 버튼 클릭
+        $("#btnSave").on("click", function() {
+                     
+           var changeCnt = 0;
+           for (var i=1; i<=progressListSheet.RowCount(); i++) {
+               if (progressListSheet.GetCellValue(i,"rowStatus") == "I" 
+                || progressListSheet.GetCellValue(i,"rowStatus") == "U"
+                || progressListSheet.GetCellValue(i,"rowStatus") == "D") {
+                   changeCnt++;
+               }
+           }
+           
+           if (changeCnt == 0) {
+               //_.dialog.alert("저장할 항목이 없습니다.");
+               _.cdrs.notify.show("저장","저장할 항목이 없습니다.");
+               return false;
+           }
+           
+           var progList = progressListSheet.GetSaveJson();
+           if (!_.cdrs.ibsheetValid(progList)) {
+               return false;
+           }
+           
+           /**
+            * IBSheet 그리드 중복값 체크
+            * @param argSheetObj : sheet 객체
+            * @param argSection : 중복 체크 컬럼 값 ( '|' 구분으로 복수 체크 가능 )
+            * @param argRowStartNo : 시작 row 번호
+            * @returns {boolean}
+            */
+            var colNm = "qtyNm|spec|unit";
+            if(fncSheetRowDupCheck(progressListSheet, colNm, 1) == false){
+                return false;
+            }
+  
+           
+           var param = $("#search").serializeObject();
+           param.progresses = progressListSheet.GetSaveJson().data;
+           
+           _.dialog.confirm("저장하시겠습니까?", function() {
+               $.post("/mgmt/progress/gridSave", param, function() {
+                   //_.dialog.alert("저장되었습니다.");
+                   _.cdrs.notify.show("저장","저장할 항목이 없습니다.");
+                   progressListSheet.LoadSaveData(_.ibsheet.success());
+                   $search.trigger("submit");
+               });
+           });
+        });
+        
+        /**
+         * IBSheet 그리드 중복값 체크
+         * @param argSheetObj : sheet 객체
+         * @param argSection : 중복 체크 컬럼 값 ( '|' 구분으로 복수 체크 가능 )
+         * @param argRowStartNo : 시작 row 번호
+         * @returns {boolean}
+         */
+         function fncSheetRowDupCheck (argSheetObj, argSection, argRowStartNo){
+  
+            var chk = 0;
+            var rowCount = argSheetObj.RowCount();
+            var varSectionVal = String(argSection).split('|');
+  
+            if(rowCount > 0){
+                for(var i = 0; i < rowCount; i++){
+                    for(var j = 0; j < rowCount; j++){
+                        if(i != j){
+                            var varBaseStatus = argSheetObj.GetCellValue(i+argRowStartNo, 'rowStatus');
+                            var varTarStatus  = argSheetObj.GetCellValue(j+argRowStartNo, 'rowStatus');
+                            var varBaseVal = '';
+                            var varTarVal = '';
+                            
+                            for(var z = 0; z < varSectionVal.length; z++){
+                                
+                                if(z == 0){
+                                    varBaseNm = argSheetObj.GetCellValue(i+argRowStartNo, varSectionVal[z]);    
+                                }
+                                
+                                varBaseVal += argSheetObj.GetCellValue(i+argRowStartNo, varSectionVal[z]);
+                                varTarVal += argSheetObj.GetCellValue(j+argRowStartNo, varSectionVal[z]);
+                            }
+                            
+                            if(varBaseVal == ""){
+                                continue;
+                            }
+                            
+                            // 앞,뒤,중간 공백 제거 & 대문자 변환 후 비교 처리
+                            varBaseVal = varBaseVal.replace(/(\s*)/g, "").toUpperCase();
+                            varTarVal  = varTarVal.replace(/(\s*)/g, "").toUpperCase();
+                            
+                            if(varBaseStatus != 'D' && varTarStatus != 'D' && varBaseVal == varTarVal){
+                                var bRow = i+argRowStartNo;
+                                var sRow = j+argRowStartNo;
+                                
+                                _.dialog.error("※ 중복값이 존재합니다.\n\n행번호 : " + bRow + "행\n명칭 : " + varBaseNm );
+                                argSheetObj.SetSelectRow(sRow);
+                                
+                                return false;
+                            }
+                        }
+                    }
+                }
+            }
+            return true;
+        }
+        
+        // Sheet 상태값 체크
+        function fnStatusCheck(argSheetObj){
+            var changeCnt = 0;
+            for (var i=1; i<=argSheetObj.RowCount(); i++) {
+                if (argSheetObj.GetCellValue(i , "rowStatus") == "I" 
+                 || argSheetObj.GetCellValue(i , "rowStatus") == "U"
+                 || argSheetObj.GetCellValue(i , "rowStatus") == "D") {
+                    changeCnt++;
+                }
+            }
+            return changeCnt;
+        }
+        
+    });
+</script>
+
+</body>
+</html>   

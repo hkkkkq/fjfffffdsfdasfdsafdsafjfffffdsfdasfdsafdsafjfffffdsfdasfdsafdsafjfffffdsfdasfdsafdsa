@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.henc.cdrs.daily.repository.MainBsnsSetMapper">
+
+
+	<select id="latestSetupList" resultType="mainBsnsSet" parameterType="searchDailyParams">
+		<![CDATA[
+		SELECT coprcp_no,
+			   sort_no,
+			   ctrc_no,
+			   dept_cd,
+			   aply_term,
+			   updt_dm,
+			   updt_id,
+			   wrtr_dm,
+			   wrtr_id
+		FROM MAIN_BSNS_SET
+		WHERE dept_cd = #{deptCd}
+		  AND coprcp_no = #{partnerNo}
+		  AND aply_term = (
+			SELECT max(aply_term) AS aply_term
+			FROM MAIN_BSNS_SET
+			WHERE dept_cd = #{deptCd}
+			  AND coprcp_no = #{partnerNo}
+			  AND APLY_TERM <= #{day})
+		ORDER BY sort_no
+		]]>
+	</select>
+
+</mapper>

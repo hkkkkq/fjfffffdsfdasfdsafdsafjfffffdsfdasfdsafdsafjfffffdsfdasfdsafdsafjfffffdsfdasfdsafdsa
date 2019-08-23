@@ -1,0 +1,230 @@
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layouts/modalLayout">
+<body>
+<div layout:fragment="contents">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="row align-items-center">
+                <div class="col-auto mr-auto">
+                </div>
+                <div class="col-auto mb-2">
+                    <button type="button" class="btn btn-primary btn-sm" id="btnUserDataRolePopupSave">저장</button>
+                </div>
+            </div>
+            <div class="card mb-4">
+                <div class="card-body">
+                    <form class="row form-inline" id="search">
+                        <div class="col mr-auto">
+                            <div class="row">
+                                <input type="hidden" id="userId" name="userId" th:value="${userId}"/>
+                                <input type="hidden" id="roleId" name="userId" th:value="${roleId}"/>
+                                <input type="hidden" id="datRangCd" name="userId" th:value="${datRangCd}"/>
+                            </div>
+                        </div>
+                        <div class="col-auto align-self-end">
+                            <button type="submit" class="btn btn-info btn-sm mb-1" id="btnUserDataRolePopupSearch">조회
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="row align-items-center">
+                <div class="col-md-4">
+                    <div class="col-auto mr-auto">
+                        <h2 class="h6">공사손익_일반현장 - 데이터 권한</h2>
+                    </div>
+                    <div class="col-auto mb-2">
+                    </div>
+                    <div id="comRoleDeptSheet"></div>
+                </div>
+                <div class="col-md-4">
+                    <div class="row align-items-center">
+                        <div class="col-auto mr-auto">
+                            <h2 class="h6">접근 가능한 예외 부서</h2>
+                        </div>
+                        <div class="col-auto mb-2">
+                            <button type="button" class="btn btn-outline-secondary btn-sm" id="btnAddEnableDept">추가
+                            </button>
+                        </div>
+                    </div>
+                    <div id="comUserRoleDeptYesSheet"></div>
+                </div>
+                <div class="col-md-4">
+                    <div class="row align-items-center">
+                        <div class="col-auto mr-auto">
+                            <h2 class="h6">접근 불가능한 예외 부서</h2>
+                        </div>
+                        <div class="col-auto mb-2">
+                            <button type="button" class="btn btn-outline-secondary btn-sm" id="btnAddDisableDept">추가
+                            </button>
+                        </div>
+                    </div>
+                    <div id="comUserRoleDeptNoSheet"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" th:fragment="javascript">
+    $(document).ready(function () {
+
+        //comRoleDeptSheet
+        var headers = [
+                {Text: "상태|roleId|부서|부서 코드"}
+            ],
+            mode = {
+                HeaderCheck: true
+            },
+            columns = [
+                {Type: "Status", SaveName: "rowStatus", Width: 0, Align: "center", Hidden: true},
+                {Type: "Text", SaveName: "roleId", Width: 0, Align: "left", Hidden: true},
+                {Type: "Text", SaveName: "deptNm", Width: 180, Align: "left", Edit: false},
+                {Type: "Text", SaveName: "deptCd", Width: 100, Align: "center", Edit: false}
+            ];
+        createIBSheet2($("#comRoleDeptSheet")[0], "comRoleDeptSheet", "100%", "320px");
+        comRoleDeptSheet.InitHeaders(headers, mode);
+        comRoleDeptSheet.InitColumns(columns);
+
+        //comUserRoleDeptYesSheet
+        var headers = [
+                {Text: "상태|삭제|userId|roleId|useYn|부서|부서 코드"}
+            ],
+            mode = {
+                HeaderCheck: true
+            },
+            columns = [
+                {Type: "Status", SaveName: "rowStatus", Width: 0, Align: "center", Hidden: true},
+                {Type: "DelCheck", SaveName: "rowChecked", Width: 60, Align: "center"},
+                {Type: "Text", SaveName: "userId", Width: 0, Align: "left", Hidden: true},
+                {Type: "Text", SaveName: "roleId", Width: 0, Align: "left", Hidden: true},
+                {Type: "Text", SaveName: "useYn", Width: 0, Align: "left", Hidden: true},
+                {Type: "Text", SaveName: "deptNm", Width: 180, Align: "left", Edit: false},
+                {Type: "Text", SaveName: "deptCd", Width: 100, Align: "center", Edit: false}
+            ];
+        createIBSheet2($("#comUserRoleDeptYesSheet")[0], "comUserRoleDeptYesSheet", "100%", "320px");
+        comUserRoleDeptYesSheet.InitHeaders(headers, mode);
+        comUserRoleDeptYesSheet.InitColumns(columns);
+
+        //comUserRoleDeptNoSheet
+        var headers = [
+                {Text: "상태|삭제|userId|roleId|useYn|부서|부서 코드"}
+            ],
+            mode = {
+                HeaderCheck: true
+            },
+            columns = [
+                {Type: "Status", SaveName: "rowStatus", Width: 0, Align: "center", Hidden: true},
+                {Type: "DelCheck", SaveName: "rowChecked", Width: 60, Align: "center"},
+                {Type: "Text", SaveName: "userId", Width: 0, Align: "left", Hidden: true},
+                {Type: "Text", SaveName: "roleId", Width: 0, Align: "left", Hidden: true},
+                {Type: "Text", SaveName: "useYn", Width: 0, Align: "left", Hidden: true},
+                {Type: "Text", SaveName: "deptNm", Width: 180, Align: "left", Edit: false},
+                {Type: "Text", SaveName: "deptCd", Width: 100, Align: "center", Edit: false}
+            ];
+        createIBSheet2($("#comUserRoleDeptNoSheet")[0], "comUserRoleDeptNoSheet", "100%", "320px");
+        comUserRoleDeptNoSheet.InitHeaders(headers, mode);
+        comUserRoleDeptNoSheet.InitColumns(columns);
+
+
+        var $search = $("#search");
+        $search.on("submit", function (e) {
+            e.preventDefault();
+            var param = {
+                userId: $("#userId").val(),
+                roleId: $("#roleId").val(),
+                datRangCd: $("#datRangCd").val(),
+            }
+            $.getJSON("/sysm/sec/usr/userDataRolePopupList", param, function (data) {
+                comRoleDeptSheet.LoadSearchData({"data": data.comRoleDepts});
+                comUserRoleDeptYesSheet.LoadSearchData({"data": data.comUserRoleDeptsYes});
+                comUserRoleDeptNoSheet.LoadSearchData({"data": data.comUserRoleDeptsNo});
+            });
+        });
+        $search.trigger("submit");
+
+        $("#btnAddEnableDept").on("click", function () {
+            _.dialog.modal("/sysm/com/uscd/deptCdListSelectPopup", {title: "조직 코드", width: "600px"}, function (data) {
+                setDeptCdListSelectPopupData(data, "Y");
+            });
+        });
+
+        $("#btnAddDisableDept").on("click", function () {
+            _.dialog.modal("/sysm/com/uscd/deptCdListSelectPopup", {title: "조직 코드", width: "600px"}, function (data) {
+                setDeptCdListSelectPopupData(data, "N");
+            });
+        });
+
+        $("#btnUserDataRolePopupSave").click(function () {
+            var changeCnt = 0;
+            for (var i = 1; i <= comUserRoleDeptYesSheet.RowCount(); i++) {
+                if (comUserRoleDeptYesSheet.GetCellValue(i, "rowStatus") == "I"
+                    || comUserRoleDeptYesSheet.GetCellValue(i, "rowStatus") == "D") {
+                    changeCnt++;
+                }
+            }
+            for (var i = 1; i <= comUserRoleDeptNoSheet.RowCount(); i++) {
+                if (comUserRoleDeptNoSheet.GetCellValue(i, "rowStatus") == "I"
+                    || comUserRoleDeptNoSheet.GetCellValue(i, "rowStatus") == "D") {
+                    changeCnt++;
+                }
+            }
+
+            if (changeCnt == 0) {
+                _.dialog.error("저장할 항목이 없습니다.");
+                return;
+            } else {
+
+                _.dialog.confirm("저장하시겠습니까?", function () {
+                    var comUserRoleDeptsYes = comUserRoleDeptYesSheet.GetSaveJson();
+                    var comUserRoleDeptsNo = comUserRoleDeptNoSheet.GetSaveJson();
+
+                    var searchComRoleDept = {
+                        comUserRoleDeptsYes: comUserRoleDeptsYes.data,
+                        comUserRoleDeptsNo: comUserRoleDeptsNo.data
+                    }
+
+                    $.post("/sysm/sec/usr/gridUserRoleDeptSave", searchComRoleDept, function (data) {
+                        _.dialog.alert("저장되었습니다.", function () {
+                            comUserRoleDeptYesSheet.LoadSaveData(_.ibsheet.success());
+                            comUserRoleDeptNoSheet.LoadSaveData(_.ibsheet.success());
+                        });
+                    });
+
+                });
+            }
+        });
+
+    });
+
+    /**
+     *    추가 선택된 부서 정보 셋팅
+     */
+    function setDeptCdListSelectPopupData(jsonDept, userRoleDeptFlag) {
+        var a = JSON.parse("[" + jsonDept + "]");
+        if (jsonDept != null) {
+            $.each(a, function () {
+                $.each(this, function (key, value) {
+                    if (userRoleDeptFlag == "Y") {//사용자 예외 허용 부서 처리
+                        comUserRoleDeptYesSheetRow = comUserRoleDeptYesSheet.DataInsert(-1);
+                        comUserRoleDeptYesSheet.SetCellValue(comUserRoleDeptYesSheetRow, "roleId", $("#roleId").val());
+                        comUserRoleDeptYesSheet.SetCellValue(comUserRoleDeptYesSheetRow, "userId", $("#userId").val());
+                        comUserRoleDeptYesSheet.SetCellValue(comUserRoleDeptYesSheetRow, "useYn", userRoleDeptFlag);
+                        comUserRoleDeptYesSheet.SetCellValue(comUserRoleDeptYesSheetRow, "deptCd", key);
+                        comUserRoleDeptYesSheet.SetCellValue(comUserRoleDeptYesSheetRow, "deptNm", value);
+                    } else {//사용자 예외 비허용 부서 처리
+                        comUserRoleDeptNoSheetRow = comUserRoleDeptNoSheet.DataInsert(-1);
+                        comUserRoleDeptNoSheet.SetCellValue(comUserRoleDeptNoSheetRow, "roleId", $("#roleId").val());
+                        comUserRoleDeptNoSheet.SetCellValue(comUserRoleDeptNoSheetRow, "userId", $("#userId").val());
+                        comUserRoleDeptNoSheet.SetCellValue(comUserRoleDeptNoSheetRow, "useYn", userRoleDeptFlag);
+                        comUserRoleDeptNoSheet.SetCellValue(comUserRoleDeptNoSheetRow, "deptCd", key);
+                        comUserRoleDeptNoSheet.SetCellValue(comUserRoleDeptNoSheetRow, "deptNm", value);
+                    }
+                });
+            });
+        }
+
+    }
+
+</script>
+</body>
+</html>

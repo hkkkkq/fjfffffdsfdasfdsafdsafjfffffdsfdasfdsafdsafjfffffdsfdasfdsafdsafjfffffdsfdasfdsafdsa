@@ -1,0 +1,224 @@
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layouts/modalLayout">
+<body>
+
+<div layout:fragment="contents">
+    <!-- 개인정보변경 팝업-->
+    <link rel="stylesheet" th:href="@{/webjars/font-awesome/5.1.0/css/all.css}" th:fragment="style"/>
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/4.1.1/css/bootstrap.min.css}" th:fragment="style"/>
+    <link rel="stylesheet" th:href="@{/webjars/tempusdominus-bootstrap-4/5.0.0/css/tempusdominus-bootstrap-4.min.css}" th:fragment="style"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/js/jquery-ui/jquery-ui.min.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap-datepicker.css}"/>
+
+    <div class="personal-info animated fade-right">
+        <form id="frm" class="form-password">
+            <input name="signData" id="signData" type="hidden" th:value="${userSign.sign}"/>
+            <input name="signDataBase64" id="signDataBase64" type="hidden" th:value="${userSign.bas64FileDataUrl}"/>
+
+            <section class="mb-3">
+                <div class="d-flex"><h2>비밀번호</h2></div>
+                <div class="mt-2">
+                    <input type="hidden" class="form-control" id="encPwd" name="encPwd">
+                    <input type="password" class="form-control" id="pwd" name="pwd" placeholder="비밀번호">
+                    <input type="password" class="form-control" id="pwdCheck" name="pwdCheck" placeholder="비밀번호 확인">
+                </div>
+            </section>
+            <section id="signature-pad" class="signature-pad mb-3">
+                <div class="d-flex align-items-end">
+                    <h2 class="mr-auto">개인서명</h2>
+                    <div class="signature-pad--footer">
+                        <div class="signature-pad--actions">
+                            <div>
+                                <button type="button" class="btn btn-secondary btn-sm clear" data-action="clear">Clear</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="sign">
+                    <div>
+                        <div class="signature-pad--body">
+                            <img id="imgTest" name="imgTest" style="border:1px solid red; width:100px; height:100px;">
+
+                            <canvas id="signCanvas" name="signCanvas" /><br>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-2">
+                    <select class="form-control" id="pushUseYn" name="pushUseYn">
+                        <option value="Y" th:selected="${comUser.pushUseYn}==Y">PUSH 알림 수신</option>
+                        <option value="N" th:selected="${comUser.pushUseYn}==N">PUSH 알림 수신 거부</option>
+                    </select>
+                </div>
+            </section>
+            <section class="mb-3">
+                <div class="d-flex"><h2>담당현장</h2></div>
+                <div class="table-area ">
+                    <table class="table" id="deptList">
+                        <thead>
+                        <tr>
+                            <th>현장명</th>
+                            <th>대표</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="userDept : ${userDeptList}">
+                            <td th:text="${userDept.deptNm}"></td>
+                            <td th:align="center">
+                                <input type="radio" name="basDeptYn" th:value="${userDept.deptCd}" th:checked="${userDept.basDeptYn} == Y"/>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+            <div class="btn-area">
+                <button type="button" class="btn btn-dark btn-sm" data-action="save-png" id="btnSave">저장</button>
+            </div>
+        </form>
+    </div>
+
+    <script type="text/javascript" th:src="@{/js/signature_pad.umd.js}"></script>
+    <script type="text/javascript" th:src="@{/js/cdrs.signature.js}"></script>
+
+
+
+</div>
+<script type="text/javascript" th:fragment="javascript">
+    $(document).ready(function () {
+
+
+
+        $("#btnSave").on('click', function(){
+
+            if($("#pwd").val() != ""){
+
+                // if ((new RegExp(/[^a-z|^0-9]/gi)).test($("#pwd").val())) {
+                //     _.dialog.alert("[비밀번호] 은(는) 영문 또는 숫자만 사용 가능합니다.");
+                //     return false;
+                // }
+
+                if($("#pwd").val().length < 6  || $("#pwd").val().length > 15){
+                    _.dialog.alert("[비밀번호] 은(는) 6자리 이상 15자리 미만이어야 합니다.");
+                    return false;
+                }
+
+                if($("#pwd").val() == localStorage.getItem("loginId")){
+                    _.dialog.alert("[비밀번호] 은(는) [아이디] 와 동일 할 수 없습니다.");
+                    return false;
+                }
+
+                var regexp = /0{3}|1{3}|2{3}|3{3}|4{3}|5{3}|6{3}|7{3}|8{3}|9{3}/g;
+                if($("#pwd").val().match(regexp)  ){
+                    _.dialog.alert("[비밀번호] 은(는) 반복된 3자리 숫자 사용이 불가능합니다.");
+                    return false;
+                }
+
+
+                if($("#pwd").val() != $("#pwdCheck").val()){
+                    _.dialog.alert("[비밀번호] 를 다시 한 번 확인해주세요.");
+                    return false;
+                }
+            }
+
+
+            _.dialog.confirm("저장하시겠습니까?", function() {
+                /**
+                 * sign 이미지 데이터화
+                 */
+                canvasToData();
+
+                /**
+                 * 비밀번호 처리
+                 */
+                encrypt_data();
+
+
+                const param = $("#frm").serializeObject();
+
+
+                $.post("/individual/myInfoSave", param, function(sucess, status) {
+                    _.dialog.alert("저장되었습니다.");
+
+                });
+            });
+
+        });
+
+        loadImageToCanvas();
+        if($('#signDataBase64').val().length > 0){
+            const option = {
+                ratio : 1,
+                width: $("#signCanvas").width(),
+                height: $("#signCanvas").height()
+            }
+            signaturePad.fromDataURL($('#signDataBase64').val(), option , function(){
+                console.log("callback!! draw!!");
+            });
+        }
+
+    });
+
+    function canvasToData(){
+        // var imageData = canvas.toDataURL("image/jpg");
+        var imageData = signaturePad.toDataURL("image/jpg", "blob");
+        $("#signData").val(imageData);
+    }
+
+    function loadImageToCanvas() {
+        let signImage = null;
+
+        //canvas img 로드
+        const signData = $('#signDataBase64').val();
+
+        if (signImage == null) {
+            signImage = new Image();
+            signImage.onload = function() {
+                document.getElementById("signCanvas").getContext("2d").drawImage(signImage, 0, 0, $("#signCanvas").width(), $("#signCanvas").height());
+                //document.getElementById("signCanvas").getContext("2d").drawImage(signImage, 0, 0, 336, 168);
+            }
+        }
+        if (signData != '') {
+            signImage.src = signData;
+
+            // document.getElementById("imgTest").getContext("2d").drawImage(signImage, 0, 0, 100, 100)
+
+            document.getElementById("imgTest").src = $('#signDataBase64').val();
+        }
+
+    }
+
+
+    function attachSignImage(el) {
+        var reader = new FileReader();
+        reader.onload = function (event) {
+            signImage.src = event.target.result;
+            $("#signChgYn").val("Y");
+        }
+        reader.readAsDataURL(el.files[0]);
+    }
+
+
+    function drawBinary(){
+        let image = new Image();
+        image.src = $("#signDataBase64").val();
+
+        let context = canvas.getContext("2d");
+        context.drawImage(image, image.width, image.height);
+
+    }
+
+
+
+    //비밀번호 암호화
+    function encrypt_data() {
+        var strLoginPassword = $("#pwd").val();
+        var strEncryptedLoginPassword = window.btoa(strLoginPassword);
+        $("#encPwd").val(strEncryptedLoginPassword);
+    }
+
+
+</script>
+
+</body>
+</html>

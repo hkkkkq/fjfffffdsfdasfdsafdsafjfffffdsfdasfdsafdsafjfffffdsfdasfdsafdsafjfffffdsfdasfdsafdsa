@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.henc.cdrs.sysm.com.uscd.repository.ComDeptCdMapper">
+
+	<select id="getComDeptCdList" resultType="camelCaseMap" parameterType="comDeptCd">
+		SELECT acz.dept_cd,
+			   acz.dept_nm,
+			   acz.ac_unit_cd as bzhdof_cd,
+			   to_char(cop.confrom, 'YYYY-MM-DD') AS confrom,
+			   to_char(cop.conto, 'YYYY-MM-DD')   AS conto,
+			   acz.deadflg                        AS status
+		FROM ACZ10100 acz
+				 LEFT OUTER JOIN cop030t cop ON acz.dept_cd = cop.dept_cd
+				 INNER JOIN dept on acz.dept_cd = dept.dept_cd
+		WHERE 1=1
+		AND dept.use_yn = 'Y'
+		<choose >
+			<when test="acUnitCd == null">
+				AND acz.ac_unit_cd IN ('45', '50', '55')
+			</when>
+			<otherwise>
+				AND acz.ac_unit_cd = #{acUnitCd}
+			</otherwise>
+		</choose>
+		<if test="deptNm != null and !deptNm.equals('')">
+			AND REPLACE(UPPER(acz.dept_nm), ' ', '') LIKE '%'|| REPLACE(UPPER(#{deptNm}), ' ', '') ||'%'
+		</if>
+		<if test="status != null and !status.equals('')">
+			AND acz.deadflg = #{status}
+		</if>
+        <if test="coprcpNo != null">
+            AND acz.dept_cd IN (
+                                SELECT DEPT_CD
+                                  FROM coprcp_info
+                                 WHERE COPRCP_NO = #{coprcpNo}
+                                 GROUP BY DEPT_CD
+                               )
+        </if>
+		ORDER BY acz.dept_cd
+	</select>
+
+	<select id="gridComDeptCdHierachyList" resultType="camelCaseMap">
+		SELECT org_cd AS dept_cd
+		,org_nm AS dept_Nm
+		,LEVEL
+		,prior_org_cd
+		FROM zbhr.ad_org_dept_v t1
+		START WITH prior_org_cd IS NULL
+		CONNECT BY PRIOR org_cd = prior_org_cd
+	</select>
+
+</mapper>

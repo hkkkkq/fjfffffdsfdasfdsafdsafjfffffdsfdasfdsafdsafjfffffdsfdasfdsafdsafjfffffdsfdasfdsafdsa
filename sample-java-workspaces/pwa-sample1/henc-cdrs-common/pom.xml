@@ -1,0 +1,100 @@
+﻿<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>henc-cdrs-common</artifactId>
+    <packaging>war</packaging>
+    <name><![CDATA[Hanwha E&C CDRS Common]]></name>
+  
+    <parent>
+        <groupId>com.henc</groupId>
+        <artifactId>henc-cdrs-project</artifactId>
+        <version>1.0.0</version>
+    </parent>
+
+    <properties>
+        <start-class>com.henc.cdrs.Application</start-class>
+    </properties>
+
+    <dependencies>
+        <!-- framework -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.henc</groupId>
+            <artifactId>henc-dream-mybatis</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.henc</groupId>
+            <artifactId>henc-dream-multidatasource</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.henc</groupId>
+            <artifactId>henc-dream-log4jdbc</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-devtools</artifactId>
+            <version>2.1.3.RELEASE</version>
+            <optional>true</optional>
+        </dependency>
+
+        <!-- jdbc -->
+        <dependency>
+            <groupId>com.oracle</groupId>
+            <artifactId>ojdbc6</artifactId>
+            <version>11.2.0.3</version>
+        </dependency>
+        <dependency>
+            <groupId>com.microsoft</groupId>
+            <artifactId>sqljdbc6</artifactId>
+            <version>6.0.8112.200</version>
+        </dependency>
+
+        <!-- excel -->
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+        </dependency>
+
+        <!-- utility -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>joda-time</groupId>
+            <artifactId>joda-time</artifactId>
+        </dependency>
+        <dependency>
+		  <groupId>com.moyosoft</groupId>
+		  <artifactId>exchange</artifactId>
+		  <version>1.4.7</version>
+		</dependency>
+		<dependency>
+            <groupId>commons-beanutils</groupId>
+            <artifactId>commons-beanutils</artifactId>
+        </dependency>
+        <dependency>
+          <groupId>javax.inject</groupId>
+          <artifactId>javax.inject</artifactId>
+          <version>1</version>
+        </dependency>        
+    </dependencies>
+    
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-war-plugin</artifactId>
+                <configuration>
+                    <attachClasses>true</attachClasses>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>

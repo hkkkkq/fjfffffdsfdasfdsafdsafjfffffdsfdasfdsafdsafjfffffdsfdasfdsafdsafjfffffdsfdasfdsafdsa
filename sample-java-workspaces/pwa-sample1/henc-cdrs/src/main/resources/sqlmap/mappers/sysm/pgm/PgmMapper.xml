@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.henc.cdrs.sysm.pgm.repository.PgmMapper">
+
+	<resultMap id="pgmResultMap" type="pgm">
+		<id property="pgmId" column="pgm_id" />
+		<collection property="pgmBtns" ofType="pgmBtn" column="pgm_id" select="findPgmBtnsByPgmId" />
+	</resultMap>
+
+	<!-- 프로그램 관리 조회 -->
+	<select id="selectComPgmList" resultType="camelCaseMap">
+		SELECT pgm_id
+		,sys_cls_cd
+		,nmspc_cd
+		,pg_com_namespace.get_namespace(nmspc_cd, 'ko') as nmspc_val
+		,pgm_note
+		,pgm_typ_cd
+		,menu_yn
+		,uri_nm
+		,main_pgm_id
+		,level
+		,wrtr_dm
+		,wrtr_id
+		,updt_dm
+		,updt_id
+		FROM com_pgm t
+		WHERE 1=1
+		<if test="sysClsCd != null">
+			AND sys_cls_cd LIKE #{sysClsCd}
+		</if>
+		<if test="nmspcCd != null">
+			AND nmspc_cd IN (SELECT nmspc_cd
+			FROM com_nmspc_info b
+			WHERE (ko_nm LIKE '%'|| #{nmspcCd} || '%'
+			or en_nm LIKE '%'|| #{nmspcCd} || '%')
+			AND rang_cd = 'PGM'
+			)
+		</if>
+		START WITH t.main_pgm_id IS NULL
+		CONNECT BY PRIOR t.pgm_id = t.main_pgm_id
+		ORDER SIBLINGS BY nvl(main_pgm_id, pgm_id)
+	</select>
+
+	<select id="selectPgm" parameterType="string" resultMap="pgmResultMap">
+		SELECT pgm_id
+		,sys_cls_cd
+		,nmspc_cd
+		,pg_com_namespace.get_namespace(nmspc_cd, 'ko') AS nmspc_Val
+		,pgm_note
+		,pgm_typ_cd
+		,menu_yn
+		,uri_nm
+		,main_pgm_id
+		,(SELECT pg_com_namespace.get_namespace(nmspc_cd, 'ko')
+		FROM com_pgm
+		WHERE pgm_id = a.main_pgm_id
+		AND menu_yn = 'Y'
+		) AS main_Pgm_Nm
+		FROM com_pgm a
+		WHERE pgm_id = #{pgmId}
+	</select>
+
+	<select id="findPgmBtnsByPgmId" parameterType="string" resultType="pgmBtn">
+		SELECT pgm_id
+		,btn_id
+		,nmspc_cd
+		,pg_com_namespace.get_namespace(nmspc_cd, 'KO') AS nmspc_Val
+		,btn_seq
+		,btn_grp_id
+		,wrtr_dm
+		,wrtr_id
+		,updt_dm
+		,updt_id
+		FROM com_pgm_btn
+		WHERE 1 = 1
+		AND pgm_id = #{pgmId}
+		ORDER BY btn_grp_id, btn_seq
+	</select>
+
+	<select id="selectComPgmBtnList" resultType="camelCaseMap">
+		SELECT pgm_id
+		,btn_id
+		,nmspc_cd
+		,pg_com_namespace.get_namespace(nmspc_cd, 'KO') AS nmspc_Val
+		,btn_seq
+		,btn_grp_id
+		,wrtr_dm
+		,wrtr_id
+		,updt_dm
+		,updt_id
+		FROM com_pgm_btn
+		WHERE 1 = 1
+		<if test="pgmId != null">
+			AND pgm_id = #{pgmId}
+		</if>
+		<if test="btnGrpId != null">
+			AND btn_grp_id = #{btnGrpId}
+		</if>
+		ORDER BY btn_grp_id, btn_seq
+	</select>
+
+	<insert id="insertComPgm" parameterType="pgm">
+		<selectKey keyProperty="pgmId" resultType="string" order="BEFORE">
+			select com_pgm_id_s.NEXTVAL FROM DUAL
+		</selectKey>
+		INSERT INTO com_pgm (
+		pgm_id
+		,sys_cls_cd
+		,nmspc_cd
+		,pgm_note
+		,pgm_typ_cd
+		,menu_yn
+		,uri_nm
+		,main_pgm_id
+		,wrtr_dm
+		,wrtr_id
+		,updt_dm
+		,updt_id)
+		VALUES (
+		#{sysClsCd} || '_' || LPAD(#{pgmId}, 3, '0')
+		,#{sysClsCd}
+		,#{nmspcCd}
+		,#{pgmNote}
+		,#{pgmTypCd}
+		,#{menuYn}
+		,#{uriNm}
+		,#{mainPgmId}
+		,SYSDATE
+		,'SYSTEM'
+		,SYSDATE
+		,'SYSTEM')
+	</insert>
+
+	<update id="updateComPgm" parameterType="pgm">
+		UPDATE com_pgm
+		SET sys_cls_cd = #{sysClsCd}
+		,nmspc_cd = #{nmspcCd}
+		,pgm_note = #{pgmNote}
+		,pgm_typ_cd = #{pgmTypCd}
+		,menu_yn = #{menuYn}
+		,uri_nm = #{uriNm}
+		,main_pgm_id = #{mainPgmId}
+		,updt_dm = SYSDATE
+		,updt_id = 'SYSTEM'
+		WHERE pgm_id = #{pgmId}
+	</update>
+
+	<delete id="deleteComPgmBtn" parameterType="pgmBtn">
+		DELETE com_pgm_btn
+		WHERE pgm_id = #{pgmId}
+	</delete>
+
+	<delete id="deleteComPgm" parameterType="pgm">
+		DELETE com_pgm
+		WHERE pgm_id = #{pgmId}
+	</delete>
+
+	<insert id="insertComPgmBtnList" parameterType="pgmBtn">
+		INSERT INTO com_pgm_btn (
+		pgm_id
+		,btn_id
+		,nmspc_cd
+		,btn_seq
+		,btn_grp_id
+		,wrtr_dm
+		,wrtr_id
+		,updt_dm
+		,updt_id)
+		VALUES (
+		#{pgmId}
+		,#{btnId}
+		,#{nmspcCd}
+		,#{btnSeq}
+		,#{btnGrpId}
+		,SYSDATE
+		,'SYSTEM'
+		,SYSDATE
+		,'SYSTEM')
+	</insert>
+
+	<update id="updateComPgmBtnList" parameterType="pgmBtn">
+		UPDATE com_pgm_btn
+		SET nmspc_cd = #{nmspcCd}
+		,btn_seq = #{btnSeq}
+		,btn_grp_id = #{btnGrpId}
+		,updt_dm = SYSDATE
+		,updt_id = 'SYSTEM'
+		WHERE pgm_id = #{pgmId}
+		AND btn_id = #{btnId}
+	</update>
+
+	<delete id="deleteComPgmBtnList" parameterType="pgmBtn">
+		DELETE com_pgm_btn
+		WHERE pgm_id = #{pgmId}
+		AND btn_id = #{btnId}
+	</delete>
+
+	<insert id="mergeNamespace" parameterType="pgm">
+		MERGE INTO com_nmspc_info
+		USING DUAL ON(nmspc_cd = #{nmspcCd})
+		WHEN MATCHED THEN
+		UPDATE
+		SET ko_nm = #{nmspcVal}
+		,ko_abbr_nm = #{nmspcVal}
+		,en_nm = #{nmspcVal}
+		,en_abbr_nm = #{nmspcVal}
+		,updt_dm = SYSDATE
+		,updt_id = #{loginId}
+		WHEN NOT MATCHED THEN
+		INSERT (
+		nmspc_cd
+		,rang_cd
+		,ko_nm
+		,ko_abbr_nm
+		,en_nm
+		,en_abbr_nm
+		,wrtr_dm
+		,wrtr_id
+		,updt_dm
+		,updt_id)
+		VALUES(
+		#{nmspcCd}
+		,#{rangCd}
+		,#{nmspcVal}
+		,#{nmspcVal}
+		,#{nmspcVal}
+		,#{nmspcVal}
+		,SYSDATE
+		,#{loginId}
+		,SYSDATE
+		,#{loginId})
+	</insert>
+
+	<insert id="insertPgmNamespace" parameterType="pgm">
+		INSERT into com_nmspc_info (
+		nmspc_cd
+		,rang_cd
+		,ko_nm
+		,ko_abbr_nm
+		,en_nm
+		,en_abbr_nm
+		,wrtr_dm
+		,wrtr_id
+		,updt_dm
+		,updt_id)
+		VALUES(
+		#{nmspcCd}
+		,#{rangCd}
+		,#{nmspcVal}
+		,#{nmspcVal}
+		,#{nmspcVal}
+		,#{nmspcVal}
+		,SYSDATE
+		,#{loginId}
+		,SYSDATE
+		,#{loginId})
+	</insert>
+
+
+	<select id="selectNmspcList" resultType="camelCaseMap" parameterType="searchNmspc">
+		SELECT nmspc_cd
+		,rang_cd
+		,nmspc_cnte
+		,ko_nm
+		,ko_abbr_nm
+		,en_nm
+		,en_abbr_nm
+		FROM com_nmspc_info
+		WHERE 1=1
+		<if test="nmspcCd != null and !nmspcCd.equals('')">
+			AND nmspc_cd LIKE '%'|| #{nmspcCd}||'%'
+		</if>
+		<if test="rangCd != null and !rangCd.equals('')">
+			AND rang_cd = #{rangCd}
+		</if>
+		<if test="nmspcVal != null and !nmspcVal.equals('')">
+			AND UPPER(ko_nm) LIKE '%'|| UPPER(#{koNm})||'%'
+		</if>
+		ORDER BY ko_nm
+	</select>
+
+	<select id="makeNmspcCd" resultType="java.lang.String">
+		select 'NS.PGM.'|| LPAD( com_nmspc_info_pgm_s.NEXTVAL, 5, '0') as nmspcCd FROM DUAL
+	</select>
+
+
+</mapper>

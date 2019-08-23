@@ -1,0 +1,44 @@
+
+<html xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorator="/views/common/layout/layout">
+
+<div layout:fragment="content">
+
+  <script th:inline="javascript">
+  $(document).ready(function(){
+    
+    var formObj = $("#frm");
+    
+    jQuery("#loginBtn").click(function(){
+      formObj.attr("action", "/security/sign_in");
+      formObj.attr("method", "post");
+      formObj.submit();
+      
+    });
+	
+  });
+  </script>
+      
+  <div class="panel-body">
+
+    <div class='container'>
+
+      <form id='frm' name="frm" method="post" action="/security/sign_in">
+        <p>
+          <label for="username">Username</label>
+                  <input type="text" id="username" name="username" value="CM00004" />
+        </p>
+        <p>
+          <label for="password">Password</label>
+                  <input type="password" id="password" name="password" value="CM00004" />
+        </p>
+        <button class="btn btn-default" type="button" onclick="doAction('insert')" id="loginBtn">Log in</button>
+      </form>
+
+    </div>
+
+  </div>
+  
+</div>
+<!--  end fragment -->

@@ -1,0 +1,14 @@
+/.settings/
+/.classpath
+/.factorypath
+/.project
+.idea/
+
+henc-cdrs-common/target/
+henc-cdrs/src/test/
+henc-cdrs/target/
+
+henc-cdrs.iml
+henc-cdrs-common.iml
+henc-cdrs-project.iml
+.settings/

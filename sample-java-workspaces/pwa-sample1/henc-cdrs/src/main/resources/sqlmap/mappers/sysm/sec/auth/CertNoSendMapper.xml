@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.henc.cdrs.sysm.sec.auth.repository.CertNoSendMapper">
+
+	<select id="selectCertNoSend" resultType="CertNoSend" parameterType="java.lang.String">
+		SELECT SEQ
+		     , USER_ID
+		     , CERT_NO
+		     , SEND_TM
+		     , WRTR_DM
+		     , WRTR_ID
+		FROM  CERT_NO_SEND
+		WHERE 1=1
+		<if test="certNo != null">
+			AND CERT_NO = #{certNo}
+		</if>
+		<if test="userId != null">
+			AND USER_ID = #{userId}
+		</if>
+		order by SEQ desc
+	</select>
+
+	<insert id="insertCertNoSend" parameterType="CertNoSend">
+		<selectKey keyProperty="seq" resultType="int" order="BEFORE">
+			select CERT_NO_SEND_S.NEXTVAL             FROM DUAL
+		</selectKey>
+		INSERT INTO CERT_NO_SEND (
+		       seq
+		      ,user_id
+		      ,cert_no
+		      ,send_tm
+		      ,wrtr_dm
+		      ,wrtr_id
+		) VALUES (
+		       #{seq}
+		      ,#{userId}
+		      ,#{certNo}
+		      ,sysdate
+		      ,sysdate
+		      ,#{userId}
+      	)
+	</insert>
+</mapper>

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.henc.cdrs.mgmt.siteConstType.repository.SiteConstTypeMapper">
+
+    <select id="selectSiteConstTypeGrdList" resultType="camelCaseMap">
+        SELECT STANDARD.CSTKND_NO,
+               NVL(STANDARD.UPR_CSTKND_NO, 0) as UPR_CSTKND_NO,
+               STANDARD.CSTKND_NM,
+               STANDARD.DESCRIPTION,
+               STANDARD."level",
+               NVL(SITE.USE_YN, 'N') as USE_YN,
+               STANDARD.BIZHDOF_CD,
+               NVL(SITE.DEPT_CD, 'X') as dept
+        FROM (SELECT CSTKND_NO,
+                     UPR_CSTKND_NO,
+                     BIZHDOF_CD,
+                     CSTKND_NM,
+                     DESCRIPTION,
+                     SORT_NO,
+                     LEVEL - 1                            AS "level",
+                     decode(LEVEL, 1, 'root', 'worktype') AS rel,
+                     nvl(USE_YN, 'N')                     AS use_yn
+              FROM BIZHDOF_CSTKND
+              WHERE 1 = 1
+                AND USE_YN = 'Y'
+            <if test="bizhdofCd != null">
+                AND BIZHDOF_CD = #{bizhdofCd}
+            </if>
+              START WITH UPR_CSTKND_NO IS NULL
+              CONNECT BY PRIOR CSTKND_NO = UPR_CSTKND_NO
+              ORDER SIBLINGS BY SORT_NO) STANDARD
+                 left outer JOIN DEPT_CSTKND SITE
+                         ON STANDARD.CSTKND_NO = SITE.CSTKND_NO AND SITE.DEPT_CD = #{deptCd}
+
+    </select>
+    
+    <insert id="insertSiteConstType" parameterType="siteConstType">
+        insert into DEPT_CSTKND (CSTKND_NO
+                                ,DEPT_CD
+                                ,USE_YN
+                                ,WRTR_DM
+                                ,WRTR_ID
+                                ,UPDT_DM
+                                ,UPDT_ID)
+                    values (#{cstkndNo}
+                           ,#{deptCd}
+                           ,#{useYn}                               
+                            ,SYSDATE
+                            ,#{loginId}
+                            ,SYSDATE
+                            ,#{loginId})
+    </insert>
+    
+    <update id="updateSiteConstType" parameterType="siteConstType">
+        UPDATE DEPT_CSTKND
+           SET USE_YN    = #{useYn}
+         WHERE CSTKND_NO = #{cstkndNo}
+           AND DEPT_CD   = #{deptCd}
+    </update>
+    
+    <delete id="deleteSiteConstType" parameterType="siteConstType">
+        DELETE FROM DEPT_CSTKND
+        WHERE CSTKND_NO = #{cstkndNo}
+          AND DEPT_CD   = #{deptCd}
+    </delete>
+
+</mapper>

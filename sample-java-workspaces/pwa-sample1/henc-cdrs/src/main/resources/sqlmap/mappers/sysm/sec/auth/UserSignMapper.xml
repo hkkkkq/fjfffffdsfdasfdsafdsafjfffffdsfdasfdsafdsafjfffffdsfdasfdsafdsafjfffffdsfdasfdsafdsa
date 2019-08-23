@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.henc.cdrs.sysm.sec.auth.repository.UserSignMapper">
+
+	<resultMap id="userSignMap" type="userSign">
+		<id column="USER_ID" property="userId"/>
+		<result column="SIGN" property="sign" javaType="[B" jdbcType="BLOB"/>
+	</resultMap>
+
+	<select id="selectUserSign" resultMap="userSignMap" parameterType="java.lang.String">
+		SELECT USER_ID
+		     , SIGN
+		FROM  USER_SIGN
+		WHERE 1=1
+		AND USER_ID = #{userId}
+	</select>
+
+	<insert id="insertUserSign" parameterType="UserSign">
+		INSERT INTO USER_SIGN (
+		       user_id
+		      ,SIGN
+		      ,wrtr_dm
+		      ,wrtr_id
+		) VALUES (
+		       #{userId}
+		      ,#{sign}
+		      ,sysdate
+		      ,#{userId}
+      	)
+	</insert>
+	<delete id="deleteUserSign" parameterType="UserSign">
+		delete from USER_SIGN
+		where user_id = #{userId}
+	</delete>
+</mapper>

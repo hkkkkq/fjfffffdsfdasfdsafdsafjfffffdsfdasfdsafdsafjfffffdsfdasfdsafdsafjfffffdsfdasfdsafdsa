@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.henc.cdrs.daily.repository.MainCnstQtySetMapper">
+
+
+	<select id="latestSetupList" resultType="mainCnstQtySet" parameterType="searchDailyParams">
+		<![CDATA[
+		SELECT dept_cd,
+			   aply_term,
+			   ctrc_no,
+			   sort_no,
+			   updt_dm,
+			   updt_id,
+			   wrtr_dm,
+			   wrtr_id
+		FROM MAIN_CNST_QTY_SET
+		WHERE dept_cd = #{deptCd}
+		  AND ctrc_no = #{ctrcNo}
+		  AND aply_term = (
+			SELECT max(aply_term) AS aply_term
+			FROM MAIN_CNST_QTY_SET
+			WHERE dept_cd = #{deptCd}
+			  AND ctrc_no = #{ctrcNo}
+			  AND APLY_TERM <= #{aplyTerm})
+		ORDER BY sort_no
+		]]>
+	</select>
+
+</mapper>

@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.henc.cdrs.common.notification.repository.MmsMsgMapper">
+
+	<select id="selectMmsMsg" resultType="MmsMsg" parameterType="java.lang.String">
+		SELECT
+		         MSGKEY
+			   , SUBJECT
+			   , PHONE
+			   , CALLBACK
+			   , STATUS
+			   , REQDATE
+			   , MSG
+			   , FILE_CNT
+			   , FILE_CNT_REAL
+			   , FILE_PATH1
+			   , FILE_PATH1_SIZ
+			   , FILE_PATH2
+			   , FILE_PATH2_SIZ
+			   , FILE_PATH3
+			   , FILE_PATH3_SIZ
+			   , FILE_PATH4
+			   , FILE_PATH4_SIZ
+			   , FILE_PATH5
+			   , FILE_PATH5_SIZ
+			   , EXPIRETIME
+			   , SENTDATE
+			   , RSLTDATE
+			   , REPORTDATE
+			   , TERMINATEDDATE
+			   , RSLT
+			   , TYPE
+			   , TELCOINFO
+			   , ROUTE_ID
+			   , ID
+			   , POST
+			   , ETC1
+			   , ETC2
+			   , ETC3
+			   , ETC4
+		FROM  ZBEXTGATE.MMS_MSG
+		WHERE 1=1
+		<if test="status != null">
+			AND STATUS = #{status}
+		</if>
+		<if test="phone != null">
+			AND PHONE = #{phone}
+		</if>
+		<if test="callback != null">
+			AND CALLBACK = #{callback}
+		</if>
+		order by MSGKEY desc
+	</select>
+
+	<insert id="insertMmsMsg" parameterType="MmsMsg">
+		<selectKey keyProperty="msgkey" resultType="int" order="BEFORE">
+			select ZBEXTGATE.MMS_MSG_SEQ.NEXTVAL FROM DUAL
+		</selectKey>
+		INSERT INTO ZBEXTGATE.MMS_MSG (
+		MSGKEY
+		, SUBJECT
+		, PHONE
+		, CALLBACK
+		, STATUS
+		, REQDATE
+		, MSG
+		, TYPE
+		, ID
+		, POST
+		, ETC1
+		, ETC2
+		, ETC3
+		, ETC4
+		)VALUES (
+		#{msgkey}
+		,#{subject}
+		,#{phone}
+		,#{callback}
+		,#{status}
+		,SYSDATE
+		,#{msg}
+		,#{type}
+		,#{id}
+		,#{post}
+		,#{etc1}
+		,#{etc2}
+		,#{etc3}
+		,#{etc4}
+		)
+	</insert>
+</mapper>

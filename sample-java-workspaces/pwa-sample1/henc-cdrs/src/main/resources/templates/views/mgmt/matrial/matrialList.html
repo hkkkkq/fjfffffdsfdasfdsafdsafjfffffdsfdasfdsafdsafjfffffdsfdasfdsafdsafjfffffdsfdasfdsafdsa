@@ -1,0 +1,487 @@
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layouts/layout">
+<head></head>
+<body>
+
+    <div layout:fragment="contents">
+
+        <section class="top-area">
+            <nav aria-label="breadcrumb" class="float-left">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="#">관리</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">현장자재관리</li>
+                </ol>
+            </nav>
+            <div class="btn-area float-right">
+            </div>
+        </section>
+
+
+        <section id="search-area" class="mb-3">
+            <div class="border">
+                <form id="search">
+                    <div class="form-row">
+                        <div>
+                            <label for="mtilNm">자재 명/규격</label>       
+                            <input type="text" class="form-control form-control-sm" id="mtilNm" name="mtilNm"/>             
+                        </div>
+                        <div>   
+                            <label>사용여부</label>
+                            <div class="input-group">
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="useYn" id="useYnAll" value="" checked="checked">
+                                    <label class="form-check-label" for="useYnAll">전체</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="useYn" id="useYnY" value="Y">
+                                    <label class="form-check-label" for="useYnY">예</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="useYn" id="useYnN" value="N">
+                                    <label class="form-check-label" for="useYnN">아니오</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <div class="btn-area">
+                    <button class="btn btn-secondary btn-sm" type="submit" id="btnSearch">조회</button>               
+                </div>
+                </form>
+            </div>
+        </section>
+
+        <section id="grid-area" class="mb-3">
+            <div class="d-flex justify-content-between pb-2 grid-title">
+                <h2 class="h6">◎ 자재 등록</h2>
+                <div class="btn-area">
+                    <button type="button" class="btn btn-outline-secondary btn-sm" id="btnNew">신규</button>
+                    <button type="button" class="btn btn-outline-secondary btn-sm" id="btnSave">저장</button>
+                    <!-- <button type="button" class="btn btn-outline-secondary btn-sm" id="btnTest">테스트</button> -->
+                </div>    
+            </div>
+            <div class="row">
+                <div class="col-md-12"> 
+                    <div class="sheet vertical-dual1" style="min-height: 338.5px;" id="matrialListSheet"></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="grid-area" class="mb-3">
+            <div class="d-flex justify-content-between pb-2 grid-title">
+                <h2 class="h6">◎ 동의어 자재</h2>
+                <div class="btn-area">
+                  <button type="button" class="btn btn-outline-secondary btn-sm" id="btnDetailNew">신규</button>
+                  <button type="button" class="btn btn-outline-secondary btn-sm" id="btnDetailSave">저장</button>
+                </div>
+            </div> 
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="sheet vertical-dual1" style="min-height: 338.5px;" id="matrialDetailSheet"></div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+  <script type="text/javascript" th:inline="javascript" layout:fragment="script">
+    $(document).ready(function(){
+        
+        resizeContent();
+        
+        var is_chk = false;
+        var is_ok = true;
+        //var matrialListSheet;
+        var headers = [
+            {Text: "상태|순번|삭제|자재명|규격|단위|승인여부|사용여부|자재PK"}
+        ],
+        mode = {
+            HeaderCheck: true
+        },
+        columns = [
+            {Type: "Status", SaveName: "rowStatus", Width:0, Align: "center", Hidden: true},
+            {Type: "Seq", SaveName: "rowSeq", Width:60, Align: "center"},
+            {Type: "DelCheck", SaveName: "rowChecked", Width: 0, Align: "left"},
+            {Type: "Text", SaveName: "mtilNm", Width:200, Align: "left", Edit: true, EditLen: 200, KeyField: true},
+            {Type: "Text", SaveName: "spec", Width:200, Align: "left", Edit: true, EditLen: 100, KeyField: true},
+            {Type: "Text", SaveName: "unit", Width:200, Align: "left", Edit: true, EditLen: 10, KeyField: true},
+            {Type: "CheckBox", SaveName: "apbtYn", Width:80, Align: "center", Edit: true, TrueValue: 'Y', FalseValue: 'N'},
+            {Type: "CheckBox", SaveName: "useYn", Width:80, Align: "center", Edit: true, TrueValue: 'Y', FalseValue: 'N'},
+            {Type: "Int", SaveName: "mtilNo", Width:0, Align: "center", Hidden: true, DefaultValue: 0}
+        ];
+        createIBSheet2($("#matrialListSheet")[0], "matrialListSheet", "100%", "10px");
+        matrialListSheet.InitHeaders(headers, mode);
+        matrialListSheet.InitColumns(columns);
+  /*       
+        window["matrialListSheet_OnClick"] = function (Row, Col, Value, CellX, CellY, CellW, CellH) { 
+            
+            var rowStatus = matrialListSheet.GetCellValue(Row , "rowStatus");
+            
+            if(rowStatus != "I"){
+                var param = {
+                        
+                        mtilNo: matrialListSheet.GetCellValue(Row, "mtilNo")          
+                    }
+                    
+                    $.getJSON("/mgmt/matrial/gridDetailList", param, function (data) {
+                        matrialDetailSheet.LoadSearchData({"data": data});
+                        matrialDetailSheet.SetFocusAfterProcess(false);
+                    }); 
+            }else{
+                matrialDetailSheet.RemoveAll(); // 하위 그리드 전체 삭제 처리.
+            }
+        }
+         */
+   
+        window["matrialListSheet_OnSelectCell"] = function (OldRow, OldCol, NewRow, NewCol,isDelete) {
+            
+            var sOldStatus = matrialListSheet.GetCellValue(OldRow , "rowStatus");
+            var sNewStatus = matrialListSheet.GetCellValue(NewRow , "rowStatus");
+            
+            // 재조회시, Return 처리.
+            if(sNewStatus == "I" && OldRow == NewRow || sNewStatus == "I" && OldRow != NewRow ){
+                matrialDetailSheet.RemoveAll(); // 하위 그리드 전체 삭제 처리.
+                return false;
+            }
+            
+            if(OldRow == NewRow) return false;
+            
+            var equipDetlCnt = fnStatusCheck(matrialDetailSheet);
+            
+            if( OldRow != NewRow && equipDetlCnt > 0 && is_chk == false ){    
+                
+                var param = $("#search").serializeObject();
+                param.matrialDetls = matrialDetailSheet.GetSaveJson().data;
+                 
+                 _.dialog.confirm("수정된 데이터가 있습니다. 저장하시겠습니까?", function() {
+                     $.post("/mgmt/matrial/gridDetailSave", param, function() {
+                         //_.dialog.alert("저장되었습니다.");
+                         _.cdrs.notify.show("저장","저장되었습니다.");
+                         matrialDetailSheet.LoadSaveData(_.ibsheet.success());
+                     });
+                 }); 
+                 
+            
+                 matrialListSheet.SetSelectRow(OldRow,[UseEvent=0]);
+                return false;
+            }else{
+                
+                if(is_ok == true){
+                    var param = {
+                            
+                            mtilNo: matrialListSheet.GetCellValue(NewRow, "mtilNo")          
+                        }
+                        
+                        $.getJSON("/mgmt/matrial/gridDetailList", param, function (data) {
+                            matrialDetailSheet.LoadSearchData({"data": data});
+                            matrialDetailSheet.SetFocusAfterProcess(false);
+                        });   
+                }                
+            }
+        }
+        
+        var $search = $("#search");
+        $search.on("submit", function(e) {
+            is_ok = true;
+            e.preventDefault();
+            $.getJSON("/mgmt/matrial/gridList", $(this).serialize(), function (data) {
+                matrialListSheet.LoadSearchData({"data": data});
+                matrialDetailSheet.RemoveAll(); // 하위 그리드 전체 삭제 처리.
+            });
+        });
+        
+         
+        //테스트 버튼 클릭
+        $("#btnTest").on("click", function() { 
+  //          var dRow = matrialListSheet.FindStatusRow("U");
+  //          var arrow = dRow.split(";");
+  
+  //          alert(arrow);
+        });
+     
+   
+        //신규 버튼 클릭
+        $("#btnNew").on("click", function() {
+            
+            var mtilDetlCnt = fnStatusCheck(matrialDetailSheet);
+            
+            if(mtilDetlCnt > 0 ){
+                _.cdrs.notify.show("입력","동의어 자재 데이터 저장 후 작업 진행바랍니다.");
+                return false;
+            }
+                      
+            lRow = matrialListSheet.DataInsert(-1);
+            matrialListSheet.SelectCell(lRow,"mtilNm"); 
+            matrialDetailSheet.RemoveAll(); // 하위 그리드 전체 삭제 처리.
+        });
+   
+        //저장 버튼 클릭
+        $("#btnSave").on("click", function() {
+                     
+           var changeCnt = 0;
+           for (var i=1; i<=matrialListSheet.RowCount(); i++) {
+               if (matrialListSheet.GetCellValue(i,"rowStatus") == "I" 
+                || matrialListSheet.GetCellValue(i,"rowStatus") == "U"
+                || matrialListSheet.GetCellValue(i,"rowStatus") == "D") {
+                   changeCnt++;
+               }
+           }
+           
+           if (changeCnt == 0) {
+               //_.dialog.alert("저장할 항목이 없습니다.");
+               //_.cdrs.notify.show("저장","저장할 항목이 없습니다.");
+               _.cdrs.notify.show("저장","저장할 항목이 없습니다.");
+               return false;
+           }
+           
+           var mtilList = matrialListSheet.GetSaveJson();
+           if (!_.cdrs.ibsheetValid(mtilList)) {
+               return false;
+           }
+           
+           /**
+            * IBSheet 그리드 중복값 체크 
+            * @param argSheetObj : sheet 객체
+            * @param argSection : 중복 체크 컬럼 값 ( '|' 구분으로 복수 체크 가능 )
+            * @param argRowStartNo : 시작 row 번호
+            * @returns {boolean}
+            */
+            var colNm = "mtilNm|spec|unit";
+            if(fncSheetRowDupCheck(matrialListSheet, colNm, 1) == false){
+                return false;
+            }
+  
+           
+           var param = $("#search").serializeObject();
+           param.matrials = matrialListSheet.GetSaveJson().data;
+           
+           _.dialog.confirm("저장하시겠습니까?", function() {
+               $.post("/mgmt/matrial/gridSave", param, function() {
+                   //_.dialog.alert("저장되었습니다.");
+                   _.cdrs.notify.show("저장","저장되었습니다.");
+                   matrialListSheet.LoadSaveData(_.ibsheet.success());
+                   $search.trigger("submit");
+                   var is_ok = true;
+               });
+           });
+        });
+  
+        //matrialDetailSheet
+        var headers = [
+            {Text: "상태|순번|삭제|자재명|자재동의어|규격|단위|자재PK"}
+        ],
+        mode = {
+            HeaderCheck: true
+        },
+        columns = [
+            {Type: "Status", SaveName: "rowStatus", Width:0, Align: "center", Hidden: true},
+            {Type: "Seq", SaveName: "rowSeq", Width:60, Align: "center"},
+            {Type: "DelCheck", SaveName: "rowChecked", Width: 0, Align: "left"},
+            {Type: "PopupEdit", SaveName: "mtilNm", Width:200, Align: "left", Edit: false, EditLen: 500},
+            {Type: "Int", SaveName: "sameMtilNo", Width:200, Align: "center", Hidden: true, Edit: false, EditLen: 500, DefaultValue: 0},
+            {Type: "Text", SaveName: "spec", Width:200, Align: "left", Edit: false, EditLen: 200},
+            {Type: "Text", SaveName: "unit", Width:200, Align: "left", Edit: false, EditLen: 20},
+            {Type: "Int", SaveName: "mtilNo", Width:0, Align: "center", Hidden: true, DefaultValue: 0}
+        ];
+        createIBSheet2($("#matrialDetailSheet")[0], "matrialDetailSheet", "100%", "10px");
+        matrialDetailSheet.InitHeaders(headers, mode);
+        matrialDetailSheet.InitColumns(columns);
+  
+        window["matrialDetailSheet_OnPopupClick"] = function (Row, Col) {
+            // if(matrialDetailSheet.ColSaveName(Col) == "mtilNm") {
+            //     //동의어 자재 팝업
+            //     _.dialog.modal("/mgmt/matrial/matrialListModal", {title: "동의어 자재관리", width: "820px"}, function (data) {
+            //         setRoleData(data);
+            //     });
+            // }
+        };
+        
+        //신규 버튼 클릭
+        $("#btnDetailNew").on("click", function() {
+            var lRow = matrialListSheet.GetSelectRow();
+            
+            // List 데이터 확인 후, Detail 행 추가 결정.
+            if(matrialListSheet.RowCount() == 0){
+                return true;
+            }else if(fnStatusCheck(matrialListSheet) > 0 ){
+                //_.dialog.alert("저장되지 않은 데이터가 있습니다. 저장 후 진행하시기바랍니다.");
+                _.cdrs.notify.show("입력","저장되지 않은 데이터가 있습니다. 저장 후 진행하시기바랍니다.");
+                return true; 
+            }else if(matrialListSheet.GetCellValue(lRow,"apbtYn") != "Y"){
+                //_.dialog.alert("미승인 데이터는 동의어 처리 불가합니다.");
+                _.cdrs.notify.show("입력","미승인 데이터는 동의어 처리 불가합니다.");
+                return true;
+            }else{
+                is_chk = true;
+                is_ok  = false;
+                //matrialDetailSheet.DataInsert(-1);
+                //동의어 자재 팝업
+                var modal = _.dialog.modal("/mgmt/matrial/matrialListModal", {title: "동의어 자재관리", width: "820px", autoClose: false, sheetId:matrialDetailSheet}, function (data) {
+                    setRoleData(data, modal);
+  
+                });
+            }
+        });
+        
+        //저장 버튼 클릭
+        $("#btnDetailSave").on("click", function() {
+           
+           var changeCnt = 0;
+           for (var i=1; i<=matrialDetailSheet.RowCount(); i++) {
+               if (matrialDetailSheet.GetCellValue(i,"rowStatus") == "I" 
+                       || matrialDetailSheet.GetCellValue(i,"rowStatus") == "U"
+                       || matrialDetailSheet.GetCellValue(i,"rowStatus") == "D") {
+                   changeCnt++;
+                   
+                   
+                   if(matrialDetailSheet.GetCellValue(i,"rowStatus") == "D"){
+                       matrialDetailSheet.SetCellValue(i, "sameMtilNo", 0);
+                   }
+               }
+           }
+           
+           if (changeCnt == 0) {
+               //_.dialog.alert("저장할 항목이 없습니다.");
+               _.cdrs.notify.show("저장","저장할 항목이 없습니다.");
+               return false;
+           }           
+           
+           var mtilDetail = matrialDetailSheet.GetSaveJson();
+           if (!_.cdrs.ibsheetValid(mtilDetail)) {
+               return false;
+           }
+            
+           var param = $("#search").serializeObject();
+           param.matrialDetls = matrialDetailSheet.GetSaveJson().data;
+           
+           _.dialog.confirm("저장하시겠습니까?", function() {
+               $.post("/mgmt/matrial/gridDetailSave", param, function() {
+                   //_.dialog.alert("저장되었습니다.");
+                   _.cdrs.notify.show("저장","저장되었습니다.");
+                   matrialDetailSheet.LoadSaveData(_.ibsheet.success());
+                   is_ok = true;
+                   $search.trigger("submit");
+               });
+           });             
+        });      
+  
+        // 동의어 중복 체크 , 등록 처리 
+        function setRoleData(result, modal) {
+            if (result != null) {
+                var r_data = JSON.parse("[" + result + "]");
+                var lRow = matrialListSheet.GetSelectRow();
+                var sameMtilNo = matrialListSheet.GetCellValue(lRow , "mtilNo");
+                
+                for (idx = 0; idx < r_data.length; idx++) {
+                    var isPass = true;
+                    var _mtilNo = r_data[idx].mtilNo;
+                    var _mtilNm = r_data[idx].mtilNm;
+                    for (var i = 1; i <= matrialDetailSheet.RowCount(); i++) {
+                        if (_mtilNo == matrialDetailSheet.GetCellValue(i, "mtilNo")) {
+                            _.dialog.error("선택하신 데이터 " + _mtilNm+"["+_mtilNo+"]" + "은(는) 중복되어 추가할 수 없습니다.");
+                            isPass = false;
+                        }
+                    }
+                
+                    if (isPass) {
+                        var rowIdx = matrialDetailSheet.DataInsert(-1);
+                        matrialDetailSheet.SetCellValue(rowIdx, "mtilNo", r_data[idx].mtilNo);
+                        matrialDetailSheet.SetCellValue(rowIdx, "mtilNm", r_data[idx].mtilNm);
+                        matrialDetailSheet.SetCellValue(rowIdx, "spec",   r_data[idx].spec);
+                        matrialDetailSheet.SetCellValue(rowIdx, "unit",   r_data[idx].unit);     
+                        matrialDetailSheet.SetCellValue(rowIdx, "sameMtilNo", sameMtilNo);
+                        
+                        var findRow = matrialListSheet.FindText("mtilNo",r_data[idx].mtilNo);
+                        matrialListSheet.RowDelete(findRow,0);
+                        
+                        modal.modal("hide");
+                           
+                    }  
+                }
+                var orgRow = matrialListSheet.FindText("mtilNo",String(sameMtilNo));
+                //alert(orgRow);
+                matrialListSheet.SetSelectRow(orgRow);
+                is_chk = false;
+            }
+        }
+        
+        /**
+         * IBSheet 그리드 중복값 체크
+         * @param argSheetObj : sheet 객체
+         * @param argSection : 중복 체크 컬럼 값 ( '|' 구분으로 복수 체크 가능 )
+         * @param argRowStartNo : 시작 row 번호
+         * @returns {boolean}
+         */
+         function fncSheetRowDupCheck (argSheetObj, argSection, argRowStartNo){
+  
+            var chk = 0;
+            var rowCount = argSheetObj.RowCount();
+            var varSectionVal = String(argSection).split('|');
+  
+            if(rowCount > 0){
+                for(var i = 0; i < rowCount; i++){
+                    for(var j = 0; j < rowCount; j++){
+                        if(i != j){
+                            var varBaseStatus = argSheetObj.GetCellValue(i+argRowStartNo, 'rowStatus');
+                            var varTarStatus  = argSheetObj.GetCellValue(j+argRowStartNo, 'rowStatus');
+                            var varBaseVal = '';
+                            var varTarVal = '';
+                            
+                            for(var z = 0; z < varSectionVal.length; z++){
+                                
+                                if(z == 0){
+                                    varBaseNm = argSheetObj.GetCellValue(i+argRowStartNo, varSectionVal[z]);    
+                                }
+                                
+                                varBaseVal += argSheetObj.GetCellValue(i+argRowStartNo, varSectionVal[z]);
+                                varTarVal += argSheetObj.GetCellValue(j+argRowStartNo, varSectionVal[z]);
+                            }
+                            
+                            // 앞,뒤,중간 공백 제거 & 대문자 변환 후 비교 처리
+                            varBaseVal = varBaseVal.replace(/(\s*)/g, "").toUpperCase();
+                            varTarVal  = varTarVal.replace(/(\s*)/g, "").toUpperCase();
+                            
+                            if(varBaseStatus != 'D' && varTarStatus != 'D' && varBaseVal == varTarVal){
+                                var bRow = i+argRowStartNo;
+                                var sRow = j+argRowStartNo;
+                                
+                                _.dialog.error("※ 중복값이 존재합니다.\n\n행번호 : " + bRow + "행\n명칭 : " + varBaseNm );
+                                argSheetObj.SetSelectRow(sRow);
+                                fnDetailSearch(sRow);
+                                return false;
+                            }
+                        }
+                    }
+                }
+            }
+            return true;
+        }
+         
+        // 하위 상세 조회
+        function fnDetailSearch (Row){
+           var param = {
+                   
+                   mtilNo: matrialListSheet.GetCellValue(Row, "mtilNo")          
+               }
+               
+               $.getJSON("/mgmt/matrial/gridDetailList", param, function (data) {
+                   matrialDetailSheet.LoadSearchData({"data": data});
+                   matrialDetailSheet.SetFocusAfterProcess(false);
+               });
+        }
+        
+        // Sheet 상태값 체크
+        function fnStatusCheck(argSheetObj){
+            var changeCnt = 0;
+            for (var i=1; i<=argSheetObj.RowCount(); i++) {
+                if (argSheetObj.GetCellValue(i , "rowStatus") == "I" 
+                 || argSheetObj.GetCellValue(i , "rowStatus") == "U"
+                 || argSheetObj.GetCellValue(i , "rowStatus") == "D") {
+                    changeCnt++;
+                }
+            }
+            return changeCnt;
+        }
+        
+    });
+    </script>
+
+</body>
+</html>   

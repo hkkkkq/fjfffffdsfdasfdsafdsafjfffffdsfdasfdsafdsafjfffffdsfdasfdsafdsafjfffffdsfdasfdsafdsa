@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.henc.cdrs.daily.repository.DdBrfgCommonMapper">
+
+	<select id="monthlyCalendar" parameterType="searchDailyParams" resultType="ddBrfg">
+		<![CDATA[
+			SELECT dd.dept_cd,
+				   mm.day      AS day,
+				   dd.ordr_no,
+				   dd.sta_cd,
+				   dd.chg_no,
+				   dd.chg_seq,
+				   dd.weather_cd,
+				   nmspc.KO_NM AS weather_nm,
+				   dd.lowest_tempe,
+				   dd.highest_tempe,
+				   dd.ptcl_mtr
+			FROM (SELECT to_char(TRUNC(to_date(#{day}, 'YYYYMMDD'), 'MM'), 'yyyymmdd') + LEV - 1 || '' AS day
+				  FROM (SELECT LEVEL AS LEV
+						FROM DUAL
+						CONNECT BY LEVEL <= TO_CHAR(LAST_DAY(to_date(#{day}, 'YYYYMMDD')), 'DD'))) mm
+					 LEFT OUTER JOIN (
+				SELECT dept_cd,
+					   day,
+					   max(ordr_no) KEEP (DENSE_RANK FIRST ORDER BY ordr_no DESC )      AS ordr_no,
+					   max(sta_cd) KEEP (DENSE_RANK FIRST ORDER BY ordr_no DESC)        AS sta_cd,
+					   max(chg_no) KEEP (DENSE_RANK FIRST ORDER BY ordr_no DESC)        AS chg_no,
+					   max(chg_seq) KEEP (DENSE_RANK FIRST ORDER BY ordr_no DESC)       AS chg_seq,
+					   max(weather_cd) KEEP (DENSE_RANK FIRST ORDER BY ordr_no DESC)    AS weather_cd,
+					   max(lowest_tempe) KEEP (DENSE_RANK FIRST ORDER BY ordr_no DESC)  AS lowest_tempe,
+					   max(highest_tempe) KEEP (DENSE_RANK FIRST ORDER BY ordr_no DESC) AS highest_tempe,
+					   max(ptcl_mtr) KEEP (DENSE_RANK FIRST ORDER BY ordr_no DESC)      AS ptcl_mtr
+				FROM dd_brfg
+				WHERE dept_cd = #{deptCd}
+				  AND substr(day, 1, 6) = substr(#{day}, 1, 6)
+				GROUP BY dept_cd, day
+			) dd ON mm.day = dd.day
+					 LEFT OUTER JOIN COM_NMSPC_INFO nmspc ON 'NS.CCD.WEATHER_CD.' || dd.WEATHER_CD = nmspc.NMSPC_CD
+		]]>
+	</select>
+
+	<select id="monthlyPartnerComp" resultType="camelCaseMap" parameterType="searchDailyParams">
+		<![CDATA[
+			SELECT comp.dept_cd,
+				   comp.day,
+				   comp.ordr_no,
+				   comp.ctrc_no,
+				   comp.partner_no,
+				   comp.sort_no_seq,
+				   comp.sta_cd,
+				   ci.ctrc_nm,
+				   FN_GET_CTRC_NM(ci.cstknd_no) AS cstknd_nm,
+				   APRV_CNT.cnt,
+				   APRV_CNT.tot
+			FROM (SELECT to_char(TRUNC(to_date(#{day}, 'YYYYMMDD'), 'MM'), 'yyyymmdd') + LEV - 1 || '' AS day
+				  FROM (SELECT LEVEL AS LEV
+						FROM DUAL
+						CONNECT BY LEVEL <= TO_CHAR(LAST_DAY(to_date(#{day}, 'YYYYMMDD')), 'DD'))) mm
+					 LEFT OUTER JOIN (
+				SELECT max(dept_cd) KEEP (DENSE_RANK FIRST ORDER BY ordr_no DESC ) AS dept_cd,
+					   max(day) KEEP (DENSE_RANK FIRST ORDER BY ordr_no DESC )     AS day,
+					   max(ordr_no) KEEP (DENSE_RANK FIRST ORDER BY ordr_no DESC ) AS ordr_no,
+					   max(sta_cd) KEEP (DENSE_RANK FIRST ORDER BY ordr_no DESC)   AS sta_cd,
+					   max(chg_no) KEEP (DENSE_RANK FIRST ORDER BY ordr_no DESC)   AS chg_no,
+					   max(chg_seq) KEEP (DENSE_RANK FIRST ORDER BY ordr_no DESC)  AS chg_seq,
+					   max(wrtr_dm) KEEP (DENSE_RANK FIRST ORDER BY ordr_no DESC)  AS wrtr_dm,
+					   max(wrtr_id) KEEP (DENSE_RANK FIRST ORDER BY ordr_no DESC)  AS wrtr_id,
+					   max(updt_dm) KEEP (DENSE_RANK FIRST ORDER BY ordr_no DESC)  AS updt_dm,
+					   max(updt_id) KEEP (DENSE_RANK FIRST ORDER BY ordr_no DESC)  AS updt_id
+				FROM dd_brfg
+				WHERE dept_cd = #{deptCd}
+				  AND substr(day, 1, 6) = substr(#{day}, 1, 6)
+				GROUP BY dept_cd, day
+			) dd ON mm.day = dd.day
+					 INNER JOIN dd_brfg_comp comp ON dd.dept_cd = comp.dept_cd AND dd.day = comp.day AND dd.ordr_no = comp.ordr_no
+					 INNER JOIN coprcp_info ci ON comp.PARTNER_NO = ci.COPRCP_NO AND comp.ctrc_no = ci.ctrc_no
+					 LEFT OUTER JOIN (SELECT ci.dept_cd,
+											 ci.day,
+											 sum(decode(nvl(dbc.OBJT_YN, 'Y'), 'Y', decode(dbc.sta_cd, '20', 1, '50', 1, 0),
+														0)) AS cnt,
+											 count(1)       AS tot
+									  FROM (SELECT cimm.day,
+												   ci.dept_cd,
+												   coprcp_no,
+												   cstknd_no,
+												   ctrc_no,
+												   use_yn,
+												   sort_no,
+												   ctrc_nm
+											FROM (SELECT to_char(TRUNC(to_date(#{day}, 'YYYYMMDD'), 'MM'), 'yyyymmdd') + LEV - 1 || '' AS day
+												  FROM (SELECT LEVEL AS LEV
+														FROM DUAL
+														CONNECT BY LEVEL <= TO_CHAR(LAST_DAY(to_date(#{day}, 'YYYYMMDD')), 'DD'))) cimm
+													 CROSS JOIN (SELECT *
+																 FROM coprcp_info
+																 WHERE dept_cd = #{deptCd} AND use_yn IN ('Y', 'N')
+											) ci) ci
+											   LEFT OUTER JOIN (SELECT *
+																FROM DD_BRFG_COMP
+																WHERE (dept_cd, day, ordr_no) IN
+																	  (SELECT dept_cd, day, max(ordr_no) AS ordr_no
+																	   FROM DD_BRFG
+																	   WHERE dept_cd = #{deptCd}
+																	   GROUP BY dept_cd, day)
+									  ) dbc ON ci.DEPT_CD = dbc.DEPT_CD AND ci.DAY = dbc.DAY AND ci.COPRCP_NO = dbc.PARTNER_NO AND
+											   ci.CTRC_NO = dbc.CTRC_NO
+									  WHERE (ci.use_yn = 'Y' OR dbc.OBJT_YN IS NOT NULL)
+									  GROUP BY ci.dept_cd, ci.day) aprv_cnt
+									 ON dd.dept_cd = APRV_CNT.dept_cd AND dd.day = APRV_CNT.day
+			WHERE comp.dept_cd = #{deptCd}
+			  AND comp.partner_no = #{partnerNo}
+			ORDER BY comp.DEPT_CD, comp.day, comp.ORDR_NO, decode(comp.sta_cd, '10', 1, '40', 2, '20', 3, 4) ASC
+		]]>
+	</select>
+
+	<select id="historyiesByCtrcNo" resultType="camelCaseMap" parameterType="searchDailyParams">
+		<![CDATA[
+			SELECT *
+			FROM (
+					 SELECT dbc.dept_cd,
+							dbc.day,
+							to_char(to_date(dbc.day, 'YYYYMMDD'), 'DY') AS dy,
+							dbc.ordr_no,
+							dbc.partner_no,
+							dbc.ctrc_no,
+							dbc.submitter,
+							LABATD.tot                                  AS labatd_cnt,
+							eqip.tot                                    AS eqip_cnt,
+							mtil.tot                                    AS mtil_cnt
+					 FROM dd_brfg_comp dbc
+							  LEFT OUTER JOIN (SELECT dept_cd, day, ordr_no, partner_no, ctrc_no, count(1) AS tot
+											   FROM dd_brfg_labatd
+											   GROUP BY dept_cd, day, ordr_no, partner_no, ctrc_no) labatd
+											  ON dbc.DEPT_CD = LABATD.DEPT_CD AND dbc.PARTNER_NO = LABATD.PARTNER_NO AND
+												 dbc.ORDR_NO = LABATD.ORDR_NO AND
+												 dbc.CTRC_NO = LABATD.CTRC_NO AND dbc.day = LABATD.day
+							  LEFT OUTER JOIN (SELECT dept_cd, day, ordr_no, partner_no, ctrc_no, count(1) AS tot
+											   FROM dd_brfg_eqip
+											   GROUP BY dept_cd, day, ordr_no, partner_no, ctrc_no) eqip
+											  ON dbc.DEPT_CD = eqip.DEPT_CD AND dbc.PARTNER_NO = eqip.PARTNER_NO AND
+												 dbc.ORDR_NO = eqip.ORDR_NO AND
+												 dbc.CTRC_NO = eqip.CTRC_NO AND dbc.day = EQIP.day
+							  LEFT OUTER JOIN (SELECT dept_cd, day, ordr_no, partner_no, ctrc_no, count(1) AS tot
+											   FROM dd_brfg_mtil
+											   GROUP BY dept_cd, day, ordr_no, partner_no, ctrc_no) mtil
+											  ON dbc.DEPT_CD = mtil.DEPT_CD AND dbc.PARTNER_NO = mtil.PARTNER_NO AND
+												 dbc.ORDR_NO = mtil.ORDR_NO AND
+												 dbc.CTRC_NO = mtil.CTRC_NO AND dbc.DAY = MTIL.DAY
+					 WHERE dbc.dept_cd = #{deptCd}
+					   AND dbc.ordr_no = ${ordrNo}
+					   AND dbc.ctrc_no = #{ctrcNo}
+					   AND dbc.sta_cd IN ('10', '20', '40', '50')
+					   AND dbc.day <= #{day}
+					 ORDER BY day DESC)
+			WHERE rownum <= 7
+		]]>
+	</select>
+
+	<select id="getApprovalUserSearchTotal" resultType="java.lang.Integer" parameterType="searchApprovalUserParams">
+		SELECT count(*) as total
+		FROM (SELECT emp_no, name_ko, position_code, position_name, jikgub_cd, jikgub_nm, 'A' AS source
+			  FROM HANWHA_PORTAL
+			  WHERE service_kind = '10'
+				AND acct_kind IN ('1')
+				<if test="search != null">
+					AND name_ko LIKE '%' || #{search} || '%'
+				</if>
+			  UNION
+			  SELECT user_id, name, '', pstn, '', '', 'B' AS source
+			  FROM com_user cu
+			  WHERE user_div_cd = 'HENC'
+				<if test="search != null">
+					AND name LIKE '%' || #{search} || '%'
+				</if>
+			  )
+	</select>
+
+	<select id="getApprovalUserSearchList" resultType="camelCaseMap" parameterType="searchApprovalUserParams">
+		SELECT *
+		FROM (SELECT u.*, rownum AS rn
+			  FROM (SELECT *
+					FROM (SELECT emp_no, name_ko, position_code, position_name, jikgub_cd, jikgub_nm, 'A' AS source
+						  FROM HANWHA_PORTAL
+						  WHERE service_kind = '10'
+							AND acct_kind IN ('1')
+							<if test="search != null">
+							AND name_ko LIKE '%' || #{search} || '%'
+							</if>
+						  UNION
+						  SELECT user_id, name, '', pstn, '', '', 'B' AS source
+						  FROM com_user cu
+						  WHERE user_div_cd = 'HENC'
+							<if test="search != null">
+							AND name LIKE '%' || #{search} || '%'
+							</if>
+							)
+					ORDER BY name_ko ASC, position_code ASC) u
+			  WHERE rownum &lt;= #{last})
+		WHERE rn &gt;= #{first}
+	</select>
+
+	<select id="getUserInfo" resultType="camelCaseMap" parameterType="java.lang.String">
+		SELECT *
+		FROM (SELECT PORTAL.EMP_NO AS user_id, AOUV.name, 'HENC' AS user_div_cd
+			  FROM ZBEP.CMN_USER@DBL_HBCEDMS.HANWHA.CO.KR PORTAL
+				 , ZBHR.AD_ORG_USER_V AOUV
+			  WHERE PORTAL.login_id = AOUV.sabun
+			  UNION
+			  SELECT CU.user_id,
+					 CU.name,
+					 cu.USER_DIV_CD
+			  FROM COM_USER CU)
+		WHERE user_id = #{userId}
+	</select>
+
+</mapper>

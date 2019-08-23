@@ -1,0 +1,97 @@
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layouts/modalLayout">
+<body>
+  <div layout:fragment="contents">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="row align-items-center">
+          <div class="col-auto mr-auto">
+          </div>
+          <div class="col-auto mb-2">     
+          </div>
+        </div>       
+        <div class="card mb-4">
+          <div class="card-body">
+            <form class="form-inline" id="search" >
+              <div class="col mr-auto">
+                <div class="row">
+                  <div class="form-group col-xl-4">
+                    <label for="">성명</label>
+                    <input type="text" class="form-control" id="searchKoName" name="searchKoName"/>                                             
+                  </div>  
+                  <div class="form-group col-xl-4">
+                    <label for="">사번</label>
+                    <input type="text" class="form-control" id="searchUserId" name="searchUserId"/>
+                  </div>                                
+                </div>
+              </div> 
+              <div class="col-auto align-self-end">
+                <button type="submit" class="btn btn-info btn-sm mb-1" id="btnComUserPopListSearch">조회</button>
+              </div>                        
+            </form>   
+          </div>
+        </div>
+        <div class="row align-items-center">
+          <div class="col-auto mr-auto">            
+          </div>
+          <div class="col-auto mb-2">
+          </div>
+        </div>  
+        <div id="comUserPopListSheet"></div>
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript" th:fragment="javascript">
+  $(document).ready(function() {     
+      
+      var headers = [
+          {Text: "상태|순번|사번|성명(한글)|성명(영문)|부서|직급|부서코드|직급코드|이메일|pwdExpiDt|stDt|endDt"}
+      ],
+      mode = {
+          HeaderCheck: true
+      },      columns = [              
+          {Type: "Status",SaveName: "sStatus", Width: 0, Align: "Center", Hidden: true},
+          {Type: "Seq", SaveName: "at_Seq", Width: 40, Align: "Center"},
+          {Type: "Text", SaveName: "userId", Width: 70, Align: "Center"},
+          {Type: "Text", SaveName: "name", Width: 150, Align: "Left"},
+          {Type: "Text", SaveName: "enName", Width: 150, Align: "Left"},
+          {Type: "Text", SaveName: "deptNm", Width: 180, Align: "Left"},
+          {Type: "Text", SaveName: "pstnNm", Width: 80, Align: "Left"},
+          {Type: "Text", SaveName: "deptCd", Width: 0, Align: "Left", Hidden: true},
+          {Type: "Text", SaveName: "pstnCd", Width: 0, Align: "Left", Hidden: true},
+          {Type: "Text", SaveName: "email", Width: 0, Align: "Left", Hidden: true},    
+          {Type: "Text", SaveName: "pwdExpiDt", Width: 0, Align: "Left", Hidden: true},
+          {Type: "Text", SaveName: "stDt", Width: 0, Align: "Left", Hidden: true, Format: "Ymd"},
+          {Type: "Text", SaveName: "endDt", Width: 0, Align: "Left", Hidden: true, Format: "Ymd"}
+      ];
+      createIBSheet2($("#comUserPopListSheet")[0], "comUserPopListSheet", "100%", "300px");
+      comUserPopListSheet.InitHeaders(headers, mode);
+      comUserPopListSheet.InitColumns(columns);     
+      comUserPopListSheet.SetEditable(false);
+      window["comUserPopListSheet_OnClick"] = function(Row, Col, Value, CellX, CellY, CellW, CellH) {
+          if (Row > 0) {
+              var data = {
+                  userId: comUserPopListSheet.GetCellValue(Row, "userId"),
+                  enName: comUserPopListSheet.GetCellValue(Row, "enName"),
+                  name: comUserPopListSheet.GetCellValue(Row, "name"),
+                  deptCd: comUserPopListSheet.GetCellValue(Row, "deptCd"),
+                  deptNm: comUserPopListSheet.GetCellValue(Row, "deptNm"),
+                  pstnCd: comUserPopListSheet.GetCellValue(Row, "pstnCd"),
+                  pstnNm: comUserPopListSheet.GetCellValue(Row, "pstnNm")
+              }
+              callback(data);   
+          }
+      }
+        
+	});
+	
+    var $search = $("#search");
+    $search.on("submit", function(e) {
+        e.preventDefault();          
+        $.getJSON("/sysm/sec/usr/gridList", $(this).serialize(), function (data) {
+            comUserPopListSheet.LoadSearchData({"data": data});
+        });
+    });   
+  
+  </script>
+</body>
+</html>

@@ -1,0 +1,386 @@
+﻿<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="utf-8">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="CDRS" />
+    <meta name="subject" content="CDRS" />
+    <meta name="description" content="CDRS" />
+
+    <meta http-equiv="pragma" content="no-cache" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+
+    <title>공사일보</title>
+    <!--    <link rel="stylesheet" th:replace="dream-static-resources :: style"/>-->
+    <link rel="stylesheet" th:href="@{/webjars/font-awesome/5.1.0/css/all.css}" th:fragment="style"/>
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/4.1.1/css/bootstrap.min.css}" th:fragment="style"/>
+    <link rel="stylesheet" th:href="@{/webjars/tempusdominus-bootstrap-4/5.0.0/css/tempusdominus-bootstrap-4.min.css}" th:fragment="style"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/js/jquery-ui/jquery-ui.min.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap-datepicker.css}"/>
+
+
+
+
+    <meta name="msapplication-TileImage" content="/images/icon/ms-icon-144x144.png">
+    <meta name="theme-color" content="#ffffff">
+    <link rel="apple-touch-icon" sizes="57x57" href="/images/icon/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/images/icon/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/images/icon/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/images/icon/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/images/icon/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/images/icon/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/images/icon/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/images/icon/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/icon/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/images/icon/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/icon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="/images/icon/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/images/icon/favicon-16x16.png">
+    <link rel="manifest" crossorigin="use-credentials" href="/manifest.json">
+
+
+<body data-spy="scroll" data-target="#side-nevigation" data-offset="75">
+
+<div class="sidebar">
+    <div class="sidebar-inner"></div>
+    <ul class="navbar-nav accordion" id="menuUl">
+    </ul>
+    <!-- 2019/07/18 수정 및 추가 : 메뉴 하단 사용자, 개인정보 추가 -->
+    <div class="sidebar-bottom">
+        <ul>
+            <li class="user"><a href="#"> 님 <i class="fas fa-user"></i></a></li>
+            <li class="privacy"><a href="#">개인정보 <i class="fas fa-star"></i></a></li>
+            <li class="appdown"><a href="#">앱설치 <i class="fas fa-download"></i></a></li>
+        </ul>
+    </div><!-- end : sidebar-bottom -->
+    <div class="btn-close"><i class="fas fa-times"></i></div>
+</div>
+
+<div class="notification" id="notification">
+    <div class="toast shadow" data-autohide="false">
+        <div class="toast-header">
+            <strong class="mr-auto"><span class="title">NOTICE</span> <i class="fas fa-exclamation-circle"></i></strong>
+            <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="toast-body">
+            Heads up, toasts will stack automatically
+        </div>
+    </div>
+</div>
+
+<div id="wrapper">
+    <div id="content-wrapper">
+        <nav class="topbar navbar-expand shadow-sm">
+            <div class="topbar-bi">
+                <a th:href="@{/}">한화건설 공사일보</a>
+            </div><!-- end : topbar-bi -->
+            <div class="topbar-btn">
+                <button id="sidebarToggleTop" class="btn btn-link rounded-circle">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div><!-- end : topbar-btn -->
+            <div class="topbar-center">
+                <form class="form-inline top-selcet" id="storageForm" method="post">
+                    <select class="form-control form-control-sm" id="userDepts" name="storageDeptCd"></select>
+                </form>
+            </div><!-- end : topbar-center -->
+            <div class="topbar-right">
+                <ul class="navbar-nav">
+                    <li class="nav-item user d-none d-lg-block">
+                        <a class="nav-link" id="myName" href="#"> 님<i class="fas fa-user ml-2"></i></a></li>
+                    <li class="nav-item privacy d-none d-lg-block">
+                        <a class="nav-link" id="myInfo" href="#" data-toggle="modal" data-target="#personal-info">개인정보<i
+                                class="fas fa-star ml-2"></i></a>
+                    </li>
+                    <li class="nav-item logout">
+                        <a class="nav-link" id="logoutBtn" href="#"><span class="d-none d-lg-block">로그아웃</span><i
+                                class="fas fa-unlock-alt ml-2"></i></a>
+                    </li>
+                </ul>
+            </div><!-- end : topbar-right -->
+        </nav><!-- end : topbar -->
+
+        <div class="container-fluid animated fade-right">
+            <section layout:fragment="contents"></section>
+        </div><!-- end : container-fluid -->
+
+    </div><!-- end : content-wrapper -->
+</div><!-- end : wrapper -->
+
+<!-- dream framework의 dialog를 사용하기 위해서는 반드시 추가 -->
+<div th:replace="dream-static-resources :: components"></div>
+
+<!-- 개인 정보 -->
+
+<script th:src="@{/webjars/jquery/3.0.0/jquery.min.js}"></script>
+<!-- dream framework의 모든 기능을 사용하기 위해서는 반드시 추가 -->
+<!-- info dialog 공사일보 확장사용하는 dialog -->
+<div class="modal fade" id="_dream_info_" tabindex="-1" role="dialog" aria-labelledby="알림 메시지" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">알림 메시지</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body only-body"></div>
+            <!--        <div class="modal-footer">-->
+            <!--          <button type="button" class="btn btn-primary" data-dismiss="modal">확인</button>-->
+            <!--        </div>-->
+        </div>
+    </div>
+</div>
+<!-- //info -->
+<script th:replace="dream-static-resources :: script"></script>
+<script type="text/javascript" th:src="@{/js/encrypt/base64.js}"></script>
+<script type="text/javascript" th:src="@{/js/tree/jquery.jstree.js}"></script>
+<script type="text/javascript" th:src="@{/js/cdrs.js}"></script>
+<script type="text/javascript" th:src="@{/js/jquery.json-2.4.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/jquery-ui/jquery-ui.js}"></script>
+<script type="text/javascript" th:src="@{/js/ibleaders.js}"></script>
+
+<script type="text/javascript" th:src="@{/js/pwa/app.js}"></script>
+<script src="https://www.gstatic.com/firebasejs/5.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/5.10.1/firebase-messaging.js"></script>
+<!--<script type="text/javascript" th:src="@{/js/pwa/firebase-app.js}"></script>-->
+<!--<script type="text/javascript" th:src="@{/js/pwa/firebase-messaging.js}"></script>-->
+
+<script type="text/javascript" th:src="@{/js/pwa/engageable.js}"></script>
+<script type="text/javascript" th:src="@{/js/pwa/push.js}"></script>
+
+
+<script type="text/javascript" th:inline="javascript">
+    /*<![CDATA[*/
+
+    $(document).ready(function () {
+
+        /* 리포트 url */
+        var reportUrl = /*[[${reportUrl}]]*/ null;
+        if (reportUrl != null) {
+            localStorage.setItem("reportUrl", reportUrl);
+        }
+
+
+        //상단 사용자 정보 셋팅
+        var loginInfo = /*[[${loginInfo}]]*/ null;
+        if (loginInfo != null) {
+            localStorage.setItem("loginInfo", loginInfo);
+        }
+        var storage_loginInfo = localStorage.getItem("loginInfo");
+        if ((storage_loginInfo != undefined) || (storage_loginInfo != null)) {
+            $(".user a").prepend(storage_loginInfo)
+        }
+
+        // 협력사 번호 셋팅
+        var partnerNo = /*[[${partnerNo}]]*/ null;
+        if (partnerNo != null) {
+            localStorage.setItem("partnerNo", partnerNo);
+        }
+
+        //현재 선택된 rold_id
+        var tokenUser = /*[[${tokenUser}]]*/ null;
+        if (tokenUser != null) {
+            localStorage.setItem("roleId", tokenUser.roleId);
+            localStorage.setItem("loginId", tokenUser.userId);
+        }
+        $("#pmSysClsCd").attr("value", localStorage.getItem("roleId")).attr("selected", "selected");
+
+        //시스템 권한
+        var userRoles = /*[[${userRoles}]]*/ null;
+        if (userRoles != null) {
+            localStorage.setItem("userRoles", JSON.stringify(userRoles));
+        }
+        var storage_userRoles = JSON.parse(localStorage.getItem("userRoles"));
+        $(storage_userRoles).each(function (i, data) {
+            $("#pmSysClsCd").append(new Option(data.nmspcVal, data.roleId));
+        });
+
+        //기본현장 및 사업부코드
+        var mainDeptCd = /*[[${mainDeptCd}]]*/ null;
+        var mainBizhdofCd = /*[[${mainBizhdofCd}]]*/ null;
+        if (mainDeptCd != null) {
+            localStorage.setItem("mainDeptCd", mainDeptCd);
+            localStorage.setItem("mainBizhdofCd", mainBizhdofCd);
+        }else{
+            mainDeptCd = _.cdrs.storage.deptCd();
+            mainBizhdofCd = _.cdrs.storage.bizhdofCd();
+        }
+
+        //접근현장
+        var userDepts = /*[[${userDepts}]]*/ null;
+        if (userDepts != null) {
+            localStorage.setItem("userDepts", JSON.stringify(userDepts));
+        }
+        var userDepts = JSON.parse(localStorage.getItem("userDepts"));
+        $(userDepts).each(function (i, data) {
+            $("#userDepts").append('<option value="' + data.deptCd + '" ' + (data.deptCd == mainDeptCd ? "selected=\"selected\"" : "") + ' data-bizhdofcd="' + data.bizhdofCd + '">' + data.deptCd + ' | ' + data.deptNm + '</option>');
+        });
+
+        //현장변경 이벤트
+        $("#userDepts").on("change", function () {
+            setStorage({deptCd: $(this).val(), bizhdofCd: $(this).data("bizhdofcd")});
+        });
+
+        function setStorage(storage) {
+            $("#storageForm").prop("method", "GET");
+            $("#storageForm").prop("action", "/");
+            $("#storageForm").submit();
+        }
+
+        //사용자 정보
+        $(".privacy").click(function () {
+            _.dialog.modal("/individual/myInfo", {title: "개인정보관리", width: "400px"}, function(data) {
+                console.log("data:" + data);
+            });
+        });
+
+        $(".appdown").click(function () {
+            addToHomeScreen();
+        });
+
+
+
+        $("#logoutBtn").click(function () {
+            _.dialog.confirm("로그아웃 하시겠습니까?", function () {
+                localStorage.removeItem("menu");
+                localStorage.removeItem("loginInfo");
+                localStorage.removeItem("userRoles");
+                localStorage.removeItem("roleId");
+                localStorage.removeItem("userDepts");
+                localStorage.removeItem("mainDeptCd");
+                localStorage.removeItem("mainBizhdofCd");
+                location.href = "/security/sign_out";
+            });
+        });
+
+        //브라우저 뒤로가기 방지
+        history.pushState(null, null, location.href);
+        window.onpopstate = function (event) {
+            history.go(1);
+        };
+
+        //https://gist.github.com/jlong/2428561 참고
+        // var parser = document.createElement("a");
+        // parser.href = location.href;
+        // if (parser.pathname == "" || parser.pathname == "/") {
+        //   location.href = "/sysm/pgm/pgmList";
+        // }
+
+        /**
+         * 외 코딩 되어 있는지 확인 필요.
+         * > 협력사 당일 업무 작성시 textarea 엔터 안먹음.
+         * */
+        // document.addEventListener('keydown', function (event) {
+        //     if (event.keyCode === 13) {
+        //         event.preventDefault();
+        //     }
+        // }, true);
+
+        $(".collapse").scroll(function (event) {
+            var scroll = $(this).scrollTop();
+            if (scroll > 10) {
+                //이벤트를 적용시킬 스크롤 높이
+                $("#wrapper").addClass("scroll");
+            } else {
+                $("#wrapper").removeClass("scroll");
+            }
+        });
+
+        $(window).scroll(function () {
+            if ($(this).scrollTop() > 200) {
+                $('.scroll-to-top').fadeIn();
+            } else {
+                $('.scroll-to-top').fadeOut();
+            }
+        });
+        $('.scroll-to-top').click(function () {
+            $('html, body').animate({scrollTop: 0}, 400);
+            return false;
+        });
+
+        $('.topbar #sidebarToggleTop, .btn-close').on('click', function () {
+            if (!$('body').hasClass('layout-fullwidth')) {
+                $('body').addClass('layout-fullwidth');
+
+            } else {
+                $('body').removeClass('layout-fullwidth');
+                $('body').removeClass('layout-default'); // also remove default behaviour if set
+            }
+
+            if ($(window).innerWidth() < 1024) {
+                if (!$('body').hasClass('offcanvas-active')) {
+                    $('body').addClass('offcanvas-active');
+                } else {
+                    $('body').removeClass('offcanvas-active');
+                }
+            }
+
+            if ($(window).innerWidth() < 768) {
+                if (!$('body').hasClass('layout-fullwidth')) {
+                    $('body').addClass('layout-fullwidth');
+                } else {
+                    $('body').removeClass('layout-fullwidth');
+                }
+            }
+        });
+
+
+        /* 메뉴 가저 오고 표시 처리 */
+        getMenuList(localStorage.getItem("roleId"));
+        subscribe();
+
+    });
+
+    $(window).resize(function () {
+        resizeContent();
+    });
+
+    function resizeContent() {
+        var windowHeight = $(window).height();
+        var topHeight = $(".topbar").height();
+        var titleHeight = $(".top-area").height();
+        var searchHeight = $("#search-area").height();
+        var formHeight = $(".form-area").height();
+        var gridtitleHeight = $(".grid-title").height();
+        $('.vertical-full1').css({'min-height': (windowHeight - topHeight - titleHeight - searchHeight - (typeof gridtitleHeight === "undefined" ? 0 : gridtitleHeight) - 80) + 'px'});
+        $('.vertical-full2').css({'min-height': (windowHeight - topHeight - titleHeight - formHeight - (typeof gridtitleHeight === "undefined" ? 0 : gridtitleHeight) - 80) + 'px'});
+        $('.vertical-dual1').css({'min-height': ((windowHeight - topHeight - titleHeight - searchHeight - (typeof gridtitleHeight === "undefined" ? 0 : gridtitleHeight) - 130) / 2) + 'px'});
+        $('.vertical-dual2').css({'min-height': ((windowHeight - topHeight - titleHeight - formHeight - (typeof gridtitleHeight === "undefined" ? 0 : gridtitleHeight) - 130) / 2) + 'px'});
+    }
+
+    function getMenuList(roleId) {
+        let menuUri = window.location.pathname;
+        let param = {
+            uri: menuUri,
+            roleId: roleId
+        }
+
+        $.get("/mList.m", param, function (data) {
+            $("#menuUl").append(data);
+        });
+    }
+
+    /*]]>*/
+</script>
+<form id="systemMenuForm" method="post">
+    <input type="hidden" id="secRoleId" value=""/>
+    <input type="hidden" id="secSystemMenuId" value=""/>
+    <input type="hidden" id="changeLang" value=""/>
+    <input type="hidden" id="currentURL" value=""/>
+    <input type="hidden" id="secPgmId" value=""/>
+    <input type="hidden" id="systemVersion" value=""/>
+    <input type="hidden" id="systemModule" value=""/>
+    <input type="hidden" id="clauseAgreeYn" value=""/>
+    <input type="hidden" id="clausePath" value=""/>
+    <input type="hidden" id="system" value=""/>
+</form>
+<script type="text/javascript" layout:fragment="script"></script>
+<script type="text/javascript" th:replace="~{:: javascript} ?: _"></script>
+</body>
+</html>

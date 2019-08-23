@@ -1,0 +1,351 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.henc.cdrs.sysm.stdcd.repository.StdCdMapper">
+    <select id="selectComStdCdList" resultType="camelCaseMap">
+        SELECT std_cd        
+              ,nmspc_cd      
+              ,nmspc_val     
+              ,cd_note       
+              ,etc_info      
+          FROM (SELECT std_cd
+                      ,nmspc_cd
+                      ,pg_com_namespace.get_namespace(nmspc_cd, 'ko') as nmspc_val
+                      ,cd_note
+                      ,'보조정보정의' as etc_info
+                  FROM com_std_cd
+                 WHERE 1=1 
+                <if test="stdCd != null">
+                   AND std_cd like '%'|| UPPER(#{stdCd}) ||'%'
+                </if>                  
+                <if test="nmspcCd != null">
+                   AND nmspc_cd like '%'|| UPPER(#{nmspcCd}) ||'%' 
+                </if>      
+                <if test="cdNote != null">
+                   AND cd_note like '%'|| #{cdNote}||'%'
+                </if>
+               ) WHERE 1=1
+        <if test="nmspcVal != null">
+           AND nmspc_val like '%'|| #{nmspcVal}||'%'
+         </if>  
+         ORDER BY rowid
+    </select>
+  
+    <insert id="insertComStdCdList" parameterType="stdCd">
+        INSERT INTO com_std_cd (
+                 std_cd
+                ,nmspc_cd
+                ,cd_note
+                ,wrtr_dm
+                ,wrtr_id
+                ,updt_dm
+                ,updt_id)
+            VALUES (
+                 #{stdCd}
+                ,#{nmspcCd}
+                ,#{cdNote}
+                ,SYSDATE
+                ,#{loginId}
+                ,SYSDATE
+                ,#{loginId})
+    </insert>
+  
+    <update id="updateComStdCdList" parameterType="stdCd">
+        UPDATE com_std_cd
+           SET nmspc_cd = #{nmspcCd}
+              ,cd_note = #{cdNote}
+              ,updt_dm = SYSDATE
+              ,updt_id = #{loginId}
+         WHERE std_cd = #{stdCd}
+    </update>
+  
+    <delete id="deleteComStdCdList" parameterType="map">
+        DELETE com_std_cd
+         WHERE std_cd = #{stdCd}
+    </delete>   
+
+    <insert id="insertComStdCdNameSpaceList" parameterType="stdCd">
+        INSERT INTO com_nmspc_info (
+                 nmspc_cd
+                ,rang_cd
+                ,ko_nm
+                ,ko_abbr_nm
+                ,en_nm
+                ,en_abbr_nm
+                ,wrtr_dm
+                ,wrtr_id
+                ,updt_dm
+                ,updt_id) 
+            VALUES ( 
+                 #{nmspcCd}
+                ,'CCD'
+                ,#{nmspcVal}
+                ,#{nmspcVal}
+                ,'(ENG)' ||#{nmspcVal}
+                ,#{nmspcVal}
+                ,SYSDATE
+                ,#{loginId}
+                ,SYSDATE
+                ,#{loginId})
+    </insert>
+  
+    <insert id="insertComStdDetlCdNameSpaceList" parameterType="stdDetlCd">
+        INSERT INTO com_nmspc_info (
+                 nmspc_cd
+                ,rang_cd
+                ,ko_nm
+                ,ko_abbr_nm
+                ,en_nm
+                ,en_abbr_nm
+                ,wrtr_dm
+                ,wrtr_id
+                ,updt_dm
+                ,updt_id) 
+            VALUES ( 
+                 #{nmspcCd}
+                ,'CCD'
+                ,#{nmspcVal}
+                ,#{nmspcVal}
+                ,'(ENG)' ||#{nmspcVal}
+                ,#{nmspcVal}
+                ,SYSDATE
+                ,#{loginId}
+                ,SYSDATE
+                ,#{loginId})
+    </insert>  
+   
+    <delete id="deleteComStdDetlCdNameSpaceList" parameterType="map">
+        DELETE com_nmspc_info t
+         WHERE t.nmspc_cd IN (SELECT nmspc_cd 
+                                FROM com_std_detl_cd
+                               WHERE std_cd = #{stdCd})
+    </delete>
+  
+    <delete id="deleteComStdCdNameSpaceList" parameterType="map">
+        DELETE com_nmspc_info
+         WHERE nmspc_cd = #{nmspcCd}
+    </delete>
+  
+    <delete id="deleteComStdCdDetlNameSpaceList" parameterType="map">
+        DELETE com_nmspc_info
+         WHERE nmspc_cd = #{nmspcCd}
+    </delete>  
+  
+    <delete id="deleteComStdCdDetlList" parameterType="map">
+        DELETE com_std_detl_cd
+         WHERE std_cd = #{stdCd}
+    </delete>
+
+    <select id="selectComStdDetlCdListForManage" resultType="camelCaseMap">
+        SELECT std_cd         
+              ,std_detl_cd    
+              ,nmspc_cd       
+              ,pg_com_namespace.get_namespace(nmspc_cd, 'ko') as nmspc_val
+              ,detl_cd_note
+              ,detl_cd_seq   
+              ,'보조정보설정' as etc_info_set
+              ,use_yn
+          FROM com_std_detl_cd
+         WHERE std_cd = #{stdCd} 
+        <if test="stdDetlCd != null">
+           AND std_detl_cd = #{stdDetlCd}
+        </if>                  
+        <if test="includeCodeList != null">
+           AND std_detl_cd IN (#{includeCodeList})
+        </if>      
+        <if test="excludeCodeList != null">
+           AND std_detl_cd NOT IN (#{excludeCodeList})
+        </if>   
+        <if test="nmspcCd != null">
+           AND nmspc_cd = #{nmspcCd}
+        </if> 
+        <if test="userDefiCd != null">
+           AND user_defi_cd = #{userDefiCd}
+        </if>
+        <if test="detlCdNote != null">
+           AND detl_cd_note LIKE '%'|| #{detlCdNote}||'%'
+        </if>
+         ORDER BY detl_cd_seq                      
+    </select>
+  
+    <select id="selectComAttributeDefi" resultType="camelCaseMap">
+        SELECT std_cd        
+              ,attribute_id  
+              ,attribute_nm  
+              ,attribute_type
+              ,attribute_frm 
+              ,attribute_seq 
+              ,attribute_desc
+              ,(SELECT COUNT(*) 
+                  FROM com_attribute_val
+                 WHERE std_cd = a.std_cd 
+                   AND attribute_id = a.attribute_id
+               )          
+              ,wrtr_dm    
+              ,wrtr_id    
+              ,updt_dm    
+              ,updt_id    
+          FROM com_attribute_defi a
+         WHERE std_cd = #{stdCd}
+    </select>
+  
+    <insert id="insertComAttributeDefiList" parameterType="attributeDefi">
+        INSERT INTO com_attribute_defi (
+                 std_cd
+                ,attribute_id
+                ,attribute_nm
+                ,attribute_type
+                ,attribute_frm
+                ,attribute_seq
+                ,attribute_desc
+                ,wrtr_dm
+                ,wrtr_id
+                ,updt_dm
+                ,updt_id)
+            VALUES ( 
+                 #{stdCd}
+                ,#{attributeId}
+                ,#{attributeNm}
+                ,#{attributeType}
+                ,#{attributeFrm}
+                ,#{attributeSeq}
+                ,#{attributeDesc}
+                ,SYSDATE
+                ,#{loginId}
+                ,SYSDATE
+                ,#{loginId})
+    </insert>     
+  
+    <update id="updateComAttributeDefiList" parameterType="attributeDefi">
+        UPDATE com_attribute_defi
+           SET attribute_nm = #{attributeNm}
+              ,attribute_type = #{attributeType}
+              ,attribute_frm = #{attributeFrm}
+              ,attribute_seq = #{attributeSeq}
+              ,attribute_desc = #{attributeDesc}
+              ,updt_id = #{loginId}
+              ,updt_dm = SYSDATE
+         WHERE std_cd = #{stdCd}
+           AND attribute_id = #{attributeId}
+    </update>  
+  
+    <delete id="deleteComAttributeDefiList" parameterType="attributeDefi">
+        DELETE com_attribute_defi
+         WHERE std_cd = #{stdCd}
+           AND attribute_id = #{attributeId}
+    </delete> 
+    
+    <insert id="insertComStdDetlCdList" parameterType="stdDetlCd">
+        INSERT INTO com_std_detl_cd (
+                 std_cd
+                ,std_detl_cd
+                ,nmspc_cd
+                ,detl_cd_note
+                ,detl_cd_seq
+                ,use_yn
+                ,wrtr_dm
+                ,wrtr_id
+                ,updt_dm
+                ,updt_id) 
+            VALUES ( 
+                 #{stdCd}
+                ,#{stdDetlCd}
+                ,#{nmspcCd}
+                ,#{detlCdNote}
+                ,#{detlCdSeq}
+                ,#{useYn}
+                ,SYSDATE
+                ,#{loginId}
+                ,SYSDATE
+                ,#{loginId})
+    </insert>    
+    
+    <update id="updateComStdDetlCdList" parameterType="stdDetlCd">
+        UPDATE com_std_detl_cd
+           SET std_detl_cd = #{stdDetlCd}
+              ,nmspc_cd = #{nmspcCd}
+              ,detl_cd_note = #{detlCdNote}
+              ,detl_cd_seq = #{detlCdSeq}
+              ,use_yn = #{useYn}
+              ,updt_dm = SYSDATE
+              ,updt_id = #{loginId}
+         WHERE std_cd = #{stdCd}
+           and std_detl_cd = #{stdDetlCd}
+    </update>    
+  
+    <delete id="deleteComStdDetlCdList" parameterType="stdDetlCd">
+        DELETE com_std_detl_cd
+         WHERE std_cd = #{stdCd}
+           AND std_detl_cd = #{stdDetlCd}
+    </delete>  
+    
+    <select id="selectComAttributeValList" resultType="camelCaseMap">
+        SELECT defi.std_cd        
+              ,defi.attribute_id  
+              ,DECODE(val.std_detl_cd, null, #{stdDetlCd}, val.std_detl_cd) AS std_Detl_Cd
+              ,DECODE(val.attribute_nm,null, (SELECT attribute_nm 
+                                                FROM com_attribute_defi
+                                               WHERE std_cd = #{stdCd} 
+                                                 AND attribute_id = defi.attribute_id
+                                             ),val.attribute_nm) 
+                                  AS attribute_Nm
+              ,attribute_val
+          FROM (SELECT std_cd
+                      ,attribute_id
+                  FROM com_attribute_defi
+                 WHERE std_cd = #{stdCd}
+               ) defi
+              ,(SELECT a.std_cd 
+                      ,b.std_detl_cd
+                      ,a.attribute_id
+                      ,a.attribute_nm
+                      ,b.attribute_val
+                  FROM com_attribute_defi a
+                      ,com_attribute_val b
+                 WHERE a.std_cd = b.std_cd
+                   AND a.attribute_id = b.attribute_id
+                   AND b.std_cd = #{stdCd}
+                   AND b.std_detl_cd = #{stdDetlCd}
+               ) val
+         WHERE defi.attribute_id = val.attribute_id(+)
+         ORDER BY defi.attribute_id 
+    </select>   
+  
+    <update id="updateComAttributeValList" parameterType="attributeVal">
+        MERGE INTO com_attribute_val
+            USING DUAL ON (
+                std_cd = #{stdCd}
+                AND std_detl_cd = #{stdDetlCd}
+                AND attribute_id = #{attributeId}) 
+            WHEN MATCHED THEN                 
+                UPDATE 
+                   SET attribute_val = #{attributeVal}  
+                      ,updt_dm = SYSDATE
+                      ,updt_id = #{loginId}
+            WHEN NOT MATCHED THEN                
+                INSERT (
+                       std_cd                 
+                      ,std_detl_cd                
+                      ,attribute_id              
+                      ,attribute_val               
+                      ,wrtr_dm
+                      ,wrtr_id
+                      ,updt_dm
+                      ,updt_id) 
+                VALUES ( 
+                       #{stdCd}
+                      ,#{stdDetlCd}
+                      ,#{attributeId}
+                      ,#{attributeVal}
+                      ,SYSDATE 
+                      ,#{loginId}
+                      ,SYSDATE
+                      ,#{loginId})
+    </update>
+    
+    <delete id="deleteComAttributeValList" parameterType="attributeVal">
+        DELETE com_attribute_val
+         WHERE std_detl_cd = #{stdDetlCd}
+           AND attribute_id = #{attributeId}   
+    </delete>
+</mapper>

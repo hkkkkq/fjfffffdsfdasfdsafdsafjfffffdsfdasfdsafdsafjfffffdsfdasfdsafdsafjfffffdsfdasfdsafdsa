@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper
+	namespace="com.henc.cdrs.sysm.rnr.repository.ComRoleDeptMapper">
+
+	<select id="getComRoleDeptAllList" resultType="comRoleDept">
+		SELECT org_cd AS dept_cd
+		,org_nm AS dept_Nm
+		FROM zbhr.ad_org_dept_v
+	</select>
+
+	<!-- <select id="getComRoleDeptPartialList" resultType="map" parameterType="java.lang.String"> 
+		<![CDATA[ SELECT * FROM (SELECT t1.DEPT_CD ,PG_COM_DEPTCD.GET_DEPT_NM('KO', 
+		t1.DEPT_CD) AS dept_nm FROM com_dept_cd t1, com_role_dept t2 WHERE t1.biz_hdof_cd_ext1 
+		= t2.attribute1 AND DECODE(t2.attribute2 ,NULL ,nvl(t1.biz_hdof_cd_ext2, 
+		'ALL') ,t2.attribute2) = nvl(t1.biz_hdof_cd_ext2, 'ALL') AND t2.role_id = 
+		#{roleId}) UNION (SELECT t1.dept_cd ,PG_COM_DEPTCD.GET_DEPT_NM('KO', t1.DEPT_CD) 
+		AS dept_nm FROM com_dept_cd t1 WHERE dept_cd IN (SELECT t.LAST_DEPT_CD FROM 
+		com_all_user_v t WHERE t.EMPE_NO = #{userId})) ]]> </select> -->
+
+	<select id="getComRoleDeptPartialList" resultType="comRoleDept">
+		SELECT org_cd AS dept_cd
+		,org_nm AS dept_nm
+		FROM zbhr.ad_org_dept_v
+		WHERE org_cd IN (SELECT t.org_cd
+		FROM ZBHR.AD_ORG_HRM_V t
+		WHERE t.sabun = #{userId})
+	</select>
+
+	<select id="getComRoleDeptIndivisualList"
+		resultType="comRoleDept">
+		SELECT t1.org_cd AS dept_cd
+		,t1.org_nm AS dept_Nm
+		,t2.role_id
+		FROM zbhr.ad_org_dept_v t1
+		,com_role_dept t2
+		WHERE t1.org_cd = t2.dept_cd
+		AND t2.role_id = #{roleId}
+	</select>
+
+</mapper>
+

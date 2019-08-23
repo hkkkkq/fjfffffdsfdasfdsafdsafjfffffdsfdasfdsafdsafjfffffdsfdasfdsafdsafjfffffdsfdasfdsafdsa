@@ -1,0 +1,215 @@
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layouts/modalLayout">
+<body>
+  <div layout:fragment="contents">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="row align-items-center">
+          <div class="col-auto mr-auto">
+          </div>
+          <div class="col-auto mb-2">
+            <button type="button" class="btn btn-primary btn-sm" id="btnDataRoleSave">저장</button>
+          </div>
+        </div>       
+        <div class="card mb-4">
+          <div class="card-body">
+            <form class="row form-inline" id="frmDataRole" > 
+              <div class="col mr-auto">
+                <div class="row">  
+                  <input type="text" class="form-control form-control-sm" id="roleId" name="roleId" th:value=${roleId} hidden="true">
+                  <input type="text" class="form-control form-control-sm" id="datRangCd" name="datRangCd" value="I" hidden="true">
+                </div>  
+              </div>
+              <div class="col-auto align-self-end">         
+                <button type="button" class="btn btn-info btn-sm mb-1" id="btnDataRoleSearch">조회</button>
+              </div>
+            </form>
+          </div>
+        </div>
+        <div class="row align-items-center">
+          <div class="col-auto mr-auto">            
+          </div>
+          <div class="col-auto mb-2">
+            <button type="button" class="btn btn-outline-secondary btn-sm mb-1" id="btnDataRoleAdd">추가</button>
+          </div>
+        </div>         
+        <div class="row align-items-center">
+          <div class="col-md-6">
+            <div id="comDeptCdSheet"></div>
+          </div>
+          <div class="col-md-6">
+            <div id="comRoleCdDeptSheet"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript" th:fragment="javascript">
+  $(document).ready(function() {
+      
+      //comDeptCdSheet
+      var headers = [
+          {Text: "진행상태|옵션|체크|부서|부서 코드"}
+      ],
+      mode = {
+          HeaderCheck: true
+      },
+      columns = [              
+          {Type: "Status", SaveName: "rowStatus", Width: 0, Align: "center", Hidden:true},
+          {Type: "Combo", SaveName: "at_ChkHierarchy", Width: 80, Align: "center", ComboCode:"Y|N", ComboText:"하위포함|개별선택"},
+          {Type: "CheckBox", SaveName: "at_Chk", Width: 60, Align: "center"},
+          {Type: "Text", SaveName: "deptNm", Width: 250, Align: "left", TreeCol:true,       InsertEdit:false, UpdateEdit:false},
+          {Type: "Text", SaveName: "deptCd", Width: 80, Align: "center", InsertEdit:false,   UpdateEdit:false}
+      ];
+      createIBSheet2($("#comDeptCdSheet")[0], "comDeptCdSheet", "100%", "300px");
+      comDeptCdSheet.InitHeaders(headers, mode);
+      comDeptCdSheet.InitColumns(columns);     
+      window["comDeptCdSheet_OnChange"] = function(Row, Col, Value, OldValue, RaiseFlag) {
+          if (comDeptCdSheet.ColSaveName(Col) == "at_ChkHierarchy") {
+              var val = (Value=="N")?1:0;
+              var childRows = (comDeptCdSheet.GetChildRows(Row)).split("|");
+              var childRowCount = comDeptCdSheet.GetChildNodeCount(Row);
+              for (var i = 0; i < childRows.length; i++) {
+                  comDeptCdSheet.SetCellEditable(childRows[i], "at_Chk", val);
+                  if (childRowCount > 0) {
+                      comDeptCdSheet.SetCellValue(childRows[i], "at_ChkHierarchy", "");
+                  }
+              }
+          }
+      }   
+      window["comDeptCdSheet_OnBeforeCheck"] = function(Row, Col) {
+          if (comDeptCdSheet.ColSaveName(Col) == "at_Chk") {
+              var val = (comDeptCdSheet.GetCellValue(Row,Col)==1)?0:1;
+              var rowCount = comDeptCdSheet.RowCount();
+              
+              if (rowCount > 0) {
+                  var chkLevel = comDeptCdSheet.GetRowLevel(Row);
+                  var childRows = (comDeptCdSheet.GetChildRows(Row)).split("|");
+                  
+                  for (var i = 0; i < childRows.length; i++) {
+                      var childRowCount = comDeptCdSheet.GetChildNodeCount(childRows[i]);
+                      comDeptCdSheet.SetCellValue(childRows[i], "at_Chk", val, false);
+                      if (childRowCount > 0 && val) {
+                          comDeptCdSheet.SetCellValue(childRows[i], "at_ChkHierarchy", "Y", false);
+                      } else if (childRowCount > 0 && !val) {
+                          comDeptCdSheet.SetCellValue(childRows[i], "at_ChkHierarchy", "",  false);
+                      }
+                      
+                      if (comDeptCdSheet.GetCellValue(Row, "at_ChkHierarchy") == "Y") {
+                          comDeptCdSheet.SetCellEditable(childRows[i], "at_Chk", true);
+                      } else {
+                          comDeptCdSheet.SetCellEditable(childRows[i], "at_Chk", false);
+                      }
+                  }
+                  
+                  var childRowCount = comDeptCdSheet.GetChildNodeCount(Row);
+                  if (childRowCount > 0 && val) {
+                      comDeptCdSheet.SetCellValue(Row, "at_ChkHierarchy", "Y", false);
+                  } else if (childRowCount > 0 && !val) {
+                      comDeptCdSheet.SetCellValue(Row, "at_ChkHierarchy", "", false);
+                  }
+                  
+              }
+              
+          }          
+      }       
+      
+      //comRoleCdDeptSheet
+      var headers = [
+          {Text: "진행상태|삭제|roleId|부서|부서 코드|datRangCd|seq|wrtrDm|wrtrId|updtDm|updtId"}
+      ],
+      mode = {
+          HeaderCheck: true
+      },
+      columns = [              
+          {Type: "Status", SaveName: "rowStatus", Width: 0, Align: "center", Hidden:true},
+          {Type: "DelCheck", SaveName: "rowChecked", Width: 60, Align: "center"},
+          {Type: "Text", SaveName: "roleId", Width: 0, Align: "left", Hidden:true},
+          {Type: "Text", SaveName: "deptNm", Width: 200, Align: "left", InsertEdit:false,   UpdateEdit:false},
+          {Type: "Text", SaveName: "deptCd", Width: 80, Align: "center", InsertEdit:false,   UpdateEdit:false},
+          {Type: "Text", SaveName: "datRangCd", Width: 0, Align: "left", Hidden:true},
+          {Type: "Text", SaveName: "seq", Width: 0, Align: "left", Hidden:true},
+          {Type: "Text", SaveName: "wrtrDm", Width: 0, Align: "left", Hidden:true},
+          {Type: "Text", SaveName: "wrtrId", Width: 0, Align: "left", Hidden:true},
+          {Type: "Text", SaveName: "updtDm", Width: 0, Align: "left", Hidden:true},
+          {Type: "Text", SaveName: "updtId", Width: 0, Align: "left", Hidden:true}
+      ];
+      createIBSheet2($("#comRoleCdDeptSheet")[0], "comRoleCdDeptSheet", "100%", "300px");
+      comRoleCdDeptSheet.InitHeaders(headers, mode);
+      comRoleCdDeptSheet.InitColumns(columns);      
+      
+      //조회 버튼 클릭
+      $("#btnDataRoleSearch").on("click", function() {
+          
+          $.getJSON("/sysm/sec/rnr/roleList/gridComDeptCdList", $("#frmDataRole").serializeObject(), function (data) {
+              comDeptCdSheet.LoadSearchData({"data": data});
+              
+              for (var i = 1; i < comDeptCdSheet.RowCount(); i++) {
+                  if (comDeptCdSheet.GetChildRows(i) < 1) {
+                      comDeptCdSheet.SetCellEditable(i, "at_ChkHierarchy", false);
+                  }
+              }               
+          });        
+          
+          $.getJSON("/sysm/sec/rnr/roleList/gridComRoleDeptList", $("#frmDataRole").serializeObject(), function (data) {
+              comRoleCdDeptSheet.LoadSearchData({"data": data});
+          }); 
+          
+      });          
+     
+      $("#btnDataRoleAdd").on("click", function() {
+
+          for (idx=comDeptCdSheet.RowCount(); idx >= 0; idx--) {
+              if (comDeptCdSheet.GetCellValue(idx, "at_Chk") == 1) {
+                  isDup = true;
+                  for (dupIdx=1; dupIdx <= comRoleCdDeptSheet.RowCount(); dupIdx++) {
+                      if (comDeptCdSheet.GetCellValue(idx, "deptCd") == comRoleCdDeptSheet.GetCellValue(dupIdx, "deptCd")) {
+                          deptNm = comDeptCdSheet.GetCellValue(idx, "deptNm");
+                          _.dialog.error("{0}은(는) 이미 등록된 항목입니다.", deptNm);
+                          isDup = false;
+                          return;
+                      }
+                  }
+                  if (isDup) {
+                      newRow = comRoleCdDeptSheet.DataInsert(-1);
+                      comRoleCdDeptSheet.SetCellValue(newRow, "roleId", $("#roleId").val());
+                      comRoleCdDeptSheet.SetCellValue(newRow, "datRangCd", "I");
+                      comRoleCdDeptSheet.SetCellValue(newRow, "deptCd", comDeptCdSheet.GetCellValue(idx, "deptCd"));
+                      comRoleCdDeptSheet.SetCellValue(newRow, "deptNm", comDeptCdSheet.GetCellValue(idx, "deptNm"));                          
+                  }
+              }
+          }
+          
+      });
+     
+      
+      $("#btnDataRoleSave").on("click", function() {
+          _.dialog.confirm("저장하시겠습니까?", function() {
+              
+              var changeCnt = 0;
+              for (var i=1; i <= comRoleCdDeptSheet.RowCount(); i++) {
+                  if (comRoleCdDeptSheet.GetCellValue(i , "rowStatus") == "I" 
+                          || comRoleCdDeptSheet.GetCellValue(i , "rowStatus") == "U"
+                              || comRoleCdDeptSheet.GetCellValue(i , "rowStatus") == "D") {
+                      changeCnt++;
+                  }
+              }
+              if (changeCnt == 0) {
+                  _.dialog.error("저장할 항목이 없습니다.");
+                  return;
+              }               
+              
+              var paramlist = {
+                  roleId: $("#roleId").val(),
+                  datRangCd: "I",
+                  comRoleDepts:  comRoleCdDeptSheet.GetSaveJson().data
+              };                  
+              
+              $.post("/sysm/sec/rnr/roleList/gridComRoleDeptSave", paramlist, function() {                       
+                  comRoleCdDeptSheet.LoadSaveData(_.ibsheet.success());
+              });
+          });           
+      });      
+  });
+  </script>
+</body>
+</html>

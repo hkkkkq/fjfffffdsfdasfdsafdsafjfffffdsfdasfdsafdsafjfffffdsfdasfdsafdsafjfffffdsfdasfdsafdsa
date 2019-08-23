@@ -1,0 +1,123 @@
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layouts/modalLayout">
+<body>
+<div layout:fragment="contents">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="row align-items-center">
+                <div class="col-auto mr-auto">
+                </div>
+                <div class="col-auto mb-2">
+                </div>
+            </div>
+            <div class="card mb-4">
+                <div class="card-body">
+                    <form class="form-inline" id="search">
+                        <div class="col mr-auto">
+                            <div class="row">
+                                <div class="form-group col-xl-4">
+                                    <label for="">권한 분류</label>
+                                    <select class="form-control" name="roleClsCd" id="roleClsCd">
+                                        <option value="">전체</option>
+                                    </select>
+                                </div>
+                                <div class="form-group col-xl-4">
+                                    <label for="">권한 명</label>
+                                    <input class="form-control" type="text" id="nmspcCd" name="nmspcCd" value=""/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-auto align-self-end">
+                            <button type="submit" class="btn btn-info btn-sm mb-1" id="btnRoleListPopupSearch">조회
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="row align-items-center">
+                <div class="col-auto mr-auto">
+                </div>
+                <div class="col-auto mb-2">
+                    <button type="button" class="btn btn-outline-secondary btn-sm mb-1" id="btnRoleListPopupConfirm">
+                        확인
+                    </button>
+                </div>
+            </div>
+            <div id="roleListPopupSheet"></div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" th:fragment="javascript">
+    $(document).ready(function () {
+
+        var headers = [
+                {Text: "진행상태|체크|권한 ID|권한 분류|데이터 조회 범위|권한코드|권한명|비고"}
+            ],
+            mode = {
+                HeaderCheck: true
+            },
+            columns = [
+                {Type: "Status", SaveName: "rowStatus", Width: 0, Align: "center", Hidden: true},
+                {Type: "CheckBox", SaveName: "at_Chk", Width: 0, Align: "center"},
+                {Type: "Text", SaveName: "roleId", Width: 120, Align: "left", Edit: false},
+                {Type: "Combo", SaveName: "roleClsCd", Width: 120, Align: "left", Edit: false},
+                {Type: "Combo", SaveName: "datRangCd", Width: 100, Align: "left", Edit: false},
+                {Type: "Text", SaveName: "nmspcCd", Width: 200, Align: "left", Hidden: true, Edit: false},
+                {Type: "Text", SaveName: "nmspcVal", Width: 200, Align: "left", Edit: false},
+                {Type: "Text", SaveName: "roleNote", Width: 250, Align: "left", Edit: false}
+            ];
+        createIBSheet2($("#roleListPopupSheet")[0], "roleListPopupSheet", "100%", "300px");
+        roleListPopupSheet.InitHeaders(headers, mode);
+        roleListPopupSheet.InitColumns(columns);
+
+        $.getJSON("/code/getCodeList/ROLE_CLS_CD,DAT_RANG_CD", function (codes) {
+            var roleClsCd = codes.roleClsCd;
+            var datRangCd = codes.datRangCd;
+            roleListPopupSheet.SetColProperty(0, "roleClsCd", {
+                ComboText: _.utils.delimiter(roleClsCd, "value"),
+                ComboCode: _.utils.delimiter(roleClsCd, "key")
+            });
+            roleListPopupSheet.SetColProperty(0, "datRangCd", {
+                ComboText: _.utils.delimiter(datRangCd, "value"),
+                ComboCode: _.utils.delimiter(datRangCd, "key")
+            });
+
+            _.binder.combo("#roleClsCd", roleClsCd, {value: "key", text: "value"});
+        });
+
+        var $search = $("#search");
+        $search.on("submit", function (e) {
+            e.preventDefault();
+            $.getJSON("/sysm/sec/rnr/roleListPopup/roleListPopupList", $(this).serialize(), function (data) {
+                roleListPopupSheet.LoadSearchData({"data": data});
+            });
+        });
+
+
+        //시스템 권한 - 확인
+        $("#btnRoleListPopupConfirm").click(function () {
+            var cRow = roleListPopupSheet.FindCheckedRow("at_Chk");
+            var arrRow = cRow.split("|");
+            if (cRow == undefined || cRow == null) {
+                _.dialog.error("선택된 항목이 없습니다.");
+            } else {
+                var roleJson = "";
+                for (idx = 0; idx < arrRow.length; idx++) {
+                    roleJson += '{';
+                    roleJson += '"roleId":"' + roleListPopupSheet.GetCellValue(arrRow[idx], 'roleId') + '",';
+                    roleJson += '"roleClsCd":"' + roleListPopupSheet.GetCellValue(arrRow[idx], 'roleClsCd') + '",';
+                    roleJson += '"datRangCd":"' + roleListPopupSheet.GetCellValue(arrRow[idx], 'datRangCd') + '",';
+                    roleJson += '"nmspcCd":"' + roleListPopupSheet.GetCellValue(arrRow[idx], 'nmspcCd') + '",';
+                    roleJson += '"nmspcVal":"' + roleListPopupSheet.GetCellValue(arrRow[idx], 'nmspcVal') + '"';
+                    roleJson += '},';
+                }
+                if (roleJson.charAt(roleJson.length - 1) == ",") {
+                    roleJson = roleJson.substring(0, (roleJson.length - 1));
+                }
+                callback(roleJson);
+            }
+        });
+    });
+</script>
+</body>
+</html>

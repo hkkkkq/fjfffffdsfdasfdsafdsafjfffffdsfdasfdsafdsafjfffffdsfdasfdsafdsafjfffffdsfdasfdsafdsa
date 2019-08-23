@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.henc.cdrs.mgmt.siteSetup.repository.DeptMapper">
+
+	<select id="getDeptList" resultType="camelCaseMap">
+		SELECT ACZ.dept_cd,
+			   ACZ.dept_nm,
+			   ACZ.AC_UNIT_CD                                                  AS bizhdof_cd,
+			   pg_com_stdcd.get_detl_cd_nm('KO', 'BIZHDOF_CD', acz.ac_unit_cd) AS bizhdof_nm,
+			   nvl(D.use_yn, 'N') as use_yn,
+			   to_char(cop.confrom, 'YYYY-MM-DD')                              AS confrom,
+			   to_char(cop.conto, 'YYYY-MM-DD')                                AS conto
+		FROM acz10100 ACZ
+				 LEFT OUTER JOIN dept D ON ACZ.dept_cd = D.DEPT_CD
+				 LEFT OUTER JOIN cop030t cop ON acz.dept_cd = cop.dept_cd
+		WHERE 1=1
+		<choose >
+			<when test="bizhdofCd == null">
+				AND acz.ac_unit_cd IN ('45', '50', '55')
+			</when>
+			<otherwise>
+				AND acz.ac_unit_cd = #{bizhdofCd}
+			</otherwise>
+		</choose>
+		<if test="useYn != null">
+			AND nvl(D.use_yn, 'N') = #{useYn}
+		</if>
+		<if test="deptNm != null">
+			AND ACZ.dept_nm like '%' || #{deptNm} || '%'
+		</if>
+		ORDER BY acz.ac_unit_cd, acz.deadflg, ACZ.dept_cd
+	</select>
+
+	<insert id="insertDept" parameterType="dept">
+		INSERT INTO DEPT (DEPT_CD, DEPT_NM, BIZHDOF_CD, USE_YN, UPDT_DM, UPDT_ID, WRTR_DM, WRTR_ID)
+		VALUES (#{deptCd}, #{deptNm}, #{bizhdofCd}, #{useYn}, sysdate, #{loginId}, sysdate, #{loginId})
+	</insert>
+
+	<update id="updateDept" parameterType="dept">
+		UPDATE DEPT
+		SET BIZHDOF_CD = #{bizhdofCd},
+			USE_YN = #{useYn},
+			UPDT_ID = #{loginId},
+			UPDT_DM = sysdate
+		WHERE DEPT_CD = ${deptCd}
+	</update>
+
+	<delete id="deleteDept" parameterType="dept">
+		DELETE FROM DEPT
+		WHERE DEPT_CD = ${deptCd}
+	</delete>
+
+</mapper>

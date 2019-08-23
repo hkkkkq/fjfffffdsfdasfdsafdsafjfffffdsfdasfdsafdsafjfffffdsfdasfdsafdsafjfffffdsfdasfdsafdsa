@@ -1,0 +1,154 @@
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layouts/layout">
+<head></head>
+<body>
+
+<div layout:fragment="contents">
+
+    <div class="row align-items-center pt-4">
+        <div class="col-auto mr-auto mb-3">
+            <!-- breadcrumb -->
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">관리</li>
+                    <li class="breadcrumb-item active font-weight-bold" aria-current="page">협력관리</li>
+                </ol>
+            </nav>
+            <!-- /breadcrumb -->
+        </div>
+        <div class="col-auto mb-2">
+        </div>
+    </div>
+
+    <form id="search">
+        <div class="form-inline border rounded p-2">
+            <div class="col mr-auto">
+                <div class="row">
+                    <div class="form-group col">
+                        <label for="">검색조건</label>
+                        <select class="form-control" name="sysClsCd" id="sysClsCd">
+                            <option selected="selected" value="">전체</option>
+                        </select>
+                    </div>
+                    <div class="form-group col">
+                        <label for="">사용여부</label>
+                        <select class="form-control" name="useYn" id="useYn">
+                            <option selected="selected" value="">전체</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="align-self-end">
+                <button class="btn btn-info btn-sm" type="submit" id="btnSearch">조회</button>
+            </div>
+        </div>
+    </form>
+
+    <div class="mt-4">
+        <div class="row align-items-center">
+            <div class="col-auto mr-auto">
+            </div>
+            <div class="col-auto mb-2">
+                <button type="button" class="btn btn-outline-secondary btn-sm" id="btnNew">신규</button>
+                <button type="button" class="btn btn-primary btn-sm" id="btnSave">저장</button>
+            </div>
+        </div>
+        <div id="coprcpSheet"></div>
+    </div>
+
+</div>
+
+<script type="text/javascript" th:inline="javascript" layout:fragment="script">
+    $(document).ready(function () {
+
+        $.getJSON("/code/getCodeList/USE_YN", function (codes) {
+            var useYn = codes.useYn;
+            _.binder.combo("#useYn", useYn, {value: "key", text: "value"});
+            // comPgmSheet.SetColProperty(0, "sysClsCd", {ComboText: _.utils.delimiter(sysClsCd, "value"), ComboCode: _.utils.delimiter(sysClsCd, "key")});
+        });
+
+        var headers = [
+                {Text: "상태|순번|삭제|협력사|협력사ID|공사유형|공종|계약명|계약ID|계약기간시작|계약기간종료|사용여부"}
+            ],
+            mode = {
+                HeaderCheck: true
+            },
+            columns = [
+                {Type: "Status", SaveName: "rowStatus", Width: 0, Align: "center", Hidden: true},
+                {Type: "Seq", SaveName: "rowSeq", Width: 0, Align: "center", Hidden: true},
+                {Type: "DelCheck", SaveName: "rowChecked", Width: 0, Align: "left"},
+                {Type: "Popup", SaveName: "coprcpNm", Width: 150, Align: "center", InsertEdit: true},
+                {Type: "Text", SaveName: "coprcpNo", Width: 100, Align: "center"},
+                {Type: "Combo", SaveName: "cnstTyp", Width: 200, Align: "left", Edit: true},
+                {Type: "Combo", SaveName: "cstknd", Width: 200, Align: "left", Edit: true},
+                {Type: "Text", SaveName: "ctrcNm", Width: 200, Align: "left"},
+                {Type: "Int", SaveName: "ctrcNo", Width: 100, Align: "left"},
+                {
+                    Type: "CheckBox",
+                    SaveName: "useYn",
+                    Width: 80,
+                    Align: "center",
+                    Edit: true,
+                    TrueValue: 'Y',
+                    FalseValue: 'N'
+                },
+            ];
+        createIBSheet2($("#coprcpSheet")[0], "coprcpSheet", "100%", "496px");
+        coprcpSheet.InitHeaders(headers, mode);
+        coprcpSheet.InitColumns(columns);
+
+        window["coprcpSheet_OnClick"] = function (Row, Col, Value, CellX, CellY, CellW, CellH) {
+            if (coprcpSheet.ColSaveName(Col) == "coprcpNm") {
+                if (coprcpSheet.GetCellEditable(Row, "coprcpNm")) {
+                    _.dialog.modal("/coprcpInfo/ctrcList", {title: "협력사 계약정보", width: "820px"}, function (data) {
+                        coprcpSheet.SetCellValue(Row, "coprcpNo", data.coprcpNo);
+                        coprcpSheet.SetCellValue(Row, "coprcpNm", data.coprcpNm);
+                        coprcpSheet.SetCellValue(Row, "ctrcNo", data.ctrcNo);
+                        coprcpSheet.SetCellValue(Row, "ctrcNm", data.ctrcNm);
+                    });
+                }
+            }
+        };
+
+        var $search = $("#search");
+        $search.on("submit", function (e) {
+            e.preventDefault();
+            $.getJSON("/mgmt/coprcpInfo/gridList", $(this).serialize(), function (data) {
+                coprcpSheet.LoadSearchData({"data": data});
+            });
+        });
+
+        //신규 버튼 클릭
+        $("#btnNew").on("click", function () {
+            coprcpSheet.DataInsert(-1);
+        });
+
+        //저장 버튼 클릭
+        $("#btnSave").on("click", function () {
+
+            if (!coprcpSheet.IsDataModified()) {
+                _.dialog.alert("저장할 항목이 없습니다.");
+                return false;
+            }
+
+            if (!_.ibsheet.valid(coprcpSheet)) {
+                return false;
+            }
+
+            var param = $("#search").serializeObject();
+            param.coprcps = coprcpSheet.GetSaveJson().data;
+
+            _.dialog.confirm("저장하시겠습니까?", function () {
+                $.post("/mgmt/coprcpInfo/gridSave", param, function () {
+                    _.dialog.alert("저장되었습니다.");
+                    coprcpSheet.LoadSaveData(_.ibsheet.success());
+                });
+            });
+
+        });
+
+    });
+</script>
+
+</body>
+</html>   

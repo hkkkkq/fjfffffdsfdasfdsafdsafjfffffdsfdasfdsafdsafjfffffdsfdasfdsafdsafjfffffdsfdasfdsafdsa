@@ -1,0 +1,112 @@
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layouts/modalLayout">
+<body>
+<div layout:fragment="contents">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="row align-items-center">
+                <div class="col-auto mr-auto">
+                </div>
+                <div class="col-auto mb-2">
+                </div>
+            </div>
+            <div class="card mb-4">
+                <div class="card-body">
+                    <form class="row form-inline" id="search">
+                        <div class="col mr-auto">
+                            <div class="row">
+                                <input type="hidden" id="userId" name="userId" th:value="${userId}"/>
+                                <input type="hidden" id="roleId" name="userId" th:value="${roleId}"/>
+                                <input type="hidden" id="datRangCd" name="userId" th:value="${datRangCd}"/>
+                            </div>
+                        </div>
+                        <div class="col-auto align-self-end">
+                            <button type="submit" class="btn btn-info btn-sm mb-1" id="btnUserDataRolePopupSearch">조회
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="row align-items-center">
+                <div class="col-auto mr-auto">
+                </div>
+                <div class="col-auto mb-2">
+                    <button type="button" class="btn btn-outline-secondary btn-sm" id="btnSelect">선택</button>
+                </div>
+            </div>
+            <div id="deptCdListSelectPopupSheet"></div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" th:fragment="javascript">
+    $(document).ready(function () {
+
+        var headers = [
+                {Text: "상태|체크|부서|부서 코드"}
+            ],
+            mode = {
+                HeaderCheck: true
+            },
+            columns = [
+                {Type: "Status", SaveName: "rowStatus", Width: 0, Align: "center", Hidden: true},
+                {Type: "CheckBox", SaveName: "at_Chk", Width: 60, Align: "center"},
+                {Type: "Text", SaveName: "deptNm", Width: 200, Align: "left", TreeCol: 1, Edit: false},
+                {Type: "Text", SaveName: "deptCd", Width: 80, Align: "center", Edit: false}
+            ];
+        createIBSheet2($("#deptCdListSelectPopupSheet")[0], "deptCdListSelectPopupSheet", "100%", "200px");
+        deptCdListSelectPopupSheet.InitHeaders(headers, mode);
+        deptCdListSelectPopupSheet.InitColumns(columns);
+
+        var $search = $("#search");
+        $search.on("submit", function (e) {
+            e.preventDefault();
+            var param = {
+                userId: $("#userId").val(),
+                roleId: $("#roleId").val(),
+                datRangCd: $("#datRangCd").val(),
+            }
+            $.getJSON("/sysm/com/uscd/gridComDeptCdHierachyList", param, function (data) {
+                deptCdListSelectPopupSheet.LoadSearchData({"data": data});
+            });
+        });
+        $search.trigger("submit");
+
+        //선택
+        $("#btnSelect").click(function () {
+            var cRow = deptCdListSelectPopupSheet.FindCheckedRow("at_Chk");
+            var arrRow = cRow.split("|").filter(function (el) {
+                return el.length != 0;
+            });
+            if (arrRow.length == 0) {
+                _.dialog.error("선택된 행이 없습니다.");
+                return;
+            }
+
+            var h = new HashMap();
+            for (idx = 0; idx < arrRow.length; idx++) {
+                h.put(deptCdListSelectPopupSheet.GetCellValue(arrRow[idx], "deptCd"), deptCdListSelectPopupSheet.GetCellValue(arrRow[idx], "deptNm"));
+            }
+            callback(h.toJSON());
+        });
+    });
+
+    function deptCdListSelectPopupSheet_OnBeforeCheck(Row, Col) {
+        if (deptCdListSelectPopupSheet.ColSaveName(Col) == "at_Chk") {
+            var val = (deptCdListSelectPopupSheet.GetCellValue(Row, Col) == 1) ? 0 : 1;
+            var rowCount = deptCdListSelectPopupSheet.RowCount();
+
+            if (rowCount > 0) {
+                var chkLevel = deptCdListSelectPopupSheet.GetRowLevel(Row);
+                var childRows = (deptCdListSelectPopupSheet.GetChildRows(Row)).split("|");
+
+                for (var i = 0; i < childRows.length; i++) {
+                    var childRowCount = deptCdListSelectPopupSheet.GetChildNodeCount(childRows[i]);
+                    deptCdListSelectPopupSheet.SetCellValue(childRows[i], "at_Chk", val, false);
+                }
+            }
+
+        }
+    }
+</script>
+</body>
+</html>

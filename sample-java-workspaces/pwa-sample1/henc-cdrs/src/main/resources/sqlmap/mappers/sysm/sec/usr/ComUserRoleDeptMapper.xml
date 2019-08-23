@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper
+	namespace="com.henc.cdrs.sysm.sec.usr.repository.ComUserRoleDeptMapper">
+	<select id="getComUserRoleDeptList" resultType="comUserRoleDept">
+		SELECT user_id
+		,role_id
+		,use_yn
+		,dept_cd
+		,pg_com_deptcd.get_dept_nm('ko', dept_cd) AS dept_Nm
+		FROM com_user_role_dept
+		WHERE user_id = #{userId}
+		AND role_id = #{roleId}
+		AND use_yn = #{useYn}
+	</select>
+
+	<insert id="insertComUserRoleDeptList"
+		parameterType="comUserRoleDept">
+		INSERT INTO com_user_role_dept (
+		user_id
+		,role_id
+		,use_yn
+		,dept_cd
+		,wrtr_id
+		,wrtr_dm)
+		VALUES (
+		#{userId}
+		,#{roleId}
+		,#{useYn}
+		,#{deptCd}
+		,#{loginId}
+		,SYSDATE)
+	</insert>
+
+	<delete id="deleteComUserRoleDeptList"
+		parameterType="comUserRoleDept">
+		DELETE com_user_role_dept
+		WHERE user_id = #{userId}
+		AND role_id = #{roleId}
+		AND use_yn = #{useYn}
+		AND dept_cd = #{deptCd}
+	</delete>
+
+</mapper>

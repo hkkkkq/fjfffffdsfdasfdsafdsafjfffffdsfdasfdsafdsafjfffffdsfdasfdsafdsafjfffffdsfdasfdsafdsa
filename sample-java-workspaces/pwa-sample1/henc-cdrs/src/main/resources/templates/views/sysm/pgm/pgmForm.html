@@ -1,0 +1,263 @@
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layouts/layout"> 
+<head>
+</head>
+<body>
+    <div layout:fragment="contents">
+    
+        <section class="top-area">
+            <!-- breadcrumb -->
+            <nav aria-label="breadcrumb" class="float-left">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="#">시스템</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">프로그램 정보</li>
+                </ol>
+            </nav>
+            <!-- /breadcrumb -->
+            <!-- Transaction button -->
+            <div class="btn-area float-right">
+                <button type="button" class="btn btn-dark btn-sm" id="btnList">목록</button>
+                <button type="button" class="btn btn-dark btn-sm" id="btnDelete">삭제</button>
+                <button type="submit" class="btn btn-dark btn-sm" id="btnSave">저장</button>
+            </div>
+            <!-- /Transaction button -->
+        </section>
+        
+        <section id="search-area" class="mb-3">
+            <form id="form1">
+                <div class="border">
+                    <div class="form-row">
+                        <div>
+                            <label>프로그램 ID</label>
+                            <input type="text"  class="form-control form-control-sm" name="pgmId" id="pgmId" readonly>
+                        </div>
+                        <div>   
+                            <label>메인 프로그램 ID</label>
+                            <div class="input-group">
+                                <input type="hidden" class="form-control form-control-sm" id="mainPgmId" name="mainPgmId"/>
+                                <input type="text" class="form-control form-control-sm mr-1" id="mainPgmNm" name="mainPgmNm" readonly>
+                                <div class="input-group-append">
+                                    <button class="btn btn-sm" type="button" id="btnMainPgmId"><i class="fas fa-search"></i></button>
+                                </div>  
+                            </div>   
+                        </div>
+              
+                        <div>
+                            <label>시스템 분류</label>
+                            <select class="form-control form-control-sm" name="sysClsCd" id="sysClsCd" required>
+                            </select>                 
+                        </div>
+                      
+                        <div>   
+                            <label>메뉴 표시 여부</label>
+                            <div class="input-group">
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="menuYn" id="menuYnY" value="Y">
+                                    <label class="form-check-label" for="menuYnY">Yes</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="menuYn" id="menuYnN" value="N">
+                                    <label class="form-check-label" for="menuYnN">No</label>
+                                </div>
+                            </div>
+                        </div>
+                      
+                        <div style="display:none">
+                            <label>네임스페이스</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control form-control-sm mr-1" id="nmspcCd" name="nmspcCd" readonly>
+                                <div class="input-group-append">
+                                    <button class="btn btn-sm" type="button" id="btnNmspc"><i class="fas fa-search"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                      
+                        <div>
+                            <label>프로그램</label>
+                            <input type="text" class="form-control form-control-sm" id="nmspcVal" name="nmspcVal" required/>
+                        </div>
+                      
+                        <div>
+                            <label>URI 명</label>
+                            <input type="text" class="form-control form-control-sm" id="uriNm" name="uriNm" required/>
+                        </div>
+                      
+                        <div>
+                            <label>프로그램 유형</label>
+                            <select class="form-control form-control-sm" name="pgmTypCd" id="pgmTypCd" required>
+                            </select>
+                        </div>
+                      
+                        <div>
+                            <label >비고</label>
+                            <textarea class="form-control" name="pgmNote" id="pgmNote" rows="3"></textarea>
+                        </div>  
+                    </div>
+                </div>
+            </form>
+        </section>
+        <!-- /Input form -->
+      
+        <section id="grid-area" class="mb-3" style="display: none">
+            <div class="d-flex justify-content-between pb-2">
+                <h2>◎ 상세정보 등록</h2>
+                <div class="btn-area">
+                    <button type="button" class="btn btn-outline-secondary btn-sm" id="btnNew">신규</button>
+                </div>
+            </div>    
+            <div class="row">
+                <div class="col-md-12">
+                    <div id="comPgmBtnSheet"></div>
+                </div>
+            </div>
+        </section>
+    </div>
+    
+</body>
+<script type="text/javascript" th:inline="javascript" layout:fragment="script">
+    $(document).ready(function(){
+        var promise = {
+            pgm: function() {
+                return $.Deferred(function(dfd) {
+                    if (isNew()) {
+                        dfd.resolve({pgmBtns: {}}).promise();
+                    } else {
+                        $.getJSON("/sysm/pgm/pgmForm/getPgm", {pgmId: getPgmId()},function(data) {dfd.resolve(data).promise()});
+                    }
+                });
+
+            },
+            code: function() {
+                return $.Deferred(function(dfd) {
+                    $.getJSON("/code/getCodeList/SYS_CLS_CD,PGM_TYPE_CD", function(data) {dfd.resolve(data).promise()});
+                });
+            },
+        };
+
+        $.when(promise.pgm(), promise.code()).done(function(pgm, codes) {
+            createComPgmBtnSheet(pgm.pgmBtns, codes);
+
+            _.binder.combo("#sysClsCd", codes.sysClsCd, {value: "key", text: "value"});
+            _.binder.combo("#pgmTypCd", codes.pgmTypeCd, {value: "key", text: "value"});
+            _.binder.bind("#form1", pgm);
+        });
+
+        function createComPgmBtnSheet(pgmBtns, codes) {
+            var headers = [
+                    {Text: "진행상태|프로그램 ID|삭제|그룹ID|버튼 ID|네임스페이스|버튼|순번|작성자|수정자"}
+                ],
+                mode = {
+                    HeaderCheck: true
+                },
+                columns = [
+                    {Type: "Status", SaveName: "rowStatus", Width: 0, Align: "center" , Hidden: true},
+                    {Type: "Text", SaveName: "pgmId", Width: 100, Align: "center" , Hidden: true},
+                    {Type: "DelCheck", SaveName: "rowChecked", Width: 0, Align: "center"},
+                    {Type: "Text", SaveName: "btnGrpId", Width:100, Align: "center"},
+                    {Type: "Text", SaveName: "btnId", Width: 100, Align: "left"},
+                    {Type: "Text", SaveName: "nmspcCd", Width: 250, Align: "left"},
+                    {Type: "Text", SaveName: "nmspcVal", Width: 100, Align: "left"},
+                    {Type: "Text", SaveName: "btnSeq", Width: 100, Align: "center"},
+                    {Type: "Text", SaveName: "wrtrId", Width: 100, Align: "center", Hidden: true},
+                    {Type: "Text", SaveName: "updtId", Width: 100, Align: "center", Hidden: true}
+                ];
+            createIBSheet2($("#comPgmBtnSheet")[0], "comPgmBtnSheet", "100%", "400px");
+            comPgmBtnSheet.InitHeaders(headers, mode);
+            comPgmBtnSheet.InitColumns(columns);
+            if(pgmBtns!=null) {
+                comPgmBtnSheet.LoadSearchData({"data": pgmBtns});
+            }
+            window["comPgmBtnSheet_OnAfterEdit"] = function(Row, Col) {
+                $.getJSON("/nameSpace/getNameSpace", {nmspcCd: comPgmBtnSheet.GetCellValue(Row, "nmspcCd")}, function (data) {
+                    comPgmBtnSheet.SetCellValue(Row, "nmspcVal", data.koNm, false)
+                });
+            }
+        }
+
+        //목록 버튼 클릭
+        $("#btnList").on("click", function() {
+            location.href = "/sysm/pgm/pgmList";
+        });
+
+        $("#btnSave").on("click", function(){
+            var formObj = $("#form1");
+            formObj.submit();
+        });
+
+
+        //저장 버튼 클릭
+        $("#form1").parsley().on("form:submit", function(form) {
+            var pgmBtn = comPgmBtnSheet.GetSaveJson();
+            if (!_.cdrs.ibsheetValid(pgmBtn)) {
+                return false;
+            }
+
+            _.dialog.confirm("저장하시겠습니까?", function() {
+                var pgm = form.$element.serializeObject();
+                pgm.pgmBtns = pgmBtn.data;
+
+                if (isNew()) {
+                    $.post("/sysm/pgm/createPgmData", pgm, function(data) {
+                        _.dialog.alert("저장되었습니다.", function() {
+                            location.href = "/sysm/pgm/pgmList";
+                        });
+                    });
+                } else {
+                    $.post("/sysm/pgm/modifyPgmData", pgm, function(data) {
+                        _.dialog.alert("저장되었습니다.", function() {
+                            comPgmBtnSheet.LoadSaveData(_.ibsheet.success());
+                        });
+                    });
+                }
+            });
+            return false;
+        });
+
+        //상단 삭제 버튼 클릭    
+        $("#btnDelete").click(function(){
+            var pgmId = $("#pgmId").val();
+            if (pgmId == null || pgmId == "") {
+                _.dialog.alert("프로그램 정보를 먼저 생성하여주십시오");
+                return;
+            }
+
+            _.dialog.confirm("삭제하시겠습니까?", function() {
+                $.post("/sysm/pgm/removePgmData", $("#form1").serialize() , function(data) {
+                    _.dialog.alert("삭제되었습니다.", function() {
+                        location.href = "/sysm/pgm/pgmList";
+                    });
+                });
+            });
+        });
+
+        //추가 버튼 클릭
+        $("#btnNew").on("click", function() {
+            comPgmBtnSheetRow = comPgmBtnSheet.DataInsert(-1);
+        });
+
+        //메인 프로그램 돋보기 버튼 클릭
+        $("#btnMainPgmId").click(function() {
+            _.dialog.modal("/sysm/sec/rnr/pgmModal", {title: "프로그램 관리", width: "820px"}, function(data) {
+                $("#mainPgmId").val(data.pgmId);
+                $("#mainPgmNm").val(data.pgmNm);
+
+            });
+        });
+
+        $("#btnNmspc").click(function () {
+            _.dialog.modal("/sysm/pgm/nmspcModal", {title: "프로그램 관리", width: "820px"}, function (data) {
+                $("#nmspcCd").val(data.nmspcCd);
+                $("#nmspcVal").val(data.nmspcVal);
+
+            });
+        });
+
+        function isNew() {
+            return getPgmId() === null;
+        }
+
+        function getPgmId() {
+            return /*[[${pgmId}]]*/ null;
+        }
+    });
+</script>
+</html>

@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.henc.cdrs.partners.info.repository.PartnerInfoMapper">
+
+    <!-- 협력사 정보 조회 -->
+    <select id="selectCoprcpInfoGrdList" resultType="camelCaseMap">
+        SELECT  A.DEPT_CD       AS DEPT_CD               --현장 코드
+               ,A.COPRCP_NO     AS COPRCP_NO             --협력사 번호
+               ,A.CSTKND_NO     AS CSTKND_NO             --공종 번호
+               ,A.CTRC_NO       AS CTRC_NO               --계약 번호
+               ,A.USE_YN        AS USE_YN                --사용 여부
+               ,A.UPDT_DM       AS UPDT_DM               --수정 일시
+               ,A.UPDT_ID       AS UPDT_ID               --수정자 ID
+               ,A.WRTR_DM       AS WRTR_DM               --작성 일시
+               ,A.WRTR_ID       AS WRTR_ID               --작성자 ID
+               ,A.SORT_NO       AS SORT_NO               --정렬
+               ,A.CTRC_DIV_CD   AS CTRC_DIV_CD           --계약 구분 코드
+               ,A.CTRC_NM       AS CTRC_NM               --계약 명
+               ,TO_CHAR(TO_DATE(B.START_DATE,'YYYYMMDDHH24MISS'),'YYYY.MM.DD')||' ~ '||
+                TO_CHAR(TO_DATE(B.END_DATE,'YYYYMMDDHH24MISS'),'YYYY.MM.DD') AS CTRC_TERM            --계약기간
+               ,B.CORP_KOR      AS CORP_KOR              --협력사명
+               ,A.DEPT_CD       AS DEPT_CD
+               ,C.CSTKND_NM     AS CSTKND_NM
+          FROM COPRCP_INFO A
+              ,(
+                SELECT CT.CORP_ID           -- 협력업체 ID
+                    , CT.CST_INFO_ID        -- 계약번호
+                    , CT.CON_NAME           -- 계약명
+                    , CT.START_DATE         -- 계약 시작일자
+                    , CT.END_DATE           -- 계약 종료일자
+                    ,TO_CHAR(TO_DATE(CT.START_DATE,'YYYYMMDDHH24MISS'),'YYYY.MM.DD')||' ~ '||
+                     TO_CHAR(TO_DATE(CT.END_DATE,'YYYYMMDDHH24MISS'),'YYYY.MM.DD')            --계약기간
+                    , CT.WORK_NAME          -- 계약 면허 공종명
+                    , CP.CORP_KOR           -- 협력업체명
+                FROM CTRC CT
+                    ,COPRCP CP
+                WHERE 1=1
+                AND CT.CORP_ID = CP.CORP_ID
+                AND CT.DEPT_CD = #{deptCd}
+                <if test="corpKor != null">
+                   AND CP.CORP_KOR  LIKE '%'||#{corpKor}||'%'
+                </if>
+               ) B,
+               (
+                SELECT A.DEPT_CD
+                      ,A.CSTKND_NO
+                      ,B.CSTKND_NM
+                  FROM DEPT_CSTKND A
+                      ,BIZHDOF_CSTKND B
+                 WHERE A.CSTKND_NO = B.CSTKND_NO
+                   AND A.DEPT_CD = #{deptCd}
+               ) C
+         WHERE 1=1
+           AND A.COPRCP_NO = B.CORP_ID
+           AND A.CTRC_NO   = B.CST_INFO_ID
+           AND A.CSTKND_NO = C.CSTKND_NO
+           AND A.DEPT_CD   = #{deptCd}
+           <if test="coprcpNo != null">
+               AND A.COPRCP_NO = #{coprcpNo}
+           </if>
+        ORDER BY A.SORT_NO, A.COPRCP_NO ASC
+    </select>
+
+    <!-- 협력사 등록 -->
+    <insert id="insertCoprcpInfo" parameterType="partner">
+        INSERT INTO COPRCP_INFO (
+                     DEPT_CD                                 --현장 코드
+                    ,COPRCP_NO                               --협력사 번호
+                    ,CSTKND_NO                               --공종 번호
+                    ,CTRC_NO                                 --계약 번호
+                    ,USE_YN                                  --사용 여부
+                    ,UPDT_DM                                 --수정 일시
+                    ,UPDT_ID                                 --수정자 ID
+                    ,WRTR_DM                                 --작성 일시
+                    ,WRTR_ID                                 --작성자 ID
+                    ,SORT_NO                                 --정렬
+                    ,CTRC_DIV_CD                             --계약 구분 코드
+                    ,CTRC_NM)                                --계약 명
+            VALUES (
+                    #{deptCd}
+                   ,#{coprcpNo}
+                   ,#{cstkndNo}
+                   ,#{ctrcNo}
+                   ,#{useYn}
+                   ,SYSDATE
+                   ,#{loginId}
+                   ,SYSDATE
+                   ,#{loginId}
+                   ,#{sortNo}
+                   ,#{ctrcDivCd}
+                   ,#{ctrcNm})
+    </insert>
+    
+    
+    <!-- 협력사 수정 -->
+    <update id="updateCoprcpInfo" parameterType="partner">    
+        UPDATE COPRCP_INFO
+           SET USE_YN    = #{useYn}
+              ,UPDT_DM   = SYSDATE
+              ,UPDT_ID   = #{loginId}
+              ,SORT_NO   = #{sortNo}
+         WHERE DEPT_CD   = #{deptCd}        
+           AND COPRCP_NO = #{coprcpNo}      -- 구)협력업체번호
+           AND CTRC_NO   = #{ctrcNo}        -- 구)계약번호
+    </update>
+   
+   
+   <!-- 협력사 삭제 -->
+    <delete id="deleteCoprcpInfo" parameterType="partner">
+        DELETE FROM COPRCP_INFO
+         WHERE DEPT_CD   = #{deptCd}
+           AND COPRCP_NO = #{coprcpNo}
+           AND CTRC_NO   = #{ctrcNo}
+    </delete>
+    
+    <!-- 협력사 계약정보  팝업 조회 -->
+    <select id="selectprtnConListPopup" resultType="camelCaseMap">
+         
+        SELECT CT.DEPT_CD       AS DEPT_CD      -- 현장코드
+              ,CT.CORP_ID       AS CORP_ID      -- 협력업체 ID
+              ,CT.CST_INFO_ID   AS CST_INFO_ID  -- 계약번호
+              ,CT.CON_NAME      AS CON_NAME     -- 계약명
+              ,TO_CHAR(TO_DATE(CT.START_DATE,'YYYYMMDDHH24MISS'),'YYYY.MM.DD')||' ~ '||
+               TO_CHAR(TO_DATE(CT.END_DATE,'YYYYMMDDHH24MISS'),'YYYY.MM.DD')  AS CORP_TERM           --계약기간
+              ,CT.WORK_NAME     AS WORK_NAME    -- 계약 면허 공종명
+              ,CP.CORP_KOR      AS CORP_KOR     -- 협력업체명
+        FROM CTRC CT
+            ,COPRCP CP
+        WHERE 1=1
+          AND CT.CORP_ID = CP.CORP_ID
+          AND CT.DEPT_CD = #{deptCd}
+          <if test="corpId != null">
+              AND CT.CORP_ID = #{corpId}
+          </if>
+          <if test="corpKor != null">
+              AND CP.CORP_KOR LIKE '%'||#{corpKor}||'%'
+          </if>
+        ORDER BY CP.CORP_KOR ASC
+        
+    </select>
+    
+    <select id="selectSiteConstTypeGrdList" resultType="camelCaseMap">
+        SELECT STANDARD.CSTKND_NO,
+               NVL(STANDARD.UPR_CSTKND_NO, 0) as UPR_CSTKND_NO,
+               STANDARD.CSTKND_NM,
+               STANDARD.DESCRIPTION,
+               STANDARD."level",
+               NVL(SITE.USE_YN, 'N') as USE_YN,
+               STANDARD.BIZHDOF_CD,
+               NVL(SITE.DEPT_CD, 'X') as dept
+        FROM (SELECT CSTKND_NO,
+                     UPR_CSTKND_NO,
+                     BIZHDOF_CD,
+                     CSTKND_NM,
+                     DESCRIPTION,
+                     SORT_NO,
+                     LEVEL - 1                            AS "level",
+                     decode(LEVEL, 1, 'root', 'worktype') AS rel,
+                     nvl(USE_YN, 'N')                     AS use_yn
+              FROM (SELECT * 
+                      FROM BIZHDOF_CSTKND 
+                     WHERE 1=1
+                     <if test="bizhdofCd != null">
+                       AND BIZHDOF_CD = #{bizhdofCd}
+                     </if>
+                       AND USE_YN = 'Y') t1
+              WHERE 1 = 1
+              START WITH UPR_CSTKND_NO IS NULL
+              CONNECT BY PRIOR CSTKND_NO = UPR_CSTKND_NO
+              ORDER SIBLINGS BY SORT_NO) STANDARD
+                 LEFT OUTER JOIN DEPT_CSTKND SITE
+                         ON STANDARD.CSTKND_NO = SITE.CSTKND_NO AND SITE.DEPT_CD = #{deptCd}
+    </select>
+    
+    
+    <select id="selectDdBrfgCompCnt" resultType="java.lang.Integer">
+        SELECT COUNT(*) AS CNT
+          FROM DD_BRFG_COMP
+         WHERE DEPT_CD = #{deptCd}
+           AND PARTNER_NO = #{coprcpNo}
+           AND CTRC_NO = #{ctrcNo}
+    </select>
+    
+</mapper>

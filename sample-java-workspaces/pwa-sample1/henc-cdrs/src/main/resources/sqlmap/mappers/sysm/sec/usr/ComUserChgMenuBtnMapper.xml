@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper
+	namespace="com.henc.cdrs.sysm.sec.usr.repository.ComUserChgMenuBtnMapper">
+	<select id="getComUserChgMenuBtnList" resultType="camelCaseMap">
+		SELECT NVL(tb.user_id, #{userId})             AS user_id
+			 , ta.role_id
+			 , ta.menu_id
+			 , ta.pgm_id
+			 , ta.btn_grp_id
+			 , ta.btn_id
+			 , ta.nmspc_val
+			 , ta.btn_seq
+			 , NVL(tb.user_btn_use_yn, ta.btn_use_yn) AS user_Btn_Use_Yn
+			 , NVL2(tb.user_id, 1, 0)                 AS use_Yn
+			 , NVL2(tb.user_id, 1, 0)                 AS original_Use_Yn
+		FROM (SELECT NVL(t2.MENU_ID, #{menuId})                        AS menu_id
+				   , NVL(t2.ROLE_ID, #{roleId})                        AS role_id
+				   , t1.PGM_ID
+				   , t1.btn_grp_id
+				   , t1.BTN_ID
+				   , pg_com_namespace.get_namespace(t1.nmspc_cd, 'KO') AS nmspc_val
+				   , t1.btn_seq
+				   , NVL(t2.btn_use_yn, 'Y')                           AS btn_use_yn
+				   , t2.WRTR_DM
+				   , t2.WRTR_ID
+				   , t2.UPDT_DM
+				   , t2.UPDT_ID
+			  FROM com_pgm_btn t1
+				 , com_menu_pgm_btn t2
+			  WHERE t1.pgm_id = t2.pgm_id(+)
+				AND t1.btn_id = t2.btn_id(+)
+				AND t2.MENU_ID(+) = #{menuId}
+				AND t2.ROLE_ID(+) = #{roleId}
+				AND t1.PGM_ID = #{pgmId}) ta
+		   , (SELECT *
+			  FROM com_user_chg_menu_btn
+			  WHERE user_id = #{userId}
+				AND role_id = #{roleId}) tb
+		WHERE ta.role_id = tb.role_id(+)
+		  AND ta.menu_id = tb.menu_id(+)
+		  AND ta.pgm_id = tb.pgm_id(+)
+		  AND ta.btn_id = tb.btn_id(+)
+		ORDER BY ta.btn_grp_id, ta.btn_seq
+	</select>
+
+	<update id="mergeComUserChgMenuBtnList" parameterType="comUserChgMenuBtn">
+		MERGE INTO com_user_chg_menu_btn d
+		USING (SELECT #{userId} AS user_id
+					, #{roleId} AS role_id
+					, #{menuId} AS menu_id
+					, #{pgmId}  AS pgm_id
+					, #{btnId}  AS btn_id
+			   FROM dual) s
+		ON (d.user_id = s.user_id
+			AND d.role_id = s.role_id
+			AND d.menu_id = s.menu_id
+			AND d.pgm_id = s.pgm_id
+			AND d.btn_id = s.btn_id)
+		WHEN MATCHED THEN
+			UPDATE
+			SET d.user_btn_use_yn = #{userBtnUseYn}
+			  , d.updt_dm         = SYSDATE
+			  , d.updt_id         = #{loginId}
+		WHEN NOT MATCHED THEN
+			INSERT ( d.user_id
+				   , d.role_id
+				   , d.menu_id
+				   , d.pgm_id
+				   , d.btn_id
+				   , d.user_btn_use_yn
+				   , d.wrtr_dm
+				   , d.wrtr_id
+				   , d.updt_dm
+				   , d.updt_id)
+			VALUES ( #{userId}
+				   , #{roleId}
+				   , #{menuId}
+				   , #{pgmId}
+				   , #{btnId}
+				   , #{userBtnUseYn}
+				   , SYSDATE
+				   , #{loginId}
+				   , SYSDATE
+				   , #{loginId})
+	</update>
+
+	<delete id="deleteComUserChgMenuBtnList"
+		parameterType="comUserChgMenuBtn">
+		DELETE com_user_chg_menu_btn
+		WHERE user_id = #{userId}
+		AND role_id = #{roleId}
+		AND menu_id = #{menuId}
+		AND pgm_id = #{pgmId}
+		AND btn_id = #{btnId}
+	</delete>
+
+</mapper>

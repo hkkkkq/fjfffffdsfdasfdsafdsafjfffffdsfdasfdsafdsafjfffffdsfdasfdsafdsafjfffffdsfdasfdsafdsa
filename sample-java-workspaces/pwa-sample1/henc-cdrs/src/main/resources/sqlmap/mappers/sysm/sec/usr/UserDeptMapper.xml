@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.henc.cdrs.sysm.sec.usr.repository.UserDeptMapper">
+
+	<select id="getUserDeptList" resultType="camelCaseMap" parameterType="java.lang.String">
+		SELECT UD.user_id, UD.dept_cd, UD.bas_dept_yn, UD.role_id, ACZ.dept_nm, ACZ.ac_unit_cd as bizhdof_cd
+		FROM USER_DEPT UD
+         INNER JOIN ACZ10100 ACZ ON UD.DEPT_CD = ACZ.DEPT_CD
+		WHERE user_id = #{userId}
+        ORDER BY ACZ.DEPT_CD
+	</select>
+
+	<insert id="insertUserDept" parameterType="userDept">
+		INSERT INTO USER_DEPT (USER_ID, DEPT_CD, BAS_DEPT_YN, UPDT_DM, UPDT_ID, WRTR_DM, WRTR_ID, ROLE_ID)
+		VALUES (#{userId}, #{deptCd}, #{basDeptYn}, sysdate, #{loginId}, sysdate, #{loginId}, #{roleId})
+	</insert>
+
+	<update id="updateUserDept" parameterType="userDept">
+		UPDATE USER_DEPT
+		SET BAS_DEPT_YN = #{basDeptYn},
+			ROLE_ID     = #{roleId}
+		WHERE user_id = #{userId}
+		AND dept_cd = #{deptCd}
+	</update>
+
+	<delete id="deleteUserDept" parameterType="userDept">
+		DELETE FROM USER_DEPT WHERE user_id = #{userId} AND dept_cd = #{deptCd}
+	</delete>
+
+	<select id="getHencDeptList" resultType="camelCaseMap" parameterType="java.lang.String">
+		SELECT acz.dept_cd, acz.dept_nm, dept.bas_dept_yn, dept.role_id, acz.ac_unit_cd as bizhdof_cd
+		FROM (
+		      SELECT D.DEPT_CODE AS DEPT_CD , decode(ROWNUM, 1, 'A', 'N') AS bas_dept_yn , '' AS ROLE_ID
+				FROM ZBPCMS.COM_USER_DEPT_V UD
+					INNER JOIN ZBPCMS.COM_DEPT_V D ON UD.DEPT_CODE = D.DEPT_CODE AND D.DEL_KIND NOT IN ('1')
+				WHERE UD.EMP_NO = #{userId}
+			  UNION
+			  SELECT ud.dept_cd, ud.BAS_DEPT_YN, ud.role_id
+			    FROM user_dept ud
+			   WHERE ud.user_id = #{userId}) dept
+				 	INNER JOIN acz10100 acz ON dept.dept_cd = acz.dept_cd
+	</select>
+
+
+	<update id="resetBasDeptYn" parameterType="userDept">
+		UPDATE USER_DEPT
+		SET BAS_DEPT_YN = 'N',
+			UPDT_DM = SYSDATE,
+			UPDT_ID = #{userId}
+		WHERE user_id = #{userId}
+	</update>
+
+	<update id="updateBasDeptYn" parameterType="userDept">
+		UPDATE USER_DEPT
+		SET BAS_DEPT_YN = #{basDeptYn},
+			UPDT_DM = SYSDATE,
+			UPDT_ID = #{userId}
+		WHERE user_id = #{userId}
+		AND dept_cd = #{deptCd}
+	</update>
+
+</mapper>

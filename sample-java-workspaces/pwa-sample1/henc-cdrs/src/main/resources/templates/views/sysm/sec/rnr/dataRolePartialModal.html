@@ -1,0 +1,189 @@
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layouts/modalLayout">
+<body>
+  <div layout:fragment="contents">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="row align-items-center">
+          <div class="col-auto mr-auto">
+          </div>
+          <div class="col-auto mb-2">
+            <button type="button" class="btn btn-primary btn-sm" id="btnDataRolePartialSave">저장</button>
+          </div>
+        </div>       
+        <div class="card mb-4">
+          <div class="card-body">
+            <form class="row form-inline" id="frmDataRole" > 
+              <div class="col mr-auto">
+                <div class="row">  
+                  <input type="text" class="form-control form-control-sm" id="roleId" name="roleId" th:value=${roleId} hidden="true">
+                  <input type="text" class="form-control form-control-sm" id="datRangCd" name="datRangCd" value="P" hidden="true">
+                </div>  
+              </div>
+              <div class="col-auto align-self-end">         
+                <button type="button" class="btn btn-info btn-sm mb-1" id="btnDataRolePartialSearch">조회</button>
+              </div>
+            </form>
+          </div>
+        </div>
+        <div class="row align-items-center">
+          <div class="col-auto mr-auto">            
+          </div>
+          <div class="col-auto mb-2">
+            <button type="button" class="btn btn-outline-secondary btn-sm mb-1" id="btnDataRolePartialNew">추가</button>
+          </div>
+        </div>         
+        <div id="comRoleDeptSheet"></div>
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript" th:fragment="javascript">
+  $(document).ready(function() {
+      $.getJSON("/code/getCodeList/ORG_DEPT_LEV1", function(codes) {  
+          var orgDeptLev1 = codes.orgDeptLev1;
+          var info = {ComboText: _.utils.delimiter(orgDeptLev1, "value"), ComboCode: _.utils.delimiter(orgDeptLev1, "key")};
+          comRoleDeptSheet.SetColProperty(0, "attribute1", info);          
+      });
+     
+      var headers = [
+          {Text: "진행상태|삭제|roleId|datRangCd|seq|본부|담당"}
+      ],
+      mode = {
+          HeaderCheck: true
+      },
+      columns = [              
+          {Type: "Status", SaveName: "rowStatus", Width: 0, Align: "center" , Hidden:true},
+          {Type: "DelCheck", SaveName: "rowChecked", Width: 60, Align: "center"},
+          {Type: "Text", SaveName: "roleId", Width: 0, Hidden: true},
+          {Type: "Text", SaveName: "datRangCd", Width: 0, Hidden: true},
+          {Type: "Int", SaveName: "seq", Width: 0, Hidden: true},
+          {Type: "Combo", SaveName: "attribute1", Width: 180},
+          {Type: "Combo", SaveName: "attribute2", Width: 180, Hidden: false}
+      ];
+      createIBSheet2($("#comRoleDeptSheet")[0], "comRoleDeptSheet", '100%', "300px");
+      comRoleDeptSheet.InitHeaders(headers, mode);
+      comRoleDeptSheet.InitColumns(columns);    
+      window["comRoleDeptSheet_OnChange"] = function(Row, Col, Value, OldValue, RaiseFlag) {
+          setColattribute2(orgdeptlev2);
+      }    
+      window["comRoleDeptSheet_OnSearchEnd"] = function(Code, Msg, StCode, StMsg) {
+          setColattribute2(orgdeptlev2);
+      }
+      
+      var orgdeptlev2 = "";
+      $.getJSON("/sysm/sec/rnr/dataRolePartialModal/getOrgDeptLev2", function(codes) {
+          orgdeptlev2 = codes;
+      });           
+      
+      //attribute2 컬럼에 셋팅
+      function setColattribute2(codes){
+          var code="";
+          var value="";          
+          
+          for (var i = 1; i <= comRoleDeptSheet.RowCount(); i++) {      
+              for( var map in codes) { 
+                  for( var combo in codes[map]) { 
+                      if (combo == comRoleDeptSheet.GetCellValue(i, "attribute1")) { 
+                      for( var key in codes[map][combo]) { 
+                          console.log( key + '=>' + codes[map][combo][key] );
+                          if(key.substr(0,4)=="IBCC"){
+                              code = codes[map][combo][key];
+                          }else if(key.substr(0,4)=="IBCV"){
+                              value = codes[map][combo][key];
+                          }
+                      }
+                      comRoleDeptSheet.CellComboItem(i, "attribute2", {ComboText: value, ComboCode: code});
+                      continue;
+                      }
+                  }
+              } 
+          }
+      }           
+      
+      //추가 버튼 클릭
+      $("#btnDataRolePartialNew").on("click", function() {
+          comRoleDeptSheetRow = comRoleDeptSheet.DataInsert(-1);
+          comRoleDeptSheet.SetCellValue(comRoleDeptSheetRow, "roleId", $("#roleId").val());
+          comRoleDeptSheet.SetCellValue(comRoleDeptSheetRow, "datRangCd", "P");
+          comRoleDeptSheet.SetCellValue(comRoleDeptSheetRow, "attribute1", "");
+          comRoleDeptSheet.SetCellValue(comRoleDeptSheetRow, "attribute2", "");
+      });
+     
+      //조회 버튼 클릭
+      $("#btnDataRolePartialSearch").on("click", function() {
+          var param = "roleId="+$("#roleId").val() + "&datRangCd=P";
+          $.getJSON("/sysm/sec/rnr/roleList/gridComRoleDeptList", param, function (data) {
+              comRoleDeptSheet.LoadSearchData({"data": data});            
+          });                                    
+      });
+      
+      //저장 버튼 클릭
+      $("#btnDataRolePartialSave").on("click", function() {
+          
+          if (isSaveValidate(true)) {
+              var changeCnt = 0;
+              for (var i=1; i <= comRoleDeptSheet.RowCount(); i++) {
+                  if (comRoleDeptSheet.GetCellValue(i , "rowStatus") == "I" 
+                          || comRoleDeptSheet.GetCellValue(i , "rowStatus") == "U"
+                              || comRoleDeptSheet.GetCellValue(i , "rowStatus") == "D") {
+                      changeCnt++;
+                  }
+              }
+              
+              if (changeCnt == 0) {
+                  _.dialog.alert("저장할 항목이 없습니다.");
+                  return;
+              }
+
+              var paramlist = {
+                  roleId : $("#roleId").val(),
+                  datRangCd : "P",
+                  comRoleDepts :  comRoleDeptSheet.GetSaveJson().data
+              };            
+              
+              _.dialog.confirm("저장하시겠습니까?", function() {
+                  $.post("/sysm/sec/rnr/roleList/gridComRoleDeptSave", paramlist, function() {                       
+                      comRoleDeptSheet.LoadSaveData(_.ibsheet.success());
+                  });
+              });
+          }                      
+                        
+      });               
+      
+      function isSaveValidate(p_isMsgView) {
+          var isSuccess = true;
+          var attribute1DupRows = comRoleDeptSheet.ColValueDupRows('attribute1', 1, 1);
+          var dupRow = attribute1DupRows.split("|");
+          
+          var arrRow = dupRow[0].split(",");
+          
+          var attribute1 = new Array();
+          for (idx=0; idx<arrRow.length; idx++) {
+              var tempObject = new Object();
+              tempObject.rowIdx = arrRow[idx];
+              tempObject.value = comRoleDeptSheet.GetCellValue(arrRow[idx], 'attribute1');
+              attribute1.push(tempObject);
+          }
+          
+          for (idx=0; idx<attribute1.length; idx++) {
+              var tempArray = new Array();
+              for (j=1; j<=comRoleDeptSheet.RowCount();j++) {
+                  if (comRoleDeptSheet.GetCellValue(j, 'rowStatus') != 'D') {
+                      if (comRoleDeptSheet.GetCellValue(j, 'attribute1') == attribute1[idx].value) {
+                          tempArray.push(comRoleDeptSheet.GetCellValue(j, 'attribute2'));
+                      }
+                  }
+              }
+              if (tempArray.length > 1 && jQuery.inArray("", tempArray) >= 0) {
+                  var temp = comRoleDeptSheet.GetCellText(attribute1[idx].rowIdx, 'attribute1')
+                  _.dialog.alert(temp + "은(는) 이미 전체로 선택된 데이터가 있습니다.\n전체가 존재하는 경우 다른 항목은 추가할수 없습니다.");
+                  isSuccess = false;
+              }
+          }
+          return isSuccess;
+      }    
+            
+      
+  });
+  </script>
+</body>
+</html>

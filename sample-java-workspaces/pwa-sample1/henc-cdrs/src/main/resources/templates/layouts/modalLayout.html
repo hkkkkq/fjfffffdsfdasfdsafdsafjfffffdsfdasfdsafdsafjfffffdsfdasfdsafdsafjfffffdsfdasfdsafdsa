@@ -1,0 +1,25 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <!-- dream framework의 모든 기능을 사용하기 위해서는 반드시 추가 -->
+  <link rel="stylesheet" th:replace="dream-static-resources :: style" />
+
+
+</head>
+<body>
+  <div>
+    <div layout:fragment="contents"></div>
+    <!-- dream framework의 dialog를 사용하기 위해서는 반드시 추가 -->
+    <div th:replace="dream-static-resources :: components"></div>
+  </div>
+  <!-- dream framework의 모든 기능을 사용하기 위해서는 반드시 추가 -->
+  <script th:replace="dream-static-resources :: script"></script>
+  <script type="text/javascript" th:src="@{/js/tree/jquery.jstree.js}"></script>
+  <script type="text/javascript" th:src="@{/js/jquery.json-2.4.min.js}"></script>
+  <script type="text/javascript" th:replace=":: javascript"></script>
+  <script type="text/javascript" th:src="@{/js/ibleaders.js}"></script>
+</body>
+</html>

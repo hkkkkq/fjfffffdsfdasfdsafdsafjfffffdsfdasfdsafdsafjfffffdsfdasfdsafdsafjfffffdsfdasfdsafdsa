@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.henc.cdrs.common.code.repository.CodeMapper">
+
+	<select id="selectCodeList" resultType="camelCaseMap"
+		parameterType="java.lang.String">
+		SELECT a.std_cd
+		, a.std_detl_cd
+		, a.nmspc_cd
+		, pg_com_namespace.get_namespace(a.nmspc_cd, 'ko') AS nmspc_val
+		, a.detl_cd_note
+		, a.detl_cd_seq
+		, '보조정보설정' AS etc_info_set
+		, a.use_yn
+		FROM com_std_detl_cd a
+		WHERE a.use_yn = 'Y'
+		AND a.std_cd = #{stdCd}
+		<if test="stdDetlCd != null and !stdDetlCd.equals('')">
+			AND std_detl_cd = #{stdDetlCd}
+		</if>
+		<if test="includeCodeList != null and !includeCodeList.equals('')">
+			AND std_detl_cd IN (#{includeCodeList})
+		</if>
+		<if test="excludeCodeList != null and !excludeCodeList.equals('')">
+			AND std_detl_cd NOT IN (#{excludeCodeList})
+		</if>
+		<if test="nmspcCd != null and !nmspcCd.equals('')">
+			AND nmspc_cd = #{nmspcCd}
+		</if>
+		<if test="userDefiCd != null and !userDefiCd.equals('')">
+			AND user_defi_cd = #{userDefiCd}
+		</if>
+		<if test="detlCdNote != null and !detlCdNote.equals('')">
+			AND detl_cd_note LIKE '%'|| #{detlCdNote}||'%'
+		</if>
+		<if test="attrId != null and !attrId.equals('')">
+			AND b.attribute_id = #{attrId}
+		</if>
+		<if test="attrVal != null and !attrVal.equals('')">
+			AND b.attribute_val = #{attrVal}
+		</if>
+		ORDER BY a.detl_cd_seq
+	</select>
+
+	<select id="selectCodeAttributeList" resultType="camelCaseMap">
+		SELECT a.std_cd
+		,a.std_detl_cd
+		,MAX(a.nmspc_cd) AS nmspc_cd
+		,MAX(pg_com_namespace.get_namespace(a.nmspc_cd, 'ko')) AS nmspc_val
+		,MAX(a.detl_cd_note) AS detl_cd_note
+		,MAX(a.detl_cd_seq) AS detl_cd_seq
+		,'보조정보설정' AS etc_info_set
+		,MAX(a.use_yn) AS use_yn
+		,MAX(CASE WHEN b.attribute_id = 1 THEN attribute_val END) attribute_id_1
+		,MAX(CASE WHEN b.attribute_id = 2 THEN attribute_val END)
+		attribute_id_2
+		,MAX(CASE WHEN b.attribute_id = 3 THEN attribute_val END) attribute_id_3
+		,MAX(CASE WHEN b.attribute_id = 4 THEN attribute_val END)
+		attribute_id_4
+		FROM com_std_detl_cd a
+		LEFT OUTER JOIN com_attribute_defi b
+		ON (a.std_cd = b.std_cd)
+		LEFT OUTER JOIN com_attribute_val c
+		ON (a.std_cd = c.std_cd
+		AND a.std_detl_cd = c.std_detl_cd
+		AND b.attribute_id = c.attribute_id)
+		WHERE a.use_yn = 'Y'
+		AND a.std_cd = #{stdCd}
+		<if test="stdDetlCd != null">
+			AND a.std_detl_cd = #{stdDetlCd}
+		</if>
+		GROUP BY
+		a.std_cd
+		,a.std_detl_cd
+	</select>
+
+</mapper>

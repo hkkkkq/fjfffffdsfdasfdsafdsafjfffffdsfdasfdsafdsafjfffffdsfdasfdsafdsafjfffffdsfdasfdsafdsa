@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.henc.cdrs.coprcp.repository.CoprcpInfoMapper">
+
+	<select id="findCoprcpsBy" resultType="camelCaseMap">
+		SELECT dept_cd, coprcp_no, cnst_typ, cstknd, ctrc_no, use_yn
+		FROM COPRCP_INFO
+		WHERE 1 = 1
+		<if test="useYn != null">
+			AND use_yn = #{useYn}
+		</if>
+		ORDER BY coprcp_no
+	</select>
+
+	<insert id="insertCoprcp" parameterType="coprcpInfo">
+		insert into COPRCP_INFO (dept_cd, coprcp_no, cnst_typ, cstknd, ctrc_no, use_yn, wrtr_dm, wrtr_id)
+		values (#{deptCd}, #{coprcpNo}, #{cnstTyp}, #{cstknd}, #{ctrcNo}, #{useYn}, SYSDATE, #{wrtrId})
+	</insert>
+
+	<update id="updateCoprcp" parameterType="coprcpInfo">
+		UPDATE COPRCP_INFO
+		SET CNST_TYP = #{cnstTyp},
+		    CSTKND = #{cstknd},
+		    CTRC_NO = #{ctrcNo},
+			USE_YN = #{useYn}
+		WHERE DEPT_CD = #{deptCd}
+		AND COPRCP_NO = #{coprcpNo}
+	</update>
+
+	<delete id="deleteCoprcp" parameterType="coprcpInfo">
+		DELETE FROM COPRCP_INFO
+		WHERE DEPT_CD = #{deptCd}
+		AND COPRCP_NO = #{coprcpNo}
+	</delete>
+
+	<select id="getCtrcs" resultType="camelCaseMap" parameterType="coprcpInfo">
+		SELECT ci.dept_cd,
+				ci.coprcp_no,
+				coprcp.corp_kor                AS coprcp_nm,
+				ci.cstknd_no,
+				ci.ctrc_no,
+				ci.use_yn,
+				ci.ctrc_div_cd,
+				ci.ctrc_nm,
+				FN_GET_CSTKND_NM(ci.cstknd_no) AS cstknd_nm
+		FROM coprcp_info ci
+		LEFT OUTER JOIN coprcp ON ci.COPRCP_NO = COPRCP.CORP_ID
+		WHERE ci.coprcp_no = #{coprcpNo}
+		  AND ci.dept_cd = #{deptCd}
+		<if test="ctrcNo != null">
+			AND ci.ctrc_no = #{ctrcNo}
+		</if>
+		order by ci.sort_no
+	</select>
+
+	<select id="getCtrc" resultType="camelCaseMap" parameterType="coprcpInfo">
+		SELECT ci.dept_cd,
+			   ci.coprcp_no,
+			   coprcp.corp_kor                AS coprcp_nm,
+			   ci.cstknd_no,
+			   ci.ctrc_no,
+			   ci.SORT_NO,
+			   ci.use_yn,
+			   ci.ctrc_div_cd,
+			   ci.ctrc_nm,
+			   FN_GET_CSTKND_NM(ci.cstknd_no) AS cstknd_nm
+		FROM coprcp_info ci
+				 LEFT OUTER JOIN coprcp ON ci.COPRCP_NO = COPRCP.CORP_ID
+		WHERE ci.coprcp_no = #{coprcpNo}
+		  AND ci.ctrc_no = #{ctrcNo}
+		  AND ci.dept_cd = #{deptCd}
+	</select>
+
+</mapper>

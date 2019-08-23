@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper
+	namespace="com.henc.cdrs.sysm.sec.usr.repository.ComUserChgMenuMapper">
+	<update id="mergeComUserChgMenu" parameterType="comUserChgMenu">
+		MERGE INTO com_user_chg_menu d
+		USING (SELECT #{userId} AS user_id
+					, #{roleId} AS role_id
+					, #{menuId} AS menu_id
+			   FROM dual) s
+		ON (d.user_id = s.user_id
+			AND d.role_id = s.role_id
+			AND d.menu_id = s.menu_id)
+		WHEN MATCHED THEN
+			UPDATE
+			SET d.chg_menu_seq    = #{chgMenuSeq}
+			  , d.chg_menu_cls_cd = #{chgMenuClsCd}
+			  , d.chg_menu_use_yn = #{chgMenuUseYn}
+			  , d.chg_upr_menu_id = #{chgUprMenuId}
+			  , d.updt_dm         = SYSDATE
+			  , d.updt_id         = #{loginId}
+		WHEN NOT MATCHED THEN
+			INSERT ( d.user_id
+				   , d.role_id
+				   , d.menu_id
+				   , d.chg_menu_use_yn
+				   , d.chg_menu_seq
+				   , d.chg_menu_cls_cd
+				   , d.chg_nmspc_cd
+				   , d.chg_upr_menu_id
+				   , d.wrtr_dm
+				   , d.wrtr_id
+				   , d.updt_dm
+				   , d.updt_id)
+			VALUES ( #{userId}
+				   , #{roleId}
+				   , #{menuId}
+				   , #{chgMenuUseYn}
+				   , #{chgMenuSeq}
+				   , #{chgMenuClsCd}
+				   , #{menuNmspcCd}
+				   , #{chgUprMenuId}
+				   , SYSDATE
+				   , #{loginId}
+				   , SYSDATE
+				   , #{loginId})
+	</update>
+
+	<delete id="deleteComUserChgMenu" parameterType="comUserChgMenu">
+		DELETE com_user_chg_menu
+		WHERE user_id = #{userId}
+		AND role_id = #{roleId}
+		AND menu_id = #{menuId}
+	</delete>
+
+</mapper>

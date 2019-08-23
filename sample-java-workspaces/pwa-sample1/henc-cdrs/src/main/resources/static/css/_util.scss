@@ -1,0 +1,10 @@
+@font-face {
+  font-family: 'password';
+  font-style: normal;
+  font-weight: 400;
+  src: url(./password.ttf);
+}
+
+input.password_field {
+  font-family: 'password' !important;
+}

@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.henc.cdrs.partners.applicant.repository.PartnerApplicantMapper">
+
+    <!-- 협력사 정보 조회 -->
+    <select id="selectApplicantGrdList" resultType="camelCaseMap">
+        SELECT  A.LABATD_PCNT_NO                          --출역 인원 번호
+               ,A.DEPT_CD                                 --현장 코드
+               ,A.PARTNER_NO                              --협력사 번호
+               ,A.NAME                                    --성명
+               ,A.OCPT_NO                                 --직종 번호
+               ,A.BRTDY                                   --생년월일
+               ,A.NOTE                                    --비고
+               ,A.UPDT_DM                                 --수정 일시
+               ,A.UPDT_ID                                 --수정자 ID
+               ,A.WRTR_DM                                 --작성 일시
+               ,A.WRTR_ID                                 --작성자 ID
+               ,B.CORP_KOR                                --협력사명
+         FROM  LABATD_PCNT A
+              ,COPRCP B
+        WHERE 1=1
+          AND A.PARTNER_NO = B.CORP_ID
+          <if test="deptCd != null">
+            AND A.DEPT_CD = #{deptCd}
+          </if>
+          <if test="partnerNo != null">
+            AND A.PARTNER_NO = #{partnerNo}
+          </if>
+          <if test="corpKor != null">
+            AND B.CORP_KOR LIKE '%'||#{corpKor}||'%'
+          </if>
+          <if test="ocptNo != null">
+            AND A.OCPT_NO = #{ocptNo}
+          </if>
+          <if test="name != null">
+            AND A.NAME = #{name}
+          </if>
+    </select>
+
+    <!-- 협력사 등록 -->
+    <insert id="insertApplicant" parameterType="applicant">
+        INSERT INTO LABATD_PCNT (
+                                 LABATD_PCNT_NO                          --출역 인원 번호
+                                ,DEPT_CD                                 --현장 코드
+                                ,PARTNER_NO                              --협력사 번호
+                                ,NAME                                    --성명
+                                ,OCPT_NO                                 --직종 번호
+                                ,BRTDY                                   --생년월일
+                                ,NOTE                                    --비고
+                                ,UPDT_DM                                 --수정 일시
+                                ,UPDT_ID                                 --수정자 ID
+                                ,WRTR_DM                                 --작성 일시
+                                ,WRTR_ID                                 --작성자 ID
+                                )
+                         VALUES (
+                                 LABATD_PCNT_S.NEXTVAL
+                                 ,#{deptCd}
+                                 ,#{partnerNo}
+                                 ,#{name}
+                                 ,#{ocptNo}
+                                 ,#{brtdy}
+                                 ,#{note}
+                                 ,SYSDATE
+                                 ,#{loginId}
+                                 ,SYSDATE
+                                 ,#{loginId}
+                                )
+    </insert>
+    
+    
+    <!-- 협력사 수정 -->
+    <update id="updateApplicant" parameterType="applicant">    
+        UPDATE LABATD_PCNT
+           SET NAME = #{name}
+              ,OCPT_NO = #{ocptNo}
+              ,BRTDY = #{brtdy}
+              ,UPDT_DM = SYSDATE
+              ,WRTR_ID = #{loginId}
+         WHERE LABATD_PCNT_NO = #{labatdPcntNo}
+           AND PARTNER_NO = #{partnerNo}
+           AND DEPT_CD = #{deptCd}
+    </update>
+   
+   
+   <!-- 협력사 삭제 -->
+    <delete id="deleteApplicant" parameterType="applicant">
+        DELETE FROM LABATD_PCNT
+         WHERE LABATD_PCNT_NO = #{labatdPcntNo}
+           AND PARTNER_NO = #{partnerNo}
+           AND DEPT_CD = #{deptCd}
+    </delete>
+    
+
+    <select id="selectComboTest" resultType="camelCaseMap">
+        
+        SELECT OCPT_NO   -- 직종번호 
+              ,OCPT_NM   -- 직종명 
+          FROM ocpt a
+              ,dept_cstknd b
+         WHERE a.BIZ_HDOF_CD = #{bizHdofCd}
+           AND a.USE_YN = 'Y'
+           and b.dept_cd = #{deptCd}
+           AND a.cstknd_no = b.cstknd_no
+
+    </select>
+    
+</mapper>

@@ -1,0 +1,277 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta http-equiv="X-UA-Compatible" content="IE=edge" /> <!-- 호환성보기 안먹을시 아파치설정때문에 안될 수도 있음 안되면 다른처리 요망 -->
+<title>공사일보</title>
+<link rel="shortcut icon" th:href="@{/favicon.ico}">
+<link rel="stylesheet" th:replace="dream-static-resources :: style" />
+<link rel="stylesheet" type="text/css" th:href="@{/css/login.css}"/>
+
+
+<meta name="msapplication-TileImage" content="/images/icon/ms-icon-144x144.png">
+<meta name="theme-color" content="#ffffff">
+<link rel="apple-touch-icon" sizes="57x57" href="/images/icon/apple-icon-57x57.png">
+<link rel="apple-touch-icon" sizes="60x60" href="/images/icon/apple-icon-60x60.png">
+<link rel="apple-touch-icon" sizes="72x72" href="/images/icon/apple-icon-72x72.png">
+<link rel="apple-touch-icon" sizes="76x76" href="/images/icon/apple-icon-76x76.png">
+<link rel="apple-touch-icon" sizes="114x114" href="/images/icon/apple-icon-114x114.png">
+<link rel="apple-touch-icon" sizes="120x120" href="/images/icon/apple-icon-120x120.png">
+<link rel="apple-touch-icon" sizes="144x144" href="/images/icon/apple-icon-144x144.png">
+<link rel="apple-touch-icon" sizes="152x152" href="/images/icon/apple-icon-152x152.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/images/icon/apple-icon-180x180.png">
+<link rel="icon" type="image/png" sizes="192x192" href="/images/icon/android-icon-192x192.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/images/icon/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="96x96" href="/images/icon/favicon-96x96.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/images/icon/favicon-16x16.png">
+<link rel="manifest" crossorigin="use-credentials" href="/manifest.json">
+
+
+
+<body class="text-center">
+      <form class="form-signin" id='frm' name="frm" method="post" action="/security/sign_in">
+          <img class="mb-4" src="/images/logo/logo.png" alt="한화건설">
+          <h1 class="mb-4">공사일보</h1>
+          <label for="username" class="sr-only">사번 or 전화번호</label>
+          <input class="form-control" type="text"  placeholder="사번 or 전화번호" id="username" name="username" th:value="${userId}" required autofocus>
+          <label for="password" class="sr-only">비밀번호</label>
+          <input class="form-control" type="password"  placeholder="비밀번호" id="password" name="password" value="star6349!!" required>
+          <button class="btn btn-lg btn-block mb-3" type="button" id="loginBtn">로그인</button>
+          <div class="form-inline form-group">
+              <div class="custom-control custom-checkbox mr-auto">
+                  <input type="checkbox" class="custom-control-input" id="idSaveCheck" name="idSaveCheck" value="true" th:checked="${idSaveChecked}">
+                  <label class="custom-control-label" for="idSaveCheck">자동로그인</label>
+              </div>
+              <div class="text-center pt-2">
+                  <a class="forgot-password" href="#" data-toggle="modal" data-backdrop="static" data-target="#exampleModalCenter">비밀번호 찾기</a>
+              </div>
+          </div>
+          <hr>
+          <p class="mt-5 mb-3 text-muted">Hanwha Engineering&amp;Construction Corp.</p>
+      </form>
+
+      <!-- 비밀번호 찾기 -->
+
+      <div class="modal fade password" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered">
+              <div class="modal-content text-left">
+                  <div class="modal-header">
+                      <h5 class="modal-title" id="exampleModalCenterTitle">비밀번호 찾기</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                      </button>
+                  </div>
+                  <div class="modal-body">
+                      <form class="form-password">
+                          <div class="form-group mb-3">
+                              <label>이름</label>
+                              <input type="email" class="form-control" id="forgot_userNm" placeholder="이름을 입력하세요.">
+                          </div>
+                          <div class="form-group">
+                              <label>아이디 or 전화번호</label>
+                              <input type="text" class="form-control" id="forgot_userId" placeholder="아이디 or 전화번호를 입력하세요.">
+                          </div>
+<!--                          <div class="certification">-->
+<!--                              <ul>-->
+<!--                                  <li class="code"><a href="#" id="sendCirtNo">인증번호 발송</a></li>-->
+<!--                                  <li><input class="form-control text-center" id="certTime"></li>-->
+<!--                                  <li><input class="form-control text-center" id="certNo"></li>-->
+<!--                                  <li class="code"><a href="#" id="cirtNoCheck">인증번호 확인</a></li>-->
+<!--                              </ul>-->
+<!--                          </div>-->
+
+                          <div class="certification">
+                              <ul>
+                                  <li class="code"><a href="#" id="sendCirtNo">인증번호 발송</a></li>
+                                  <li class="border text-center" id="certTime">0</li>
+                              </ul>
+                              <ul class="d-none">
+                                  <li><input class="form-control text-center" id="certNo" placeholder="인증번호를 입력하세요."></li>
+                                  <li class="code"><a href="#" id="cirtNoCheck">인증번호 확인</a></li>
+                              </ul>
+                          </div>
+
+                          <div class="result">
+                              <div class="find" style="display: block"><p>찾기 결과가 표시됩니다.</p></div>
+                              <div class="failure"><p id="resultMsg">일치하는 정보가 존재하지 않습니다.</p></div>
+                              <div class="success">
+                                  <p>임시 비밀번호는 <span class="span-password"></span>입니다.</p>
+                                  <p>로그인 후 변경하시기 바랍니다.</p>
+                                  <a href="#" id="newPwdLogin">로그인</a>
+                              </div>
+                          </div>
+                      </form>
+                  </div>
+              </div>
+          </div>
+      </div><!-- end : modal -->
+
+</body>
+<!-- //info -->
+<script th:src="@{/webjars/jquery/3.0.0/jquery.min.js}"></script>
+
+<div th:replace="dream-static-resources :: components"></div>
+<script th:replace="dream-static-resources :: script"></script>
+<script type="text/javascript" th:src="@{/js/encrypt/base64.js}"></script>
+<script type="text/javascript" th:src="@{/js/tree/jquery.jstree.js}"></script>
+<script type="text/javascript" th:src="@{/js/cdrs.js}"></script>
+<script type="text/javascript" th:src="@{/js/jquery.json-2.4.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/jquery-ui/jquery-ui.js}"></script>
+
+<!--<script type="text/javascript" th:src="@{/js/pwa/app.js}"></script>-->
+
+
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    let timeId;
+
+    $(document).ready(function(){
+
+        $("#loginBtn").click(function(){
+            
+            encrypt_data();
+        });
+
+
+        $('#username').keydown(function(event) {
+            if( event.keyCode == 13 ) {
+                $('#password').focus();
+            }
+        });
+
+        $('#password').keydown(function(event) {
+            if( event.keyCode == 13 ) {
+                encrypt_data();
+            }
+        });
+
+        $(".forgot-password").on("click", function(){
+            $("#forgot_userId").val($("#username").val());
+        });
+
+        $("#sendCirtNo").on("click", function(){
+
+            /**
+             * 0. 이름, 아이디 입력 확인
+             * 1. 인증번호 sms 발송
+             * 2. timer 동작
+             * 3. timer 완료시 disabled
+             */
+
+            if($("#forgot_userNm").val() == ""){
+                _.dialog.alert("성명은 필수 항목입니다.");
+                return false;
+            }
+            if($("#forgot_userId").val() == ""){
+                _.dialog.alert("아이디 or 전화번호는 필수 항목입니다.");
+                return false;
+            }
+
+            let param = {
+                username: $("#forgot_userNm").val(),
+                userId: $("#forgot_userId").val()
+            }
+
+            certTimmer(60);
+
+            $.post("/security/sendCertNo", param, function (data) {
+                if(data.resultCode != "S"){
+                    console.log("error code : " + data.resultCode);
+                    console.log("error msg : " + data.resultMsg);
+
+                    $(".find").hide();
+                    $(".success").hide();
+
+                    $("#resultMsg").text(data.resultMsg);
+                    $(".failure").show();
+                }
+
+                $("ul").removeClass("d-none")
+                /* 인증번호 입력 및 인증번호 확인 버튼 활설화 */
+
+                $("#certNo").focus();
+            });
+
+        });
+
+        $("#cirtNoCheck").on("click", function () {
+            /*인증 번호 입력 유무 검증*/
+            if($("#certNo").val() == ""){
+                _.dialog.alert("인증번호를 입력하세요.");
+                return false;
+            }
+
+            let param = {
+                certNo: $("#certNo").val(),
+                userId: $("#forgot_userId").val()
+            }
+
+            $.post("/security/checkCertNo", param, function (data) {
+                clearInterval(timeId);
+                if(data.resultCode != "S") {
+                    console.log("error code : " + data.resultCode);
+                    console.log("error msg : " + data.resultMsg);
+
+                    $(".find").hide();
+                    $(".success").hide();
+
+                    $("#resultMsg").text(data.resultMsg);
+                    $(".failure").show();
+                }else{
+                    $(".find").hide();
+                    $(".failure").hide();
+
+                    $(".span-password").text(data.newPwd);
+                    $(".success").show();
+                }
+
+            });
+
+        });
+
+        $("#newPwdLogin").on("click", function () {
+            $("#username").val($("#forgot_userId").val());
+            $("#password").val($(".span-password").text());
+
+            encrypt_data();
+        });
+
+    });
+
+    function certTimmer(totTime){
+        timeId = setInterval(function(){
+            $("#certTime").text(totTime);
+            totTime = totTime -1;
+
+            if(totTime < 0) stopTimer(timeId);
+        }, 1000);
+    }
+
+    function stopTimer(timeId){
+        clearInterval(timeId);
+        /* 인증번호 입력 및 인증번호 확인 버튼 비활설화 */
+
+        _.dialog.alert("시간이 초과 하였습니다.");
+        // $("#exampleModalCenter").hide();
+
+        $('#exampleModalCenter').modal('hide')
+
+    }
+
+    function encrypt_data(){
+        let strLoginPassword = $('#password').val(); // 사용자 passwd
+        let strEncryptedLoginPassword = window.btoa(strLoginPassword);
+        $('#password').val(strEncryptedLoginPassword);
+
+
+        var formObj = $("#frm");
+        formObj.attr("action", "/security/sign_in");
+        formObj.attr("method", "post");
+        formObj.submit();
+    }
+
+    /*]]>*/
+</script>
+
+

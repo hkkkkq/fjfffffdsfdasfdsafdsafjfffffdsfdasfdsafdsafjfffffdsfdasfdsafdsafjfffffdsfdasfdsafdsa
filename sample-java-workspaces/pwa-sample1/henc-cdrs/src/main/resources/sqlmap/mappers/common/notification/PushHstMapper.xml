@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.henc.cdrs.common.notification.repository.PushHstMapper">
+
+	<select id="selectPushHst" resultType="PushHst" parameterType="java.lang.String">
+		SELECT PUSH_HST_NO                             --알림 이력 번호
+		      ,PUSH_TITL                               --알림 제목
+		      ,PUSH_CNTT                               --알림 내용
+		      ,PUSH_LINK                               --알림 링크
+		      ,PUSH_STA_CD                             --알림 상태 코드
+		      ,PUSH_ERR_CNTT                           --알림 에러 내용
+		      ,RECEIVER_ID                             --수신자 ID
+		      ,DEVICE_NO                               --단말 번호
+		      ,DEPT_CD                                 --현장 코드
+		      ,DAY                                     --일자
+		      ,ORDR_NO                                 --차수 번호
+		      ,PARTNER_NO                              --협력사 번호
+		      ,CTRC_NO                                 --계약 번호
+		      ,UPDT_DM                                 --수정 일시
+		      ,UPDT_ID                                 --수정자 ID
+		      ,WRTR_DM                                 --작성 일시
+		      ,WRTR_ID                                 --작성자 ID
+		FROM  PUSH_HST
+
+		WHERE 1=1
+		<if test="receiverId != null">
+			AND RECEIVER_ID = #{receiverId}
+		</if>
+		<if test="deviceNo != null">
+			AND DEVICE_NO = #{deviceNo}
+		</if>
+		order by PUSH_HST_NO desc
+	</select>
+
+	<insert id="insertPushHst" parameterType="PushHst">
+		<selectKey keyProperty="pushHstNo" resultType="int" order="BEFORE">
+			select PUSH_HST_S.NEXTVAL FROM DUAL
+		</selectKey>
+		INSERT INTO PUSH_HST (
+			 PUSH_HST_NO
+			,PUSH_TITL
+			,PUSH_CNTT
+			,PUSH_LINK
+			,PUSH_STA_CD
+			,PUSH_ERR_CNTT
+			,RECEIVER_ID
+			,DEVICE_NO
+		    ,DEPT_CD
+		    ,DAY
+		    ,ORDR_NO
+		    ,PARTNER_NO
+		    ,CTRC_NO
+		    ,UPDT_DM
+			,UPDT_ID
+			,WRTR_DM
+			,WRTR_ID
+		)VALUES (
+			 #{pushHstNo}
+			,#{pushTitl}
+			,#{pushCntt}
+			,#{pushLink}
+			,#{pushStaCd}
+			,#{pushErrCntt}
+			,#{receiverId}
+			,#{deviceNo}
+			,#{deptCd}
+			,#{day}
+			,#{orderNo}
+			,#{partnerNo}
+			,#{ctrcNo}
+			,SYSDATE
+			,#{loginId}
+			,SYSDATE
+			,#{loginId})
+	</insert>
+</mapper>

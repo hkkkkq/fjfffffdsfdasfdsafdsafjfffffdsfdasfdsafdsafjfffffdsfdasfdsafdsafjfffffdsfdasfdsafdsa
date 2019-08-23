@@ -1,0 +1,121 @@
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layouts/modalLayout">
+<body>
+<div layout:fragment="contents">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="row align-items-center">
+                <div class="col-auto mr-auto">
+                </div>
+                <div class="col-auto mb-2">
+                </div>
+            </div>
+
+            <div class="card mb-4">
+                <div class="card-body">
+
+                    <form class="row form-inline" id="search">
+                        <div class="col mr-auto">
+
+                            <div class="row">
+                                <div class="form-group col-xl-4">
+                                    <label for="">협력사</label>
+                                    <input type="text" class="form-control" id="corpKor" name="corpKor" th:value="${searchSiteConstNm}" readonly="readonly">
+                                    <input type="hidden" class="form-control" id="deptCd" name="deptCd" th:value="${searchSiteConstDept}">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-auto align-self-end">
+                            <button class="btn btn-info btn-sm mb-1" type="submit" id="btnDeptListPopupSearch">조회</button>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+
+            <div class="row align-items-center">
+                <div class="col-auto mr-auto">
+                </div>
+                <div class="col-auto mb-2">
+                    <button type="button" class="btn btn-outline-secondary btn-sm mb-1" id="btnDeptListPopupConfirm">확인</button>
+                </div>
+            </div>
+            <div id="siteConstTypeSheet"></div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" th:fragment="javascript">
+    $(document).ready(function () {
+        
+        var headers = [
+            {Text: "진행상태|순번|공종Seq|상위공종Seq|사업부|현장|공종명|설명|사용여부|트리레벨|유형"}
+        ],
+        mode = {},
+        columns = [
+            {Type: "Status", SaveName: "rowStatus", Width: 0, Align: "center", Hidden: true},
+            {Type: "Seq", SaveName: "rowSeq", Width: 60, Align: "center"},
+            {Type: "Int", SaveName: "cstkndNo", Width: 0, Hidden: true},
+            {Type: "Int", SaveName: "uprCstkndNo", Width: 0, Hidden: true},
+            {Type: "Text", SaveName: "bizhdofCd", Width: 0, Hidden: true},
+            {Type: "Text", SaveName: "deptCd", Width: 0, Hidden: true},
+            {Type: "Text", SaveName: "cstkndNm", Width: 250, Align: "left", TreeCol: 1, Edit: false},
+            {Type: "Text", SaveName: "description", Width: 250, Align: "left", Edit: false},
+            {Type: "CheckBox", SaveName: "useYn", Width: 80, Align: "center", Edit: false, TrueValue: 'Y', FalseValue: 'N', Hidden: false},
+            {Type: "Int", SaveName: "level", Width: 0, Hidden: true},
+            {Type: "Text", SaveName: "rel", Width: 80, Hidden: true}
+        ];
+
+        createIBSheet2($("#siteConstTypeSheet")[0], "siteConstTypeSheet", "100%", "496px");
+        siteConstTypeSheet.InitHeaders(headers, mode);
+        siteConstTypeSheet.InitColumns(columns);
+        siteConstTypeSheet.SetTreeCheckActionMode(1);
+  
+        window["siteConstTypeSheet_OnDblClick"] = function (Row, Col, Value, CellX, CellY, CellW, CellH) {
+            $("#btnDeptListPopupConfirm").click();
+        };
+        
+        //조회
+        var $search = $("#search");
+        $search.on("submit", function (e) {
+            e.preventDefault();
+            $.getJSON("/mgmt/siteConstType/siteConstType/gridList", $(this).serialize(), function (data) {
+                siteConstTypeSheet.LoadSearchData({"data": data});
+            });
+        });
+        
+        
+//         var $search = $("#search");
+//         $search.on("submit", function (e) {
+//             e.preventDefault();
+//             $.getJSON("/partners/info/gridPrtnConPopList", $(this).serialize(), function (data) {
+//                 siteConstTypeSheet.LoadSearchData({"data": data});
+//             });
+//         });
+
+        $("#btnDeptListPopupConfirm").click(function () {
+            
+            var sRow = siteConstTypeSheet.GetSelectRow();
+            
+            if(siteConstTypeSheet.GetCellValue(sRow, "useYn") == "N"){
+                _.dialog.alert("미사용 공종은 선택이 불가합니다.");
+                return;
+            }
+            
+            if (sRow > 0) {
+                var data = {
+                    cstkndNo: siteConstTypeSheet.GetCellValue(sRow, "cstkndNo"),
+                    cstkndNm: siteConstTypeSheet.GetCellValue(sRow, "cstkndNm")
+                };
+                callback(data);
+            }
+        });
+ 
+        if ($('#corpKor').val() != '') {
+            $search.submit();
+        }
+          
+    });
+</script>
+</body>
+</html>

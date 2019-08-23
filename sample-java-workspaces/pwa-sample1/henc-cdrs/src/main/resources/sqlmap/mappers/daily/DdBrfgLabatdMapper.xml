@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.henc.cdrs.daily.repository.DdBrfgLabatdMapper">
+
+	<select id="dailyList" resultType="ddBrfgLabatd" parameterType="searchDailyParams">
+		SELECT dbl.partner_no,
+			   dbl.dept_cd,
+			   dbl.day,
+			   dbl.ordr_no,
+			   dbl.ctrc_no,
+			   dbl.labatd_pcnt_no,
+			   dbl.name,
+			   dbl.note,
+			   lp.ocpt_no,
+			   lp.brtdy,
+			   dbl.updt_dm,
+			   dbl.updt_id,
+			   dbl.wrtr_dm,
+			   dbl.wrtr_id,
+			   rownum as row_id
+		FROM dd_brfg_labatd dbl
+				 INNER JOIN LABATD_PCNT lp ON dbl.LABATD_PCNT_NO = lp.LABATD_PCNT_NO
+		WHERE dbl.dept_cd = #{deptCd}
+		  AND dbl.day = #{day}
+		  AND dbl.ordr_no = #{ordrNo}
+		  AND dbl.partner_no = #{partnerNo}
+		  AND dbl.ctrc_no = #{ctrcNo}
+		ORDER BY dbl.name
+	</select>
+
+	<select id="dailyGroupList" resultType="camelCaseMap" parameterType="searchDailyParams">
+		SELECT coprcp.CTRC_NO,
+			   COPRCP.CSTKND_NO,
+			   COPRCP.CSTKND_NM,
+			   COPRCP.DEPT_CD,
+			   COPRCP.COPRCP_NO,
+			   COPRCP.partner_nm,
+			   dbl.OCPT_NO,
+			   dbl.OCPT_NM,
+			   nvl(dbl.bef_qty, 0)                       AS bef_qty,
+			   nvl(dbl.cur_qty, 0)                       AS cur_qty,
+			   nvl(dbl.bef_qty, 0) + nvl(dbl.cur_qty, 0) AS tot_qty
+		FROM (SELECT dc.dept_cd,
+					 dc.CSTKND_NO,
+					 FN_GET_CSTKND_NM(dc.cstknd_no) AS cstknd_nm,
+					 ci.coprcp_no,
+					 ci.CTRC_NO,
+					 cop.CORP_KOR                   AS partner_nm,
+					 ci.SORT_NO
+			  FROM DEPT_CSTKND dc
+					   INNER JOIN coprcp_info ci ON dc.CSTKND_NO = ci.CSTKND_NO
+					   INNER JOIN coprcp cop ON ci.COPRCP_NO = cop.CORP_ID
+			  WHERE dc.USE_YN = 'Y'
+				AND dc.dept_cd = #{deptCd}) coprcp
+				 LEFT OUTER JOIN (SELECT dbl.dept_cd,
+										 ci.CSTKND_NO,
+										 lp.ocpt_no,
+										 ocpt.ocpt_nm,
+										 sum(CASE
+												 WHEN to_date(#{day}, 'YYYYMMDD') > to_date(dbl.day, 'YYYYMMDD') THEN 1
+												 ELSE 0 END) AS bef_qty,
+										 sum(CASE
+												 WHEN to_date(#{day}, 'YYYYMMDD') = to_date(dbl.day, 'YYYYMMDD') THEN 1
+												 ELSE 0 END) AS cur_qty
+								  FROM DD_BRFG_LABATD dbl
+										   INNER JOIN coprcp_info ci
+													  ON dbl.PARTNER_NO = ci.COPRCP_NO AND dbl.CTRC_NO = ci.CTRC_NO
+										   INNER JOIN LABATD_PCNT lp ON dbl.LABATD_PCNT_NO = lp.LABATD_PCNT_NO
+										   INNER JOIN ocpt ON lp.OCPT_NO = ocpt.OCPT_NO
+										   INNER JOIN dd_brfg_comp comp ON dbl.dept_cd = comp.dept_cd AND dbl.day = comp.day AND
+																		   dbl.ORDR_NO = comp.ORDR_NO AND
+																		   dbl.CTRC_NO = comp.CTRC_NO
+								  WHERE (dbl.dept_cd, dbl.day, dbl.ordr_no) IN (SELECT dept_cd, day, max(ordr_no) AS ordr_no
+																				FROM DD_BRFG
+																				WHERE DEPT_CD = #{deptCd}
+																				  AND ((day &lt; #{day} AND sta_cd IN ('50')) OR (day = #{day}))
+																				GROUP BY dept_cd, day)
+									AND comp.sta_cd = '50'
+								  GROUP BY dbl.dept_cd, ci.CSTKND_NO, lp.ocpt_no, ocpt.ocpt_nm) dbl
+								 ON coprcp.DEPT_CD = dbl.DEPT_CD AND coprcp.CSTKND_NO = dbl.CSTKND_NO
+		WHERE coprcp.coprcp_no != #{partnerNo}
+		ORDER BY cstknd_no, coprcp.SORT_NO
+	</select>
+
+	<select id="dailyGroupListForHenc" resultType="camelCaseMap" parameterType="searchDailyParams">
+		SELECT dbl.partner_no,
+			   cop.CORP_KOR                              AS partner_nm,
+			   dbl.OCPT_NO,
+			   ocpt.OCPT_NM,
+			   nvl(dbl.bef_qty, 0)                       AS bef_qty,
+			   nvl(dbl.cur_qty, 0)                       AS cur_qty,
+			   nvl(dbl.bef_qty, 0) + nvl(dbl.cur_qty, 0) AS tot_qty
+		FROM (SELECT dbl.dept_cd,
+					 dbl.partner_no,
+					 lp.ocpt_no,
+					 sum(CASE WHEN to_date(#{day}, 'YYYYMMDD') > to_date(dbl.day, 'YYYYMMDD') THEN 1 ELSE 0 END) AS bef_qty,
+					 sum(CASE WHEN to_date(#{day}, 'YYYYMMDD') = to_date(dbl.day, 'YYYYMMDD') THEN 1 ELSE 0 END) AS cur_qty
+			  FROM DD_BRFG_LABATD dbl
+					   INNER JOIN LABATD_PCNT lp ON dbl.LABATD_PCNT_NO = lp.LABATD_PCNT_NO
+					   INNER JOIN dd_brfg_comp comp
+								  ON dbl.dept_cd = comp.dept_cd AND dbl.day = comp.day AND dbl.ORDR_NO = comp.ORDR_NO AND
+									 dbl.CTRC_NO = comp.CTRC_NO
+			  WHERE (dbl.dept_cd, dbl.day, dbl.ordr_no) IN (SELECT dept_cd, day, max(ordr_no) AS ordr_no
+															FROM DD_BRFG
+															WHERE DEPT_CD = #{deptCd}
+															  AND ((day &lt; #{day} AND sta_cd IN ('50')) OR (day = #{day}))
+															GROUP BY dept_cd, day)
+				AND dbl.PARTNER_NO = #{partnerNo}
+				AND comp.sta_cd = '50'
+			  GROUP BY dbl.dept_cd, dbl.partner_no, lp.ocpt_no) dbl
+				 INNER JOIN ocpt ON dbl.OCPT_NO = ocpt.OCPT_NO
+				 INNER JOIN coprcp_info ci ON dbl.dept_cd = ci.dept_cd AND dbl.PARTNER_NO = ci.COPRCP_NO
+				 INNER JOIN coprcp cop ON ci.COPRCP_NO = cop.CORP_ID
+		ORDER BY ocpt.SORT_NO
+	</select>
+
+	<insert id="insert" parameterType="ddBrfgLabatd">
+		INSERT INTO DD_BRFG_LABATD ( PARTNER_NO
+                           , NAME
+                           , NOTE
+                           , LABATD_PCNT_NO
+                           , UPDT_DM
+                           , UPDT_ID
+                           , WRTR_DM
+                           , WRTR_ID
+                           , CTRC_NO
+                           , DEPT_CD
+                           , DAY
+                           , ORDR_NO)
+		VALUES ( #{partnerNo}
+			   , #{name}
+			   , #{note}
+			   , #{labatdPcntNo}
+			   , sysdate
+			   , #{loginId}
+			   , sysdate
+			   , #{loginId}
+			   , #{ctrcNo}
+			   , #{deptCd}
+			   , #{day}
+			   , #{ordrNo})
+	</insert>
+
+	<update id="update" parameterType="ddBrfgLabatd">
+		UPDATE dd_brfg_labatd
+		SET NAME           = #{name},
+			NOTE           = #{note},
+			UPDT_DM        = sysdate,
+			UPDT_ID        = #{loginId}
+		WHERE PARTNER_NO = #{partnerNo}
+		  AND DEPT_CD = #{deptCd}
+		  AND DAY = #{day}
+		  AND ORDR_NO = #{ordrNo}
+		  AND CTRC_NO = #{ctrcNo}
+		  AND LABATD_PCNT_NO = #{labatdPcntNo}
+	</update>
+
+	<update id="updateLabatdPcnt" parameterType="ddBrfgLabatd">
+		UPDATE LABATD_PCNT
+		SET BRTDY          = #{brtdy},
+			UPDT_DM        = sysdate,
+			UPDT_ID        = #{loginId}
+		WHERE PARTNER_NO = #{partnerNo}
+		  AND DEPT_CD = #{deptCd}
+		  AND LABATD_PCNT_NO = #{labatdPcntNo}
+	</update>
+
+	<delete id="delete" parameterType="ddBrfgLabatd">
+		DELETE FROM DD_BRFG_LABATD
+		WHERE PARTNER_NO = #{partnerNo}
+		  AND DEPT_CD = #{deptCd}
+		  AND DAY = #{day}
+		  AND ORDR_NO = #{ordrNo}
+		  AND CTRC_NO = #{ctrcNo}
+		  AND LABATD_PCNT_NO = #{labatdPcntNo}
+	</delete>
+
+	<insert id="insertLabatdPcnt" parameterType="ddBrfgLabatd">
+		<selectKey keyProperty="labatdPcntNo" resultType="int" order="BEFORE">
+			select LABATD_PCNT_S.nextval FROM dual
+		</selectKey>
+		INSERT INTO LABATD_PCNT ( PARTNER_NO
+                           , DEPT_CD
+                           , NAME
+                           , NOTE
+                           , OCPT_NO
+                           , BRTDY
+                           , LABATD_PCNT_NO
+                           , UPDT_DM
+                           , UPDT_ID
+                           , WRTR_DM
+                           , WRTR_ID
+                           )
+		VALUES ( #{partnerNo}
+			   , #{deptCd}
+			   , #{name}
+			   , #{note}
+			   , #{ocptNo}
+			   , replace(#{brtdy}, '-', '')
+			   , #{labatdPcntNo}
+			   , sysdate
+			   , #{loginId}
+			   , sysdate
+			   , #{loginId}
+			   )
+	</insert>
+
+	<delete id="deleteAll" parameterType="searchDailyParams">
+		DELETE FROM DD_BRFG_LABATD
+		WHERE DEPT_CD = #{deptCd}
+		  AND DAY = #{day}
+		  AND ORDR_NO = #{ordrNo}
+		  AND PARTNER_NO = #{partnerNo}
+		  AND CTRC_NO = #{ctrcNo}
+	</delete>
+
+	<insert id="copyHistoryCreate" parameterType="historyDailyCopyParams">
+		INSERT INTO DD_BRFG_LABATD (PARTNER_NO, NAME, NOTE, LABATD_PCNT_NO, UPDT_DM, UPDT_ID, WRTR_DM, WRTR_ID, CTRC_NO, DEPT_CD, DAY, ORDR_NO)
+		SELECT hst.PARTNER_NO,
+			   hst.NAME,
+			   hst.NOTE,
+			   hst.LABATD_PCNT_NO,
+			   sysdate,
+			   #{loginId},
+			   sysdate,
+			   #{loginId},
+			   hst.CTRC_NO,
+			   hst.DEPT_CD,
+			   #{targetDayParams.day},
+			   hst.ORDR_NO
+		FROM DD_BRFG_LABATD hst
+		WHERE hst.dept_cd = #{copyDayParams.deptCd}
+		  AND hst.day = #{copyDayParams.day}
+		  AND hst.ordr_no = #{copyDayParams.ordrNo}
+		  AND hst.partner_no = #{copyDayParams.partnerNo}
+		  AND hst.ctrc_no = #{copyDayParams.ctrcNo}
+	</insert>
+
+	<select id="quickSearchList" resultType="camelCaseMap" parameterType="searchDailyParams">
+		SELECT lp.LABATD_PCNT_NO,
+			   lp.DEPT_CD,
+			   lp.PARTNER_NO,
+			   lp.NAME,
+			   lp.NAME                                        AS "value",
+			   lp.OCPT_NO,
+			   o.OCPT_NM,
+			   lp.BRTDY,
+			   lp.NOTE,
+			   lp.name || ' ' || o.OCPT_NM || ' ' || lp.BRTDY AS label
+		FROM LABATD_PCNT lp
+				 INNER JOIN ocpt o ON lp.OCPT_NO = o.OCPT_NO
+		WHERE dept_cd = #{deptCd}
+		  AND PARTNER_NO = #{partnerNo}
+		  AND o.BIZ_HDOF_CD = #{bizhdofCd}
+		<if test="autocompleteSearchParams != null">
+			<choose >
+				<when test="autocompleteSearchParams.type.equals('name')">
+					AND lp.name like '%' || #{autocompleteSearchParams.term} || '%'
+				</when>
+			</choose>
+		</if>
+		ORDER BY lp.NAME ASC, o.OCPT_NM ASC, lp.BRTDY ASC
+	</select>
+
+	<select id="getListInChange" resultType="ddBrfgLabatd" parameterType="ddBrfg">
+		SELECT dept_cd, day, ordr_no, partner_no, ctrc_no, name, note, labatd_pcnt_no
+		FROM dd_brfg_labatd
+		WHERE dept_cd = #{deptCd}
+		  AND day = #{day}
+		  AND ordr_no = #{ordrNo}
+		ORDER BY dept_cd, day, ordr_no, partner_no, ctrc_no
+	</select>
+
+	<delete id="deleteChanged" parameterType="ddBrfg">
+		DELETE FROM DD_BRFG_LABATD
+		WHERE DEPT_CD = #{deptCd}
+		  AND DAY = #{day}
+		  AND ORDR_NO = #{ordrNo}
+	</delete>
+
+</mapper>

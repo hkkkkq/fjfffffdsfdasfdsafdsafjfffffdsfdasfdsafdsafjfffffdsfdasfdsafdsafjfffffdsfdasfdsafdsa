@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.henc.cdrs.coprcp.repository.RegReqSendMapper">
+
+	<select id="selectRegReqSend" resultType="camelCaseMap">
+		SELECT SEND_ID, DEPT_CD, USER_ID, COPRCP_NO, EXPI_TM, wrtr_dm, wrtr_id
+		FROM REG_REQ_SEND
+		WHERE 1 = 1
+		<if test="userId != null">
+			AND user_id = #{userId}
+		</if>
+		ORDER BY wrtr_dm desc
+	</select>
+
+	<insert id="insertRegReqSend" parameterType="regReqSend">
+		insert into REG_REQ_SEND (SEND_ID, DEPT_CD, USER_ID, COPRCP_NO, EXPI_TM, wrtr_dm, wrtr_id)
+		values (#{sendId}, #{deptCd}, #{userId}, #{coprcpNo}, SYSDATE + 2 , SYSDATE, #{loginId})
+	</insert>
+
+</mapper>

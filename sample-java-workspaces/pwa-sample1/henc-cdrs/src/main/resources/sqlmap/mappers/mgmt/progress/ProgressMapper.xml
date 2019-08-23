@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.henc.cdrs.mgmt.progress.repository.ProgressMapper">
+
+    <!-- 공사물량 관리 조회 -->
+    <select id="selectProgressGrdList" resultType="camelCaseMap">
+        SELECT  QTY_NO                                  --물량 번호
+               ,DEPT_CD                                 --현장 코드
+               ,QTY_NM                                  --물량 명
+               ,SPEC                                    --규격
+               ,UNIT                                    --단위
+               ,UPDT_DM                                 --수정 일시
+               ,UPDT_ID                                 --수정자 ID
+               ,WRTR_DM                                 --작성 일시
+               ,WRTR_ID                                 --작성자 ID
+               ,USE_YN                                  --사용 여부
+         FROM  CNST_QTY
+        WHERE  1=1
+          AND  DEPT_CD = #{deptCd}
+        <if test="qtyNm != null">
+          AND  ( QTY_NM  LIKE '%' || #{qtyNm} || '%'
+                 OR SPEC LIKE '%' || #{qtyNm} || '%'
+               )
+        </if>
+        <if test="qtyNo != 0">
+          AND  QTY_NO = #{qtyNo}
+        </if>
+        <if test="useYn != null">
+          AND  USE_YN = #{useYn}
+        </if>
+        ORDER BY QTY_NO ASC
+    </select>
+
+    <insert id="insertProgress" parameterType="progress">
+        INSERT INTO CNST_QTY (
+                qty_no
+               ,dept_cd
+               ,qty_nm
+               ,spec
+               ,unit
+               ,updt_dm
+               ,updt_id
+               ,wrtr_dm
+               ,wrtr_id
+               ,use_yn)
+            VALUES (
+                CNST_QTY_S.nextval
+               ,#{deptCd}
+               ,#{qtyNm}
+               ,#{spec}
+               ,#{unit}
+               ,SYSDATE
+               ,#{loginId}
+               ,SYSDATE
+               ,#{loginId}
+               ,#{useYn})
+    </insert>
+    
+    <update id="updateProgress" parameterType="progress">    
+        UPDATE cnst_qty
+           SET qty_nm  = #{qtyNm}
+              ,spec    = #{spec}
+              ,unit    = #{unit}
+              ,use_yn  = #{useYn}
+              ,updt_dm = SYSDATE
+              ,updt_id = #{loginId}
+         WHERE qty_no  = #{qtyNo}
+           AND dept_cd = #{deptCd}
+    </update>
+   
+    <delete id="deleteProgress" parameterType="progress">
+        DELETE FROM cnst_qty
+         WHERE qty_no  = #{qtyNo}
+           AND dept_cd = #{deptCd}
+    </delete>
+    
+</mapper>

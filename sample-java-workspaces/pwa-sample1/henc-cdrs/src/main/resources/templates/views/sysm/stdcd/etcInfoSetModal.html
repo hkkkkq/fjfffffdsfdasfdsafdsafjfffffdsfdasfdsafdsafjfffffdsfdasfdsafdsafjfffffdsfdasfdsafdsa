@@ -1,0 +1,93 @@
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layouts/modalLayout">
+<body>
+  <div layout:fragment="contents">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="row align-items-center">
+          <div class="col-auto mr-auto">
+          </div>
+          <div class="col-auto mb-2">
+            <button type="button" class="btn btn-primary btn-sm" id="btnEtcInfoSetModalSave">저장</button>
+          </div>
+        </div>       
+        <div class="card mb-4">
+          <div class="card-body">
+            <form class="row form-inline" id="search" > 
+              <div class="col mr-auto">
+                <div class="row">
+                  <input type="text" class="form-control form-control-sm" id="stdCd" name="stdCd" th:value=${stdCd} hidden="true">
+                  <input type="text" class="form-control form-control-sm" id="stdDetlCd'" name="stdDetlCd" th:value=${stdDetlCd} hidden="true">
+                </div>  
+              </div>
+              <div class="col-auto align-self-end">         
+                <button type="button" class="btn btn-info btn-sm mb-1" id="btnEtcInfoSetModalSearch">조회</button>
+              </div>
+            </form>
+          </div>
+        </div>         
+        <div id="comAttributeValSheet"></div>
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript" th:fragment="javascript">
+  $(document).ready(function() {
+     
+      var headers = [
+          {Text: "상태|valCnt|STD_CD|STD_DETL_CD|ATTRIBUTE_ID|ATTRIBUTE_NM|ATTRIBUTE_VAL"}
+      ],
+      mode = {
+          HeaderCheck: true
+      },
+      columns = [              
+          {Type: "Status", SaveName: "rowStatus", Width: 0, Align: "center", Hidden: true},
+          {Type: "Text", SaveName: "valCnt", Width: 0, Align: "center", Hidden: true},
+          {Type: "Text", SaveName: "stdCd", Width: 0, Edit: 0, Align: "left"},
+          {Type: "Text", SaveName: "stdDetlCd", Width: 0, Edit: 0, Align: "left"},
+          {Type: "Text", SaveName: "attributeId", Width: 0, Edit: 0, Align: "left"},
+          {Type: "Text", SaveName: "attributeNm", Width: 0, Edit: 0, Align: "left"},
+          {Type: "Text", SaveName: "attributeVal", Width :0, Align:"left"}
+      ];
+      createIBSheet2($("#comAttributeValSheet")[0], "comAttributeValSheet", "100%", "400px");
+      comAttributeValSheet.InitHeaders(headers, mode);
+      comAttributeValSheet.InitColumns(columns);
+      
+      //조회 클릭
+      $("#btnEtcInfoSetModalSearch").on("click", function() {
+          $.getJSON("/sysm/stdcd/gridcomAttributeValList", $("#search").serializeObject(), function(data) {                       
+              comAttributeValSheet.LoadSaveData({"data": data});
+          });                  
+      });          
+      $("#btnEtcInfoSetModalSearch").trigger("click");      
+      
+      //보조정보 설정 저장 버튼 클릭
+      $("#btnEtcInfoSetModalSave").on("click", function() {     
+          
+          var changeCnt = 0;
+          for (var i=1; i <= comAttributeValSheet.RowCount(); i++) {
+              if (comAttributeValSheet.GetCellValue(i,"rowStatus") == "I"||
+                      comAttributeValSheet.GetCellValue(i,"rowStatus") == "U"||
+                      comAttributeValSheet.GetCellValue(i,"rowStatus") == "D") {
+                  changeCnt++;
+              }
+          }                    
+              
+          if (changeCnt == 0) {
+              _.dialog.alert("저장할 항목이 없습니다.");
+              return;
+          }
+      
+          var param = $("#search").serializeObject();
+          param.attributeVals = comAttributeValSheet.GetSaveJson().data;          
+          _.dialog.confirm("저장하시겠습니까?", function() {
+              $.post("/sysm/stdcd/gridAttributeValSave", param, function() {  
+                  _.dialog.alert("저장되었습니다.");
+                  comAttributeValSheet.LoadSaveData(_.ibsheet.success());
+              });            
+          });                    
+      });                         
+             
+      
+  });
+  </script>
+</body>
+</html>

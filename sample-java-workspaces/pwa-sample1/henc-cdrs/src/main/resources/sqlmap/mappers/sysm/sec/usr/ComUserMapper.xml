@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.henc.cdrs.sysm.sec.usr.repository.ComUserMapper">
+
+	<select id="getUserList" parameterType="comUserSearch" resultType="camelCaseMap">
+		SELECT user_id,
+			   name,
+			   pwd,
+			   pwd_expi_dt,
+			   st_dt,
+			   end_dt,
+			   last_conn_tm,
+			   last_conn_ip,
+			   use_yn,
+               nvl(push_use_yn, 'N') as push_use_yn,
+			   coprcp_no,
+			   tlno,
+               pstn,
+			   user_div_cd
+		FROM COM_USER CU
+		WHERE 1=1
+		<if test="searchDeptCd != null">
+			and CU.user_id in (select user_id from user_dept where dept_cd = #{searchDeptCd})
+		</if>
+		<if test="searchUserId != null">
+			AND UPPER(CU.sabun) LIKE '%'|| UPPER(#{searchUserId}) || '%'
+		</if>
+		<if test="searchName != null">
+			AND UPPER(CU.name) LIKE '%'|| UPPER(#{searchName}) || '%'
+		</if>
+	</select>
+
+	<select id="getComUser" parameterType="string" resultType="comUser">
+		SELECT user_id as "userId",
+			   name as "name",
+			   pwd,
+			   pwd_expi_dt,
+			   st_dt,
+			   end_dt,
+			   last_conn_tm,
+			   last_conn_ip,
+			   use_yn,
+			   nvl(push_use_yn, 'N') as push_use_yn,
+			   coprcp_no,
+			   tlno,
+               pstn,
+			   user_div_cd
+		FROM COM_USER CU
+		WHERE CU.user_id = #{userId}
+	</select>
+
+	<select id="makeUserIdForCoprcp" resultType="java.lang.String">
+		select 'P' || COM_USER_S.NEXTVAL from dual
+	</select>
+
+	<insert id="insertComUser" parameterType="comUser">
+		INSERT INTO COM_USER (USER_ID, PWD, PWD_EXPI_DT, ST_DT, END_DT, LAST_CONN_TM, LAST_CONN_IP, UPDT_DM, UPDT_ID, WRTR_DM,
+                      WRTR_ID, USER_DIV_CD, COPRCP_NO, TLNO, NAME, PSTN)
+		VALUES (#{userId}, #{encPwd}, #{pwdExpiDt}, #{stDt}, #{endDt}, #{lastConnTm}, #{lastConnIp}, sysdate, #{loginId},
+				sysdate, #{loginId},#{userDivCd}, #{coprcpNo}, #{tlno}, #{name}, #{pstn})
+	</insert>
+
+	<update id="updateComUser" parameterType="comUser">
+		UPDATE com_user
+		SET pwd_expi_dt = #{pwdExpiDt},
+			st_dt       = #{stDt},
+			end_dt      = #{endDt},
+			name        = #{name},
+			tlno        = #{tlno},
+            pstn        = #{pstn},
+			user_div_cd = #{userDivCd},
+			push_use_yn = #{pushUseYn},
+			coprcp_no   =  NVL(#{coprcpNo}, DECODE(#{userDivCd}, 'HENC', 'T00001', '')),
+			updt_dm     = SYSDATE,
+			updt_id     = #{loginId}
+		WHERE user_id = #{userId}
+	</update>
+
+	<delete id="deleteComUser" parameterType="comUser">
+		DELETE com_user
+		WHERE user_id = #{userId}
+	</delete>
+
+	<update id="updatePwd" parameterType="comUser">
+		UPDATE com_user
+		SET pwd = #{encPwd}, updt_dm = SYSDATE, updt_id = #{loginId}
+		WHERE user_id = #{userId}
+	</update>
+
+	<select id="userValidCheck" resultType="java.lang.Integer" parameterType="comUser">
+		SELECT COUNT(user_id)
+		FROM com_user
+		WHERE 1=1
+		<choose >
+			<when test="userDivCd == 'COPRCP'">
+				AND tlno = #{tlno}
+			</when>
+			<otherwise>
+				AND user_id = #{userId}
+			</otherwise>
+		</choose>
+	</select>
+
+	<update id="updatePushUse" parameterType="userDetail">
+		update com_user
+		set push_use_yn = #{pushUseYn},
+			updt_dm     = SYSDATE,
+			updt_id     = #{userId}
+		where user_id   = #{userId}
+	</update>
+
+
+</mapper>

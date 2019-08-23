@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.henc.cdrs.mgmt.equipment.repository.EquipmentMapper">
+
+    <!-- 현장자재 관리 조회 -->
+    <select id="selectEquipGrdList" resultType="camelCaseMap">
+        
+        SELECT A.EQIP_NO  AS EQIP_NO
+              ,A.EQIP_NM  AS EQIP_NM
+              ,A.SPEC     AS SPEC
+              ,A.UNIT     AS UNIT
+              ,A.APBT_YN  AS APBT_YN
+              ,A.USE_YN   AS USE_YN
+              ,(SELECT COUNT(*) AS SAME_EQIP_CNT FROM MAIN_EQIP Z WHERE Z.SAME_EQIP_NO = A.EQIP_NO) AS SAME_EQIP_CNT
+          FROM MAIN_EQIP A
+         WHERE 1=1
+           AND A.bizhdof_cd = #{bizhdofCd}
+           AND A.same_eqip_no IS NULL
+        <if test="eqipNm != null">
+           AND ( A.eqip_nm LIKE '%' || #{eqipNm} || '%'
+                 OR A.spec LIKE '%' || #{eqipNm} || '%'
+               )
+        </if>
+        <if test="eqipNo != 0">
+            AND A.EQIP_NO = #{eqipNo}
+        </if>
+        <if test="useYn != null">
+           AND  A.use_yn = #{useYn}  
+        </if>
+        ORDER BY A.eqip_no ASC
+        
+    </select>
+    
+    <insert id="insertEquipment" parameterType="equipment">
+        <selectKey keyProperty="eqipNo" resultType="int" order="BEFORE">
+            select main_eqip_s.nextval FROM dual
+        </selectKey>
+        INSERT INTO MAIN_EQIP (
+                eqip_no
+               ,bizhdof_cd
+               ,eqip_nm
+               ,spec
+               ,unit
+               ,apbt_yn
+               ,use_yn
+               ,wrtr_dm
+               ,wrtr_id
+               ,updt_dm
+               ,updt_id)
+            VALUES (
+                #{eqipNo}
+               ,#{bizhdofCd}
+               ,#{eqipNm}
+               ,#{spec}
+               ,#{unit}
+               ,#{apbtYn}
+               ,#{useYn}                                
+               ,SYSDATE
+               ,#{loginId}
+               ,SYSDATE
+               ,#{loginId})
+    </insert>
+ 
+    <update id="updateEquipment" parameterType="equipment">
+        UPDATE main_eqip
+           SET eqip_nm = #{eqipNm}
+              ,spec    = #{spec}
+              ,unit    = #{unit}
+              ,apbt_yn = #{apbtYn}
+              ,use_yn  = #{useYn}
+         WHERE bizhdof_cd = #{bizhdofCd}
+           AND eqip_no = #{eqipNo}
+    </update>
+
+    <delete id="deleteEquipment" parameterType="equipment">
+        DELETE FROM main_eqip
+         WHERE bizhdof_cd = #{bizhdofCd}
+           AND eqip_no    = #{eqipNo}
+    </delete>
+
+    <!-- Detail 동의어 조회 쿼리 -->
+    <select id="selectEquipmentGrdDetlList" resultType="camelCaseMap">
+    
+        SELECT a.eqip_no as eqip_no
+              ,a.eqip_nm as eqip_nm
+              ,a.same_eqip_no as same_eqip_no
+              ,a.spec    as spec
+              ,a.unit    as unit
+          FROM main_eqip a
+         WHERE 1=1
+           AND bizhdof_cd = #{bizhdofCd}
+        <if test="eqipNo != null">
+            and same_eqip_no = #{eqipNo}
+        </if>
+         ORDER BY A.eqip_NO ASC
+         
+    </select>
+    
+    <!-- 동의어 대상 조회 -->
+    <select id="selectEquipmentSynPoplList" resultType="camelCaseMap">
+    
+        SELECT a.eqip_no      as eqip_no
+              ,a.eqip_nm      as eqip_nm
+              ,a.spec         as spec
+              ,a.unit         as unit
+          FROM main_eqip a
+         WHERE 1=1
+           AND bizhdof_cd = #{bizhdofCd}
+        <if test="eqipNm != null">
+            AND A.eqip_NM LIKE '%' || #{eqipNm} || '%'
+        </if>
+            AND a.same_eqip_no is null
+            AND a.apbt_yn = 'N'
+         ORDER BY A.eqip_NO ASC
+         
+    </select>
+    
+    <update id="updateEquipmentDetail" parameterType="equipmentDetl">
+        UPDATE main_eqip
+        <if test="sameEqipNo != 0">
+            SET same_eqip_no = ${sameEqipNo}
+        </if>
+        <if test="sameEqipNo == 0">
+            SET same_eqip_no = NULL
+        </if>       
+         WHERE bizhdof_cd = #{bizhdofCd}
+           AND eqip_no    = ${eqipNo}
+    </update>
+
+    <update id="updateEquipmentSameEquipNoRestore" parameterType="equipmentDetl">
+        UPDATE main_eqip
+           SET same_eqip_no = null
+         WHERE bizhdof_cd   = #{bizhdofCd}
+           AND same_eqip_no = #{eqipNo}
+    </update>
+    
+    <select id="selectEquipmentSameCount" parameterType="equipment" resultType="integer">
+        SELECT COUNT(*) AS SAME_EQIP_CNT 
+          FROM MAIN_EQIP Z 
+         WHERE 1=1
+           AND Z.BIZHDOF_CD   = #{bizhdofCd}
+           AND Z.SAME_EQIP_NO = #{eqipNo}
+    </select>
+
+    <select id="getEquipment" parameterType="equipment" resultType="camelCaseMap">
+        SELECT *
+        FROM MAIN_EQIP me
+        WHERE bizhdof_cd = #{bizhdofCd}
+          AND eqip_nm = #{eqipNm}
+          AND spec = #{spec}
+          AND unit = #{unit}
+          AND rownum = 1
+    </select>
+
+</mapper>

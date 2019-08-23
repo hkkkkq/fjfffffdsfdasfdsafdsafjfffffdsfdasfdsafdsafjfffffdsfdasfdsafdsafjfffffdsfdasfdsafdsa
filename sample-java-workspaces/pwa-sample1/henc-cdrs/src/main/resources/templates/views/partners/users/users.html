@@ -1,0 +1,634 @@
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layouts/layout">
+<head></head>
+<body>
+
+<div layout:fragment="contents">
+
+    <section class="top-area">
+        <nav aria-label="breadcrumb" class="float-left">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">협력사</a></li>
+                <li class="breadcrumb-item active" aria-current="page">협력사 사용자 관리</li>
+            </ol>
+        </nav>
+        <div class="btn-area float-right">
+        </div>
+    </section>
+
+    <section id="search-area" class="mb-3">
+        <form id="search">
+                <div class="border">
+                    <div class="form-row">
+                        <div> 
+                            <label for="corpKor">협력사</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control form-control-sm mr-1" id="coprcpNo" name="coprcpNo" readonly="readonly">
+                                <input type="text" class="form-control form-control-sm min mr-1" id="corpKor" name="corpKor">
+                                <div class="input-group-append">
+                                    <button class="btn btn-sm" type="button" id="btnPartner"><i class="fas fa-search"></i></button>
+                                </div>
+                            </div>
+                        </div>                    
+                        <div>
+                            <label for="telName">성명/전화번호</label>
+                            <input type="text" class="form-control form-control-sm" id="telName" name="telName"/>
+                        </div>
+                    </div>
+                    <div class="btn-area">
+                      <button class="btn btn-secondary btn-sm" type="submit" id="btnSearch">조회</button>
+                    </div>
+                </div>
+        </form>
+    </section>
+    
+<!--     <section id="grid-area" class="mb-3"> -->
+<!--         <div class="d-flex justify-content-between pb-2 grid-title"> -->
+<!--             <h2>◎  협력사 사용자 관리</h2> -->
+<!--             <div class="btn-area"> -->
+<!--                 <button type="button" class="btn btn-outline-secondary btn-sm" id="btnNew">신규</button> -->
+<!--                 <button type="button" class="btn btn-outline-secondary btn-sm" id="btnSave">저장</button> -->
+<!--                 <button type="button" class="btn btn-outline-secondary btn-sm" id="btnDelete">삭제</button> -->
+<!--                 <button type="button" class="btn btn-outline-secondary btn-sm" id="btnUrlSend">등록 URL 발송</button> -->
+<!--             </div> -->
+<!--         </div> -->
+<!--         <div class="row"> -->
+<!--             <div class="col-md-12"> -->
+<!--                 <div class="vertical-full1" id="partnerUsersSheet"></div> -->
+<!--             </div> -->
+<!--         </div> -->
+<!--     </section> -->
+        
+    <section id="grid-area" class="mb-3">
+        <div class="row">
+            <div class="col-md-9">
+                <div class="d-flex justify-content-between pb-2 grid-title">
+                    <h2>◎  협력사 사용자 관리</h2>
+                    <div class="btn-area">
+                        <button type="button" class="btn btn-outline-secondary btn-sm" id="btnNew">신규</button>
+                        <button type="button" class="btn btn-outline-secondary btn-sm" id="btnSave">저장</button>
+                        <button type="button" class="btn btn-outline-secondary btn-sm" id="btnDelete">삭제</button>
+                        <button type="button" class="btn btn-outline-secondary btn-sm" id="btnUrlSend">등록 URL 발송</button>
+                    </div>
+                </div>
+                <div class="vertical-full1" id="partnerUsersSheet"></div>
+            </div>
+            <div class="col-md-3">
+                <div class="d-flex justify-content-between pb-2 grid-title">
+                    <h2>◎  협력사 사용자 현장등록</h2>
+                    <div class="btn-area">
+                        <button type="button" class="btn btn-outline-secondary btn-sm" id="btnAddDept">현장추가</button>
+                        <button type="button" class="btn btn-outline-secondary btn-sm" id="btnSaveDept">저장</button>
+                    </div>
+                </div>
+                <div class="vertical-full1" id="deptSheet"></div>
+            </div>
+        </div>
+    </section>
+    
+</div>
+
+<script type="text/javascript" th:inline="javascript" layout:fragment="script">
+    $(document).ready(function(){
+        
+        
+        var prtnMtRow;
+        var isChk = false;
+        
+        resizeContent();
+        
+        $("#corpKor").keydown(function() {
+            if (event.keyCode === 13) {
+                event.preventDefault();
+            };
+        });
+        
+        $("#btnNew").attr('disabled', true);
+        $("#btnSave").attr('disabled', true);
+        $("#btnDelete").attr('disabled', true);
+        $("#btnUrlSend").attr('disabled', true);
+        
+        $("#btnAddDept").attr('disabled', true);
+        $("#btnSaveDept").attr('disabled', true);
+        
+        $.getJSON("/code/getCodeList/USE_YN", function (codes) {
+            var useYn = codes.useYn
+
+            partnerUsersSheet.SetColProperty(0, "useYn", {
+                ComboText: _.utils.delimiter(useYn, "value"),
+                ComboCode: _.utils.delimiter(useYn, "key")
+            });
+            partnerUsersSheet.SetColProperty(0, "pushUseYn", {
+                ComboText: _.utils.delimiter(useYn, "value"),
+                ComboCode: _.utils.delimiter(useYn, "key")
+            });
+        });
+
+        var headers = [
+            {Text: "상태|순번|삭제|선택|협력사|성명|전화번호|알림사용여부|사용여부|상태|사용시작일|사용종료일|비밀번호만료일|최종접속일|사용자ID|협력사PK|비고"}
+        ],
+        mode = {
+            HeaderCheck: true
+        },
+        columns = [
+            {Type: "Status", SaveName: "rowStatus", Width:0, Align: "center", Hidden: true},
+            {Type: "Seq", SaveName: "rowSeq", Width:30, Align: "center", Hidden: false},
+            {Type: "DelCheck", SaveName: "rowChecked", Width: 0, Align: "left", Hidden: true},
+            {Type: "CheckBox", SaveName: "at_Chk", Width: 30, Align: "center"},
+            {Type: "Text", SaveName: "corpKor", Width:80, Align: "left", Edit: false, EditLen: 50, KeyField: true},
+            {Type: "Text", SaveName: "name", Width:40, Align: "left", Edit: true, EditLen: 50, KeyField: true},
+            {Type: "Text", SaveName: "tlno", Width:40, Align: "center", Edit: true, EditLen: 15, KeyField: true},
+            {Type: "Combo", SaveName: "pushUseYn", Width: 30, Align: "left", DefaultValue: "Y"},
+            {Type: "Combo", SaveName: "useYn", Width: 30, Align: "left", DefaultValue: "Y"},
+            {Type: "Text", SaveName: "regStatus", Width:30, Align: "center", Edit: false},
+            {Type: "Date", SaveName: "stDt", Width:80, Align: "center", Edit: true, EditLen: 8, Format: "Ymd", FormatFix: true, Hidden: true},
+            {Type: "Date", SaveName: "endDt", Width:80, Align: "center", Edit: true, EditLen: 8, Format: "Ymd", FormatFix: true, Hidden: true},
+            {Type: "Date", SaveName: "pwdExpiDt", Width:80, Align: "center", Edit: true, EditLen: 8, Format: "Ymd", FormatFix: true, Hidden: true},
+            {Type: "Date", SaveName: "lastConnTm", Width:80, Align: "center", Edit: false},
+            {Type: "Text", SaveName: "userId", Width:0, Align: "center", Hidden: true},
+            {Type: "Text", SaveName: "coprcpNo", Width:0, Align: "center", Hidden: true},
+            {Type: "Text", SaveName: "bigo", Width:120, Align: "center", Edit: false}
+        ];
+        createIBSheet2($("#partnerUsersSheet")[0], "partnerUsersSheet", "100%", "350px");
+        partnerUsersSheet.InitHeaders(headers, mode);
+        partnerUsersSheet.InitColumns(columns);
+        
+        window["partnerUsersSheet_OnClick"] = function (Row, Col, Value, CellX, CellY, CellW, CellH) {
+            
+            if (partnerUsersSheet.GetCellValue(Row, "rowStatus") == "I"){
+                deptSheet.RemoveAll();                
+                return;
+            }
+            
+            if (partnerUsersSheet.GetCellValue(Row, "rowStatus") != "I") {
+                if (Row != prtnMtRow) {
+                    getUserId = partnerUsersSheet.GetCellValue(Row, "userId");
+                    
+                    $.getJSON("/sysm/sec/usr/userEdit/gridUserDeptList", {userId: getUserId}, function (data) {
+                        deptSheet.LoadSearchData({"data": data});
+                    });
+                }
+            }            
+
+            prtnMtRow = Row;
+        };
+        
+        window["partnerUsersSheet_OnSearchEnd"] = function (Code, Msg, StCode, StMsg) {
+            if($('#coprcpNo').val() != '' && $('#corpKor').val() != ''){
+                $("#btnNew").attr('disabled', false);
+                $("#btnSave").attr('disabled', false);
+                $("#btnDelete").attr('disabled', false);
+                $("#btnUrlSend").attr('disabled', false);
+                
+                $("#btnAddDept").attr('disabled', false);
+                $("#btnSaveDept").attr('disabled', false);
+            }else{
+                $("#btnNew").attr('disabled', true);
+                $("#btnSave").attr('disabled', true);
+                $("#btnDelete").attr('disabled', true);
+                $("#btnUrlSend").attr('disabled', true);
+                
+                $("#btnAddDept").attr('disabled', true);
+                $("#btnSaveDept").attr('disabled', true);
+            }
+        };
+        
+        // 조회조건 INPUT 값 체크 버튼 비활성화 처리 
+        $("#corpKor").on("propertychange change keyup paste input", function(e) {
+            
+            var corpKorVal = $(this).val();
+            var corpNoVal = $('#coprcpNo').val();
+            
+            if(e.keyCode == 13){
+                if((corpNoVal != '' && corpKorVal != '') || (corpNoVal == '' && corpKorVal == '')){
+                    $search.trigger("submit");
+                }else{
+                    $("#btnPartner").click();
+                }
+            }else{
+                $('#coprcpNo').val('');
+                
+                $("#btnNew").attr('disabled', true);
+                $("#btnSave").attr('disabled', true);
+                $("#btnDelete").attr('disabled', true);
+                $("#btnUrlSend").attr('disabled', true);
+                
+                $("#btnAddDept").attr('disabled', true);
+                $("#btnSaveDept").attr('disabled', true);
+            }
+        });
+        
+        var $search = $("#search");
+        $search.on("submit", function(e) {
+            isChk = false;
+            e.preventDefault();
+            $.getJSON("/partners/users/gridList", $(this).serialize(), function (data) {
+                partnerUsersSheet.LoadSearchData({"data": data});
+                deptSheet.RemoveAll();
+            });
+        });
+   
+        //신규 버튼 클릭
+        $("#btnNew").on("click", function() {
+            
+            lRow = partnerUsersSheet.DataInsert(-1);
+            partnerUsersSheet.SelectCell(lRow,"name");
+            
+            partnerUsersSheet.SetCellValue(lRow, "coprcpNo", $('#coprcpNo').val());
+            partnerUsersSheet.SetCellValue(lRow, "corpKor", $('#corpKor').val());
+        });
+   
+        //현장팝업
+        $("#btnPartner").click(function () {
+            
+            var argCorpKor = $('#corpKor').val();
+            param = {searchExceptYn: "Y"
+                    ,searchPartnerNm: argCorpKor};
+
+            // 협력사  팝업
+            var modal = _.dialog.modal( _.url.format("/partners/users/partnerListModal/{searchExceptYn}/{searchPartnerNm}", param), {title: "협력사", width: "450px"}, function (data) {
+                $('#coprcpNo').val(data.corpId);
+                $('#corpKor').val(data.corpKor);
+            });
+            
+        });
+        
+        //등록URL발송
+        $("#btnUrlSend").click(function(){
+            
+            var changeCnt = 0;
+            for (var i=1; i<=partnerUsersSheet.RowCount(); i++) {
+                if (partnerUsersSheet.GetCellValue(i,"rowStatus") == "U") {
+                    changeCnt++;
+                }
+            }
+            
+            if (changeCnt == 0) {
+                //_.dialog.alert("전송 대상 항목이 없습니다.");
+                _.cdrs.notify.show("확인","전송 대상 항목이 없습니다.");
+                return false;
+            }
+            
+            var param = $("#search").serializeObject();
+            param.userses = partnerUsersSheet.GetSaveJson().data;
+                        
+            _.dialog.confirm(changeCnt + "건의 " + "등록 URL 전송하시겠습니까?", function() {
+                $.post("/partners/users/partnerUrl", param, function() {
+                    _.cdrs.notify.show("전송","등록URL 전송되었습니다.");
+                    //partnerUsersSheet.LoadSaveData(_.ibsheet.success());
+                    $search.trigger("submit");
+                });
+            });  
+            
+        });
+        
+        //저장 버튼 클릭
+        $("#btnSave").on("click", function() {
+                     
+           var changeCnt = 0;
+           for (var i=1; i<=partnerUsersSheet.RowCount(); i++) {
+               if (partnerUsersSheet.GetCellValue(i,"rowStatus") == "I" 
+                || partnerUsersSheet.GetCellValue(i,"rowStatus") == "U"
+                || partnerUsersSheet.GetCellValue(i,"rowStatus") == "D") {
+                   changeCnt++;
+               }
+           }
+           
+           if (changeCnt == 0) {
+               //_.dialog.alert("저장할 항목이 없습니다.");
+               _.cdrs.notify.show("저장","저장할 항목이 없습니다.");
+               return false;
+           }
+           
+           var prtnList = partnerUsersSheet.GetSaveJson();
+           if (!_.cdrs.ibsheetValid(prtnList)) {
+               return false;
+           }
+           
+           /**
+            * IBSheet 그리드 중복값 체크
+            * @param argSheetObj : sheet 객체
+            * @param argSection : 중복 체크 컬럼 값 ( '|' 구분으로 복수 체크 가능 )
+            * @param argRowStartNo : 시작 row 번호
+            * @returns {boolean}
+            */
+            var colNm = "tlno";
+            if(fncSheetRowDupCheck(partnerUsersSheet, colNm, 1) == false){
+                return false;
+            }
+           
+           var param = $("#search").serializeObject();
+           param.userses = partnerUsersSheet.GetSaveJson().data;
+           
+           
+           $.getJSON("/partners/users/gridCheck", param, function(data) {
+               if(data.length > 0){
+                   
+                   for(var i=0; i<data.length; i++){
+                       var findRow = partnerUsersSheet.FindText("tlno",data[i].key);
+                       
+                       if(findRow != -1){
+                           partnerUsersSheet.SetCellValue(findRow, "bigo", data[i].errnm);
+                           partnerUsersSheet.RangeBackColor(findRow,5,findRow,6, "#FFFF00");
+                       }
+                   }
+                   
+                   isChk = true;
+                   
+                   _.cdrs.notify.show("중복", "입력된 전화번호중에 현재 사용중인 전화번호가 있습니다.");
+                   return;
+               }
+               
+               _.dialog.confirm("저장하시겠습니까?", function() {
+                   $.post("/partners/users/gridSave", param, function(data) {
+                       _.cdrs.notify.show("저장", "저장되었습니다.");
+                       partnerUsersSheet.LoadSaveData(_.ibsheet.success());
+                       
+                       if(isChk == true){
+                           for(var i=1; i<partnerUsersSheet.RowCount() + 1; i++){
+                               partnerUsersSheet.SetCellValue(i, "bigo", "");
+                               partnerUsersSheet.RangeBackColor(i,5,i,6, "#FFFFFF");
+                           }
+                       }
+                       
+                       isChk = false;
+                       
+                       //$search.trigger("submit");
+                   });
+               });
+           });
+        });
+        
+        //삭제 버튼 클릭
+        $("#btnDelete").on("click", function() {
+            
+            var cRow = partnerUsersSheet.FindCheckedRow("at_Chk");
+            var arrRow = cRow.split("|");
+            var statusNewCnt = 0;
+            
+            if (cRow == "undefined" || cRow == null || cRow == "") {
+                //_.dialog.error("선택된 항목이 없습니다.");
+                _.cdrs.notify.show("삭제", "선택된 항목이 없습니다.");
+            } else {
+
+                for (idx = 0; idx < arrRow.length; idx++) {
+                    if(partnerUsersSheet.GetCellValue(arrRow[idx], 'rowStatus') == "I"){
+                       statusNewCnt++;
+                    }
+                }
+
+                if(statusNewCnt == arrRow.length){
+                    
+                    for (idx = (arrRow.length - 1); 0 <= idx; idx--) {
+                        rowSeq = partnerUsersSheet.GetCellValue(arrRow[idx], 'rowSeq');
+                        var findRow = partnerUsersSheet.FindText("rowSeq",String(rowSeq));
+                        partnerUsersSheet.RowDelete(findRow);
+                    }
+                    
+                }else{   
+                
+                    var backupJson = "";    // ROW 원상태값 저장
+                    for (idx = 0; idx < arrRow.length; idx++) {
+                        
+                        backupJson += '{';
+                        backupJson += '"rowStatus":"' + partnerUsersSheet.GetCellValue(arrRow[idx], 'rowStatus') + '",';
+                        backupJson += '"rowSeq":"' + partnerUsersSheet.GetCellValue(arrRow[idx], 'rowSeq')   + '"';
+                        backupJson += '},';   
+                        
+                        partnerUsersSheet.SetCellValue(arrRow[idx], "rowStatus", "D");
+                    }
+                    
+                    if (backupJson.charAt(backupJson.length - 1) == ",") {
+                        backupJson = backupJson.substring(0, (backupJson.length - 1));
+                    }
+                                 
+                    _.dialog.confirm("삭제하시겠습니까?", function () {
+
+                        var param = $("#search").serializeObject();
+                        param.userses = partnerUsersSheet.GetSaveJson().data;
+                        
+                        $.post("/partners/users/gridSave", param, function () {
+                            //_.dialog.alert("삭제되었습니다.");
+                            _.cdrs.notify.show("삭제", "삭제되었습니다.");
+                            partnerUsersSheet.LoadSaveData(_.ibsheet.success());
+                        });
+                    }, function(){
+                        var r_data = JSON.parse("[" + backupJson + "]");
+                        
+                        for (idx = 0; idx < r_data.length; idx++) {   
+                            var _rowStatus = r_data[idx].rowStatus;
+                            var _rowSeq = r_data[idx].rowSeq;
+                            
+                            partnerUsersSheet.SetCellValue(_rowSeq, "rowStatus", _rowStatus);
+                        }
+                    });
+                    
+                }                
+            }            
+        });
+        
+        var headers = [
+            {Text: "진행상태|삭제|사용자ID|현장코드|현장명|권한|대표현장"}
+        ],
+        mode = {
+            HeaderCheck: true
+        },
+        columns = [
+            {Type: "Status", SaveName: "rowStatus", Width: 0, Align: "center", Hidden: true},
+            {Type: "DelCheck", SaveName: "rowChecked", Width: 80, Align: "center"},
+            {Type: "Text", SaveName: "userId", Width: 0, Align: "left", Hidden: true},
+            {Type: "Text", SaveName: "deptCd", Width: 0, Align: "left", Hidden: true, Edit: false},
+            {Type: "Text", SaveName: "deptNm", Width: 300, Align: "left", Edit: false},
+            {Type: "Combo", SaveName: "roleId", Width: 150, Align: "left", Edit: true, Hidden: true, ComboText: _.utils.delimiter([[${roles}]], "nmspcVal"), ComboCode: _.utils.delimiter([[${roles}]], "roleId")},
+            {Type: "Radio", SaveName: "basDeptYn", Width: 80, Align: "Center", Edit: true, TrueValue: "Y", FalseValue: "N"}
+        ];
+        createIBSheet2($("#deptSheet")[0], "deptSheet", "100%", "");
+        deptSheet.InitHeaders(headers, mode);
+        deptSheet.InitColumns(columns);
+        
+        $("#btnAddDept").click(function() {
+            
+            if(partnerUsersSheet.RowCount("R") != partnerUsersSheet.RowCount()){
+                _.cdrs.notify.show("확인","협력사 사용자 관리 등록을 완료하고, 현장등록 처리 바랍니다.");
+                return;
+            }
+            
+            var sRow = partnerUsersSheet.GetSelectRow();
+            var coprcpNo = partnerUsersSheet.GetCellValue(sRow, "coprcpNo")
+            
+            param = {searchPartnerNm: coprcpNo};
+            
+            //협력사 사용자 현장등록
+            var modal = _.dialog.modal( _.url.format("/partners/users/partnerDeptListModal/{searchPartnerNm}",param), {title: "협력사 사용자 현장등록", width: "820px", autoClose: true}, function (data) {
+                setRoleData(data, modal);
+            });  
+        });
+        
+        //저장 버튼 클릭
+        $("#btnSaveDept").on("click", function() {
+            
+            //alert(partnerUsersSheet.RowCount("I","U","D"));
+            
+            var changeCnt = 0;
+            for (var i=1; i<=deptSheet.RowCount(); i++) {
+                if (deptSheet.GetCellValue(i,"rowStatus") == "I" 
+                 || deptSheet.GetCellValue(i,"rowStatus") == "U"
+                 || deptSheet.GetCellValue(i,"rowStatus") == "D") {
+                    changeCnt++;
+                }
+            }
+            
+            if (changeCnt == 0) {
+                //_.dialog.alert("저장할 항목이 없습니다.");
+                _.cdrs.notify.show("저장","저장할 항목이 없습니다.");
+                return false;
+            }
+            
+            var prtnList = deptSheet.GetSaveJson();
+            if (!_.cdrs.ibsheetValid(prtnList)) {
+                return false;
+            }
+            
+            var param = $("#search").serializeObject();
+            param.userDepts = deptSheet.GetSaveJson().data;
+
+            var sRow = partnerUsersSheet.GetSelectRow();
+            var userId = partnerUsersSheet.GetCellValue(sRow, "userId");
+            param.userId = userId;
+
+            _.dialog.confirm("저장하시겠습니까?", function() {
+                $.post("/sysm/sec/usr/userEdit/gridUserDeptSaveList", param, function(data) {
+                    //_.dialog.alert("저장되었습니다.");
+                    _.cdrs.notify.show("저장", "저장되었습니다.");
+                    deptSheet.LoadSaveData(_.ibsheet.success());
+                    //$search.trigger("submit");
+                });
+            });
+        });
+    });
+    
+    /**
+     * IBSheet 그리드 중복값 체크
+     * @param argSheetObj : sheet 객체
+     * @param argSection : 중복 체크 컬럼 값 ( '|' 구분으로 복수 체크 가능 )
+     * @param argRowStartNo : 시작 row 번호
+     * @returns {boolean}
+     */
+     function fncSheetRowDupCheck (argSheetObj, argSection, argRowStartNo){
+
+        var chk = 0;
+        var rowCount = argSheetObj.RowCount();
+        var varSectionVal = String(argSection).split('|');
+
+        if(rowCount > 0){
+            for(var i = 0; i < rowCount; i++){
+                for(var j = 0; j < rowCount; j++){
+                    if(i != j){
+                        var varBaseStatus = argSheetObj.GetCellValue(i+argRowStartNo, 'rowStatus');
+                        var varTarStatus  = argSheetObj.GetCellValue(j+argRowStartNo, 'rowStatus');
+                        var varBaseVal = '';
+                        var varTarVal = '';
+                        
+                        for(var z = 0; z < varSectionVal.length; z++){
+                            
+                            if(z == 0){
+                                varBaseNm = argSheetObj.GetCellValue(i+argRowStartNo, varSectionVal[z]);    
+                            }
+                            
+                            varBaseVal += argSheetObj.GetCellValue(i+argRowStartNo, varSectionVal[z]);
+                            varTarVal += argSheetObj.GetCellValue(j+argRowStartNo, varSectionVal[z]);
+                        }
+                        
+                        if(varBaseVal == ""){
+                            continue;
+                        }
+                        
+                        // 앞,뒤,중간 공백 제거 & 대문자 변환 후 비교 처리
+                        varBaseVal = varBaseVal.replace(/(\s*)/g, "").toUpperCase();
+                        varTarVal  = varTarVal.replace(/(\s*)/g, "").toUpperCase();
+                        
+                        if(varBaseStatus != 'D' && varTarStatus != 'D' && varBaseVal == varTarVal){
+                            var bRow = i+argRowStartNo;
+                            var sRow = j+argRowStartNo;
+                            
+                            //_.dialog.error("※ 중복값이 존재합니다.\n\n행번호 : " + bRow + "행\n명칭 : " + varBaseNm );
+                            _.cdrs.notify.show("중복데이터","전화번호 중복값이 존재합니다." + "　　　　　" + "전화번호 : " + varBaseNm );
+                            argSheetObj.SetSelectRow(sRow);
+                            
+                            return false;
+                        }
+                    }
+                }
+            }
+        }
+        return true;
+    }
+    
+    // Sheet 상태값 체크
+    function fnStatusCheck(argSheetObj){
+        var changeCnt = 0;
+        for (var i=1; i<=argSheetObj.RowCount(); i++) {
+            if (argSheetObj.GetCellValue(i , "rowStatus") == "I" 
+             || argSheetObj.GetCellValue(i , "rowStatus") == "U"
+             || argSheetObj.GetCellValue(i , "rowStatus") == "D") {
+                changeCnt++;
+            }
+        }
+        return changeCnt;
+    }
+    
+    // 협력사 중복 체크 , 등록 처리 
+    function setRoleData(result, modal) {
+        if (result != null) {
+            var r_data = JSON.parse("[" + result + "]");
+            var coprcpNmDup = "";
+            var chkNum = 0;
+            var prevCorpKor = "";
+            
+            var sRow = partnerUsersSheet.GetSelectRow();
+            var userId = partnerUsersSheet.GetCellValue(sRow, "userId");
+            
+            for (idx = 0; idx < r_data.length; idx++) {
+                
+                var isPass = true;
+                var _deptCd= r_data[idx].deptCd;
+                var _deptNm= r_data[idx].deptNm;
+                
+                for (var i = 1; i <= deptSheet.RowCount(); i++) {
+                    if (_deptCd == deptSheet.GetCellValue(i, "deptCd") && _deptNm == deptSheet.GetCellValue(i, "deptNm")) {
+
+                        chkNum++;
+                        
+                        if(chkNum == 1){
+                            coprcpNmDup += "※ 중복 데이터" + "\n";
+                            coprcpNmDup += "현장명 : " + r_data[idx].deptNm + ",";
+                        }else{
+                            coprcpNmDup += r_data[idx].deptNm + ",";    
+                        }
+                        
+                        isPass = false;
+                    }
+                }
+
+                if (isPass) {
+                    var rowIdx = deptSheet.DataInsert(-1);
+                    
+                    deptSheet.SetCellValue(rowIdx, "userId", userId);
+                    deptSheet.SetCellValue(rowIdx, "deptCd", r_data[idx].deptCd);
+                    deptSheet.SetCellValue(rowIdx, "deptNm", r_data[idx].deptNm);
+                    deptSheet.SetCellValue(rowIdx, "roleId", "ROLE_COPRCP");
+                    
+                    modal.modal("hide");
+                }
+            }
+            
+            if(chkNum > 0){
+                coprcpNmDup = coprcpNmDup.slice(0,-1);
+               _.dialog.error(coprcpNmDup + "\n\n" + "※ 위 데이터는 중복되어 추가할 수 없습니다.");
+            }
+        }
+    }
+    
+</script>
+
+</body>
+</html>   

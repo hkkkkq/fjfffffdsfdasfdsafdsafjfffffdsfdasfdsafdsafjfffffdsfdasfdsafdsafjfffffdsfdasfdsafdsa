@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.henc.cdrs.sysm.sec.auth.repository.AuthMapper">
+
+    <select id="getPortalUserInfo" resultType="userDetail" parameterType="java.lang.String">
+        SELECT PORTAL.EMP_NO AS user_id, PORTAl.login_pw AS pwd, AOUV.name, PORTAL.STATUS, 'HENC' AS user_div_cd
+        FROM ZBEP.CMN_USER@DBL_HBCEDMS.HANWHA.CO.KR PORTAL
+           , ZBHR.AD_ORG_USER_V AOUV
+        WHERE PORTAL.login_id = AOUV.sabun
+        AND PORTAL.login_id = #{userId}
+        <if test="userNm != null">
+            AND AOUV.name = #{userNm}
+        </if>
+    </select>
+
+    <select id="getComUserInfo" resultType="userDetail" parameterType="java.lang.String">
+        SELECT CU.user_id,
+                CU.name,
+                CU.pwd,
+                CU.st_dt,
+                CU.end_dt,
+                CU.last_conn_tm,
+                CU.st_dt,
+                CU.end_dt,
+                CU.user_div_cd,
+                CU.tlno,
+                CU.coprcp_no,
+--                 NVL(CU.coprcp_no, DECODE(CU.user_div_cd, 'HENC', 'T00001', '')) AS coprcp_no ,
+                nvl(CU.push_use_yn, 'N') as push_use_yn,
+                <![CDATA[
+                CASE WHEN nvl(CU.pwd_expi_dt, sysdate) < sysdate THEN 'Y' ELSE 'N' END                    AS pwd_expi_yn,
+                case when CU.fail_cnt < 5 and CU.use_yn = 'Y' then 'A' when  CU.use_yn = 'N' then 'D' else 'S' end as status,
+                ]]>
+                NVL(CU.use_yn, 'N') as use_yn,
+                agr.CLCT_AGREE_YN,
+                agr.ENTRUST_AGREE_YN
+        FROM COM_USER CU
+            left outer join AGREEMENT agr on cu.user_id = agr.user_id
+        WHERE 1=1
+        <if test="field.equals('user_id')">
+            AND CU.user_id = #{userId}
+        </if>
+        <if test="field.equals('tlno')">
+            AND CU.tlno = #{userId}
+        </if>
+        <if test="userNm != null">
+            AND CU.name = #{userNm}
+        </if>
+	</select>
+
+    <select id="getUserRoles" resultType="camelCaseMap">
+        SELECT CUR.user_id,
+               CUR.role_id,
+               CUR.dept_cd,
+               pg_com_namespace.get_namespace(CR.nmspc_cd, 'KO') AS nmspc_Val,
+               CUR.BAS_DEPT_YN,
+               CR.role_cls_cd,
+               CR.dat_rang_cd
+        FROM user_dept CUR
+           , com_role CR
+        WHERE CUR.role_id = CR.role_id
+          AND CUR.user_id = #{userId}
+    </select>
+    
+    <select id="getDefaultUserRole" resultType="camelCaseMap" parameterType="java.lang.String">
+        SELECT role_id, pg_com_namespace.get_namespace(nmspc_cd, 'KO') AS nmspc_Val, role_cls_cd, dat_rang_cd
+        FROM com_role
+        WHERE role_id = #{roleId}
+    </select>
+
+    <update id="passWordUpdate" parameterType="java.lang.String">
+        UPDATE com_user
+           SET pwd = #{encPwd}
+              ,pwd_expi_dt = SYSDATE -1
+              ,fail_cnt = 0
+              ,updt_id = 'SYSTEM'
+              ,updt_dm = SYSDATE
+         WHERE user_id = #{userId}
+    </update>
+
+    <update id="changeExpiredPassword" parameterType="java.lang.String">
+        UPDATE com_user
+           SET pwd = #{encPwd}
+              ,pwd_expi_dt = ADD_MONTHS(SYSDATE,+ 12)
+              ,fail_cnt = 0
+              ,updt_id = #{userId}
+              ,updt_dm = SYSDATE
+         WHERE user_id = #{userId}
+    </update>
+
+    <update id="failCntUpdate" parameterType="java.lang.String">
+        UPDATE com_user
+           SET fail_cnt = nvl(fail_cnt,0) + 1
+              ,updt_id = #{userId}
+              ,updt_dm = SYSDATE
+         WHERE user_id = #{userId}
+    </update>
+
+</mapper>
