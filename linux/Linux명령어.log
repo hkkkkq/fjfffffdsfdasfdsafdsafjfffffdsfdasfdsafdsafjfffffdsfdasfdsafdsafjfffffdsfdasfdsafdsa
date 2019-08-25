@@ -268,7 +268,7 @@ ps -eLf | grep 31776 | grep -v grep | wc -l
 
 <56> cpu 개수 확인
 
-	processor => 논리적 CPU 일련번호	physical id => 소켓ID	siblings => 한 소켓 안에 있는 논리적 CPU 개수	cpu cores => 한 소켓 안 물리적 코어 개수
+	processor => 논리적 CPU 일련번호,	physical id => 소켓ID,	siblings => 한 소켓 안에 있는 논리적 CPU 개수,	cpu cores => 한 소켓 안 물리적 코어 개수
 
 1) 물리적 cpu 개수
 grep 'physical id' /proc/cpuinfo | sort | uniq | wc -l
