@@ -34,3 +34,74 @@ mkdir -p /etc/systemd/system/docker.service.d
 # Restart docker.
 systemctl daemon-reload
 systemctl restart docker
+
+
+[CentOs docker 설치하기]
+
+# yum 실행 시  Could not retrieve mirrorlist. 에러 발생
+=> /etc/resolv.conf 내용 추가
+
+nameserver 8.8.8.8
+nameserver 10.20.0.2
+nameserver 10.20.0.3
+search example.org
+
+# yum 실행 시  Cannot retrieve metalink for repositroy: epel. 에러 발생
+=> /etc/yum.repos.d/epel.repo 내 baseurl 주석 해제, mirrorlist 주석 처리함.
+
+[epel]
+name=Extra Packages for Enterprise Linux 6 - $basearch
+baseurl=http://download.fedoraproject.org/pub/epel/6/$basearch
+#mirrorlist=https://mirrors.fedoraproject.org/metalink?repo=epel-6&arch=$basearch
+failovermethod=priority
+enabled=1
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-6
+
+
+# Install Docker CE
+## Set up the repository
+### Install required packages.
+yum install yum-utils device-mapper-persistent-data lvm2
+
+
+### Add Docker repository.
+yum-config-manager \
+  --add-repo \
+  https://download.docker.com/linux/centos/docker-ce.repo
+
+yum-config-manager --enable docker-ce-edge
+yum-config-manager --enable docker-ce-test
+
+
+## 설치 가능한 버전 확인
+yum list docker-ce --showduplicates | sort -r
+
+
+## Install Docker CE.
+yum update && yum install docker-ce-18.06.2.ce-3.el7 
+
+
+## Create /etc/docker directory.
+mkdir /etc/docker
+
+# Setup daemon.
+cat > /etc/docker/daemon.json <<EOF
+{
+  "exec-opts": ["native.cgroupdriver=systemd"],
+  "log-driver": "json-file",
+  "log-opts": {
+    "max-size": "100m"
+  },
+  "storage-driver": "overlay2",
+  "storage-opts": [
+    "overlay2.override_kernel_check=true"
+  ]
+}
+EOF
+
+mkdir -p /etc/systemd/system/docker.service.d
+
+# Restart Docker
+systemctl daemon-reload
+systemctl restart docker
