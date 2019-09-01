@@ -33,7 +33,8 @@ echo "전원호님짱인듯전원호님짱인듯전원호님짱인듯전원호�
 for /L %i in (1,1,19) do type testdummy.txt >> testdummy.txt
 
 <5>
-복사하기: scp -r * repoadm@devdns02:/repo_osimg/repo/Infinilink/가져오기: scp -r repoadm@devdns02:/repo_osimg/repo/Infinilink/ ./
+복사하기: scp -r * repoadm@devdns02:/repo_osimg/repo/Infinilink/
+가져오기: scp -r repoadm@devdns02:/repo_osimg/repo/Infinilink/ ./
   - 여러 파일 가져오기: scp apache@10.217.46.112:/apache/apache24/bin/{startweb_80_443.sh,stopweb_8000_8443_forSPT.sh,stopweb_80_443.sh} ./
 
 옵션: 
