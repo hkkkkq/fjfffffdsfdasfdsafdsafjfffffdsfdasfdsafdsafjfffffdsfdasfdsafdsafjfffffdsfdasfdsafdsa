@@ -1,5 +1,5 @@
 
-root		ALL = (ALL) ALL
+root			ALL = (ALL) ALL
 %admin		ALL = (ALL) ALL
 
 
