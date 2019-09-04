@@ -177,7 +177,9 @@ git checkout -b dev master  # master branch로 부터 dev branch를 생성하고
 
 
 ```bash
-git checkout HEAD work.txt # git reset --hard HEAD work.txt # git checkout -- work.txt # 동일한 효과
+git checkout HEAD work.txt
+# git reset --hard HEAD work.txt # 동일한 효과
+# git checkout -- work.txt # 동일한 효과, 작업 폴더의 변경 사항을 버리기
 ```
 
 > `checkout` 명령을 실행할 때 파일 경로를 줄 수도 있다. `reset` 명령과 비슷하게 HEAD는 움직이지 않는다. 
