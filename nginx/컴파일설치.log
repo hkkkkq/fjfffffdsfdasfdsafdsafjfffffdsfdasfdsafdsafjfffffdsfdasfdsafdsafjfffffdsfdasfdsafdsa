@@ -1,0 +1,24 @@
+1. nginx tar 다운로드
+
+-- root 로 작업하고 설치 이후 계정 변경해 준다.
+
+2. 컴파일 환경 만들기 
+(필수) yum install pcre pcre-devel zlib zlib-devel
+or
+(Full version) apt-get install make libperl-dev libpcre3 libpcre3-dev zlib1g zlib1g-dev openssl libssl-dev libxml2-dev libxslt1-dev libgd-dev libgeoip-dev google-perftools libgoogle-perftools-dev gcc g++
+
+3. 컴파일
+./configure --prefix=/app/sw/mdwiki/nginx-1.16.1 --user=mdwiki --group=app --with-openssl=/usr/bin
+
+4. mkdir logs
+
+5. make
+
+6. make install
+
+7. 기동 스크립트
+/app/sw/mdwiki/nginx-1.16.1/sbin/nginx
+/app/sw/mdwiki/nginx-1.16.1/sbin/nginx -s stop
+/app/sw/mdwiki/nginx-1.16.1/sbin/nginx -s reload
+
+8. 설치 폴더에 대한 계정 변경 작업

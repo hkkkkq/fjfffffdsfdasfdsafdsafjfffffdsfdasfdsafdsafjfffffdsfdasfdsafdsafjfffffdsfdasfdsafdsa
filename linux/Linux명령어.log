@@ -19,6 +19,8 @@ while true; do echo "================Deploy Processing==============="; ps -ef |
 <2>
 nc -z [local pc ip] [port_number]
 ex) nc -z 10.225.137.132 9001
+ex) z옵션이 없는 경우, cat /dev/null | nc -v google.com 443
+
 <3> sh a.sh 100
 for ((i=1;i<=$1;i++))
 do
@@ -506,3 +508,8 @@ mount -l | column -t
  -d: List directories only.
  -L: Level
  -N: -N 옵션을 추가하면 한글이 제대로 표시됨.
+ 
+ <112> IP 확인
+ ifconfig
+ hostname -I
+ ip addr show
