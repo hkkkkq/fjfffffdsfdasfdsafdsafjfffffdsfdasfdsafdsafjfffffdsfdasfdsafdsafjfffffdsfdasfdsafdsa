@@ -1,0 +1,14 @@
+[1]
+docker pull docker pull klausmeyer/docker-registry-browser
+docker tag e1a2ba182404 172.16.51.166:5000/registry-browser:1.2.3
+docker push 172.16.51.166:5000/registry-browser:1.2.3
+
+[2]
+
+docker run -d -p 8000:8080 \
+--restart=always \
+--name registry-browser \
+-e DOCKER_REGISTRY_URL=http://172.16.51.166:5000 \
+-e NO_SSL_VERIFICATION=true \
+-e ENABLE_DELETE_IMAGES=true \
+172.16.51.166:5000/registry-browser:1.2.3

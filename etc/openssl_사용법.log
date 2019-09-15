@@ -1,4 +1,4 @@
- -- °³ÀÎÅ° »ı¼º
+ -- ê°œì¸í‚¤ ìƒì„±
  openssl genrsa -des3 -out server_akos_dev_test.key 1024
  
  openssl genrsa -des3 -passout pass:'New1234!' -out server_akos_dev_test.key 1024
@@ -8,17 +8,17 @@
  openssl genrsa -des3 -passout pass:'New1234!' -out server_kkos_dev.key 1024
 
  
- (¾ÏÈ£È­¾ÈÇÔ)
+ (ì•”í˜¸í™”ì•ˆí•¨)
  openssl genrsa -out server_akos_dev.key 1024
  openssl genrsa -out server_akos_test.key 1024
  openssl genrsa -out server_kkos_dev.key 1024
  openssl genrsa -out server_kkos_test.key 1024
 
- -- CSR »ı¼º[»ç¿ë¾ÈÇÔ]
+ -- CSR ìƒì„±[ì‚¬ìš©ì•ˆí•¨]
  openssl req -new -key sever.key -out server.csr
  
- -- ÀÚÃ¼ ¼­¸í ÀÎÁõ¼­ »ı¼º
- 1) [»ç¿ë¾ÈÇÔ] openssl req -new -x509 -sha1 -in server.csr -key server.key -out server.crt -days 7300
+ -- ìì²´ ì„œëª… ì¸ì¦ì„œ ìƒì„±
+ 1) [ì‚¬ìš©ì•ˆí•¨] openssl req -new -x509 -sha1 -in server.csr -key server.key -out server.crt -days 7300
  
  2-1) 
     openssl req -new -x509 -sha1 -key server_akos_dev_test.key -out server_akos_dev_test.crt -days 7300 -passin pass:'New1234!'
@@ -34,7 +34,7 @@
                        Issuer: C=KR, ST=SEOUL, L=SEOUL, O=KT, CN=test.k-kos.kt.co.kr
 
                       
-  2-2) º¹¼ö µµ¸ŞÀÎ ¼³Á¤[»ç¿ë¾ÈÇÔ]
+  2-2) ë³µìˆ˜ ë„ë©”ì¸ ì„¤ì •[ì‚¬ìš©ì•ˆí•¨]
   
      a) vi server_akos_dev_test.cfg
 [req]
@@ -66,47 +66,47 @@ DNS.2=test.a-kos.kt.com
 
           
  
- -- °³ÀÎÅ° º¸±â
+ -- ê°œì¸í‚¤ ë³´ê¸°
  openssl rsa -noout -text -in server_akos_dev_test.key
  
- -- CSR º¸±â
+ -- CSR ë³´ê¸°
  openssl req -noout -text -in server_akos_dev_test.csr
  
- -- ÀÎÁõ¼­ º¸±â
+ -- ì¸ì¦ì„œ ë³´ê¸°
  openssl x509 -noout -text -in server_kkos_dev_test.crt
  
-  -- ±âÁ¸ °³ÀÎÅ° ÆĞ½º¿öµå Ãß°¡ 
+  -- ê¸°ì¡´ ê°œì¸í‚¤ íŒ¨ìŠ¤ì›Œë“œ ì¶”ê°€ 
  openssl rsa -in server_akos_dev.key -passout pass:'New1234!' -des3 -out server_akos_dev.key
  openssl rsa -in server_akos_test.key -passout pass:'New1234!' -des3 -out server_akos_test.key
  openssl rsa -in server_kkos_dev.key -passout pass:'New1234!' -des3 -out server_kkos_dev.key
  openssl rsa -in server_kkos_test.key -passout pass:'New1234!' -des3 -out server_kkos_test.key
  openssl rsa -in server.key -passout pass:'New1234!' -des3 -out server.key
  
- -- ±âÁ¸ °³ÀÎÅ° ÆĞ½º¿öµå »èÁ¦
+ -- ê¸°ì¡´ ê°œì¸í‚¤ íŒ¨ìŠ¤ì›Œë“œ ì‚­ì œ
  openssl rsa -in server.key -out server.key
  
- -- DER Æ÷¸ËÀ¸·Î º¯°æ
+ -- DER í¬ë§·ìœ¼ë¡œ ë³€ê²½
  openssl x509 -in server_kkos_dev_test.crt -out server_kkos_dev_test.der -outform DER
  
- -- DER->CRT Æ÷¸ËÀ¸·Î º¯°æ
+ -- DER->CRT í¬ë§·ìœ¼ë¡œ ë³€ê²½
  openssl x509 -inform DER -in kt.der -out kt.crt
  
- -- pfx ÆÄÀÏÀ» crt ÆÄÀÏ·Î ºĞ¸®
+ -- pfx íŒŒì¼ì„ crt íŒŒì¼ë¡œ ë¶„ë¦¬
  openssl pkcs12 -in eyeslight.kr.pfx -clcerts -nokeys -out pfx.eyeslight.kr.crt
  
- -- pfx ÆÄÀÏÀ» key ÆÄÀÏ·Î ºĞ¸®
+ -- pfx íŒŒì¼ì„ key íŒŒì¼ë¡œ ë¶„ë¦¬
  openssl pkcs12 -in eyeslight.kr.pfx -nocerts -nodes -out pfx.eyeslight.kr.key
  
  
- -- import crt ÀÎÁõ¼­ ¼­¹ö to make it trusted
+ -- import crt ì¸ì¦ì„œ ì„œë²„ to make it trusted
  
- 1) ca-certificates ÆĞÅ°Áö ¼³Ä¡
+ 1) ca-certificates íŒ¨í‚¤ì§€ ì„¤ì¹˜
     yum list ca-certificates
     yum list available certificates
     yum update ca-certificates
     yum install ca-certificates
     
- 2) update-ca-trust force-enable ¶Ç´Â update-ca-trust enable => È°¼ºÈ­
+ 2) update-ca-trust force-enable ë˜ëŠ” update-ca-trust enable => í™œì„±í™”
  
  3) cp /apache/apache/ssl_private/akos/server_akos_*.crt /etc/pki/ca-trust/source/anchors
     cp /apache/apache/ssl_private/kkos/server_kkos_*.crt /etc/pki/ca-trust/source/anchors
@@ -114,6 +114,6 @@ DNS.2=test.a-kos.kt.com
  4) update-ca-trust extract
  
  
- -- ¼­¹öÀÇ ÀÎÁõ¼­ Á¤º¸ È®ÀÎ
+ -- ì„œë²„ì˜ ì¸ì¦ì„œ ì •ë³´ í™•ì¸
  openssl s_client -connect www.kmcert.com:443 -showcerts
  openssl s_client -connect www.kmcert.com:443 -state

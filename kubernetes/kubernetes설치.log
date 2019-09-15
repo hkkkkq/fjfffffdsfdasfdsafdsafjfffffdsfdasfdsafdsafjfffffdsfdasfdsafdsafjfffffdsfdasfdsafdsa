@@ -18,9 +18,9 @@
 
   curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add -
 
-  cat <<EOF >/etc/apt/sources.list.d/kubernetes.list
-  deb https://apt.kubernetes.io/ kubernetes-xenial main
-  EOF
+cat <<EOF >/etc/apt/sources.list.d/kubernetes.list
+deb https://apt.kubernetes.io/ kubernetes-xenial main
+EOF
 
   apt-get update
 
@@ -33,6 +33,8 @@
 [Initializing your control-plane node]
 
   kubeadm init
+
+  kubeadm init --apiserver-cert-extra-sans 172.26.60.42
 
   =>
 
@@ -50,8 +52,8 @@
 
   Then you can join any number of worker nodes by running the following on each as root:
 
-  kubeadm join 10.20.0.12:6443 --token snxsmf.6bceez05tq5g6te3 \
-      --discovery-token-ca-cert-hash sha256:fa682ad295d22973bcd1e434f62c8b6672d4d17333264ecc93b799edce1d20f6
+  kubeadm join 10.20.0.12:6443 --token xe3r7i.0q12vg6naafacmq4 \
+      --discovery-token-ca-cert-hash sha256:4b009fb4a1eea2ea83d71ddc2e8eebcfd40c501ebd152d52084b9588fe354b29
 
 
 
@@ -85,9 +87,9 @@
 
   curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add -
 
-  cat <<EOF >/etc/apt/sources.list.d/kubernetes.list
-  deb https://apt.kubernetes.io/ kubernetes-xenial main
-  EOF
+cat <<EOF >/etc/apt/sources.list.d/kubernetes.list
+deb https://apt.kubernetes.io/ kubernetes-xenial main
+EOF
 
   apt-get update
 
@@ -99,5 +101,38 @@
 
 [Joining your nodes]
 
-  kubeadm join 10.20.0.12:6443 --token snxsmf.6bceez05tq5g6te3 \
-      --discovery-token-ca-cert-hash sha256:fa682ad295d22973bcd1e434f62c8b6672d4d17333264ecc93b799edce1d20f6
+
+  kubeadm join --token 18g20a.ct0lr51r8jzxbgkm \
+    --discovery-token-unsafe-skip-ca-verification 172.26.60.42:6443 \
+    -v 3
+
+  error execution phase preflight: unable to fetch the kubeadm-config ConfigMap: failed to get config map: Get https://10.20.0.12:6443/api/v1/namespaces/kube-system/configmaps/kubeadm-config: dial tcp 10.20.0.12:6443: i/o timeout
+
+
+
+
+[token은 24시간 후 만료된다. master node에서 재 확인 및 재 발행 가능하다.]
+
+  kubeadm token list
+  kubeadm token create
+
+[discovery-token-ca-cert-hash의 경우  master node에서 재 확인 가능하다.]
+
+  openssl x509 -pubkey -in /etc/kubernetes/pki/ca.crt | openssl rsa -pubin -outform der 2>/dev/null | \
+   openssl dgst -sha256 -hex | sed 's/^.* //'
+
+
+
+
+
+
+
+
+
+[kubernetes 초기화]
+
+kubeadm reset
+apt-get purge kubeadm kubectl kubelet kubernetes-cni kube*   
+apt-get autoremove  
+rm -rf ~/.kube
+systemctl daemon-reload

@@ -1,0 +1,32 @@
+[1] docker server 설정 insecure-registry (registy 설치한 서버 대상)
+vi /etc/init.d/docker 내 아래 추가
+DOCKER_OPTS=--insecure-registry localhost:5000
+
+service docker restart
+
+[2] docker client 설정 insecure-registries (registry에 접속할 모든 대상 서버)
+vi /etc/docker/daemon.json
+{
+  "exec-opts": ["native.cgroupdriver=systemd"],
+  "log-driver": "json-file",
+  "log-opts": {
+    "max-size": "100m"
+  },
+  "storage-driver": "overlay2",
+  "insecure-registries":["172.16.51.166:5000"]
+}
+
+service docker restart
+
+[3]
+docker pull registry
+docker tag f32a97de94e1 172.16.51.166:5000/registry:2.7.1
+docker push 172.16.51.166:5000/registry:2.7.1
+
+[4]
+docker run -d \
+--name=registry \
+--restart=always \
+-e REGISTRY_HTTP_ADDR=0.0.0.0:5000 \
+-p 5000:5000 \
+-v /data/registry:/var/lib/registry 172.16.51.166:5000/registry:2.7.1
