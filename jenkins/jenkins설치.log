@@ -1,0 +1,33 @@
+# .bash_profile
+
+PATH=$PATH:$HOME/.local/bin:$HOME/bin
+
+export PATH
+export TMOUT=0
+export JAVA_HOME=/usr/local/jdk/jdk1.8.0_221
+
+export PATH=$JAVA_HOME/bin:$PATH
+
+export JENKINS_HOME=/app/ci/jenkins/jenkins/.jenkins
+
+alias ll='ls -al'
+
+
+# logging 위치 변경을 위한 설정 방법
+
+1. jenkins/conf/logging.properties
+
+1catalina.org.apache.juli.AsyncFileHandler.directory = /app/log/jenkins
+2localhost.org.apache.juli.AsyncFileHandler.directory = /app/log/jenkins
+3manager.org.apache.juli.AsyncFileHandler.directory = /app/log/jenkins
+4host-manager.org.apache.juli.AsyncFileHandler.directory = /app/log/jenkins
+
+2. jenkins/conf/server.xml
+
+<Valve className="org.apache.catalina.valves.AccessLogValve" directory="/app/log/jenkins"
+               prefix="localhost_access_log" suffix=".txt"
+               pattern="%h %l %u %t &quot;%r&quot; %s %b" />
+
+3. jenkins/bin/catalina.sh
+
+CATALINA_OUT=/app/log/jenkins/catalina.out
