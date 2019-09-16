@@ -34,6 +34,7 @@ gitlab-ctl reconfigure : gitlab 설정파일 변경 후 재 구성 필요 시
 
  #1. git 최신 버전 설치 
  yum remove git
+ yum install http://opensource.wandisco.com/centos/7/git/x86_64/wandisco-git-release-7-1.noarch.rpm
  yum list git*
  yum install git-2.22.0-1.WANdisco.437
  
