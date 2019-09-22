@@ -1,9 +1,0 @@
-FROM alpine:3.9
-
-USER root
-
-ENV JAVA_MAJOR_VERSION=8
-ENV TZ=Asia/Seoul
-
-RUN apk add --update curl openjdk8-jre-base=8.191.12-r0 && rm /var/cache/apk/* && echo "securerandom.source=file:/dev/urandom" >> /usr/lib/jvm/default-jvm/jre/lib/security/java.security
-#RUN apk add --update curl openjdk8=8.201.08-r0 && rm /var/cache/apk/* && echo "securerandom.source=file:/dev/urandom" >> /usr/lib/jvm/default-jvm/jre/lib/security/java.security
