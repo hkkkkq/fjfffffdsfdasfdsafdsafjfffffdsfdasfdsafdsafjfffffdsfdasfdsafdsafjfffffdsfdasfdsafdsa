@@ -34,8 +34,6 @@ EOF
 
   kubeadm init
 
-  kubeadm init --apiserver-cert-extra-sans 172.26.60.42
-
   =>
 
   our Kubernetes control-plane has initialized successfully!
@@ -52,8 +50,8 @@ EOF
 
   Then you can join any number of worker nodes by running the following on each as root:
 
-  kubeadm join 10.20.0.12:6443 --token xe3r7i.0q12vg6naafacmq4 \
-      --discovery-token-ca-cert-hash sha256:4b009fb4a1eea2ea83d71ddc2e8eebcfd40c501ebd152d52084b9588fe354b29
+  kubeadm join 172.16.51.167:6443 --token refs8g.0f43g51384xfa6qw \
+    --discovery-token-ca-cert-hash sha256:957a5a5f49051459bd5df39d67d34b4de850ac2a1c3b8b7964cad94ad997dc10
 
 
 
@@ -65,9 +63,13 @@ EOF
   sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
   sudo chown $(id -u):$(id -g) $HOME/.kube/config
 
-  [Alternatively, if you are the root user, you can run]
+[Alternatively, if you are the root user, you can run]
 
   export KUBECONFIG=/etc/kubernetes/admin.conf
+
+  # 만약 Worker Node 인 경우 Master Node에서 대상 파일을 가져온다.
+  cd /etc/kubernetes
+  scp root@172.16.51.167:/etc/kubernetes/admin.conf .
 
 
 
@@ -101,13 +103,8 @@ EOF
 
 [Joining your nodes]
 
-
-  kubeadm join --token 18g20a.ct0lr51r8jzxbgkm \
-    --discovery-token-unsafe-skip-ca-verification 172.26.60.42:6443 \
-    -v 3
-
-  error execution phase preflight: unable to fetch the kubeadm-config ConfigMap: failed to get config map: Get https://10.20.0.12:6443/api/v1/namespaces/kube-system/configmaps/kubeadm-config: dial tcp 10.20.0.12:6443: i/o timeout
-
+  kubeadm join 172.16.51.167:6443 --token refs8g.0f43g51384xfa6qw \
+    --discovery-token-ca-cert-hash sha256:957a5a5f49051459bd5df39d67d34b4de850ac2a1c3b8b7964cad94ad997dc10
 
 
 
@@ -126,9 +123,6 @@ EOF
 
 
 
-
-
-
 [kubernetes 초기화]
 
 kubeadm reset
@@ -136,3 +130,17 @@ apt-get purge kubeadm kubectl kubelet kubernetes-cni kube*
 apt-get autoremove  
 rm -rf ~/.kube
 systemctl daemon-reload
+
+
+[Enable kubectl autocompletion]
+
+1. apt-get install bash-completion
+=> /usr/share/bash-completion/bash-completion
+
+2. .bashrc 또는 .bash_profile 추가
+source <(kubectl completion bash)
+alias k='kubectl'
+alias kd='kubectl -n default'
+alias kk='kubectl -n kube-system'
+alias kf='kebectl -n flex'
+complete -F __start_kubectl k kd kk kf

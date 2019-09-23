@@ -1,0 +1,8 @@
+if [ -f ~/.bashrc ]; then
+  . ~/.bashrc
+fi
+
+export TMOUT=0
+export PATH=$PATH
+
+alias ll='ls -al'
