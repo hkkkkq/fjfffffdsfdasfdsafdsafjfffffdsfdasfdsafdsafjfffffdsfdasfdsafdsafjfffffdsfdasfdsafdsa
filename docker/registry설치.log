@@ -28,5 +28,15 @@ docker run -d \
 --name=registry \
 --restart=always \
 -e REGISTRY_HTTP_ADDR=0.0.0.0:5000 \
+-e REGISTRY_STORAGE_DELETE_ENABLED=true \
 -p 5000:5000 \
 -v /data/registry:/var/lib/registry 172.16.51.166:5000/registry:2.7.1
+
+
+
+[image delete 방법]
+1) curl -X GET 172.16.51.166:5000/v2/_catalog
+2) curl -X GET 172.16.51.166:5000/v2/hello-world/tags/list
+3) curl -v --silent -H "Accept: application/vnd.docker.distribution.manifest.v2+json" -X GET http://172.16.51.166:5000/v2/hello-world/manifests/latest 2>&1 | grep Docker-Content-Digest | awk '{print ($3)}'
+=> sha256:92c7f9c92844bbbb5d0a101b22f7c2a7949e40f8ea90c8b3bc396879d95e899a
+4) curl -v --silent -H "Accept: application/vnd.docker.distribution.manifest.v2+json" -X DELETE http://172.16.51.166:5000/v2/hello-world/manifests/sha256:92c7f9c92844bbbb5d0a101b22f7c2a7949e40f8ea90c8b3bc396879d95e899a
