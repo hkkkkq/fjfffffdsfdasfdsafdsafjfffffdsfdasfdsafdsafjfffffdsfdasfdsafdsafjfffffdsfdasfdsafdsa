@@ -67,6 +67,14 @@ git clone http://gitlab.msa.kt.com/coe-istio-master/msa-bunker.git
 
 
 
+- Windows 자격 증명 관리자 초기화
+
+```bash
+git credential-manager uninstall
+```
+
+
+
 - git 저장소 삭제
   - git 저장소 내 .git 파일 삭제
 
