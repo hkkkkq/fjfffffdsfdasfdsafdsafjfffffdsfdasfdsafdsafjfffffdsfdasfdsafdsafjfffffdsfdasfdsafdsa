@@ -63,6 +63,15 @@ EOF
   sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
   sudo chown $(id -u):$(id -g) $HOME/.kube/config
 
+  -- 다른 서버의 경우
+  cd /home/jenkins
+  mkdir .kube
+  scp root@172.16.51.167:/etc/kubernetes/admin.conf .kube/config
+  su -l jenkins
+  sudo chown $(id -u):$(id -g) $HOME/.kube/config
+
+
+
 [Alternatively, if you are the root user, you can run]
 
   export KUBECONFIG=/etc/kubernetes/admin.conf
@@ -76,6 +85,17 @@ EOF
 [Installing a pod network add-on]
 
   kubectl apply -f https://docs.projectcalico.org/v3.8/manifests/calico.yaml
+
+  or
+  
+  그런데 특정 node의 calico pod가 비 정상적이다. 0/1 Running 상태 (https://github.com/projectcalico/calico/issues/2561)
+  1) wget https://docs.projectcalico.org/v3.8/manifests/calico.yaml
+  2) calico.yaml 수정
+  DaemonSet의 calico-node container env 영역에 아래를 추가해준다.
+  # Specify interface
+  - name: IP_AUTODETECTION_METHOD
+    value: "interface=eth0"
+
 
 
 
@@ -142,5 +162,5 @@ source <(kubectl completion bash)
 alias k='kubectl'
 alias kd='kubectl -n default'
 alias kk='kubectl -n kube-system'
-alias kf='kebectl -n flex'
+alias kf='kubectl -n flex'
 complete -F __start_kubectl k kd kk kf
