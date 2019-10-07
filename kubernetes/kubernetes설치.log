@@ -50,8 +50,8 @@ EOF
 
   Then you can join any number of worker nodes by running the following on each as root:
 
-  kubeadm join 172.16.51.167:6443 --token refs8g.0f43g51384xfa6qw \
-    --discovery-token-ca-cert-hash sha256:957a5a5f49051459bd5df39d67d34b4de850ac2a1c3b8b7964cad94ad997dc10
+  kubeadm join 172.16.51.167:6443 --token kvt05x.t523ydsz9qpsj58i \
+    --discovery-token-ca-cert-hash sha256:272cab92610fd7c32dc3436a5c745b8568b8885786044ee690b979f13f2ece4e
 
 
 
@@ -87,7 +87,7 @@ EOF
   kubectl apply -f https://docs.projectcalico.org/v3.8/manifests/calico.yaml
 
   or
-  
+
   그런데 특정 node의 calico pod가 비 정상적이다. 0/1 Running 상태 (https://github.com/projectcalico/calico/issues/2561)
   1) wget https://docs.projectcalico.org/v3.8/manifests/calico.yaml
   2) calico.yaml 수정
@@ -123,8 +123,8 @@ EOF
 
 [Joining your nodes]
 
-  kubeadm join 172.16.51.167:6443 --token refs8g.0f43g51384xfa6qw \
-    --discovery-token-ca-cert-hash sha256:957a5a5f49051459bd5df39d67d34b4de850ac2a1c3b8b7964cad94ad997dc10
+  kubeadm join 172.16.51.167:6443 --token kvt05x.t523ydsz9qpsj58i \
+    --discovery-token-ca-cert-hash sha256:272cab92610fd7c32dc3436a5c745b8568b8885786044ee690b979f13f2ece4e
 
 
 
@@ -162,5 +162,5 @@ source <(kubectl completion bash)
 alias k='kubectl'
 alias kd='kubectl -n default'
 alias kk='kubectl -n kube-system'
-alias kf='kubectl -n flex'
-complete -F __start_kubectl k kd kk kf
+alias kn='kubectl -n nginx-ingress'
+complete -F __start_kubectl k kd kk kf kn

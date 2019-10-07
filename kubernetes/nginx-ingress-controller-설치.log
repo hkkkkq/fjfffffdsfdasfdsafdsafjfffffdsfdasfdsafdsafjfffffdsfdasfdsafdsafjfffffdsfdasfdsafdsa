@@ -1,0 +1,12 @@
+[nginx ingress controller 설치하기]
+
+https://github.com/nginxinc/kubernetes-ingress
+
+1. git clone https://github.com/nginxinc/kubernetes-ingress.git
+
+2. 위에서 복제한 거 업로드 하기
+scp -r kubernetes-ingress root@172.16.51.167:/data
+
+3. 가이드대로 실행하기
+
+   
