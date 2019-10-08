@@ -7,7 +7,7 @@ while true; do echo "================58088==============="; netstat -an | grep 5
 while true; do netstat -an | grep 9002 | grep ESTABLISHED |wc -l; sleep 1; echo "================9997==============="; done;
 while true; do netstat -an | grep 9030 | grep ESTABLISHED |wc -l; sleep 1; echo "================9030==============="; done;
 while true; do echo "================57777==============="; netstat -an | grep 57777; sleep 1; clear; done;
-
+while true; do netstat -an | grep 30001; sleep 1; echo "=============== $(date +'%Y-%m-%d %H:%M:%S') ================"; done;
 while true; do echo "================9006==============="; netstat -an | grep 9006 | grep ESTABLISHED; sleep 1;  done;
 while true; do echo "================9009==============="; netstat -an | grep 10.217.157.136:9009 | grep ESTABLISHED; sleep 1;  done;
 while true; do echo "================9010==============="; netstat -an | grep 9010 | grep ESTABLISHED; sleep 1;  done;
