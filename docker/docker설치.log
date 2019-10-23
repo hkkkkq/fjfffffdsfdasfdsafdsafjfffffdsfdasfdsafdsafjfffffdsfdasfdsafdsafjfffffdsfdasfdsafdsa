@@ -128,3 +128,10 @@ EOF
   # Restart Docker
   systemctl daemon-reload
   systemctl restart docker
+
+
+[root 계정이 아닌 다른 계정으로 docker 사용하기]
+
+root로 아래 실행하여 jenkins 계정에 docker 그룹을 추가한다.
+
+usermod -aG docker jenkins
