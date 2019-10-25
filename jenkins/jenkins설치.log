@@ -9,6 +9,7 @@ export JAVA_HOME=/usr/local/jdk/jdk1.8.0_221
 export PATH=$JAVA_HOME/bin:$PATH
 
 export JENKINS_HOME=/app/ci/jenkins/jenkins/.jenkins
+export JENKINS_JAVA_OPTIONS="-Dorg.apache.commons.jelly.tags.fmt.timeZone=Asia/Seoul -Duser.timezone=Asia/Seoul"
 
 alias ll='ls -al'
 
