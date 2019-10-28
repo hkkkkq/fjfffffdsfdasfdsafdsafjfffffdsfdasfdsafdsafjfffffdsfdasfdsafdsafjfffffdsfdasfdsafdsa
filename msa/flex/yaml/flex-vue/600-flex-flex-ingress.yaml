@@ -1,0 +1,33 @@
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: flex-ingress
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    #nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+spec:
+  rules:
+  - host: flex.hanwha.co.kr
+    http:
+      paths:
+      - path: /flex/auth-api
+        backend:
+          serviceName: flex-oauth2-authorization
+          servicePort: 80
+      - path: /flex/asset-api
+        backend:
+          serviceName: flex-asset-management
+          servicePort: 80
+      - path: /flex/file-api
+        backend:
+          serviceName: flex-file-api
+          servicePort: 80
+      - path: /flex
+        backend:
+          serviceName: flex-archteam-management
+          servicePort: 80
+      - path: /
+        backend:
+          serviceName: flex-vue
+          servicePort: 80

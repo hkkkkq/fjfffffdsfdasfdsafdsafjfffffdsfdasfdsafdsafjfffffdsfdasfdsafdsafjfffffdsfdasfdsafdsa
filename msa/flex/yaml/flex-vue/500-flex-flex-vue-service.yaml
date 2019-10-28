@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: flex-vue
+  labels:
+    app: flex-vue
+    version: 1.0.0
+    release: flex
+spec:
+#  type: NodePort
+  type: ClusterIP
+  ports:
+  - name: flex-vue  
+    port: 80
+    targetPort: 80
+    protocol: TCP
+#    nodePort: 30001
+#  sessionAffinity: ClientIP
+#  sessionAffinityConfig:
+#    clientIP:
+#      timeoutSeconds: 3600 # default 10800으로 3시간
+#  externalTrafficPolicy: Local
+  selector:
+    app: flex-vue
+    version: 1.0.0
+    release: flex
