@@ -208,6 +208,25 @@ git diff HEAD 		# Working Directory vs HEAD
 
 
 
+- git stash
+
+자신이 어떤 작업을 하던 중에 다른 요청이 들어와 하던 작업을 멈추고 잠시 브랜치를 변경해야 할 일이 있다고 하자. 이때, 아직 완료하지 않은 일을 commit하는 것은 불편하다.
+
+아직 마무리하지 않은 작업을 스택에 잠시 저장할 수 있도록 하는 명령어. commit하지 않고 나중에 다시 꺼내와 작업할 수 있다.
+
+git stash 명령을 사용하면 워킹 디렉토리에서 수정한 파일들만 저장한다.
+
+```bash
+git status 			# 새로운 stash를 스택에 만들어 하던 작업을 임시 저장. 이 과정을 통해 woking directory는 깨끗해진다.
+git stash list		# stash 목록을 확인한다.
+git stash apply		# 가장 최근의 stash를 가져와 적용
+git stash apply [stash 이름]
+git stash drop		# 가장 최근의 stash를 스택에서 제거
+git stash drop [stash 이름]
+```
+
+
+
 ### git 이력 조회
 
 - 자주 사용되는 로그 조회 ALIAS 설정
@@ -225,8 +244,6 @@ alias gll='git log --format=medium -20 --author=herasoo' # 내가 commit한 정�
 git log <filename>
 git log -p -5 --word-diff <filename> # file의 diff 정보 출력
 ```
-
-
 
 
 
