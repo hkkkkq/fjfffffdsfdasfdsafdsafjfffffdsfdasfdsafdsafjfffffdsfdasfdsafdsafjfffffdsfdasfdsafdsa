@@ -1,0 +1,63 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flex-oauth2-authorization
+  labels:
+    app: flex-oauth2-authorization
+    version: 1.0.0
+    release: flex
+spec:
+  selector:
+    matchLabels:
+      app: flex-oauth2-authorization
+      version: 1.0.0
+      release: flex
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: flex-oauth2-authorization
+        version: 1.0.0
+        release: flex
+#      annotations:
+#        sidecar.istio.io/inject: "true"
+    spec:
+      containers:
+      - name: flex-oauth2-authorization 
+        image: 172.16.51.166:5000/flex/flex-oauth2-authorization:latest
+        imagePullPolicy: "Always"
+        ports:
+        - containerPort: 8081
+        envFrom:
+        - configMapRef:
+            name: flex-oauth2-authorization
+        volumeMounts:
+        - mountPath: /etc/localtime
+          name: timezone-config
+        securityContext:
+          privileged: true
+#        livenessProbe:
+#          httpGet:
+#            path: /api/be/auth/actuator/health
+#            port: 8080
+#          initialDelaySeconds: 30
+#          periodSeconds: 10
+#        readinessProbe:
+#          httpGet:
+#            path: /api/be/auth/actuator/health
+#            port: 8080
+#          initialDelaySeconds: 30
+#          periodSeconds: 10
+#        resources:
+#          requests:
+#            cpu: "500m"
+#            memory: "1250Mi"
+#          limits:
+#            cpu: "2000m"
+#            memory: "1250Mi"
+#      nodeSelector:
+#        ktis-node: "true"
+      volumes:
+      - hostPath:
+          path: /usr/share/zoneinfo/Asia/Seoul
+        name: timezone-config

@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: flex-file-api
+  labels:
+    app: flex-file-api
+    version: 1.0.0
+    release: flex
+data:
+  spring.profiles.active: "dev"

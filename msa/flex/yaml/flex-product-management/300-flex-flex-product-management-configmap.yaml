@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: flex-product-management
+  labels:
+    app: flex-product-management
+    version: 1.0.0
+    release: flex
+data:
+  spring.profiles.active: "dev"

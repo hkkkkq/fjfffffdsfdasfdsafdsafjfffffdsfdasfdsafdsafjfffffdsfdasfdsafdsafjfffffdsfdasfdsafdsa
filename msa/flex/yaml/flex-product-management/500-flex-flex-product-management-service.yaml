@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: flex-product-management
+  labels:
+    app: flex-product-management
+    version: 1.0.0
+    release: flex
+spec:
+  type: ClusterIP
+  ports:
+  - name: flex-product-management  
+    port: 80
+    targetPort: 8085
+    protocol: TCP
+#    nodePort: 30001
+#  sessionAffinity: ClientIP
+#  sessionAffinityConfig:
+#    clientIP:
+#      timeoutSeconds: 3600 # default 10800으로 3시간
+#  externalTrafficPolicy: Local
+  selector:
+    app: flex-product-management
+    version: 1.0.0
+    release: flex

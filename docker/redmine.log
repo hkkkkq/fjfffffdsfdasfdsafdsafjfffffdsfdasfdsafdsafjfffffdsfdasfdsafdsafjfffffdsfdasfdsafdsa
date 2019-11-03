@@ -1,0 +1,36 @@
+# mysql 계정을 생성한다.
+
+mysql -uroot -p
+CREATE USER 'redmine'@'%.%.%.%' IDENTIFIED BY 'redmine';
+CREATE DATABASE IF NOT EXISTS `redmine` DEFAULT CHARACTER SET `utf8` COLLATE `utf8_unicode_ci`;
+GRANT SELECT, LOCK TABLES, INSERT, UPDATE, DELETE, CREATE, DROP, INDEX, ALTER ON `redmine`.* TO 'redmine'@'%.%.%.%';
+
+
+# docker
+
+docker pull sameersbn/redmine:latest
+
+
+docker run -d --name=redmine -it --rm \
+  --name=redmine \
+  --publish=8090:80 \
+  --env='DB_ADAPTER=mysql2' \
+  --env='DB_HOST=172.16.51.166' \
+  --env='DB_NAME=redmine' \
+  --env='DB_USER=redmine' \
+  --env='DB_PASS=redmine' \
+  --volume=//data/redmine:/home/redmine/data \
+  sameersbn/redmine:latest
+
+
+
+
+# SELinux users are also required to change the security context of the mount point so that it plays nicely with selinux.
+
+mkdir -p /data/redmine
+sudo chcon -Rt svirt_sandbox_file_t /data/redmine
+
+
+# Redmine 재실행 시 502 Bad Gateway 에러가 발생할 경우 다음 폴더를 삭제하고 다시 실행하면 정상적으로 구동됩니다. tmp 폴더 삭제
+cd /srv/redmine/data
+rm -rf tmp/

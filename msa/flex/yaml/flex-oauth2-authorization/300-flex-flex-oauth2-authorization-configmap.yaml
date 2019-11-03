@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: flex-oauth2-authorization
+  labels:
+    app: flex-oauth2-authorization
+    version: 1.0.0
+    release: flex
+data:
+  spring.profiles.active: "dev"

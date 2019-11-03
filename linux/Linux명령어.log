@@ -389,6 +389,17 @@ eval $COMMAND
           -I: Header only
           -i: Header + Body						
      curl --cacert ./server.crt  https://test.a-kos.kt.com:8443
+     curl --header "Host: example.com" http://127.0.0.1/
+     curl -X POST -H "Content-Type: application/json" \
+          --data " \
+          { \
+          \"title\":\"c++\", \
+          \"author\":\"steven\",\
+          \"description\":\"wow\",\
+          \"published\":777\
+          }\
+          " \
+          http://10.106.65.91/api/books/create
 
 <86> nslookup knote.kt.com
 : domain명에 해당하는 IP 확인
