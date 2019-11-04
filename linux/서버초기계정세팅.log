@@ -1,0 +1,49 @@
+chage -E -1 -I -1 -m 0 -M 99999 root
+
+vi /root/.bash_profile
+
+export TMOUT=0
+
+alias ll='ls -al'
+
+source /root/.bash_profile
+
+---------------------------------------------------------------------------------------
+mkdir -p /usr/local/jdk
+
+scp -r jdk1.8.0_221 root@172.17.254.11:/usr/local/jdk
+scp -r jdk-8u222-ojdkbuild-linux-x64 root@172.17.254.11:/usr/local/jdk
+
+cd /usr/local/jdk
+
+---------------------------------------------------------------------------------------
+groupadd -g 500 app
+---------------------------------------------------------------------------------------
+
+useradd -d /home/webtob -s /bin/bash -m -g app webtob
+
+passwd webtob
+webtob
+chage -E -1 -I -1 -m 0 -M 99999 webtob
+
+---------------------------------------------------------------------------------------
+useradd -d /home/jeus -s /bin/bash -m -g app jeus
+
+passwd jeus
+jeus
+chage -E -1 -I -1 -m 0 -M 99999 jeus
+
+---------------------------------------------------------------------------------------
+useradd -d /home/jenkins -s /bin/bash -m -g app jenkins
+
+passwd jenkins
+jenkins
+chage -E -1 -I -1 -m 0 -M 99999 jenkins
+
+---------------------------------------------------------------------------------------
+useradd -d /home/nexus -s /bin/bash -m -g app nexus
+
+passwd nexus
+nexus
+chage -E -1 -I -1 -m 0 -M 99999 nexus
+
