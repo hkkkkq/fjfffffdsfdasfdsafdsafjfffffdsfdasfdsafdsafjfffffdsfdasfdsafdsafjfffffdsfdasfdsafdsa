@@ -9,7 +9,7 @@ metadata:
 spec:
   type: ClusterIP
   ports:
-  - name: flex-product-management  
+  - name: flex-product-management
     port: 80
     targetPort: 8085
     protocol: TCP
