@@ -524,3 +524,10 @@ mount -l | column -t
  ifconfig
  hostname -I
  ip addr show
+ 
+ <113> 방화벽
+ systemctl status firewalld.service
+ systemctl stop firewalld.service
+ systemctl disable firewalld.service
+ systemctl enable firewalld.service
+ systemctl start firewalld.service

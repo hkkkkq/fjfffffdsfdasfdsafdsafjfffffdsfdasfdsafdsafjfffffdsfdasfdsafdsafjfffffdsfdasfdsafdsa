@@ -8,6 +8,10 @@ alias ll='ls -al'
 
 source /root/.bash_profile
 
+systemctl status firewalld.service
+systemctl stop firewalld.service
+systemctl disable firewalld.service
+
 ---------------------------------------------------------------------------------------
 mkdir -p /usr/local/jdk
 
