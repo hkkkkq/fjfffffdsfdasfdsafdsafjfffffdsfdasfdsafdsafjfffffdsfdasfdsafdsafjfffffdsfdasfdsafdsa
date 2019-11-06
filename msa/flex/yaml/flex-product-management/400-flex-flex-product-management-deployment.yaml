@@ -23,7 +23,7 @@ spec:
 #        sidecar.istio.io/inject: "true"
     spec:
       containers:
-      - name: flex-product-management 
+      - name: flex-product-management
         image: 172.16.51.166:5000/flex/flex-product-management:latest
         imagePullPolicy: "Always"
         ports:
