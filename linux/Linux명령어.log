@@ -101,15 +101,21 @@ wap: 20971516k total, 0k used, 20971516k free, 52340468k cached
 -------------------------------------------------------------------------------------		A = B+C = G+H	G = B-E-F	H(사용가능메모리) = C+E+F
 -------------------------------------------------------------------------------------
 <11> 실제 사용하는 thread 개수
-rep -s '^Threads' /proc/[0-9]*/status  | awk '{ sum += $2; } END { print sum; }'
+grep -s '^Threads' /proc/[0-9]*/status  | awk '{ sum += $2; } END { print sum; }'
+
 <12> OS 파라미터
-limit -a
+ulimit -a
 at /etc/sysctl.conf
 at /etc/security/limits.conf
 at /proc/sys/kernel/threads-max
+
+sysctl -a
+sysctl -p /etc/sysctl.d/99-sysctl.conf
+
 <13> 패키지 설치 확인
 pm -qa | grep ftp
 tp-0.17-54.el6.x86_64 (ftp client)
+
 <14>
 netstat -an | grep 10.220.175.23:9001 | wc -l
 netstat -an | grep 10.219.1.176:9091 | wc -l
@@ -447,6 +453,9 @@ PS: 정상, NP: 패스워드없음, LK: Lock
      yum install mod_ssl
      service httpd status
      service httpd restart
+     
+     wget http://mirror.centos.org/centos/7/os/x86_64/Packages/glibc-devel-2.17-292.el7.x86_64.rpm
+     yum install ./glibc-devel-2.17-292.el7.x86_64.rpm
      
 <96> 유저생성
 groupadd -g 500 jboss
