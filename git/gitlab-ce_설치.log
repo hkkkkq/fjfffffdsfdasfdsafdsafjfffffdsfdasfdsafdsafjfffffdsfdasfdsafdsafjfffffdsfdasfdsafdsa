@@ -57,7 +57,7 @@ yum install gitlab-ce
 # (중요) gitlab은 기본적으로 80포트를 사용하고 인증 관련된 부분은 8080포트를 사용합니다. gitlab의 경우 15개 SW가 패키징되는 만큼 포트 충돌여부를 확인한다.
 
 #5.1 gitlab페이지가 보여지는 웹사이트 url로 방화벽 오픈 대상(디폴트 80)
-external_url 'http://172.17.254.6:9080'
+external_url 'http://172.17.254.11:9080'
 
 #5.2 기본 인증 관련 내부 포트(디폴트 8080)로 방화벽 작업 대상은 아님. 만약 8080 사용 중이면 두군데 주석 제거 후 수정
 gitlab_workhorse['auth_backend'] = "http://localhost:9081"
