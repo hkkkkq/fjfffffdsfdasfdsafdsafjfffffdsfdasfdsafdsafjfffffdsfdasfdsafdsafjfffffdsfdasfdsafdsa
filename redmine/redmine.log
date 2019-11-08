@@ -1,0 +1,88 @@
+### Install Redmine 3.4.12 on RHEL7.4
+
+# Dependencies
+yum -y install zlib-devel curl-devel openssl-devel httpd-devel apr-devel apr-util-devel mysql-devel postgresql-devel ImageMagick-devel libffi-devel
+
+# MySQL 계정 생성
+mysql -u root -p
+create database redmine character set utf8;
+create user 'redmine'@'%' identified by 'Redmine-password1!';
+grant all privileges on redmine.* to 'redmine'@'%';
+
+# Upgrade Ruby
+yum install -y gcc
+cd /usr/local/src
+wget https://cache.ruby-lang.org/pub/ruby/2.5/ruby-2.5.0.tar.gz
+tar xvfz ruby-2.5.0.tar.gz
+cd ruby-2.5.0/
+./configure
+make
+sudo make install
+
+# Install passenger and Gem bundler
+gem install passenger
+gem install bundler -v '1.14.5'
+
+# Add a redmine user
+useradd -d /home/redmine -s /bin/bash -m -g app redmine
+passwd redmine
+redmine
+chage -E -1 -I -1 -m 0 -M 99999 redmine
+
+# Download Redmine
+cd /var/www
+wget http://www.redmine.org/releases/redmine-3.4.12.tar.gz
+tar xvzf redmine-3.4.12.tar.gz
+mv redmine-3.4.12 redmine
+chown -R redmine:app redmine
+
+# Database configuration
+su -l redmine
+cd /var/www/redmine/config/
+cp database.yml.example database.yml
+
+vi database.yml
+
+production:
+  adapter: mysql2
+  database: redmine
+  host: 172.17.254.6
+  username: redmine
+  password: "Redmine-password1!"
+  encoding: utf8
+
+# Install dependencies using the Gem bundler
+cd /var/www/redmine
+bundle install
+bundle exec rake generate_secret_token
+bundle exec rake db:migrate RAILS_ENV=production 
+bundle exec rake redmine:load_default_data RAILS_ENV=production REDMINE_LANG=ko 
+
+# 서버 기동
+/usr/local/bin/ruby bin/rails server -b 0.0.0.0 -p 8010 -e production
+
+# 접속 계정 
+admin/admin
+
+# 서비스 등록
+vi /usr/lib/systemd/system/redmine.service
+
+[Unit]
+Description=Redmine server
+After=network.target remote-fs.target nss-lookup.target
+
+[Service]
+Type=simple
+User=redmine
+Group=app
+EnvironmentFile=/etc/sysconfig/httpd
+ExecStart=/usr/local/bin/ruby /var/www/redmine/bin/rails server -b 0.0.0.0 -p 8010 -e production
+TimeoutSec=300
+ExecStop=/bin/kill -WINCH ${MAINPID}
+
+[Install]
+WantedBy=multi-user.target
+
+# 서비스 기동
+systemctl start redmine
+systemctl daemon-reload
