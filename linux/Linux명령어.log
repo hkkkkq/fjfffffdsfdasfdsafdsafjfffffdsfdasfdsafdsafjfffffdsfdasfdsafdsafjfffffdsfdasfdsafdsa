@@ -540,3 +540,12 @@ mount -l | column -t
  systemctl disable firewalld.service
  systemctl enable firewalld.service
  systemctl start firewalld.service
+ 
+ <114> 유저 수정
+ 1) 그룹 추가
+ usermod -aG app pmis
+ gpasswd -a pmis app
+ 2) 그룹 제거
+ gpasswd -d pmis pmis
+ 3) force use GROUP as new primary group
+ usermod -g app pmis
