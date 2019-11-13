@@ -1,0 +1,957 @@
+###kernel값 확인
+[root@henc-pidbdev1 ~]# rpm -qa | grep release
+redhat-release-server-7.6-4.el7.x86_64
+
+[root@henc-pidbdev1 ~]# uname -a
+Linux henc-pidbdev1 3.10.0-957.el7.x86_64 #1 SMP Thu Oct 4 20:48:51 UTC 2018 x86_64 x86_64 x86_64 GNU/Linux
+
+###oracle user 확인 및 group 확인
+[oracle@henc-pidbdev1:/app/database]$ id
+uid=1003(oracle) gid=500(app) groups=500(app) context=unconfined_u:unconfined_r:unconfined_t:s0-s0:c0.c1023
+
+
+### home경로 생성
+[oracle@henc-pidbdev1:/app]$ mkdir -p $ORACLE_HOME
+[oracle@henc-pidbdev1:/app]$ unzip linuxx64_12201_database.zip
+
+[oracle@henc-pidbdev1:/app/database]$ ls
+install  response  rpm  runInstaller  sshsetup  stage  welcome.html
+
+### 사전 체크
+[oracle@henc-pidbdev1:/app/database]$ ./runInstaller -executePrereqs -silent
+Starting Oracle Universal Installer...
+
+Checking Temp space: must be greater than 500 MB.   Actual 198747 MB    Passed
+Checking swap space: 0 MB available, 150 MB required.    Failed <<<<
+
+Some requirement checks failed. You must fulfill these requirements before
+
+continuing with the installation,
+
+
+Exiting Oracle Universal Installer, log for this session can be found at /tmp/OraInstall2019-11-06_11-04-50AM/installActions2019-11-06_11-04-50AM.log
+
+[root@henc-pidbdev1 ~]# free -m
+              total        used        free      shared  buff/cache   available
+Mem:          15885         699        2314          28       12871       14777
+Swap:             0           0           0
+
+[root@henc-pidbdev1 sysctl.d]# free -m
+              total        used        free      shared  buff/cache   available
+Mem:          15885         731        2271          28       12882       14744
+Swap:         40958           0       40958
+
+
+
+Checking Temp space: must be greater than 500 MB.   Actual 198737 MB    Passed
+Checking swap space: must be greater than 150 MB.   Actual 40958 MB    Passed
+
+INFO: *************** End of CVU Error logs ***************
+INFO: All forked task are completed at state prepInstall
+INFO: ------------------List of failed Tasks------------------
+INFO: *********************************************
+INFO: OS Kernel Parameter: semopm: This is a prerequisite condition to test whether the OS kernel parameter "semopm" is properly set.
+INFO: Severity:IGNORABLE
+INFO: OverallStatus:VERIFICATION_FAILED
+INFO: *********************************************
+INFO: Package: compat-libcap1-1.10: This is a prerequisite condition to test whether the package "compat-libcap1-1.10" is available on the system.
+INFO: Severity:IGNORABLE
+INFO: OverallStatus:VERIFICATION_FAILED
+INFO: *********************************************
+INFO: Package: libstdc++-devel-4.8.2 (x86_64): This is a prerequisite condition to test whether the package "libstdc++-devel-4.8.2 (x86_64)" is available on the system.
+INFO: Severity:IGNORABLE
+INFO: OverallStatus:VERIFICATION_FAILED
+INFO: *********************************************
+INFO: Package: gcc-c++-4.8.2: This is a prerequisite condition to test whether the package "gcc-c++-4.8.2" is available on the system.
+INFO: Severity:IGNORABLE
+INFO: OverallStatus:VERIFICATION_FAILED
+INFO: *********************************************
+INFO: Package: ksh: This is a prerequisite condition to test whether the package "ksh" is available on the system.
+INFO: Severity:IGNORABLE
+INFO: OverallStatus:VERIFICATION_FAILED
+INFO: *********************************************
+INFO: Package: glibc-devel-2.17 (x86_64): This is a prerequisite condition to test whether the package "glibc-devel-2.17 (x86_64)" is available on the system.
+INFO: Severity:IGNORABLE
+INFO: OverallStatus:VERIFICATION_FAILED
+INFO: *********************************************
+INFO: Package: libaio-devel-0.3.109 (x86_64): This is a prerequisite condition to test whether the package "libaio-devel-0.3.109 (x86_64)" is available on the system.
+INFO: Severity:IGNORABLE
+INFO: OverallStatus:VERIFICATION_FAILED
+INFO: -----------------End of failed Tasks List----------------
+INFO: Adding ExitStatus PREREQUISITES_NOT_MET to the exit status set
+WARNING: [WARNING] [INS-13014] Target environment does not meet some optional requirements.
+   CAUSE: Some of the optional prerequisites are not met. See logs for details. /tmp/OraInstall2019-11-06_12-56-39PM/installActions2019-11-06_12-56-39PM.log
+   ACTION: Identify the list of failed prerequisite checks from the log: /tmp/OraInstall2019-11-06_12-56-39PM/installActions2019-11-06_12-56-39PM.log. Then either from the log file or from installation manual find the appropriate configuration to meet the prerequisites and fix it manually.
+INFO: Advice is CONTINUE
+WARNING: A log of this session is currently saved as: /tmp/OraInstall2019-11-06_12-56-39PM/installActions2019-11-06_12-56-39PM.log. Oracle recommends that if you want to keep this log, you should move it from the temporary location.
+INFO: Adding ExitStatus SUCCESS_WITH_WARNINGS to the exit status set
+INFO: Finding the most appropriate exit status for the current application
+INFO: Exit Status is -3
+INFO: Shutdown Oracle Database 12c Release 2 Installer
+
+###수정
+kernel.sem = 250        32000   32      128
+
+[root@henc-pidbdev1 sysctl.d]# sysctl -a | grep sem
+kernel.sem = 250        32000   100     128
+
+[root@henc-pidbdev1 yum.repos.d]# rpm -qa | grep libaio-devel
+libaio-devel-0.3.109-13.el7.x86_64
+[root@henc-pidbdev1 yum.repos.d]# rpm -qa | grep gcc-c++
+gcc-c++-4.8.5-36.el7.x86_64
+[root@henc-pidbdev1 yum.repos.d]# rpm -qa | grep ksh
+ksh-20120801-139.el7.x86_64
+[root@henc-pidbdev1 oradata]# rpm -qa | grep compat-libcap
+compat-libcap1-1.10-7.el7.x86_64
+[root@henc-pidbdev1 oradata]# rpm -qa | grep libstdc++-devel
+libstdc++-devel-4.8.5-36.el7.x86_64
+[root@henc-pidbdev1 oradata]# rpm -qa | grep glibc-devel
+glibc-devel-2.17-260.el7.x86_64
+
+
+[oracle@henc-pidbdev1:/app/database]$ ./runInstaller -silent -waitforcompletion  \
+> oracle.install.option=INSTALL_DB_SWONLY \
+> UNIX_GROUP_NAME=app \
+> INVENTORY_LOCATION=/app/sw/oracle/oraInventory \
+> ORACLE_BASE=/app/sw/oracle \
+> ORACLE_HOME=/app/sw/oracle/product/12.2/dbhome_1 \
+> oracle.install.db.InstallEdition=EE \
+> oracle.install.db.OSDBA_GROUP=app \
+> oracle.install.db.OSOPER_GROUP=app \
+> oracle.install.db.OSBACKUPDBA_GROUP=app \
+> oracle.install.db.OSDGDBA_GROUP=app \
+> oracle.install.db.OSKMDBA_GROUP=app \
+> oracle.install.db.OSRACDBA_GROUP=app \
+> DECLINE_SECURITY_UPDATES=true \
+> SECURITY_UPDATES_VIA_MYORACLESUPPORT=false \
+> oracle.installer.autoupdates.option=SKIP_UPDATES
+Starting Oracle Universal Installer...
+
+Checking Temp space: must be greater than 500 MB.   Actual 197865 MB    Passed
+Checking swap space: must be greater than 150 MB.   Actual 40958 MB    Passed
+Preparing to launch Oracle Universal Installer from /tmp/OraInstall2019-11-06_01-28-20PM. Please wait ...[WARNING] [INS-32055] The Central Inventory is located in the Oracle base.
+   ACTION: Oracle recommends placing this Central Inventory in a location outside the Oracle base directory.
+You can find the log of this install session at:
+ /app/sw/oracle/oraInventory/logs/installActions2019-11-06_01-28-20PM.log
+
+
+The installation of Oracle Database 12c was successful.
+Please check '/app/sw/oracle/oraInventory/logs/silentInstall2019-11-06_01-28-20PM.log' for more details.
+
+As a root user, execute the following script(s):
+        1. /app/sw/oracle/oraInventory/orainstRoot.sh
+        2. /app/sw/oracle/product/12.2/dbhome_1/root.sh
+
+
+
+[root@henc-pidbdev1 ~]# /app/sw/oracle/oraInventory/orainstRoot.sh
+Changing permissions of /app/sw/oracle/oraInventory.
+Adding read,write permissions for group.
+Removing read,write,execute permissions for world.
+
+Changing groupname of /app/sw/oracle/oraInventory to app.
+The execution of the script is complete.
+[root@henc-pidbdev1 ~]# /app/sw/oracle/product/12.2/dbhome_1/root.sh
+Check /app/sw/oracle/product/12.2/dbhome_1/install/root_henc-pidbdev1_2019-11-06_13-32-43-332434441.log for the output of root script
+
+
+
+[oracle@henc-pidbdev1:/app/database]$ netca -silent -instype custom -listener LISTENER_HENC -lisport 1521 -responsefile /app/database/response/netca.rsp
+
+Parsing command line arguments:
+    Parameter "silent" = true
+    Parameter "instype" = custom
+    Parameter "listener" = LISTENER_HENC
+    Parameter "lisport" = 1521
+    Parameter "responsefile" = /app/database/response/netca.rsp
+Done parsing command line arguments.
+Oracle Net Services Configuration:
+Configuring Listener:LISTENER_HENC
+Listener configuration complete.
+Oracle Net Listener Startup:
+    Running Listener Control:
+      /app/sw/oracle/product/12.2/dbhome_1/bin/lsnrctl start LISTENER_HENC
+    Listener Control complete.
+    Listener started successfully.
+Profile configuration complete.
+Oracle Net Services configuration successful. The exit code is 0
+
+[oracle@henc-pidbdev1:/app/database]$ ps -ef | grep tns
+root        19     2  0 Nov01 ?        00:00:00 [netns]
+oracle   27152     1  0 13:34 ?        00:00:00 /app/sw/oracle/product/12.2/dbhome_1/bin/tnslsnr LISTENER_HENC -inherit
+oracle   27186 19990  0 13:34 pts/0    00:00:00 grep --color=auto tns
+[oracle@henc-pidbdev1:/app/database]$ lsnrctl status LISTENER_HENC
+
+LSNRCTL for Linux: Version 12.2.0.1.0 - Production on 06-NOV-2019 13:34:40
+
+Copyright (c) 1991, 2016, Oracle.  All rights reserved.
+
+Connecting to (DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=henc-pidbdev1)(PORT=1521)))
+STATUS of the LISTENER
+------------------------
+Alias                     LISTENER_HENC
+Version                   TNSLSNR for Linux: Version 12.2.0.1.0 - Production
+Start Date                06-NOV-2019 13:34:18
+Uptime                    0 days 0 hr. 0 min. 22 sec
+Trace Level               off
+Security                  ON: Local OS Authentication
+SNMP                      OFF
+Listener Parameter File   /app/sw/oracle/product/12.2/dbhome_1/network/admin/listener.ora
+Listener Log File         /app/sw/oracle/diag/tnslsnr/henc-pidbdev1/listener_henc/alert/log.xml
+Listening Endpoints Summary...
+  (DESCRIPTION=(ADDRESS=(PROTOCOL=tcp)(HOST=henc-pidbdev1)(PORT=1521)))
+  (DESCRIPTION=(ADDRESS=(PROTOCOL=ipc)(KEY=EXTPROC1521)))
+The listener supports no services
+The command completed successfully
+
+
+[oracle@henc-pidbdev1:/app/sw/oracle/product/12.2/dbhome_1/assistants/dbca/templates]$ ls
+Data_Warehouse.dbc   New_Database.dbt      pdbseed.dfb  Seed_Database.ctl
+General_Purpose.dbc  Old.New_Database.dbt  pdbseed.xml  Seed_Database.dfb
+
+[oracle@henc-pidbdev1:/app/sw/oracle/product/12.2/dbhome_1/assistants/dbca/templates]$ dbca -silent -createDatabase -templateName New_D     atabase.dbt \
+> -gdbName HENC -sid HENC -sysPassword oracle -systemPassword oracle \
+> -emConfiguration NONE \
+> -storageType FS -datafileDestination /applog/oracle/oradata \
+> -redoLogFileSize 500 -characterSet AL32UTF8 -NATIONALCHARACTERSET AL16UTF16 -memoryPercentage 40
+[WARNING] [DBT-06208] The 'SYS' password entered does not conform to the Oracle recommended standards.
+   CAUSE:
+a. Oracle recommends that the password entered should be at least 8 characters in length, contain at least 1 uppercase character, 1 lower case character and 1 digit [0-9].
+b.The password entered is a keyword that Oracle does not recommend to be used as password
+   ACTION: Specify a strong password. If required refer Oracle documentation for guidelines.
+[WARNING] [DBT-06208] The 'SYSTEM' password entered does not conform to the Oracle recommended standards.
+   CAUSE:
+a. Oracle recommends that the password entered should be at least 8 characters in length, contain at least 1 uppercase character, 1 lower case character and 1 digit [0-9].
+b.The password entered is a keyword that Oracle does not recommend to be used as password
+   ACTION: Specify a strong password. If required refer Oracle documentation for guidelines.
+Creating and starting Oracle instance
+1% complete
+4% complete
+Creating database files
+8% complete
+Creating data dictionary views
+10% complete
+12% complete
+13% complete
+14% complete
+15% complete
+16% complete
+17% complete
+18% complete
+21% complete
+22% complete
+23% complete
+Adding Oracle JVM
+29% complete
+36% complete
+42% complete
+44% complete
+Adding Oracle Text
+45% complete
+48% complete
+49% complete
+Adding Oracle Multimedia
+50% complete
+62% complete
+Adding Oracle OLAP
+63% complete
+64% complete
+65% complete
+66% complete
+Adding Oracle Spatial
+67% complete
+75% complete
+Adding Oracle Application Express
+79% complete
+83% complete
+Completing Database Creation
+84% complete
+85% complete
+86% complete
+87% complete
+88% complete
+Executing Post Configuration Actions
+100% complete
+Look at the log file "/app/sw/oracle/cfgtoollogs/dbca/HENC/HENC.log" for further details.
+
+SQL> select instance_name, version, status from v$instance;
+
+INSTANCE_NAME    VERSION           STATUS
+---------------- ----------------- ------------
+HENC             12.2.0.1.0        OPEN
+
+
+
+
+###patch 진행
+[oracle@henc-pidbdev1:/app/sw/oracle/product/12.2/dbhome_1]$ opatch version
+OPatch Version: 12.2.0.1.6
+OPatch succeeded.
+
+[oracle@henc-pidbdev1:/app]$ unzip p6880880_122010_Linux-x86-64.zip -d $ORACLE_HOME
+
+
+[oracle@henc-pidbdev1:/app]$ opatch version
+OPatch Version: 12.2.0.1.17
+OPatch succeeded.
+
+[oracle@henc-pidbdev1:/app]$ unzip p28163133_122010_Linux-x86-64.zip
+[oracle@henc-pidbdev1:/app/28163133]$ opatch apply
+Oracle Interim Patch Installer version 12.2.0.1.17
+Copyright (c) 2019, Oracle Corporation.  All rights reserved.
+
+
+Oracle Home       : /app/sw/oracle/product/12.2/dbhome_1
+Central Inventory : /app/sw/oracle/oraInventory
+   from           : /app/sw/oracle/product/12.2/dbhome_1/oraInst.loc
+OPatch version    : 12.2.0.1.17
+OUI version       : 12.2.0.1.4
+Log file location : /app/sw/oracle/product/12.2/dbhome_1/cfgtoollogs/opatch/opatch2019-11-06_14-20-39PM_1.log
+
+Verifying environment and performing prerequisite checks...
+OPatch continues with these patches:   28163133
+
+Do you want to proceed? [y|n]
+y
+User Responded with: Y
+All checks passed.
+
+Please shutdown Oracle instances running out of this ORACLE_HOME on the local system.
+(Oracle Home = '/app/sw/oracle/product/12.2/dbhome_1')
+
+
+Is the local system ready for patching? [y|n]
+y
+User Responded with: Y
+Backing up files...
+Applying interim patch '28163133' to OH '/app/sw/oracle/product/12.2/dbhome_1'
+ApplySession: Optional component(s) [ oracle.oid.client, 12.2.0.1.0 ] , [ oracle.has.crs, 12.2.0.1.0 ] , [ oracle.ons.daemon, 12.2.0.1.0 ] , [ oracle.network.cman, 12.2.0.1.0 ]  not present in the Oracle Home or a higher version is found.
+
+Patching component oracle.precomp.common, 12.2.0.1.0...
+
+Patching component oracle.has.deconfig, 12.2.0.1.0...
+
+Patching component oracle.tfa, 12.2.0.1.0...
+
+Patching component oracle.assistants.server, 12.2.0.1.0...
+
+Patching component oracle.rdbms.rman, 12.2.0.1.0...
+
+Patching component oracle.rdbms.rsf.ic, 12.2.0.1.0...
+
+Patching component oracle.rdbms, 12.2.0.1.0...
+(생략)
+
+Patch 28163133 successfully applied.
+Log file location: /app/sw/oracle/product/12.2/dbhome_1/cfgtoollogs/opatch/opatch2019-11-06_14-20-39PM_1.log
+
+OPatch succeeded.
+
+[oracle@henc-pidbdev1:/home/oracle]$ opatch lspatches
+28163133;Database Jul 2018 Release Update : 12.2.0.1.180717 (28163133)
+
+OPatch succeeded.
+
+[oracle@henc-pidbdev1:/home/oracle]$ opatch lsinventory
+Oracle Interim Patch Installer version 12.2.0.1.17
+Copyright (c) 2019, Oracle Corporation.  All rights reserved.
+
+
+Oracle Home       : /app/sw/oracle/product/12.2/dbhome_1
+Central Inventory : /app/sw/oracle/oraInventory
+   from           : /app/sw/oracle/product/12.2/dbhome_1/oraInst.loc
+OPatch version    : 12.2.0.1.17
+OUI version       : 12.2.0.1.4
+Log file location : /app/sw/oracle/product/12.2/dbhome_1/cfgtoollogs/opatch/opatch2019-11-06_14-22-01PM_1.log
+
+Lsinventory Output file location : /app/sw/oracle/product/12.2/dbhome_1/cfgtoollogs/opatch/lsinv/lsinventory2019-11-06_14-22-01PM.txt
+
+--------------------------------------------------------------------------------
+Local Machine Information::
+Hostname: henc-pidbdev1
+ARU platform id: 226
+ARU platform description:: Linux x86-64
+
+Installed Top-level Products (1):
+
+Oracle Database 12c                                                  12.2.0.1.0
+There are 1 products installed in this Oracle Home.
+
+
+Interim patches (1) :
+
+Patch  28163133     : applied on Wed Nov 06 14:21:00 KST 2019
+Unique Patch ID:  22313390
+Patch description:  "Database Jul 2018 Release Update : 12.2.0.1.180717 (28163133)"
+   Created on 6 Jul 2018, 08:05:03 hrs PST8PDT
+   Bugs fixed:
+     8480838, 13554903, 14690846, 15931756, 16002385, 16727454, 16942578
+     17027695, 17533661, 17947871, 18308268, 18521691, 18594510, 18774543
+     19072655, 19211433, 19285025, 19327292, 19526548, 19614243, 19647894
+     19649997, 19721304, 20003668, 20087519, 20118035, 20324049, 20532077
+     20591151, 20620169, 20736227, 20756305, 20866970, 20976443, 21143725
+     21147908, 21159907, 21178363, 21186167, 21216226, 21320338, 21433452
+     21479706, 21520266, 21547051, 21981529, 21985256, 22007324, 22070853
+     22072543, 22087683, 22104866, 22179537, 22347493, 22364044, 22367053
+     22379010, 22446455, 22495673, 22503283, 22503297, 22504793, 22564336
+     22568728, 22581771, 22594071, 22599050, 22628825, 22645009, 22654475
+     22700845, 22729345, 22826067, 22843979, 22845846, 22864303, 22898198
+     22950945, 22970869, 22981722, 23019710, 23026585, 23035249, 23055900
+     23061453, 23065002, 23066146, 23080557, 23105538, 23125560, 23126545
+     23127945, 23151677, 23179662, 23184263, 23197730, 23234232, 23249829
+     23271203, 23300142, 23310101, 23312077, 23481673, 23491861, 23499160
+     23521523, 23527363, 23548817, 23572982, 23581777, 23588722, 23599216
+     23600861, 23602213, 23645516, 23665623, 23709062, 23715460, 23730961
+     23733981, 23735292, 23741944, 23746128, 23749454, 24010030, 24289874
+     24294174, 24303148, 24307571, 24308349, 24326444, 24326846, 24332831
+     24334708, 24336249, 24337882, 24341675, 24343905, 24345420, 24346821
+     24348685, 24350620, 24368004, 24373756, 24374976, 24376875, 24376878
+     24385983, 24401351, 24403922, 24415926, 24421668, 24423416, 24425056
+     24425998, 24435982, 24437162, 24443539, 24457597, 24461826, 24468470
+     24470606, 24473736, 24485034, 24485161, 24485174, 24486059, 24486237
+     24509056, 24534401, 24554533, 24555417, 24556967, 24560906, 24563422
+     24570598, 24573817, 24578718, 24578797, 24589081, 24589590, 24593740
+     24595699, 24600330, 24609592, 24609996, 24616637, 24617969, 24623975
+     24624166, 24642495, 24654629, 24655717, 24664211, 24668398, 24674197
+     24674955, 24676172, 24677696, 24680959, 24689376, 24692973, 24693290
+     24699619, 24710696, 24713381, 24714096, 24717183, 24717859, 24719799
+     24735430, 24737064, 24737403, 24737581, 24744383, 24744686, 24757934
+     24759556, 24760407, 24766309, 24786669, 24792678, 24793511, 24796092
+     24797119, 24800423, 24801152, 24802934, 24811725, 24812047, 24827228
+     24827654, 24831514, 24835919, 24843188, 24844549, 24845157, 24848746
+     24848923, 24850622, 24907917, 24908321, 24911709, 24912588, 24922704
+     24923080, 24923215, 24923338, 24923790, 24929210, 24938784, 24940060
+     24942749, 24953434, 24960044, 24966788, 24968162, 24976007, 24978100
+     25027852, 25029022, 25029423, 25034396, 25036474, 25044977, 25045228
+     25050160, 25051628, 25057811, 25058080, 25062592, 25063971, 25065563
+     25072986, 25078611, 25086233, 25087436, 25093872, 25098160, 25099339
+     25099497, 25099758, 25100063, 25100579, 25103996, 25107662, 25110233
+     25120284, 25121089, 25123585, 25124363, 25129925, 25140197, 25145163
+     25145215, 25150925, 25159176, 25162645, 25164293, 25166187, 25171084
+     25175723, 25176408, 25178032, 25178101, 25178179, 25179774, 25182817
+     25184555, 25186079, 25191872, 25192044, 25192729, 25199585, 25201454
+     25202355, 25203656, 25206864, 25207410, 25209912, 25210268, 25210499
+     25211628, 25223839, 25224242, 25225795, 25226665, 25227381, 25230945
+     25237577, 25240590, 25241448, 25241625, 25244807, 25248384, 25251648
+     25257085, 25259611, 25262869, 25263960, 25265499, 25287072, 25296876
+     25299227, 25305405, 25307368, 25313154, 25313411, 25316758, 25317989
+     25320555, 25328518, 25329664, 25335249, 25335360, 25335790, 25337332
+     25337640, 25348956, 25353983, 25357142, 25382812, 25383204, 25384462
+     25386748, 25388896, 25392535, 25395696, 25397936, 25405813, 25410017
+     25410180, 25410802, 25410877, 25411036, 25417050, 25417056, 25417958
+     25425451, 25425760, 25427662, 25429959, 25430120, 25433696, 25437699
+     25440818, 25444961, 25451531, 25455795, 25457409, 25459958, 25462714
+     25463844, 25472112, 25476149, 25478885, 25489342, 25489367, 25489607
+     25492379, 25498930, 25498994, 25516250, 25524955, 25528838, 25530080
+     25530814, 25536819, 25537470, 25539063, 25540738, 25546580, 25546608
+     25547901, 25551676, 25553616, 25554787, 25555252, 25557886, 25558986
+     25561296, 25569149, 25570929, 25575348, 25575628, 25579458, 25579761
+     25594901, 25597525, 25598473, 25600342, 25600421, 25602488, 25603923
+     25606091, 25607726, 25612095, 25614866, 25616268, 25616359, 25616417
+     25616645, 25631933, 25633101, 25634317, 25634348, 25635149, 25638456
+     25639019, 25643818, 25643931, 25646373, 25647325, 25648731, 25653109
+     25654459, 25654936, 25655390, 25655966, 25659655, 25660847, 25661819
+     25662088, 25662101, 25662524, 25669791, 25672640, 25674386, 25680221
+     25685152, 25687460, 25691904, 25694206, 25695903, 25700654, 25710420
+     25715167, 25717371, 25722055, 25722608, 25722720, 25728085, 25729507
+     25736747, 25739065, 25754606, 25757748, 25760195, 25764020, 25766822
+     25768681, 25772669, 25774077, 25775213, 25784002, 25785331, 25785441
+     25788879, 25789041, 25789277, 25789579, 25790353, 25797092, 25797124
+     25803545, 25807997, 25813931, 25822410, 25823754, 25825910, 25826740
+     25830492, 25832935, 25834581, 25838361, 25852885, 25856821, 25858672
+     25861398, 25865785, 25870579, 25871177, 25871639, 25871753, 25872127
+     25874050, 25874678, 25885148, 25888073, 25890056, 25895224, 25897615
+     25904273, 25904490, 25906117, 25911724, 25914276, 25919622, 25932524
+     25941836, 25943271, 25945130, 25947799, 25953857, 25954022, 25954054
+     25957038, 25963024, 25964954, 25967544, 25967985, 25970731, 25973152
+     25975723, 25977302, 25980605, 25980770, 25981498, 25982666, 25990907
+     25995938, 26006257, 26019148, 26024732, 26025681, 26029780, 26032573
+     26036748, 26037215, 26038086, 26039623, 26040483, 26045732, 26078437
+     26080410, 26083298, 26088426, 26088836, 26090767, 26091640, 26091786
+     26095327, 26095405, 26096382, 26108080, 26110632, 26111842, 26121990
+     26138085, 26149904, 26153977, 26169341, 26169345, 26170715, 26176002
+     26187943, 26189861, 26198757, 26198926, 26201113, 26223039, 26237431
+     26237773, 26242031, 26243698, 26244115, 26245237, 26249718, 26256131
+     26259265, 26261327, 26263328, 26263721, 26271001, 26308650, 26324769
+     26327624, 26330994, 26331743, 26333141, 26351334, 26353617, 26358670
+     26362821, 26366517, 26367012, 26374791, 26375250, 26380097, 26385189
+     26388538, 26396790, 26399626, 26412540, 26418088, 26420561, 26421667
+     26426526, 26430737, 26434999, 26435073, 26436168, 26438612, 26440749
+     26442308, 26444601, 26444887, 26446098, 26452606, 26475419, 26476244
+     26478970, 26479173, 26486365, 26492866, 26493289, 26498354, 26513709
+     26522439, 26523432, 26526726, 26537307, 26542135, 26544823, 26545688
+     26546070, 26546664, 26546754, 26548363, 26556014, 26569225, 26575788
+     26582460, 26584641, 26597140, 26599395, 26608137, 26609942, 26615291
+     26615690, 26623652, 26626879, 26629381, 26633355, 26635897, 26637273
+     26637824, 26639167, 26641610, 26650226, 26658759, 26659182, 26680105
+     26712331, 26714910, 26729494, 26729611, 26740700, 26744595, 26751106
+     26751171, 26758193, 26764561, 26765212, 26775602, 26784509, 26794786
+     26797591, 26802503, 26820076, 26822620, 26840654, 26849779, 26875822
+     26896659, 26898563, 26907327, 26908788, 26909100, 26911000, 26939314
+     26944190, 26967713, 26969321, 26970717, 26981902, 26983259, 26992964
+     27009164, 27034890, 27044297, 27052607, 27060167, 27060859, 27073314
+     27079140, 27087426, 27090765, 27110878, 27117822, 27119621, 27124624
+     27125872, 27133662, 27135993, 27138325, 27142373, 27153641, 27161071
+     27162405, 27163928, 27165231, 27169796, 27181537, 27199245, 27207110
+     27213224, 27229389, 27244337, 27250547, 27274536, 27285244, 27292213
+     27304410, 27305039, 27314206, 27314390, 27329612, 27333106, 27334316
+     27338912, 27338946, 27345231, 27346709, 27348081, 27349393, 27367194
+     27370965, 27375542, 27394703, 27395416, 27396624, 27396813, 27400598
+     27434193, 27439835, 27441326, 27442041, 27501373, 27501413, 27502420
+     27504770, 27508985, 27510959, 27534509, 27544973, 27548131, 27558861
+     27560602, 27595973, 27611612, 27613080, 27687880, 27688036, 27688692
+     27709046, 27748954, 27799032, 27847259, 27882176, 27959048, 27997875
+     28033429, 28040776, 28099662, 28140658, 28184554, 28188330, 28174827
+
+
+
+--------------------------------------------------------------------------------
+
+OPatch succeeded.
+
+[oracle@henc-pidbdev1:/home/oracle]$ sqlplus / as sysdba
+
+SQL*Plus: Release 12.2.0.1.0 Production on Wed Nov 6 14:22:30 2019
+
+Copyright (c) 1982, 2016, Oracle.  All rights reserved.
+
+Connected to an idle instance.
+
+SQL> startup upgrade
+ORACLE instance started.
+
+Total System Global Area 4999610368 bytes
+Fixed Size                  8630952 bytes
+Variable Size            1040190808 bytes
+Database Buffers         3942645760 bytes
+Redo Buffers                8142848 bytes
+Database mounted.
+Database opened.
+SQL>exit
+
+[oracle@henc-pidbdev1:/home/oracle]$ datapatch -verbose
+SQL Patching tool version 12.2.0.1.0 Production on Wed Nov  6 14:23:04 2019
+Copyright (c) 2012, 2018, Oracle.  All rights reserved.
+
+Log file for this invocation: /app/sw/oracle/cfgtoollogs/sqlpatch/sqlpatch_2566_2019_11_06_14_23_04/sqlpatch_invocation.log
+
+Connecting to database...OK
+Bootstrapping registry and package to current versions...done
+Determining current state...done
+
+Current state of SQL patches:
+Bundle series DBRU:
+  ID 180717 in the binary registry and not installed in the SQL registry
+
+Adding patches to installation queue and performing prereq checks...
+Installation queue:
+  Nothing to roll back
+  The following patches will be applied:
+    28163133 (DATABASE JUL 2018 RELEASE UPDATE 12.2.0.1.180717)
+
+Installing patches...
+Patch installation complete.  Total patches installed: 1
+
+Validating logfiles...
+Patch 28163133 apply: SUCCESS
+  logfile: /app/sw/oracle/cfgtoollogs/sqlpatch/28163133/22313390/28163133_apply_HENC_2019Nov06_14_23_13.log (no errors)
+SQL Patching tool complete on Wed Nov  6 14:24:14 2019
+
+
+SQL> alter system set local_listener='(ADDRESS=(PROTOCOL=tcp)(HOST=henc-pidbdev1)(PORT=1521))';
+System altered.
+
+
+###결과
+###파라미터 적용
+[oracle@henc-pidbdev1:/app/sw/oracle/product/12.2/dbhome_1/dbs]$ cat initHENC.ora.20191106
+HENC.__data_transfer_cache_size=0
+HENC.__db_cache_size=3942645760
+HENC.__inmemory_ext_roarea=0
+HENC.__inmemory_ext_rwarea=0
+HENC.__java_pool_size=16777216
+HENC.__large_pool_size=33554432
+HENC.__oracle_base='/app/sw/oracle'#ORACLE_BASE set from environment
+HENC.__pga_aggregate_target=1677721600
+HENC.__sga_target=4999610368
+HENC.__shared_io_pool_size=218103808
+HENC.__shared_pool_size=771751936
+HENC.__streams_pool_size=0
+*._add_col_optim_enabled=FALSE
+*._cursor_reload_failure_threshold=5
+*._dlm_stats_collect=0
+*._drop_stat_segment=1
+*._gc_policy_time=0
+*._gc_undo_affinity=FALSE
+*._in_memory_undo=FALSE
+*._nonfatalprocess_redo_dump_time_limit=0
+*._optim_peek_user_binds=FALSE
+*._optimizer_aggr_groupby_elim=FALSE
+*._optimizer_batch_table_access_by_rowid=FALSE
+*._optimizer_gather_stats_on_load=FALSE
+*._optimizer_reduce_groupby_key=FALSE
+*._optimizer_unnest_scalar_sq=FALSE
+*._optimizer_use_feedback=FALSE
+*._partition_large_extents='FALSE'
+*._report_capture_cycle_time=0
+*._rowsets_enabled=FALSE
+*._use_adaptive_log_file_sync='FALSE'
+*._use_single_log_writer='TRUE'
+*.audit_file_dest='/app/sw/oracle/admin/HENC/adump'dfb -h
+*.audit_trail='db'
+*.compatible='12.2.0'
+*.control_files='/applog/oracle/oradata/HENC/control01.ctl','/applog/oracle/oradata/HENC/control02.ctl'
+*.db_block_size=8192
+*.db_name='HENC'
+*.deferred_segment_creation=FALSE
+*.diagnostic_dest='/app/sw/oracle'
+*.dispatchers='(PROTOCOL=TCP) (SERVICE=HENCXDB)'
+*.local_listener='(ADDRESS=(PROTOCOL=tcp)(HOST=henc-pidbdev1)(PORT=1521))'
+*.nls_language='AMERICAN'
+*.nls_territory='AMERICA'
+*.open_cursors=300
+*.pga_aggregate_target=1589m
+*.processes=2000
+*.remote_login_passwordfile='EXCLUSIVE'
+*.sga_target=4764m
+*.undo_tablespace='UNDOTBS1'
+
+[oracle@henc-pidbdev1:/home/oracle]$ ps -ef | grep smon
+oracle    4279     1  0 14:32 ?        00:00:00 ora_smon_HENC
+oracle    5078 19990  0 14:37 pts/0    00:00:00 grep --color=auto smon
+[oracle@henc-pidbdev1:/home/oracle]$ ps -ef | grep tns
+root        19     2  0 Nov01 ?        00:00:00 [netns]
+oracle    4889     1  0 14:35 ?        00:00:00 /app/sw/oracle/product/12.2/dbhome_1/bin/tnslsnr LISTENER_HENC -inherit
+oracle    5082 19990  0 14:37 pts/0    00:00:00 grep --color=auto tns
+[oracle@henc-pidbdev1:/home/oracle]$
+[oracle@henc-pidbdev1:/home/oracle]$ ps -ef | grep ora_
+oracle    4236     1  0 14:31 ?        00:00:00 ora_pmon_HENC
+oracle    4238     1  0 14:31 ?        00:00:00 ora_clmn_HENC
+oracle    4240     1  0 14:31 ?        00:00:00 ora_psp0_HENC
+oracle    4243     1  1 14:32 ?        00:00:03 ora_vktm_HENC
+oracle    4247     1  0 14:32 ?        00:00:00 ora_gen0_HENC
+oracle    4249     1  0 14:32 ?        00:00:00 ora_mman_HENC
+oracle    4253     1  0 14:32 ?        00:00:00 ora_gen1_HENC
+oracle    4257     1  0 14:32 ?        00:00:00 ora_diag_HENC
+oracle    4259     1  0 14:32 ?        00:00:00 ora_ofsd_HENC
+oracle    4263     1  0 14:32 ?        00:00:00 ora_dbrm_HENC
+oracle    4265     1  0 14:32 ?        00:00:00 ora_vkrm_HENC
+oracle    4267     1  0 14:32 ?        00:00:00 ora_svcb_HENC
+oracle    4269     1  0 14:32 ?        00:00:00 ora_pman_HENC
+oracle    4271     1  0 14:32 ?        00:00:00 ora_dia0_HENC
+oracle    4273     1  0 14:32 ?        00:00:00 ora_dbw0_HENC
+oracle    4275     1  0 14:32 ?        00:00:00 ora_lgwr_HENC
+oracle    4277     1  0 14:32 ?        00:00:00 ora_ckpt_HENC
+oracle    4279     1  0 14:32 ?        00:00:00 ora_smon_HENC
+oracle    4281     1  0 14:32 ?        00:00:00 ora_smco_HENC
+oracle    4283     1  0 14:32 ?        00:00:00 ora_reco_HENC
+oracle    4285     1  0 14:32 ?        00:00:00 ora_w000_HENC
+oracle    4287     1  0 14:32 ?        00:00:00 ora_lreg_HENC
+oracle    4289     1  0 14:32 ?        00:00:00 ora_w001_HENC
+oracle    4291     1  0 14:32 ?        00:00:00 ora_pxmn_HENC
+oracle    4295     1  0 14:32 ?        00:00:02 ora_mmon_HENC
+oracle    4297     1  0 14:32 ?        00:00:00 ora_mmnl_HENC
+oracle    4299     1  0 14:32 ?        00:00:00 ora_d000_HENC
+oracle    4301     1  0 14:32 ?        00:00:00 ora_s000_HENC
+oracle    4305     1  0 14:32 ?        00:00:00 ora_tmon_HENC
+oracle    4319     1  0 14:32 ?        00:00:00 ora_p000_HENC
+oracle    4321     1  0 14:32 ?        00:00:00 ora_p001_HENC
+oracle    4323     1  0 14:32 ?        00:00:00 ora_tt00_HENC
+oracle    4325     1  0 14:32 ?        00:00:00 ora_tt01_HENC
+oracle    4327     1  0 14:32 ?        00:00:00 ora_tt02_HENC
+oracle    4331     1  0 14:32 ?        00:00:00 ora_aqpc_HENC
+oracle    4333     1  0 14:32 ?        00:00:00 ora_cjq0_HENC
+oracle    4337     1  0 14:32 ?        00:00:00 ora_p002_HENC
+oracle    4339     1  0 14:32 ?        00:00:00 ora_p003_HENC
+oracle    4341     1  0 14:32 ?        00:00:00 ora_p004_HENC
+oracle    4343     1  0 14:32 ?        00:00:00 ora_p005_HENC
+oracle    4345     1  0 14:32 ?        00:00:00 ora_p006_HENC
+oracle    4347     1  0 14:32 ?        00:00:00 ora_p007_HENC
+oracle    4560     1  0 14:32 ?        00:00:00 ora_qm02_HENC
+oracle    4564     1  0 14:32 ?        00:00:00 ora_q002_HENC
+oracle    4566     1  0 14:32 ?        00:00:00 ora_q003_HENC
+oracle    4639     1  0 14:33 ?        00:00:00 ora_w002_HENC
+oracle    5088 19990  0 14:37 pts/0    00:00:00 grep --color=auto ora_
+
+
+[oracle@henc-pidbdev1:/home/oracle]$ ps -ef | grep tns
+root        19     2  0 Nov01 ?        00:00:00 [netns]
+oracle   27152     1  0 13:34 ?        00:00:00 /app/sw/oracle/product/12.2/dbhome_1/bin/tnslsnr LISTENER_HENC -inherit
+oracle   32377 19990  0 14:16 pts/0    00:00:00 grep --color=auto tns
+[oracle@henc-pidbdev1:/home/oracle]$ lsnrctl status LISTENER_HENC
+
+LSNRCTL for Linux: Version 12.2.0.1.0 - Production on 06-NOV-2019 14:16:54
+
+Copyright (c) 1991, 2016, Oracle.  All rights reserved.
+
+Connecting to (DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=henc-pidbdev1)(PORT=1521)))
+STATUS of the LISTENER
+------------------------
+Alias                     LISTENER_HENC
+Version                   TNSLSNR for Linux: Version 12.2.0.1.0 - Production
+Start Date                06-NOV-2019 13:34:18
+Uptime                    0 days 0 hr. 42 min. 36 sec
+Trace Level               off
+Security                  ON: Local OS Authentication
+SNMP                      OFF
+Listener Parameter File   /app/sw/oracle/product/12.2/dbhome_1/network/admin/listener.ora
+Listener Log File         /app/sw/oracle/diag/tnslsnr/henc-pidbdev1/listener_henc/alert/log.xml
+Listening Endpoints Summary...
+  (DESCRIPTION=(ADDRESS=(PROTOCOL=tcp)(HOST=henc-pidbdev1)(PORT=1521)))
+  (DESCRIPTION=(ADDRESS=(PROTOCOL=ipc)(KEY=EXTPROC1521)))
+Services Summary...
+Service "HENC" has 1 instance(s).
+  Instance "HENC", status READY, has 1 handler(s) for this service...
+Service "HENCXDB" has 1 instance(s).
+  Instance "HENC", status READY, has 1 handler(s) for this service...
+The command completed successfully
+
+[oracle@henc-pidbdev1:/app/sw/oracle/product/12.2/dbhome_1/network/admin]$ cat listener.ora
+# listener.ora Network Configuration File: /app/sw/oracle/product/12.2/dbhome_1/network/admin/listener.ora
+# Generated by Oracle configuration tools.
+
+LISTENER_HENC =
+  (DESCRIPTION_LIST =
+    (DESCRIPTION =
+      (ADDRESS = (PROTOCOL = TCP)(HOST = henc-pidbdev1)(PORT = 1521))
+      (ADDRESS = (PROTOCOL = IPC)(KEY = EXTPROC1521))
+    )
+  )
+
+[oracle@henc-pidbdev1:/app/sw/oracle/product/12.2/dbhome_1/network/admin]$ cat sqlnet.ora
+# sqlnet.ora Network Configuration File: /app/sw/oracle/product/12.2/dbhome_1/network/admin/sqlnet.ora
+# Generated by Oracle configuration tools.
+
+NAMES.DIRECTORY_PATH= (TNSNAMES, ONAMES, HOSTNAME)
+
+SQLNET.ALLOWED_LOGON_VERSION_SERVER=10
+SQLNET.ALLOWED_LOGON_VERSION_CLIENT=10
+
+[oracle@henc-pidbdev1:/home/oracle]$ opatch lspatches
+28163133;Database Jul 2018 Release Update : 12.2.0.1.180717 (28163133)
+
+OPatch succeeded.
+
+
+
+SQL> show parameter local
+
+NAME                                 TYPE        VALUE
+------------------------------------ ----------- ------------------------------
+local_listener                       string      (ADDRESS=(PROTOCOL=tcp)(HOST=h
+                                                 enc-pidbdev1)(PORT=1521))
+
+
+SQL> select host_name,instance_name, version, status from v$instance;
+
+HOST_NAME            INSTANCE_NAME    VERSION           STATUS
+-------------------- ---------------- ----------------- ---------------
+henc-pidbdev1        HENC             12.2.0.1.0        OPEN
+
+
+SQL> show parameter service_name;
+
+NAME                                 TYPE        VALUE
+------------------------------------ ----------- ------------------------------
+service_names                        string      HENC
+
+SQL> select * from nls_database_parameters where parameter in ('NLS_NCHAR_CHARACTERSET','NLS_LENGTH_SEMANTICS','NLS_CHARACTERSET');
+
+PARAMETER                      VALUE
+------------------------------ ---------------
+NLS_LENGTH_SEMANTICS           BYTE
+NLS_NCHAR_CHARACTERSET         AL16UTF16
+NLS_CHARACTERSET               AL32UTF8
+
+SQL> select name from v$controlfile;
+
+NAME
+--------------------------------------------------
+/applog/oracle/oradata/HENC/control01.ctl
+/applog/oracle/oradata/HENC/control02.ctl
+
+SQL> select group#, member, type from v$logfile;
+
+    GROUP# MEMBER                                             TYPE
+---------- -------------------------------------------------- -------
+         1 /applog/oracle/oradata/HENC/redo01.log             ONLINE
+         2 /applog/oracle/oradata/HENC/redo02.log             ONLINE
+         3 /applog/oracle/oradata/HENC/redo03.log             ONLINE
+
+SQL> select group#, thread#, bytes/1024 MB, status from v$log;
+
+    GROUP#    THREAD#         MB STATUS
+---------- ---------- ---------- ---------------
+         1          1     512000 CURRENT
+         2          1     512000 INACTIVE
+         3          1     512000 INACTIVE
+
+
+SQL> select tablespace_name, file_name, bytes/1024/1024 MB, autoextensible from dba_data_files;
+
+TABLESPACE_NAME                FILE_NAME                                                  MB AUT
+------------------------------ -------------------------------------------------- ---------- ---
+SYSTEM                         /applog/oracle/oradata/HENC/system01.dbf                  890 YES
+SYSAUX                         /applog/oracle/oradata/HENC/sysaux01.dbf                  640 YES
+UNDOTBS1                       /applog/oracle/oradata/HENC/undotbs01.dbf                1230 YES
+USERS                          /applog/oracle/oradata/HENC/users01.dbf                     5 YES
+
+SQL> select tablespace_name,file_name, bytes/1024/1024 MB, Autoextensible from dba_temp_files;
+
+TABLESPACE_NAME                FILE_NAME                                                  MB AUT
+------------------------------ -------------------------------------------------- ---------- ---
+TEMP                           /applog/oracle/oradata/HENC/temp01.dbf                     62 YES
+
+SQL> select comp_id, comp_name, version, status from dba_registry;
+
+COMP_ID                        COMP_NAME                           VERSION                        STATUS
+------------------------------ ----------------------------------- ------------------------------ ---------------
+CATALOG                        Oracle Database Catalog Views       12.2.0.1.0                     VALID
+CATPROC                        Oracle Database Packages and Types  12.2.0.1.0                     VALID
+JAVAVM                         JServer JAVA Virtual Machine        12.2.0.1.0                     VALID
+XML                            Oracle XDK                          12.2.0.1.0                     VALID
+CATJAVA                        Oracle Database Java Packages       12.2.0.1.0                     VALID
+APS                            OLAP Analytic Workspace             12.2.0.1.0                     VALID
+XDB                            Oracle XML Database                 12.2.0.1.0                     VALID
+OWM                            Oracle Workspace Manager            12.2.0.1.0                     VALID
+CONTEXT                        Oracle Text                         12.2.0.1.0                     VALID
+ORDIM                          Oracle Multimedia                   12.2.0.1.0                     VALID
+SDO                            Spatial                             12.2.0.1.0                     VALID
+XOQ                            Oracle OLAP API                     12.2.0.1.0                     VALID
+APEX                           Oracle Application Express          5.0.4.00.12                    VALID
+
+13 rows selected.
+
+SQL> select patch_id, status, action from dba_registry_sqlpatch;
+
+  PATCH_ID STATUS          ACTION
+---------- --------------- ---------------
+  28163133 SUCCESS         APPLY
+
+SQL> show parameter local_listener
+
+NAME                                 TYPE        VALUE
+------------------------------------ ----------- ------------------------------
+local_listener                       string      (ADDRESS=(PROTOCOL=tcp)(HOST=h
+                                                 enc-pidbdev1)(PORT=1521))
+SQL> SHOW PARAMETER PROCESS;
+
+NAME                                 TYPE        VALUE
+------------------------------------ ----------- ------------------------------
+processes                            integer     2000
+
+
+NAME                                 TYPE        VALUE
+------------------------------------ ----------- ------------------------------
+spfile                               string      /app/sw/oracle/product/12.2/db
+                                                 home_1/dbs/spfileHENC.ora
+
+SQL> archive log list
+Database log mode              No Archive Mode
+Automatic archival             Disabled
+Archive destination            /app/sw/oracle/product/12.2/dbhome_1/dbs/arch
+Oldest online log sequence     8
+Current log sequence           10
+
+###tablespace 생성 및 user 생성
+SQL>
+create tablespace test datafile '/applog/oracle/oradata/HENC/test01.dbf' size 30g autoextend off;
+alter tablespace test add datafile '/applog/oracle/oradata/HENC/test02.dbf' size 30g autoextend off;
+alter tablespace test add datafile '/applog/oracle/oradata/HENC/test03.dbf' size 10g autoextend on;
+
+create user test identified by test default tablespace test temporary tablespace TEMP;
+
+grant connect,, resource to test;
+alter user test quota unlimited on test;
+
+
+SQL> select username, account_status, DEFAULT_TABLESPACE  from dba_users where username='TEST';
+
+USERNAME   ACCOUNT_ST DEFAULT_TABLESPACE
+---------- ---------- ------------------------------
+TEST       OPEN       TEST
+
+SQL> select tablespace_name, file_name, bytes/1024/1024 MB, autoextensible from dba_data_files;
+
+TABLESPACE_NAME                FILE_NAME                                                  MB AUT
+------------------------------ -------------------------------------------------- ---------- ---
+SYSTEM                         /applog/oracle/oradata/HENC/system01.dbf                  890 YES
+SYSAUX                         /applog/oracle/oradata/HENC/sysaux01.dbf                  680 YES
+UNDOTBS1                       /applog/oracle/oradata/HENC/undotbs01.dbf                1230 YES
+USERS                          /applog/oracle/oradata/HENC/users01.dbf                     5 YES
+TEST                           /applog/oracle/oradata/HENC/test01.dbf                  30720 NO
+TEST                           /applog/oracle/oradata/HENC/test02.dbf                  30720 NO
+TEST                           /applog/oracle/oradata/HENC/test03.dbf                  10240 YES
+
+
+
+
+
+SQL> show user
+USER is "TEST"
+
+SQL> select * from session_roles;
+
+ROLE
+--------------------
+CONNECT
+RESOURCE
+SODA_APP
+
+SQL>  select * from session_privs;
+
+PRIVILEGE
+----------------------------------------
+SET CONTAINER
+CREATE INDEXTYPE
+CREATE OPERATOR
+CREATE TYPE
+CREATE TRIGGER
+CREATE PROCEDURE
+CREATE SEQUENCE
+CREATE CLUSTER
+CREATE TABLE
+CREATE SESSION
+
+10 rows selected.
+
+
+
+
+70 gb 30 30 10
+##### 설치 확인서, 권장 파라미터, 유저 생성 스크립트(test) 작성하여 송부
+
+
+
+
+
+
+
+### 프로세스 확인
+ps -ef | grep smon
+
+###tablespace 생성 및 user 생성 script
+SQL>
+create tablespace test datafile '/applog/oracle/oradata/HENC/test01.dbf' size 30g autoextend off;
+alter tablespace test add datafile '/applog/oracle/oradata/HENC/test02.dbf' size 30g autoextend off;
+alter tablespace test add datafile '/applog/oracle/oradata/HENC/test03.dbf' size 30g autoextend on;
+
+create tablespace ebs datafile '/applog/oracle/oradata/HENC/ebs.dbf' size 30g autoextend on;
+
+create user ebs identified by ebs default tablespace ebs temporary tablespace TEMP;
+
+grant connect, resource to henc_dev;
+alter user henc_dev quota unlimited on test;
+
+
+### 생성 계정 정보
+sys / oracle
+system / oracle
+test / test
+
+kspmis / kspmis
+ebs / ebs
+iam /iam
+enovator /enovator
+dtcmap / dtcmap
+smartsuite / smartsuite
