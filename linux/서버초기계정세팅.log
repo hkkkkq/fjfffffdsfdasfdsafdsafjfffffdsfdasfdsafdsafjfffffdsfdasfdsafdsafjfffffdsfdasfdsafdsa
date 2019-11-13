@@ -1,12 +1,23 @@
 chage -E -1 -I -1 -m 0 -M 99999 root
 
 vi /root/.bash_profile
-
+---------
 export TMOUT=0
+export EDITOR=vi
+set -o vi
+export PS1="[\$LOGNAME@`hostname`:\$PWD]$ "
 
 alias ll='ls -al'
-
+---------
 source /root/.bash_profile
+
+vi /root/.vimrc
+---------
+set smartindent
+set tabstop=2
+set expandtab
+set shiftwidth=2
+---------
 
 systemctl status firewalld.service
 systemctl stop firewalld.service
