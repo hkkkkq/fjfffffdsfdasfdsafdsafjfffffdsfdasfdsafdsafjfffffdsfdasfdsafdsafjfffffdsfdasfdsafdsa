@@ -941,6 +941,7 @@ create tablespace ebs datafile '/applog/oracle/oradata/HENC/ebs.dbf' size 30g au
 create user ebs identified by ebs default tablespace ebs temporary tablespace TEMP;
 
 grant connect, resource to henc_dev;
+grant create view to henc_dev;
 alter user henc_dev quota unlimited on test;
 
 
