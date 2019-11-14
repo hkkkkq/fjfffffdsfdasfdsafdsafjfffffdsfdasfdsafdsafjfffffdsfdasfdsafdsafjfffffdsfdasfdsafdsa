@@ -549,3 +549,8 @@ mount -l | column -t
  gpasswd -d pmis pmis
  3) force use GROUP as new primary group
  usermod -g app pmis
+ 
+ <115> 이름이 이상한 파일 지울 때
+ 1) -i, --inode : print the index number of each file
+ ls -lai 
+ 2) find . -inum 269230951 -exec rm {} \;
