@@ -58,7 +58,7 @@ bundle exec rake generate_secret_token
 bundle exec rake db:migrate RAILS_ENV=production 
 bundle exec rake redmine:load_default_data RAILS_ENV=production REDMINE_LANG=ko 
 
-# 서버 기동
+# 서버 기동 테스트
 /usr/local/bin/ruby bin/rails server -b 0.0.0.0 -p 8010 -e production
 
 # 접속 계정 
@@ -85,4 +85,5 @@ WantedBy=multi-user.target
 
 # 서비스 기동
 systemctl start redmine
+systemctl stop redmine
 systemctl daemon-reload

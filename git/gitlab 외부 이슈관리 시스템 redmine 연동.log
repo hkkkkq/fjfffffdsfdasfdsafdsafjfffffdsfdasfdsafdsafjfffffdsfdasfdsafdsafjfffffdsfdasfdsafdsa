@@ -1,0 +1,20 @@
+1. 대상 프로젝트 - Settings - Integration - Project services - Redmine
+
+Project url: http://172.17.254.6:8010/projects/henc-new-1st-architecture
+Issues url: http://172.17.254.6:8010/issues/:id
+New issue url: http://172.17.254.6:8010/projects/henc-new-1st-architecture/issues/new
+
+2. 대상 프로젝트 - Settings - General - Visibility, project features, permissions - Issues disable
+
+3. 필요 시 Admin Area - Settings - Network - Outbound requests 에 gitlab과 redmine이 동일 장비의 경우 IP 추가해준다.
+
+4. 
+
+From Gitlab, #1 reference Gitlab issue No.1
+
+To reference a Redmine issue, you must use prefixed issue number instead (Redmine project Identifier + Redmine issue number) <PROJECT>-<ID> where <PROJECT> starts with a capital letter which is then followed by capital letters, numbers or underscores, and <ID> is a number (example API_32-143 ).
+
+For referencing and fixing issues in commit messages, you should look at Redmine Administration->Settings->Repository->Referencing keywords.
+
+
+
