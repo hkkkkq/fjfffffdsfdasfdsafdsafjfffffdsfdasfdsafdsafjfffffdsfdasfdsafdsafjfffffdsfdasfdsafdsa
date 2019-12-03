@@ -34,6 +34,8 @@ spec:
         volumeMounts:
         - mountPath: /etc/localtime
           name: timezone-config
+        - mountPath: /data/flex/uploads
+          name: file-uploads
         securityContext:
           privileged: true
 #        livenessProbe:
@@ -57,7 +59,11 @@ spec:
 #            memory: "1250Mi"
 #      nodeSelector:
 #        ktis-node: "true"
+      nodeName: hsnc-archserver3
       volumes:
       - hostPath:
           path: /usr/share/zoneinfo/Asia/Seoul
         name: timezone-config
+      - hostPath:
+          path: /data/flex/uploads
+        name: file-uploads
