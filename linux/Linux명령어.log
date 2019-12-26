@@ -250,6 +250,7 @@ memory-info -servers ib_bat1_svr1 -repeat 9999 -interval 1
 <52>
 ps -ef
 ps aux
+-- 쓰레드 개수
 ps -efL | grep java | wc -l
 
 <53> vi
@@ -554,3 +555,21 @@ mount -l | column -t
  1) -i, --inode : print the index number of each file
  ls -lai 
  2) find . -inum 269230951 -exec rm {} \;
+
+ <116>
+ --lsof 명령어를 이용하여 확인 FD 사용 개수 확인
+ lsof -p 3196 | wc -l     (-p : pid)
+ lsof -u 703 | wc -l      (-u : uid)
+ 
+  <117> 
+  ulimit -a
+  /etc/security/limits.conf
+*          soft    nofile          65536
+*          hard    nofile          65536
+*          soft    nproc           65536
+*          hard    nproc           65536
+ 
+ <118> java 1.8 tomcat stop 시 java.net.ConnectException: Connection refused at java.net.PlainSocketImpl.socketConnect(Native Method) 에러
+ /usr/local/jdk/jdk1.8.0_221/jre/lib/security/java.security
+ securerandom.source=file:/dev/./urandom
+ 
