@@ -1,0 +1,18 @@
+#for tests only !
+#Fri Nov 29 16:19:48 KST 2019
+# SAP 메시지 서버
+jco.client.mshost=172.17.254.12
+# 시스템 ID
+jco.client.r3name=BIN
+jco.client.client=400
+jco.client.user=EAIINF
+jco.client.passwd=w:BNeEy?p1N6zTI!0UnV$p!$mW6NVV4p-GGDGC,@W2KI1Z/3
+# 그룹/서버
+jco.client.group=PUBLIC
+jco.client.lang=ko
+
+
+
+
+
+

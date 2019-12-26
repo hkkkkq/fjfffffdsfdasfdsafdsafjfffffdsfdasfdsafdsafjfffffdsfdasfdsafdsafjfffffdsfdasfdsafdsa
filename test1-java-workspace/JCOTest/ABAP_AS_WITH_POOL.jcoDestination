@@ -1,0 +1,14 @@
+#for tests only !
+#Fri Nov 29 16:19:48 KST 2019
+# SAP 어플리케이션 서버
+jco.client.ashost=172.17.254.12
+# 인스턴스번호
+jco.client.sysnr=00
+jco.client.client=400
+jco.client.user=EAIINF
+jco.client.passwd=fU/=v304l%nH]BkGclaL%aFb2c/+/4AVK0bJbj?aKtXv-p4g
+jco.client.lang=ko
+# 초기 커넥션 풀
+jco.destination.pool_capacity=3
+# 최대 커넥션 풀
+jco.destination.peak_limit=10

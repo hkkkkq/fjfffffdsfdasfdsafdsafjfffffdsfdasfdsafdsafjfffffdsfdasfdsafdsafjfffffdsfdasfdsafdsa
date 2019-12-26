@@ -1,0 +1,13 @@
+#for tests only !
+#Mon Dec 02 17:20:32 KST 2019
+
+# Gateway host on which the server should be registered
+jco.server.gwhost=172.17.254.12
+# Gateway service, i.e. the port on which a registration can be done
+jco.server.gwserv=3300
+# program ID of server
+jco.server.progid=JCOTEST1
+# The number of connections that should be registered at the gateway
+jco.server.connection_count=20
+# Client destination from which to obtain the repository
+jco.server.repository_destination=ABAP_AS_WITH_POOL

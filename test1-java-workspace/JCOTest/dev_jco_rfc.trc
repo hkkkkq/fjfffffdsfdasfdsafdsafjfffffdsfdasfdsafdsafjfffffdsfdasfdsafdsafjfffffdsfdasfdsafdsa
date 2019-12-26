@@ -1,0 +1,3177 @@
+
+**** Error file opened at 20191129 161227 Korea Standard Time Rel. 3.0.20 (2019-09-05) [721.1311]
+Error:   >Fri Nov 29 16:12:27,376<    RfcException raised by system [<unknown>]:
+	message: Connect to message server on host binmain failed
+	Connection parameters: TYPE=B DESTINATION=ABAP_MS_WITHOUT_POOL MSHOST=binmain R3NAME=BIN GROUP=PUBLIC PCS=1
+
+LOCATION    CPIC (TCP/IP) on local host with Unicode
+ERROR       service 'sapmsBIN' unknown
+TIME        Fri Nov 29 16:12:27 2019
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -3
+MODULE      ninti.c
+LINE        933
+DETAIL      NiPGetServByName: 'sapmsBIN' not found
+SYSTEM CALL getaddrinfo
+COUNTER     2
+
+	return code: RFC_FAILURE (1)
+	error group: 102
+	key: RFC_ERROR_COMMUNICATION
+
+
+**** Error file opened at 20191129 161954 Korea Standard Time Rel. 3.0.20 (2019-09-05) [721.1311]
+Error:   >Fri Nov 29 16:19:54,035<    RfcException raised by system [<unknown>]:
+	message: Connect to SAP gateway failed
+	Connection parameters: TYPE=A DESTINATION=ABAP_AS_WITHOUT_POOL ASHOST=binmain SYSNR=53 PCS=1
+
+LOCATION    CPIC (TCP/IP) on local host with Unicode
+ERROR       hostname 'binmain' unknown
+TIME        Fri Nov 29 16:19:54 2019
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -2
+MODULE      ninti.c
+LINE        897
+DETAIL      NiPGetHostByName: 'binmain' not found
+SYSTEM CALL getaddrinfo
+COUNTER     2
+
+	return code: RFC_FAILURE (1)
+	error group: 102
+	key: RFC_ERROR_COMMUNICATION
+
+
+**** Error file opened at 20191129 162528 Korea Standard Time Rel. 3.0.20 (2019-09-05) [721.1311]
+Error:   >Fri Nov 29 16:25:28,902<    RfcException raised by system [<unknown>]:
+	message: Connect to message server on host 172.17.254.12 failed
+	Connection parameters: TYPE=B DESTINATION=ABAP_MS_WITHOUT_POOL MSHOST=172.17.254.12 R3NAME=BIN GROUP=PUBLIC PCS=1
+
+LOCATION    CPIC (TCP/IP) on local host with Unicode
+ERROR       service 'sapmsBIN' unknown
+TIME        Fri Nov 29 16:25:28 2019
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -3
+MODULE      ninti.c
+LINE        933
+DETAIL      NiPGetServByName: 'sapmsBIN' not found
+SYSTEM CALL getaddrinfo
+COUNTER     2
+
+	return code: RFC_FAILURE (1)
+	error group: 102
+	key: RFC_ERROR_COMMUNICATION
+
+
+**** Error file opened at 20191129 162716 Korea Standard Time Rel. 3.0.20 (2019-09-05) [721.1311]
+Error:   >Fri Nov 29 16:27:16,983<    RfcException raised by system [<unknown>]:
+	message: Connect to message server on host 172.17.254.12 failed
+	Connection parameters: TYPE=B DESTINATION=ABAP_MS_WITHOUT_POOL MSHOST=172.17.254.12 R3NAME=BIN GROUP=PUBLIC PCS=1
+
+LOCATION    CPIC (TCP/IP) on local host with Unicode
+ERROR       service 'sapmsBIN' unknown
+TIME        Fri Nov 29 16:27:16 2019
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -3
+MODULE      ninti.c
+LINE        933
+DETAIL      NiPGetServByName: 'sapmsBIN' not found
+SYSTEM CALL getaddrinfo
+COUNTER     4
+
+	return code: RFC_FAILURE (1)
+	error group: 102
+	key: RFC_ERROR_COMMUNICATION
+
+
+**** Error file opened at 20191202 172038 Korea Standard Time Rel. 3.0.20 (2019-09-05) [721.1311]
+Error:   >Mon Dec 02 17:20:38,485<    RfcException raised by system [<unknown>]:
+	message: Connect to SAP gateway failed
+	Connection parameters: PROGID=CalltoQL GWHOST=tsts3d1a GWSERV=sapgw00
+
+ERROR       hostname 'tsts3d1a' unknown
+TIME        Mon Dec 02 17:20:38 2019
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -2
+MODULE      ninti.c
+LINE        897
+DETAIL      NiPGetHostByName: 'tsts3d1a' not found
+SYSTEM CALL getaddrinfo
+COUNTER     1
+
+	return code: RFC_FAILURE (1)
+	error group: 102
+	key: RFC_ERROR_COMMUNICATION
+
+Error:   >Mon Dec 02 17:20:39,644<    RfcException raised by system [<unknown>]:
+	message: Connect to SAP gateway failed
+	Connection parameters: PROGID=CalltoQL GWHOST=tsts3d1a GWSERV=sapgw00
+
+ERROR       hostname 'tsts3d1a' unknown
+TIME        Mon Dec 02 17:20:39 2019
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -2
+MODULE      nixxhl.cpp
+LINE        193
+DETAIL      NiHLGetNodeAddr: hostname cached as unknown
+COUNTER     2
+
+	return code: RFC_FAILURE (1)
+	error group: 102
+	key: RFC_ERROR_COMMUNICATION
+
+Error:   >Mon Dec 02 17:20:43,645<    RfcException raised by system [<unknown>]:
+	message: Connect to SAP gateway failed
+	Connection parameters: PROGID=CalltoQL GWHOST=tsts3d1a GWSERV=sapgw00
+
+ERROR       hostname 'tsts3d1a' unknown
+TIME        Mon Dec 02 17:20:43 2019
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -2
+MODULE      nixxhl.cpp
+LINE        193
+DETAIL      NiHLGetNodeAddr: hostname cached as unknown
+COUNTER     3
+
+	return code: RFC_FAILURE (1)
+	error group: 102
+	key: RFC_ERROR_COMMUNICATION
+
+Error:   >Mon Dec 02 17:20:54,148<    RfcException raised by system [<unknown>]:
+	message: Connect to SAP gateway failed
+	Connection parameters: PROGID=CalltoQL GWHOST=tsts3d1a GWSERV=sapgw00
+
+ERROR       hostname 'tsts3d1a' unknown
+TIME        Mon Dec 02 17:20:54 2019
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -2
+MODULE      ninti.c
+LINE        897
+DETAIL      NiPGetHostByName: 'tsts3d1a' not found
+SYSTEM CALL getaddrinfo
+COUNTER     4
+
+	return code: RFC_FAILURE (1)
+	error group: 102
+	key: RFC_ERROR_COMMUNICATION
+
+Error:   >Mon Dec 02 17:20:59,644<    RfcException raised by system [<unknown>]:
+	message: Connect to SAP gateway failed
+	Connection parameters: PROGID=CalltoQL GWHOST=tsts3d1a GWSERV=sapgw00
+
+ERROR       hostname 'tsts3d1a' unknown
+TIME        Mon Dec 02 17:20:59 2019
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -2
+MODULE      nixxhl.cpp
+LINE        193
+DETAIL      NiHLGetNodeAddr: hostname cached as unknown
+COUNTER     5
+
+	return code: RFC_FAILURE (1)
+	error group: 102
+	key: RFC_ERROR_COMMUNICATION
+
+
+**** Error file opened at 20191202 172332 Korea Standard Time Rel. 3.0.20 (2019-09-05) [721.1311]
+Error:   >Mon Dec 02 17:23:32,179<    RfcException raised by system [<unknown>]:
+	message: Connect to SAP gateway failed
+	Connection parameters: PROGID=CalltoQL GWHOST=172.17.254.12 GWSERV=sapgw00
+
+ERROR       service 'sapgw00' unknown
+TIME        Mon Dec 02 17:23:32 2019
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -3
+MODULE      ninti.c
+LINE        933
+DETAIL      NiPGetServByName: 'sapgw00' not found
+SYSTEM CALL getaddrinfo
+COUNTER     1
+
+	return code: RFC_FAILURE (1)
+	error group: 102
+	key: RFC_ERROR_COMMUNICATION
+
+Error:   >Mon Dec 02 17:23:34,134<    RfcException raised by system [<unknown>]:
+	message: Connect to SAP gateway failed
+	Connection parameters: PROGID=CalltoQL GWHOST=172.17.254.12 GWSERV=sapgw00
+
+ERROR       service 'sapgw00' unknown
+TIME        Mon Dec 02 17:23:34 2019
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -3
+MODULE      nixxsl.cpp
+LINE        184
+DETAIL      NiSrvLGetServNo: service name cached as unknown
+COUNTER     2
+
+	return code: RFC_FAILURE (1)
+	error group: 102
+	key: RFC_ERROR_COMMUNICATION
+
+Error:   >Mon Dec 02 17:23:38,134<    RfcException raised by system [<unknown>]:
+	message: Connect to SAP gateway failed
+	Connection parameters: PROGID=CalltoQL GWHOST=172.17.254.12 GWSERV=sapgw00
+
+ERROR       service 'sapgw00' unknown
+TIME        Mon Dec 02 17:23:38 2019
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -3
+MODULE      nixxsl.cpp
+LINE        184
+DETAIL      NiSrvLGetServNo: service name cached as unknown
+COUNTER     3
+
+	return code: RFC_FAILURE (1)
+	error group: 102
+	key: RFC_ERROR_COMMUNICATION
+
+Error:   >Mon Dec 02 17:23:44,134<    RfcException raised by system [<unknown>]:
+	message: Connect to SAP gateway failed
+	Connection parameters: PROGID=CalltoQL GWHOST=172.17.254.12 GWSERV=sapgw00
+
+ERROR       service 'sapgw00' unknown
+TIME        Mon Dec 02 17:23:44 2019
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -3
+MODULE      nixxsl.cpp
+LINE        184
+DETAIL      NiSrvLGetServNo: service name cached as unknown
+COUNTER     4
+
+	return code: RFC_FAILURE (1)
+	error group: 102
+	key: RFC_ERROR_COMMUNICATION
+
+Error:   >Mon Dec 02 17:23:54,134<    RfcException raised by system [<unknown>]:
+	message: Connect to SAP gateway failed
+	Connection parameters: PROGID=CalltoQL GWHOST=172.17.254.12 GWSERV=sapgw00
+
+ERROR       service 'sapgw00' unknown
+TIME        Mon Dec 02 17:23:54 2019
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -3
+MODULE      nixxsl.cpp
+LINE        184
+DETAIL      NiSrvLGetServNo: service name cached as unknown
+COUNTER     5
+
+	return code: RFC_FAILURE (1)
+	error group: 102
+	key: RFC_ERROR_COMMUNICATION
+
+Error:   >Mon Dec 02 17:24:12,134<    RfcException raised by system [<unknown>]:
+	message: Connect to SAP gateway failed
+	Connection parameters: PROGID=CalltoQL GWHOST=172.17.254.12 GWSERV=sapgw00
+
+ERROR       service 'sapgw00' unknown
+TIME        Mon Dec 02 17:24:12 2019
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -3
+MODULE      nixxsl.cpp
+LINE        184
+DETAIL      NiSrvLGetServNo: service name cached as unknown
+COUNTER     6
+
+	return code: RFC_FAILURE (1)
+	error group: 102
+	key: RFC_ERROR_COMMUNICATION
+
+Error:   >Mon Dec 02 17:24:46,134<    RfcException raised by system [<unknown>]:
+	message: Connect to SAP gateway failed
+	Connection parameters: PROGID=CalltoQL GWHOST=172.17.254.12 GWSERV=sapgw00
+
+ERROR       service 'sapgw00' unknown
+TIME        Mon Dec 02 17:24:46 2019
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -3
+MODULE      nixxsl.cpp
+LINE        184
+DETAIL      NiSrvLGetServNo: service name cached as unknown
+COUNTER     7
+
+	return code: RFC_FAILURE (1)
+	error group: 102
+	key: RFC_ERROR_COMMUNICATION
+
+
+**** Error file opened at 20191202 172527 Korea Standard Time Rel. 3.0.20 (2019-09-05) [721.1311]
+Error:   >Mon Dec 02 17:25:27,374<    RfcException raised by system [<unknown>]:
+	message: Connect to SAP gateway failed
+	Connection parameters: PROGID=CalltoQL GWHOST=test GWSERV=sapgw00
+
+ERROR       service 'sapgw00' unknown
+TIME        Mon Dec 02 17:25:27 2019
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -3
+MODULE      ninti.c
+LINE        933
+DETAIL      NiPGetServByName: 'sapgw00' not found
+SYSTEM CALL getaddrinfo
+COUNTER     1
+
+	return code: RFC_FAILURE (1)
+	error group: 102
+	key: RFC_ERROR_COMMUNICATION
+
+Error:   >Mon Dec 02 17:25:29,324<    RfcException raised by system [<unknown>]:
+	message: Connect to SAP gateway failed
+	Connection parameters: PROGID=CalltoQL GWHOST=test GWSERV=sapgw00
+
+ERROR       service 'sapgw00' unknown
+TIME        Mon Dec 02 17:25:29 2019
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -3
+MODULE      nixxsl.cpp
+LINE        184
+DETAIL      NiSrvLGetServNo: service name cached as unknown
+COUNTER     2
+
+	return code: RFC_FAILURE (1)
+	error group: 102
+	key: RFC_ERROR_COMMUNICATION
+
+Error:   >Mon Dec 02 17:25:33,324<    RfcException raised by system [<unknown>]:
+	message: Connect to SAP gateway failed
+	Connection parameters: PROGID=CalltoQL GWHOST=test GWSERV=sapgw00
+
+ERROR       service 'sapgw00' unknown
+TIME        Mon Dec 02 17:25:33 2019
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -3
+MODULE      nixxsl.cpp
+LINE        184
+DETAIL      NiSrvLGetServNo: service name cached as unknown
+COUNTER     3
+
+	return code: RFC_FAILURE (1)
+	error group: 102
+	key: RFC_ERROR_COMMUNICATION
+
+Error:   >Mon Dec 02 17:25:39,324<    RfcException raised by system [<unknown>]:
+	message: Connect to SAP gateway failed
+	Connection parameters: PROGID=CalltoQL GWHOST=test GWSERV=sapgw00
+
+ERROR       service 'sapgw00' unknown
+TIME        Mon Dec 02 17:25:39 2019
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -3
+MODULE      nixxsl.cpp
+LINE        184
+DETAIL      NiSrvLGetServNo: service name cached as unknown
+COUNTER     4
+
+	return code: RFC_FAILURE (1)
+	error group: 102
+	key: RFC_ERROR_COMMUNICATION
+
+Error:   >Mon Dec 02 17:25:49,324<    RfcException raised by system [<unknown>]:
+	message: Connect to SAP gateway failed
+	Connection parameters: PROGID=CalltoQL GWHOST=test GWSERV=sapgw00
+
+ERROR       service 'sapgw00' unknown
+TIME        Mon Dec 02 17:25:49 2019
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -3
+MODULE      nixxsl.cpp
+LINE        184
+DETAIL      NiSrvLGetServNo: service name cached as unknown
+COUNTER     5
+
+	return code: RFC_FAILURE (1)
+	error group: 102
+	key: RFC_ERROR_COMMUNICATION
+
+Error:   >Mon Dec 02 17:26:07,324<    RfcException raised by system [<unknown>]:
+	message: Connect to SAP gateway failed
+	Connection parameters: PROGID=CalltoQL GWHOST=test GWSERV=sapgw00
+
+ERROR       service 'sapgw00' unknown
+TIME        Mon Dec 02 17:26:07 2019
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -3
+MODULE      nixxsl.cpp
+LINE        184
+DETAIL      NiSrvLGetServNo: service name cached as unknown
+COUNTER     6
+
+	return code: RFC_FAILURE (1)
+	error group: 102
+	key: RFC_ERROR_COMMUNICATION
+
+Error:   >Mon Dec 02 17:26:39,330<    RfcException raised by system [<unknown>]:
+	message: Connect to SAP gateway failed
+	Connection parameters: PROGID=CalltoQL GWHOST=test GWSERV=sapgw00
+
+ERROR       service 'sapgw00' unknown
+TIME        Mon Dec 02 17:26:39 2019
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -3
+MODULE      nixxsl.cpp
+LINE        184
+DETAIL      NiSrvLGetServNo: service name cached as unknown
+COUNTER     7
+
+	return code: RFC_FAILURE (1)
+	error group: 102
+	key: RFC_ERROR_COMMUNICATION
+
+Error:   >Mon Dec 02 17:27:43,336<    RfcException raised by system [<unknown>]:
+	message: Connect to SAP gateway failed
+	Connection parameters: PROGID=CalltoQL GWHOST=test GWSERV=sapgw00
+
+ERROR       service 'sapgw00' unknown
+TIME        Mon Dec 02 17:27:43 2019
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -3
+MODULE      nixxsl.cpp
+LINE        184
+DETAIL      NiSrvLGetServNo: service name cached as unknown
+COUNTER     8
+
+	return code: RFC_FAILURE (1)
+	error group: 102
+	key: RFC_ERROR_COMMUNICATION
+
+Error:   >Mon Dec 02 17:29:51,337<    RfcException raised by system [<unknown>]:
+	message: Connect to SAP gateway failed
+	Connection parameters: PROGID=CalltoQL GWHOST=test GWSERV=sapgw00
+
+ERROR       service 'sapgw00' unknown
+TIME        Mon Dec 02 17:29:51 2019
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -3
+MODULE      nixxsl.cpp
+LINE        184
+DETAIL      NiSrvLGetServNo: service name cached as unknown
+COUNTER     9
+
+	return code: RFC_FAILURE (1)
+	error group: 102
+	key: RFC_ERROR_COMMUNICATION
+
+Error:   >Mon Dec 02 17:34:07,341<    RfcException raised by system [<unknown>]:
+	message: Connect to SAP gateway failed
+	Connection parameters: PROGID=CalltoQL GWHOST=test GWSERV=sapgw00
+
+ERROR       service 'sapgw00' unknown
+TIME        Mon Dec 02 17:34:07 2019
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -3
+MODULE      nixxsl.cpp
+LINE        184
+DETAIL      NiSrvLGetServNo: service name cached as unknown
+COUNTER     10
+
+	return code: RFC_FAILURE (1)
+	error group: 102
+	key: RFC_ERROR_COMMUNICATION
+
+
+**** Error file opened at 20191202 174135 Korea Standard Time Rel. 3.0.20 (2019-09-05) [721.1311]
+Error:   >Mon Dec 02 17:41:35,781<    RfcException raised by system [<unknown>]:
+	message: Connect to SAP gateway failed
+	Connection parameters: PROGID=CalltoQL GWHOST=172.17.254.12 GWSERV=sapgw00
+
+ERROR       service 'sapgw00' unknown
+TIME        Mon Dec 02 17:41:35 2019
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -3
+MODULE      ninti.c
+LINE        933
+DETAIL      NiPGetServByName: 'sapgw00' not found
+SYSTEM CALL getaddrinfo
+COUNTER     1
+
+	return code: RFC_FAILURE (1)
+	error group: 102
+	key: RFC_ERROR_COMMUNICATION
+
+Error:   >Mon Dec 02 17:41:37,754<    RfcException raised by system [<unknown>]:
+	message: Connect to SAP gateway failed
+	Connection parameters: PROGID=CalltoQL GWHOST=172.17.254.12 GWSERV=sapgw00
+
+ERROR       service 'sapgw00' unknown
+TIME        Mon Dec 02 17:41:37 2019
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -3
+MODULE      nixxsl.cpp
+LINE        184
+DETAIL      NiSrvLGetServNo: service name cached as unknown
+COUNTER     2
+
+	return code: RFC_FAILURE (1)
+	error group: 102
+	key: RFC_ERROR_COMMUNICATION
+
+Error:   >Mon Dec 02 17:41:41,755<    RfcException raised by system [<unknown>]:
+	message: Connect to SAP gateway failed
+	Connection parameters: PROGID=CalltoQL GWHOST=172.17.254.12 GWSERV=sapgw00
+
+ERROR       service 'sapgw00' unknown
+TIME        Mon Dec 02 17:41:41 2019
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -3
+MODULE      nixxsl.cpp
+LINE        184
+DETAIL      NiSrvLGetServNo: service name cached as unknown
+COUNTER     3
+
+	return code: RFC_FAILURE (1)
+	error group: 102
+	key: RFC_ERROR_COMMUNICATION
+
+Error:   >Mon Dec 02 17:41:47,755<    RfcException raised by system [<unknown>]:
+	message: Connect to SAP gateway failed
+	Connection parameters: PROGID=CalltoQL GWHOST=172.17.254.12 GWSERV=sapgw00
+
+ERROR       service 'sapgw00' unknown
+TIME        Mon Dec 02 17:41:47 2019
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -3
+MODULE      nixxsl.cpp
+LINE        184
+DETAIL      NiSrvLGetServNo: service name cached as unknown
+COUNTER     4
+
+	return code: RFC_FAILURE (1)
+	error group: 102
+	key: RFC_ERROR_COMMUNICATION
+
+
+**** Error file opened at 20191202 174618 Korea Standard Time Rel. 3.0.20 (2019-09-05) [721.1311]
+Error:   >Mon Dec 02 17:46:18,223<    RfcException raised by system [<unknown>]:
+	message: Connect to SAP gateway failed
+	Connection parameters: PROGID=CalltoQL GWHOST=172.17.254.12 GWSERV=sapgw00
+
+ERROR       service 'sapgw00' unknown
+TIME        Mon Dec 02 17:46:18 2019
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -3
+MODULE      ninti.c
+LINE        933
+DETAIL      NiPGetServByName: 'sapgw00' not found
+SYSTEM CALL getaddrinfo
+COUNTER     1
+
+	return code: RFC_FAILURE (1)
+	error group: 102
+	key: RFC_ERROR_COMMUNICATION
+
+Error:   >Mon Dec 02 17:46:20,190<    RfcException raised by system [<unknown>]:
+	message: Connect to SAP gateway failed
+	Connection parameters: PROGID=CalltoQL GWHOST=172.17.254.12 GWSERV=sapgw00
+
+ERROR       service 'sapgw00' unknown
+TIME        Mon Dec 02 17:46:20 2019
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -3
+MODULE      nixxsl.cpp
+LINE        184
+DETAIL      NiSrvLGetServNo: service name cached as unknown
+COUNTER     2
+
+	return code: RFC_FAILURE (1)
+	error group: 102
+	key: RFC_ERROR_COMMUNICATION
+
+Error:   >Mon Dec 02 17:46:24,190<    RfcException raised by system [<unknown>]:
+	message: Connect to SAP gateway failed
+	Connection parameters: PROGID=CalltoQL GWHOST=172.17.254.12 GWSERV=sapgw00
+
+ERROR       service 'sapgw00' unknown
+TIME        Mon Dec 02 17:46:24 2019
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -3
+MODULE      nixxsl.cpp
+LINE        184
+DETAIL      NiSrvLGetServNo: service name cached as unknown
+COUNTER     3
+
+	return code: RFC_FAILURE (1)
+	error group: 102
+	key: RFC_ERROR_COMMUNICATION
+
+Error:   >Mon Dec 02 17:46:30,191<    RfcException raised by system [<unknown>]:
+	message: Connect to SAP gateway failed
+	Connection parameters: PROGID=CalltoQL GWHOST=172.17.254.12 GWSERV=sapgw00
+
+ERROR       service 'sapgw00' unknown
+TIME        Mon Dec 02 17:46:30 2019
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -3
+MODULE      nixxsl.cpp
+LINE        184
+DETAIL      NiSrvLGetServNo: service name cached as unknown
+COUNTER     4
+
+	return code: RFC_FAILURE (1)
+	error group: 102
+	key: RFC_ERROR_COMMUNICATION
+
+
+**** Error file opened at 20191202 174638 Korea Standard Time Rel. 3.0.20 (2019-09-05) [721.1311]
+Error:   >Mon Dec 02 17:46:38,504<    RfcException raised by system [<unknown>]:
+	message: Connect to SAP gateway failed
+	Connection parameters: PROGID=CalltoQL GWHOST=172.17.254.12 GWSERV=sapgw00
+
+ERROR       service 'sapgw00' unknown
+TIME        Mon Dec 02 17:46:38 2019
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -3
+MODULE      ninti.c
+LINE        933
+DETAIL      NiPGetServByName: 'sapgw00' not found
+SYSTEM CALL getaddrinfo
+COUNTER     1
+
+	return code: RFC_FAILURE (1)
+	error group: 102
+	key: RFC_ERROR_COMMUNICATION
+
+Error:   >Mon Dec 02 17:46:40,461<    RfcException raised by system [<unknown>]:
+	message: Connect to SAP gateway failed
+	Connection parameters: PROGID=CalltoQL GWHOST=172.17.254.12 GWSERV=sapgw00
+
+ERROR       service 'sapgw00' unknown
+TIME        Mon Dec 02 17:46:40 2019
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -3
+MODULE      nixxsl.cpp
+LINE        184
+DETAIL      NiSrvLGetServNo: service name cached as unknown
+COUNTER     2
+
+	return code: RFC_FAILURE (1)
+	error group: 102
+	key: RFC_ERROR_COMMUNICATION
+
+Error:   >Mon Dec 02 17:46:44,461<    RfcException raised by system [<unknown>]:
+	message: Connect to SAP gateway failed
+	Connection parameters: PROGID=CalltoQL GWHOST=172.17.254.12 GWSERV=sapgw00
+
+ERROR       service 'sapgw00' unknown
+TIME        Mon Dec 02 17:46:44 2019
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -3
+MODULE      nixxsl.cpp
+LINE        184
+DETAIL      NiSrvLGetServNo: service name cached as unknown
+COUNTER     3
+
+	return code: RFC_FAILURE (1)
+	error group: 102
+	key: RFC_ERROR_COMMUNICATION
+
+Error:   >Mon Dec 02 17:46:50,461<    RfcException raised by system [<unknown>]:
+	message: Connect to SAP gateway failed
+	Connection parameters: PROGID=CalltoQL GWHOST=172.17.254.12 GWSERV=sapgw00
+
+ERROR       service 'sapgw00' unknown
+TIME        Mon Dec 02 17:46:50 2019
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -3
+MODULE      nixxsl.cpp
+LINE        184
+DETAIL      NiSrvLGetServNo: service name cached as unknown
+COUNTER     4
+
+	return code: RFC_FAILURE (1)
+	error group: 102
+	key: RFC_ERROR_COMMUNICATION
+
+Error:   >Mon Dec 02 17:47:00,461<    RfcException raised by system [<unknown>]:
+	message: Connect to SAP gateway failed
+	Connection parameters: PROGID=CalltoQL GWHOST=172.17.254.12 GWSERV=sapgw00
+
+ERROR       service 'sapgw00' unknown
+TIME        Mon Dec 02 17:47:00 2019
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -3
+MODULE      nixxsl.cpp
+LINE        184
+DETAIL      NiSrvLGetServNo: service name cached as unknown
+COUNTER     5
+
+	return code: RFC_FAILURE (1)
+	error group: 102
+	key: RFC_ERROR_COMMUNICATION
+
+Error:   >Mon Dec 02 17:47:18,462<    RfcException raised by system [<unknown>]:
+	message: Connect to SAP gateway failed
+	Connection parameters: PROGID=CalltoQL GWHOST=172.17.254.12 GWSERV=sapgw00
+
+ERROR       service 'sapgw00' unknown
+TIME        Mon Dec 02 17:47:18 2019
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -3
+MODULE      nixxsl.cpp
+LINE        184
+DETAIL      NiSrvLGetServNo: service name cached as unknown
+COUNTER     6
+
+	return code: RFC_FAILURE (1)
+	error group: 102
+	key: RFC_ERROR_COMMUNICATION
+
+Error:   >Mon Dec 02 17:47:50,464<    RfcException raised by system [<unknown>]:
+	message: Connect to SAP gateway failed
+	Connection parameters: PROGID=CalltoQL GWHOST=172.17.254.12 GWSERV=sapgw00
+
+ERROR       service 'sapgw00' unknown
+TIME        Mon Dec 02 17:47:50 2019
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -3
+MODULE      nixxsl.cpp
+LINE        184
+DETAIL      NiSrvLGetServNo: service name cached as unknown
+COUNTER     7
+
+	return code: RFC_FAILURE (1)
+	error group: 102
+	key: RFC_ERROR_COMMUNICATION
+
+Error:   >Mon Dec 02 17:48:56,464<    RfcException raised by system [<unknown>]:
+	message: Connect to SAP gateway failed
+	Connection parameters: PROGID=CalltoQL GWHOST=172.17.254.12 GWSERV=sapgw00
+
+ERROR       service 'sapgw00' unknown
+TIME        Mon Dec 02 17:48:56 2019
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -3
+MODULE      nixxsl.cpp
+LINE        184
+DETAIL      NiSrvLGetServNo: service name cached as unknown
+COUNTER     8
+
+	return code: RFC_FAILURE (1)
+	error group: 102
+	key: RFC_ERROR_COMMUNICATION
+
+
+**** Error file opened at 20191202 174940 Korea Standard Time Rel. 3.0.20 (2019-09-05) [721.1311]
+Error:   >Mon Dec 02 17:49:40,918<    RfcException raised by system [<unknown>]:
+	message: Parameter gateway service ('jco.server.gwserv') needs to be of format ####, sapgw## or sapgw##s (where # is a digit) instead of 'sapgw001231231231'
+	return code: RFC_INVALID_PARAMETER (19)
+	error group: 101
+	key: RFC_ERROR_PROGRAM
+	at com.sap.conn.rfc.api.RfcRegisterInfo.checkParameters(RfcRegisterInfo.java:123)
+	at com.sap.conn.rfc.api.RfcApi.RfcAccept(RfcApi.java:32)
+	at com.sap.conn.jco.rt.MiddlewareJavaRfc$JavaRfcServer.accept(MiddlewareJavaRfc.java:2403)
+	at com.sap.conn.jco.rt.ServerConnection.accept(ServerConnection.java:372)
+	at com.sap.conn.jco.rt.DefaultServer.openConnection(DefaultServer.java:1198)
+	at com.sap.conn.jco.rt.DefaultServer.openConnections(DefaultServer.java:1119)
+	at com.sap.conn.jco.rt.DefaultServer.adjustConnectionCount(DefaultServer.java:1052)
+	at com.sap.conn.jco.rt.DefaultServerManager$ServerController.run(DefaultServerManager.java:382)
+	at java.lang.Thread.run(Thread.java:748)
+
+
+Error:   >Mon Dec 02 17:49:40,924<    RfcException raised by system [<unknown>]:
+	message: Parameter gateway service ('jco.server.gwserv') needs to be of format ####, sapgw## or sapgw##s (where # is a digit) instead of 'sapgw001231231231'
+	return code: RFC_INVALID_PARAMETER (19)
+	error group: 101
+	key: RFC_ERROR_PROGRAM
+	at com.sap.conn.rfc.api.RfcRegisterInfo.checkParameters(RfcRegisterInfo.java:123)
+	at com.sap.conn.rfc.api.RfcApi.RfcAccept(RfcApi.java:32)
+	at com.sap.conn.jco.rt.MiddlewareJavaRfc$JavaRfcServer.accept(MiddlewareJavaRfc.java:2403)
+	at com.sap.conn.jco.rt.ServerConnection.accept(ServerConnection.java:372)
+	at com.sap.conn.jco.rt.DefaultServer.openConnection(DefaultServer.java:1198)
+	at com.sap.conn.jco.rt.DefaultServer.openConnections(DefaultServer.java:1119)
+	at com.sap.conn.jco.rt.DefaultServer.adjustConnectionCount(DefaultServer.java:1052)
+	at com.sap.conn.jco.rt.DefaultServerManager$ServerController.run(DefaultServerManager.java:382)
+	at java.lang.Thread.run(Thread.java:748)
+
+
+Error:   >Mon Dec 02 17:49:40,924<    RfcException raised by system [<unknown>]:
+	message: Parameter gateway service ('jco.server.gwserv') needs to be of format ####, sapgw## or sapgw##s (where # is a digit) instead of 'sapgw001231231231'
+	return code: RFC_INVALID_PARAMETER (19)
+	error group: 101
+	key: RFC_ERROR_PROGRAM
+	at com.sap.conn.rfc.api.RfcRegisterInfo.checkParameters(RfcRegisterInfo.java:123)
+	at com.sap.conn.rfc.api.RfcApi.RfcAccept(RfcApi.java:32)
+	at com.sap.conn.jco.rt.MiddlewareJavaRfc$JavaRfcServer.accept(MiddlewareJavaRfc.java:2403)
+	at com.sap.conn.jco.rt.ServerConnection.accept(ServerConnection.java:372)
+	at com.sap.conn.jco.rt.DefaultServer.openConnection(DefaultServer.java:1198)
+	at com.sap.conn.jco.rt.DefaultServer.openConnections(DefaultServer.java:1119)
+	at com.sap.conn.jco.rt.DefaultServer.adjustConnectionCount(DefaultServer.java:1052)
+	at com.sap.conn.jco.rt.DefaultServerManager$ServerController.run(DefaultServerManager.java:382)
+	at java.lang.Thread.run(Thread.java:748)
+
+
+Error:   >Mon Dec 02 17:49:40,925<    RfcException raised by system [<unknown>]:
+	message: Parameter gateway service ('jco.server.gwserv') needs to be of format ####, sapgw## or sapgw##s (where # is a digit) instead of 'sapgw001231231231'
+	return code: RFC_INVALID_PARAMETER (19)
+	error group: 101
+	key: RFC_ERROR_PROGRAM
+	at com.sap.conn.rfc.api.RfcRegisterInfo.checkParameters(RfcRegisterInfo.java:123)
+	at com.sap.conn.rfc.api.RfcApi.RfcAccept(RfcApi.java:32)
+	at com.sap.conn.jco.rt.MiddlewareJavaRfc$JavaRfcServer.accept(MiddlewareJavaRfc.java:2403)
+	at com.sap.conn.jco.rt.ServerConnection.accept(ServerConnection.java:372)
+	at com.sap.conn.jco.rt.DefaultServer.openConnection(DefaultServer.java:1198)
+	at com.sap.conn.jco.rt.DefaultServer.openConnections(DefaultServer.java:1119)
+	at com.sap.conn.jco.rt.DefaultServer.adjustConnectionCount(DefaultServer.java:1052)
+	at com.sap.conn.jco.rt.DefaultServerManager$ServerController.run(DefaultServerManager.java:382)
+	at java.lang.Thread.run(Thread.java:748)
+
+
+Error:   >Mon Dec 02 17:49:40,926<    RfcException raised by system [<unknown>]:
+	message: Parameter gateway service ('jco.server.gwserv') needs to be of format ####, sapgw## or sapgw##s (where # is a digit) instead of 'sapgw001231231231'
+	return code: RFC_INVALID_PARAMETER (19)
+	error group: 101
+	key: RFC_ERROR_PROGRAM
+	at com.sap.conn.rfc.api.RfcRegisterInfo.checkParameters(RfcRegisterInfo.java:123)
+	at com.sap.conn.rfc.api.RfcApi.RfcAccept(RfcApi.java:32)
+	at com.sap.conn.jco.rt.MiddlewareJavaRfc$JavaRfcServer.accept(MiddlewareJavaRfc.java:2403)
+	at com.sap.conn.jco.rt.ServerConnection.accept(ServerConnection.java:372)
+	at com.sap.conn.jco.rt.DefaultServer.openConnection(DefaultServer.java:1198)
+	at com.sap.conn.jco.rt.DefaultServer.openConnections(DefaultServer.java:1119)
+	at com.sap.conn.jco.rt.DefaultServer.adjustConnectionCount(DefaultServer.java:1052)
+	at com.sap.conn.jco.rt.DefaultServerManager$ServerController.run(DefaultServerManager.java:382)
+	at java.lang.Thread.run(Thread.java:748)
+
+
+Error:   >Mon Dec 02 17:49:40,927<    RfcException raised by system [<unknown>]:
+	message: Parameter gateway service ('jco.server.gwserv') needs to be of format ####, sapgw## or sapgw##s (where # is a digit) instead of 'sapgw001231231231'
+	return code: RFC_INVALID_PARAMETER (19)
+	error group: 101
+	key: RFC_ERROR_PROGRAM
+	at com.sap.conn.rfc.api.RfcRegisterInfo.checkParameters(RfcRegisterInfo.java:123)
+	at com.sap.conn.rfc.api.RfcApi.RfcAccept(RfcApi.java:32)
+	at com.sap.conn.jco.rt.MiddlewareJavaRfc$JavaRfcServer.accept(MiddlewareJavaRfc.java:2403)
+	at com.sap.conn.jco.rt.ServerConnection.accept(ServerConnection.java:372)
+	at com.sap.conn.jco.rt.DefaultServer.openConnection(DefaultServer.java:1198)
+	at com.sap.conn.jco.rt.DefaultServer.openConnections(DefaultServer.java:1119)
+	at com.sap.conn.jco.rt.DefaultServer.adjustConnectionCount(DefaultServer.java:1052)
+	at com.sap.conn.jco.rt.DefaultServerManager$ServerController.run(DefaultServerManager.java:382)
+	at java.lang.Thread.run(Thread.java:748)
+
+
+Error:   >Mon Dec 02 17:49:40,928<    RfcException raised by system [<unknown>]:
+	message: Parameter gateway service ('jco.server.gwserv') needs to be of format ####, sapgw## or sapgw##s (where # is a digit) instead of 'sapgw001231231231'
+	return code: RFC_INVALID_PARAMETER (19)
+	error group: 101
+	key: RFC_ERROR_PROGRAM
+	at com.sap.conn.rfc.api.RfcRegisterInfo.checkParameters(RfcRegisterInfo.java:123)
+	at com.sap.conn.rfc.api.RfcApi.RfcAccept(RfcApi.java:32)
+	at com.sap.conn.jco.rt.MiddlewareJavaRfc$JavaRfcServer.accept(MiddlewareJavaRfc.java:2403)
+	at com.sap.conn.jco.rt.ServerConnection.accept(ServerConnection.java:372)
+	at com.sap.conn.jco.rt.DefaultServer.openConnection(DefaultServer.java:1198)
+	at com.sap.conn.jco.rt.DefaultServer.openConnections(DefaultServer.java:1119)
+	at com.sap.conn.jco.rt.DefaultServer.adjustConnectionCount(DefaultServer.java:1052)
+	at com.sap.conn.jco.rt.DefaultServerManager$ServerController.run(DefaultServerManager.java:382)
+	at java.lang.Thread.run(Thread.java:748)
+
+
+Error:   >Mon Dec 02 17:49:40,929<    RfcException raised by system [<unknown>]:
+	message: Parameter gateway service ('jco.server.gwserv') needs to be of format ####, sapgw## or sapgw##s (where # is a digit) instead of 'sapgw001231231231'
+	return code: RFC_INVALID_PARAMETER (19)
+	error group: 101
+	key: RFC_ERROR_PROGRAM
+	at com.sap.conn.rfc.api.RfcRegisterInfo.checkParameters(RfcRegisterInfo.java:123)
+	at com.sap.conn.rfc.api.RfcApi.RfcAccept(RfcApi.java:32)
+	at com.sap.conn.jco.rt.MiddlewareJavaRfc$JavaRfcServer.accept(MiddlewareJavaRfc.java:2403)
+	at com.sap.conn.jco.rt.ServerConnection.accept(ServerConnection.java:372)
+	at com.sap.conn.jco.rt.DefaultServer.openConnection(DefaultServer.java:1198)
+	at com.sap.conn.jco.rt.DefaultServer.openConnections(DefaultServer.java:1119)
+	at com.sap.conn.jco.rt.DefaultServer.adjustConnectionCount(DefaultServer.java:1052)
+	at com.sap.conn.jco.rt.DefaultServerManager$ServerController.run(DefaultServerManager.java:382)
+	at java.lang.Thread.run(Thread.java:748)
+
+
+Error:   >Mon Dec 02 17:49:40,931<    RfcException raised by system [<unknown>]:
+	message: Parameter gateway service ('jco.server.gwserv') needs to be of format ####, sapgw## or sapgw##s (where # is a digit) instead of 'sapgw001231231231'
+	return code: RFC_INVALID_PARAMETER (19)
+	error group: 101
+	key: RFC_ERROR_PROGRAM
+	at com.sap.conn.rfc.api.RfcRegisterInfo.checkParameters(RfcRegisterInfo.java:123)
+	at com.sap.conn.rfc.api.RfcApi.RfcAccept(RfcApi.java:32)
+	at com.sap.conn.jco.rt.MiddlewareJavaRfc$JavaRfcServer.accept(MiddlewareJavaRfc.java:2403)
+	at com.sap.conn.jco.rt.ServerConnection.accept(ServerConnection.java:372)
+	at com.sap.conn.jco.rt.DefaultServer.openConnection(DefaultServer.java:1198)
+	at com.sap.conn.jco.rt.DefaultServer.openConnections(DefaultServer.java:1119)
+	at com.sap.conn.jco.rt.DefaultServer.adjustConnectionCount(DefaultServer.java:1052)
+	at com.sap.conn.jco.rt.DefaultServerManager$ServerController.run(DefaultServerManager.java:382)
+	at java.lang.Thread.run(Thread.java:748)
+
+
+Error:   >Mon Dec 02 17:49:40,933<    RfcException raised by system [<unknown>]:
+	message: Parameter gateway service ('jco.server.gwserv') needs to be of format ####, sapgw## or sapgw##s (where # is a digit) instead of 'sapgw001231231231'
+	return code: RFC_INVALID_PARAMETER (19)
+	error group: 101
+	key: RFC_ERROR_PROGRAM
+	at com.sap.conn.rfc.api.RfcRegisterInfo.checkParameters(RfcRegisterInfo.java:123)
+	at com.sap.conn.rfc.api.RfcApi.RfcAccept(RfcApi.java:32)
+	at com.sap.conn.jco.rt.MiddlewareJavaRfc$JavaRfcServer.accept(MiddlewareJavaRfc.java:2403)
+	at com.sap.conn.jco.rt.ServerConnection.accept(ServerConnection.java:372)
+	at com.sap.conn.jco.rt.DefaultServer.openConnection(DefaultServer.java:1198)
+	at com.sap.conn.jco.rt.DefaultServer.openConnections(DefaultServer.java:1119)
+	at com.sap.conn.jco.rt.DefaultServer.adjustConnectionCount(DefaultServer.java:1052)
+	at com.sap.conn.jco.rt.DefaultServerManager$ServerController.run(DefaultServerManager.java:382)
+	at java.lang.Thread.run(Thread.java:748)
+
+
+Error:   >Mon Dec 02 17:49:40,934<    RfcException raised by system [<unknown>]:
+	message: Parameter gateway service ('jco.server.gwserv') needs to be of format ####, sapgw## or sapgw##s (where # is a digit) instead of 'sapgw001231231231'
+	return code: RFC_INVALID_PARAMETER (19)
+	error group: 101
+	key: RFC_ERROR_PROGRAM
+	at com.sap.conn.rfc.api.RfcRegisterInfo.checkParameters(RfcRegisterInfo.java:123)
+	at com.sap.conn.rfc.api.RfcApi.RfcAccept(RfcApi.java:32)
+	at com.sap.conn.jco.rt.MiddlewareJavaRfc$JavaRfcServer.accept(MiddlewareJavaRfc.java:2403)
+	at com.sap.conn.jco.rt.ServerConnection.accept(ServerConnection.java:372)
+	at com.sap.conn.jco.rt.DefaultServer.openConnection(DefaultServer.java:1198)
+	at com.sap.conn.jco.rt.DefaultServer.openConnections(DefaultServer.java:1119)
+	at com.sap.conn.jco.rt.DefaultServer.adjustConnectionCount(DefaultServer.java:1052)
+	at com.sap.conn.jco.rt.DefaultServerManager$ServerController.run(DefaultServerManager.java:382)
+	at java.lang.Thread.run(Thread.java:748)
+
+
+Error:   >Mon Dec 02 17:49:40,934<    RfcException raised by system [<unknown>]:
+	message: Parameter gateway service ('jco.server.gwserv') needs to be of format ####, sapgw## or sapgw##s (where # is a digit) instead of 'sapgw001231231231'
+	return code: RFC_INVALID_PARAMETER (19)
+	error group: 101
+	key: RFC_ERROR_PROGRAM
+	at com.sap.conn.rfc.api.RfcRegisterInfo.checkParameters(RfcRegisterInfo.java:123)
+	at com.sap.conn.rfc.api.RfcApi.RfcAccept(RfcApi.java:32)
+	at com.sap.conn.jco.rt.MiddlewareJavaRfc$JavaRfcServer.accept(MiddlewareJavaRfc.java:2403)
+	at com.sap.conn.jco.rt.ServerConnection.accept(ServerConnection.java:372)
+	at com.sap.conn.jco.rt.DefaultServer.openConnection(DefaultServer.java:1198)
+	at com.sap.conn.jco.rt.DefaultServer.openConnections(DefaultServer.java:1119)
+	at com.sap.conn.jco.rt.DefaultServer.adjustConnectionCount(DefaultServer.java:1052)
+	at com.sap.conn.jco.rt.DefaultServerManager$ServerController.run(DefaultServerManager.java:382)
+	at java.lang.Thread.run(Thread.java:748)
+
+
+Error:   >Mon Dec 02 17:49:40,935<    RfcException raised by system [<unknown>]:
+	message: Parameter gateway service ('jco.server.gwserv') needs to be of format ####, sapgw## or sapgw##s (where # is a digit) instead of 'sapgw001231231231'
+	return code: RFC_INVALID_PARAMETER (19)
+	error group: 101
+	key: RFC_ERROR_PROGRAM
+	at com.sap.conn.rfc.api.RfcRegisterInfo.checkParameters(RfcRegisterInfo.java:123)
+	at com.sap.conn.rfc.api.RfcApi.RfcAccept(RfcApi.java:32)
+	at com.sap.conn.jco.rt.MiddlewareJavaRfc$JavaRfcServer.accept(MiddlewareJavaRfc.java:2403)
+	at com.sap.conn.jco.rt.ServerConnection.accept(ServerConnection.java:372)
+	at com.sap.conn.jco.rt.DefaultServer.openConnection(DefaultServer.java:1198)
+	at com.sap.conn.jco.rt.DefaultServer.openConnections(DefaultServer.java:1119)
+	at com.sap.conn.jco.rt.DefaultServer.adjustConnectionCount(DefaultServer.java:1052)
+	at com.sap.conn.jco.rt.DefaultServerManager$ServerController.run(DefaultServerManager.java:382)
+	at java.lang.Thread.run(Thread.java:748)
+
+
+Error:   >Mon Dec 02 17:49:40,936<    RfcException raised by system [<unknown>]:
+	message: Parameter gateway service ('jco.server.gwserv') needs to be of format ####, sapgw## or sapgw##s (where # is a digit) instead of 'sapgw001231231231'
+	return code: RFC_INVALID_PARAMETER (19)
+	error group: 101
+	key: RFC_ERROR_PROGRAM
+	at com.sap.conn.rfc.api.RfcRegisterInfo.checkParameters(RfcRegisterInfo.java:123)
+	at com.sap.conn.rfc.api.RfcApi.RfcAccept(RfcApi.java:32)
+	at com.sap.conn.jco.rt.MiddlewareJavaRfc$JavaRfcServer.accept(MiddlewareJavaRfc.java:2403)
+	at com.sap.conn.jco.rt.ServerConnection.accept(ServerConnection.java:372)
+	at com.sap.conn.jco.rt.DefaultServer.openConnection(DefaultServer.java:1198)
+	at com.sap.conn.jco.rt.DefaultServer.openConnections(DefaultServer.java:1119)
+	at com.sap.conn.jco.rt.DefaultServer.adjustConnectionCount(DefaultServer.java:1052)
+	at com.sap.conn.jco.rt.DefaultServerManager$ServerController.run(DefaultServerManager.java:382)
+	at java.lang.Thread.run(Thread.java:748)
+
+
+Error:   >Mon Dec 02 17:49:40,936<    RfcException raised by system [<unknown>]:
+	message: Parameter gateway service ('jco.server.gwserv') needs to be of format ####, sapgw## or sapgw##s (where # is a digit) instead of 'sapgw001231231231'
+	return code: RFC_INVALID_PARAMETER (19)
+	error group: 101
+	key: RFC_ERROR_PROGRAM
+	at com.sap.conn.rfc.api.RfcRegisterInfo.checkParameters(RfcRegisterInfo.java:123)
+	at com.sap.conn.rfc.api.RfcApi.RfcAccept(RfcApi.java:32)
+	at com.sap.conn.jco.rt.MiddlewareJavaRfc$JavaRfcServer.accept(MiddlewareJavaRfc.java:2403)
+	at com.sap.conn.jco.rt.ServerConnection.accept(ServerConnection.java:372)
+	at com.sap.conn.jco.rt.DefaultServer.openConnection(DefaultServer.java:1198)
+	at com.sap.conn.jco.rt.DefaultServer.openConnections(DefaultServer.java:1119)
+	at com.sap.conn.jco.rt.DefaultServer.adjustConnectionCount(DefaultServer.java:1052)
+	at com.sap.conn.jco.rt.DefaultServerManager$ServerController.run(DefaultServerManager.java:382)
+	at java.lang.Thread.run(Thread.java:748)
+
+
+Error:   >Mon Dec 02 17:49:40,937<    RfcException raised by system [<unknown>]:
+	message: Parameter gateway service ('jco.server.gwserv') needs to be of format ####, sapgw## or sapgw##s (where # is a digit) instead of 'sapgw001231231231'
+	return code: RFC_INVALID_PARAMETER (19)
+	error group: 101
+	key: RFC_ERROR_PROGRAM
+	at com.sap.conn.rfc.api.RfcRegisterInfo.checkParameters(RfcRegisterInfo.java:123)
+	at com.sap.conn.rfc.api.RfcApi.RfcAccept(RfcApi.java:32)
+	at com.sap.conn.jco.rt.MiddlewareJavaRfc$JavaRfcServer.accept(MiddlewareJavaRfc.java:2403)
+	at com.sap.conn.jco.rt.ServerConnection.accept(ServerConnection.java:372)
+	at com.sap.conn.jco.rt.DefaultServer.openConnection(DefaultServer.java:1198)
+	at com.sap.conn.jco.rt.DefaultServer.openConnections(DefaultServer.java:1119)
+	at com.sap.conn.jco.rt.DefaultServer.adjustConnectionCount(DefaultServer.java:1052)
+	at com.sap.conn.jco.rt.DefaultServerManager$ServerController.run(DefaultServerManager.java:382)
+	at java.lang.Thread.run(Thread.java:748)
+
+
+Error:   >Mon Dec 02 17:49:40,938<    RfcException raised by system [<unknown>]:
+	message: Parameter gateway service ('jco.server.gwserv') needs to be of format ####, sapgw## or sapgw##s (where # is a digit) instead of 'sapgw001231231231'
+	return code: RFC_INVALID_PARAMETER (19)
+	error group: 101
+	key: RFC_ERROR_PROGRAM
+	at com.sap.conn.rfc.api.RfcRegisterInfo.checkParameters(RfcRegisterInfo.java:123)
+	at com.sap.conn.rfc.api.RfcApi.RfcAccept(RfcApi.java:32)
+	at com.sap.conn.jco.rt.MiddlewareJavaRfc$JavaRfcServer.accept(MiddlewareJavaRfc.java:2403)
+	at com.sap.conn.jco.rt.ServerConnection.accept(ServerConnection.java:372)
+	at com.sap.conn.jco.rt.DefaultServer.openConnection(DefaultServer.java:1198)
+	at com.sap.conn.jco.rt.DefaultServer.openConnections(DefaultServer.java:1119)
+	at com.sap.conn.jco.rt.DefaultServer.adjustConnectionCount(DefaultServer.java:1052)
+	at com.sap.conn.jco.rt.DefaultServerManager$ServerController.run(DefaultServerManager.java:382)
+	at java.lang.Thread.run(Thread.java:748)
+
+
+Error:   >Mon Dec 02 17:49:40,938<    RfcException raised by system [<unknown>]:
+	message: Parameter gateway service ('jco.server.gwserv') needs to be of format ####, sapgw## or sapgw##s (where # is a digit) instead of 'sapgw001231231231'
+	return code: RFC_INVALID_PARAMETER (19)
+	error group: 101
+	key: RFC_ERROR_PROGRAM
+	at com.sap.conn.rfc.api.RfcRegisterInfo.checkParameters(RfcRegisterInfo.java:123)
+	at com.sap.conn.rfc.api.RfcApi.RfcAccept(RfcApi.java:32)
+	at com.sap.conn.jco.rt.MiddlewareJavaRfc$JavaRfcServer.accept(MiddlewareJavaRfc.java:2403)
+	at com.sap.conn.jco.rt.ServerConnection.accept(ServerConnection.java:372)
+	at com.sap.conn.jco.rt.DefaultServer.openConnection(DefaultServer.java:1198)
+	at com.sap.conn.jco.rt.DefaultServer.openConnections(DefaultServer.java:1119)
+	at com.sap.conn.jco.rt.DefaultServer.adjustConnectionCount(DefaultServer.java:1052)
+	at com.sap.conn.jco.rt.DefaultServerManager$ServerController.run(DefaultServerManager.java:382)
+	at java.lang.Thread.run(Thread.java:748)
+
+
+Error:   >Mon Dec 02 17:49:40,939<    RfcException raised by system [<unknown>]:
+	message: Parameter gateway service ('jco.server.gwserv') needs to be of format ####, sapgw## or sapgw##s (where # is a digit) instead of 'sapgw001231231231'
+	return code: RFC_INVALID_PARAMETER (19)
+	error group: 101
+	key: RFC_ERROR_PROGRAM
+	at com.sap.conn.rfc.api.RfcRegisterInfo.checkParameters(RfcRegisterInfo.java:123)
+	at com.sap.conn.rfc.api.RfcApi.RfcAccept(RfcApi.java:32)
+	at com.sap.conn.jco.rt.MiddlewareJavaRfc$JavaRfcServer.accept(MiddlewareJavaRfc.java:2403)
+	at com.sap.conn.jco.rt.ServerConnection.accept(ServerConnection.java:372)
+	at com.sap.conn.jco.rt.DefaultServer.openConnection(DefaultServer.java:1198)
+	at com.sap.conn.jco.rt.DefaultServer.openConnections(DefaultServer.java:1119)
+	at com.sap.conn.jco.rt.DefaultServer.adjustConnectionCount(DefaultServer.java:1052)
+	at com.sap.conn.jco.rt.DefaultServerManager$ServerController.run(DefaultServerManager.java:382)
+	at java.lang.Thread.run(Thread.java:748)
+
+
+Error:   >Mon Dec 02 17:49:40,940<    RfcException raised by system [<unknown>]:
+	message: Parameter gateway service ('jco.server.gwserv') needs to be of format ####, sapgw## or sapgw##s (where # is a digit) instead of 'sapgw001231231231'
+	return code: RFC_INVALID_PARAMETER (19)
+	error group: 101
+	key: RFC_ERROR_PROGRAM
+	at com.sap.conn.rfc.api.RfcRegisterInfo.checkParameters(RfcRegisterInfo.java:123)
+	at com.sap.conn.rfc.api.RfcApi.RfcAccept(RfcApi.java:32)
+	at com.sap.conn.jco.rt.MiddlewareJavaRfc$JavaRfcServer.accept(MiddlewareJavaRfc.java:2403)
+	at com.sap.conn.jco.rt.ServerConnection.accept(ServerConnection.java:372)
+	at com.sap.conn.jco.rt.DefaultServer.openConnection(DefaultServer.java:1198)
+	at com.sap.conn.jco.rt.DefaultServer.openConnections(DefaultServer.java:1119)
+	at com.sap.conn.jco.rt.DefaultServer.adjustConnectionCount(DefaultServer.java:1052)
+	at com.sap.conn.jco.rt.DefaultServerManager$ServerController.run(DefaultServerManager.java:382)
+	at java.lang.Thread.run(Thread.java:748)
+
+
+
+**** Error file opened at 20191202 175012 Korea Standard Time Rel. 3.0.20 (2019-09-05) [721.1311]
+Error:   >Mon Dec 02 17:50:12,061<    RfcException raised by system [<unknown>]:
+	message: Connect to SAP gateway failed
+	Connection parameters: PROGID=CalltoQL GWHOST=172.17.254.12 GWSERV=sapgw00
+
+ERROR       service 'sapgw00' unknown
+TIME        Mon Dec 02 17:50:12 2019
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -3
+MODULE      ninti.c
+LINE        933
+DETAIL      NiPGetServByName: 'sapgw00' not found
+SYSTEM CALL getaddrinfo
+COUNTER     1
+
+	return code: RFC_FAILURE (1)
+	error group: 102
+	key: RFC_ERROR_COMMUNICATION
+
+Error:   >Mon Dec 02 17:50:14,022<    RfcException raised by system [<unknown>]:
+	message: Connect to SAP gateway failed
+	Connection parameters: PROGID=CalltoQL GWHOST=172.17.254.12 GWSERV=sapgw00
+
+ERROR       service 'sapgw00' unknown
+TIME        Mon Dec 02 17:50:14 2019
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -3
+MODULE      nixxsl.cpp
+LINE        184
+DETAIL      NiSrvLGetServNo: service name cached as unknown
+COUNTER     2
+
+	return code: RFC_FAILURE (1)
+	error group: 102
+	key: RFC_ERROR_COMMUNICATION
+
+Error:   >Mon Dec 02 17:50:18,022<    RfcException raised by system [<unknown>]:
+	message: Connect to SAP gateway failed
+	Connection parameters: PROGID=CalltoQL GWHOST=172.17.254.12 GWSERV=sapgw00
+
+ERROR       service 'sapgw00' unknown
+TIME        Mon Dec 02 17:50:18 2019
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -3
+MODULE      nixxsl.cpp
+LINE        184
+DETAIL      NiSrvLGetServNo: service name cached as unknown
+COUNTER     3
+
+	return code: RFC_FAILURE (1)
+	error group: 102
+	key: RFC_ERROR_COMMUNICATION
+
+Error:   >Mon Dec 02 17:50:24,022<    RfcException raised by system [<unknown>]:
+	message: Connect to SAP gateway failed
+	Connection parameters: PROGID=CalltoQL GWHOST=172.17.254.12 GWSERV=sapgw00
+
+ERROR       service 'sapgw00' unknown
+TIME        Mon Dec 02 17:50:24 2019
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -3
+MODULE      nixxsl.cpp
+LINE        184
+DETAIL      NiSrvLGetServNo: service name cached as unknown
+COUNTER     4
+
+	return code: RFC_FAILURE (1)
+	error group: 102
+	key: RFC_ERROR_COMMUNICATION
+
+Error:   >Mon Dec 02 17:50:34,022<    RfcException raised by system [<unknown>]:
+	message: Connect to SAP gateway failed
+	Connection parameters: PROGID=CalltoQL GWHOST=172.17.254.12 GWSERV=sapgw00
+
+ERROR       service 'sapgw00' unknown
+TIME        Mon Dec 02 17:50:34 2019
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -3
+MODULE      nixxsl.cpp
+LINE        184
+DETAIL      NiSrvLGetServNo: service name cached as unknown
+COUNTER     5
+
+	return code: RFC_FAILURE (1)
+	error group: 102
+	key: RFC_ERROR_COMMUNICATION
+
+Error:   >Mon Dec 02 17:50:50,023<    RfcException raised by system [<unknown>]:
+	message: Connect to SAP gateway failed
+	Connection parameters: PROGID=CalltoQL GWHOST=172.17.254.12 GWSERV=sapgw00
+
+ERROR       service 'sapgw00' unknown
+TIME        Mon Dec 02 17:50:50 2019
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -3
+MODULE      nixxsl.cpp
+LINE        184
+DETAIL      NiSrvLGetServNo: service name cached as unknown
+COUNTER     6
+
+	return code: RFC_FAILURE (1)
+	error group: 102
+	key: RFC_ERROR_COMMUNICATION
+
+Error:   >Mon Dec 02 17:51:24,023<    RfcException raised by system [<unknown>]:
+	message: Connect to SAP gateway failed
+	Connection parameters: PROGID=CalltoQL GWHOST=172.17.254.12 GWSERV=sapgw00
+
+ERROR       service 'sapgw00' unknown
+TIME        Mon Dec 02 17:51:24 2019
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -3
+MODULE      nixxsl.cpp
+LINE        184
+DETAIL      NiSrvLGetServNo: service name cached as unknown
+COUNTER     7
+
+	return code: RFC_FAILURE (1)
+	error group: 102
+	key: RFC_ERROR_COMMUNICATION
+
+Error:   >Mon Dec 02 17:52:28,024<    RfcException raised by system [<unknown>]:
+	message: Connect to SAP gateway failed
+	Connection parameters: PROGID=CalltoQL GWHOST=172.17.254.12 GWSERV=sapgw00
+
+ERROR       service 'sapgw00' unknown
+TIME        Mon Dec 02 17:52:28 2019
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -3
+MODULE      nixxsl.cpp
+LINE        184
+DETAIL      NiSrvLGetServNo: service name cached as unknown
+COUNTER     8
+
+	return code: RFC_FAILURE (1)
+	error group: 102
+	key: RFC_ERROR_COMMUNICATION
+
+
+**** Error file opened at 20191202 175244 Korea Standard Time Rel. 3.0.20 (2019-09-05) [721.1311]
+Error:   >Mon Dec 02 17:52:44,290<    RfcException raised by system [<unknown>]:
+	message: Connect to SAP gateway failed
+	Connection parameters: PROGID=CalltoQL GWHOST=172.17.254.12 GWSERV=sapgw00
+
+ERROR       service 'sapgw00' unknown
+TIME        Mon Dec 02 17:52:44 2019
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -3
+MODULE      ninti.c
+LINE        933
+DETAIL      NiPGetServByName: 'sapgw00' not found
+SYSTEM CALL getaddrinfo
+COUNTER     1
+
+	return code: RFC_FAILURE (1)
+	error group: 102
+	key: RFC_ERROR_COMMUNICATION
+
+Error:   >Mon Dec 02 17:52:46,260<    RfcException raised by system [<unknown>]:
+	message: Connect to SAP gateway failed
+	Connection parameters: PROGID=CalltoQL GWHOST=172.17.254.12 GWSERV=sapgw00
+
+ERROR       service 'sapgw00' unknown
+TIME        Mon Dec 02 17:52:46 2019
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -3
+MODULE      nixxsl.cpp
+LINE        184
+DETAIL      NiSrvLGetServNo: service name cached as unknown
+COUNTER     2
+
+	return code: RFC_FAILURE (1)
+	error group: 102
+	key: RFC_ERROR_COMMUNICATION
+
+Error:   >Mon Dec 02 17:52:48,262<    RfcException raised by system [<unknown>]:
+	message: Connect to SAP gateway failed
+	Connection parameters: PROGID=CalltoQL GWHOST=172.17.254.12 GWSERV=sapgw00
+
+ERROR       service 'sapgw00' unknown
+TIME        Mon Dec 02 17:52:48 2019
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -3
+MODULE      nixxsl.cpp
+LINE        184
+DETAIL      NiSrvLGetServNo: service name cached as unknown
+COUNTER     3
+
+	return code: RFC_FAILURE (1)
+	error group: 102
+	key: RFC_ERROR_COMMUNICATION
+
+Error:   >Mon Dec 02 17:52:54,261<    RfcException raised by system [<unknown>]:
+	message: Connect to SAP gateway failed
+	Connection parameters: PROGID=CalltoQL GWHOST=172.17.254.12 GWSERV=sapgw00
+
+ERROR       service 'sapgw00' unknown
+TIME        Mon Dec 02 17:52:54 2019
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -3
+MODULE      nixxsl.cpp
+LINE        184
+DETAIL      NiSrvLGetServNo: service name cached as unknown
+COUNTER     4
+
+	return code: RFC_FAILURE (1)
+	error group: 102
+	key: RFC_ERROR_COMMUNICATION
+
+Error:   >Mon Dec 02 17:53:02,263<    RfcException raised by system [<unknown>]:
+	message: Connect to SAP gateway failed
+	Connection parameters: PROGID=CalltoQL GWHOST=172.17.254.12 GWSERV=sapgw00
+
+ERROR       service 'sapgw00' unknown
+TIME        Mon Dec 02 17:53:02 2019
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -3
+MODULE      nixxsl.cpp
+LINE        184
+DETAIL      NiSrvLGetServNo: service name cached as unknown
+COUNTER     5
+
+	return code: RFC_FAILURE (1)
+	error group: 102
+	key: RFC_ERROR_COMMUNICATION
+
+
+**** Error file opened at 20191202 175328 Korea Standard Time Rel. 3.0.20 (2019-09-05) [721.1311]
+Error:   >Mon Dec 02 17:53:28,692<    >RfcIoException:
+	message: CPIC-CALL: SAP_CMACCPTP3 on convId:         
+
+LOCATION    SAP-Gateway on host henc-erpedu1 / sapgw00
+ERROR       registration of tp CalltoQL from host ??? not allowed
+TIME        Mon Dec  2 17:53:33 2019
+RELEASE     749
+COMPONENT   SAP-Gateway
+VERSION     2
+RC          720
+MODULE      /bas/749_REL/src/krn/si/gw/gwxxrd.c
+LINE        3655
+COUNTER     16257
+
+	Return code: RFCIO_ERROR_REGISTRATION_DENIED (35)<
+
+
+
+Error:   >Mon Dec 02 17:53:28,702<    >RfcIoException:
+	message: CPIC-CALL: SAP_CMACCPTP3 on convId:         
+
+LOCATION    SAP-Gateway on host henc-erpedu1 / sapgw00
+ERROR       registration of tp CalltoQL from host ??? not allowed
+TIME        Mon Dec  2 17:53:33 2019
+RELEASE     749
+COMPONENT   SAP-Gateway
+VERSION     2
+RC          720
+MODULE      /bas/749_REL/src/krn/si/gw/gwxxrd.c
+LINE        3655
+COUNTER     16263
+
+	Return code: RFCIO_ERROR_REGISTRATION_DENIED (35)<
+
+
+
+Error:   >Mon Dec 02 17:53:28,704<    >RfcIoException:
+	message: CPIC-CALL: SAP_CMACCPTP3 on convId:         
+
+LOCATION    SAP-Gateway on host henc-erpedu1 / sapgw00
+ERROR       registration of tp CalltoQL from host ??? not allowed
+TIME        Mon Dec  2 17:53:33 2019
+RELEASE     749
+COMPONENT   SAP-Gateway
+VERSION     2
+RC          720
+MODULE      /bas/749_REL/src/krn/si/gw/gwxxrd.c
+LINE        3655
+COUNTER     16261
+
+	Return code: RFCIO_ERROR_REGISTRATION_DENIED (35)<
+
+
+
+Error:   >Mon Dec 02 17:53:28,705<    >RfcIoException:
+	message: CPIC-CALL: SAP_CMACCPTP3 on convId:         
+
+LOCATION    SAP-Gateway on host henc-erpedu1 / sapgw00
+ERROR       registration of tp CalltoQL from host ??? not allowed
+TIME        Mon Dec  2 17:53:33 2019
+RELEASE     749
+COMPONENT   SAP-Gateway
+VERSION     2
+RC          720
+MODULE      /bas/749_REL/src/krn/si/gw/gwxxrd.c
+LINE        3655
+COUNTER     16259
+
+	Return code: RFCIO_ERROR_REGISTRATION_DENIED (35)<
+
+
+
+
+**** Error file opened at 20191202 175348 Korea Standard Time Rel. 3.0.20 (2019-09-05) [721.1311]
+Error:   >Mon Dec 02 17:53:48,985<    >RfcIoException:
+	message: CPIC-CALL: SAP_CMACCPTP3 on convId:         
+
+LOCATION    SAP-Gateway on host henc-erpedu1 / sapgw00
+ERROR       registration of tp CalltoQL from host ??? not allowed
+TIME        Mon Dec  2 17:53:53 2019
+RELEASE     749
+COMPONENT   SAP-Gateway
+VERSION     2
+RC          720
+MODULE      /bas/749_REL/src/krn/si/gw/gwxxrd.c
+LINE        3655
+COUNTER     16268
+
+	Return code: RFCIO_ERROR_REGISTRATION_DENIED (35)<
+
+
+
+Error:   >Mon Dec 02 17:53:48,990<    >RfcIoException:
+	message: CPIC-CALL: SAP_CMACCPTP3 on convId:         
+
+LOCATION    SAP-Gateway on host henc-erpedu1 / sapgw00
+ERROR       registration of tp CalltoQL from host ??? not allowed
+TIME        Mon Dec  2 17:53:53 2019
+RELEASE     749
+COMPONENT   SAP-Gateway
+VERSION     2
+RC          720
+MODULE      /bas/749_REL/src/krn/si/gw/gwxxrd.c
+LINE        3655
+COUNTER     16274
+
+	Return code: RFCIO_ERROR_REGISTRATION_DENIED (35)<
+
+
+
+Error:   >Mon Dec 02 17:53:48,992<    >RfcIoException:
+	message: CPIC-CALL: SAP_CMACCPTP3 on convId:         
+
+LOCATION    SAP-Gateway on host henc-erpedu1 / sapgw00
+ERROR       registration of tp CalltoQL from host ??? not allowed
+TIME        Mon Dec  2 17:53:53 2019
+RELEASE     749
+COMPONENT   SAP-Gateway
+VERSION     2
+RC          720
+MODULE      /bas/749_REL/src/krn/si/gw/gwxxrd.c
+LINE        3655
+COUNTER     16272
+
+	Return code: RFCIO_ERROR_REGISTRATION_DENIED (35)<
+
+
+
+Error:   >Mon Dec 02 17:53:48,993<    >RfcIoException:
+	message: CPIC-CALL: SAP_CMACCPTP3 on convId:         
+
+LOCATION    SAP-Gateway on host henc-erpedu1 / sapgw00
+ERROR       registration of tp CalltoQL from host ??? not allowed
+TIME        Mon Dec  2 17:53:53 2019
+RELEASE     749
+COMPONENT   SAP-Gateway
+VERSION     2
+RC          720
+MODULE      /bas/749_REL/src/krn/si/gw/gwxxrd.c
+LINE        3655
+COUNTER     16270
+
+	Return code: RFCIO_ERROR_REGISTRATION_DENIED (35)<
+
+
+
+
+**** Error file opened at 20191202 175407 Korea Standard Time Rel. 3.0.20 (2019-09-05) [721.1311]
+Error:   >Mon Dec 02 17:54:07,193<    RfcException raised by system [<unknown>]:
+	message: Connect to SAP gateway failed
+	Connection parameters: PROGID=CalltoQL GWHOST=172.17.254.12 GWSERV=3200
+no SAP ErrInfo available
+	return code: RFC_FAILURE (1)
+	error group: 102
+	key: RFC_ERROR_COMMUNICATION
+
+Error:   >Mon Dec 02 17:54:09,163<    RfcException raised by system [<unknown>]:
+	message: Connect to SAP gateway failed
+	Connection parameters: PROGID=CalltoQL GWHOST=172.17.254.12 GWSERV=3200
+no SAP ErrInfo available
+	return code: RFC_FAILURE (1)
+	error group: 102
+	key: RFC_ERROR_COMMUNICATION
+
+Error:   >Mon Dec 02 17:54:13,163<    RfcException raised by system [<unknown>]:
+	message: Connect to SAP gateway failed
+	Connection parameters: PROGID=CalltoQL GWHOST=172.17.254.12 GWSERV=3200
+no SAP ErrInfo available
+	return code: RFC_FAILURE (1)
+	error group: 102
+	key: RFC_ERROR_COMMUNICATION
+
+Error:   >Mon Dec 02 17:54:17,166<    RfcException raised by system [<unknown>]:
+	message: Connect to SAP gateway failed
+	Connection parameters: PROGID=CalltoQL GWHOST=172.17.254.12 GWSERV=3200
+no SAP ErrInfo available
+	return code: RFC_FAILURE (1)
+	error group: 102
+	key: RFC_ERROR_COMMUNICATION
+
+Error:   >Mon Dec 02 17:54:27,383<    RfcException raised by system [<unknown>]:
+	message: Connect to SAP gateway failed
+	Connection parameters: PROGID=CalltoQL GWHOST=172.17.254.12 GWSERV=3200
+no SAP ErrInfo available
+	return code: RFC_FAILURE (1)
+	error group: 102
+	key: RFC_ERROR_COMMUNICATION
+
+Error:   >Mon Dec 02 17:54:43,170<    RfcException raised by system [<unknown>]:
+	message: Connect to SAP gateway failed
+	Connection parameters: PROGID=CalltoQL GWHOST=172.17.254.12 GWSERV=3200
+no SAP ErrInfo available
+	return code: RFC_FAILURE (1)
+	error group: 102
+	key: RFC_ERROR_COMMUNICATION
+
+Error:   >Mon Dec 02 17:55:15,181<    RfcException raised by system [<unknown>]:
+	message: Connect to SAP gateway failed
+	Connection parameters: PROGID=CalltoQL GWHOST=172.17.254.12 GWSERV=3200
+no SAP ErrInfo available
+	return code: RFC_FAILURE (1)
+	error group: 102
+	key: RFC_ERROR_COMMUNICATION
+
+
+**** Error file opened at 20191202 175539 Korea Standard Time Rel. 3.0.20 (2019-09-05) [721.1311]
+Error:   >Mon Dec 02 17:55:39,154<    RfcException raised by system [<unknown>]:
+	message: Connect to SAP gateway failed
+	Connection parameters: PROGID=CalltoQL GWHOST=172.17.254.12 GWSERV=sapgw00
+
+ERROR       service 'sapgw00' unknown
+TIME        Mon Dec 02 17:55:39 2019
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -3
+MODULE      ninti.c
+LINE        933
+DETAIL      NiPGetServByName: 'sapgw00' not found
+SYSTEM CALL getaddrinfo
+COUNTER     1
+
+	return code: RFC_FAILURE (1)
+	error group: 102
+	key: RFC_ERROR_COMMUNICATION
+
+Error:   >Mon Dec 02 17:55:41,129<    RfcException raised by system [<unknown>]:
+	message: Connect to SAP gateway failed
+	Connection parameters: PROGID=CalltoQL GWHOST=172.17.254.12 GWSERV=sapgw00
+
+ERROR       service 'sapgw00' unknown
+TIME        Mon Dec 02 17:55:41 2019
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -3
+MODULE      nixxsl.cpp
+LINE        184
+DETAIL      NiSrvLGetServNo: service name cached as unknown
+COUNTER     2
+
+	return code: RFC_FAILURE (1)
+	error group: 102
+	key: RFC_ERROR_COMMUNICATION
+
+Error:   >Mon Dec 02 17:55:45,129<    RfcException raised by system [<unknown>]:
+	message: Connect to SAP gateway failed
+	Connection parameters: PROGID=CalltoQL GWHOST=172.17.254.12 GWSERV=sapgw00
+
+ERROR       service 'sapgw00' unknown
+TIME        Mon Dec 02 17:55:45 2019
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -3
+MODULE      nixxsl.cpp
+LINE        184
+DETAIL      NiSrvLGetServNo: service name cached as unknown
+COUNTER     3
+
+	return code: RFC_FAILURE (1)
+	error group: 102
+	key: RFC_ERROR_COMMUNICATION
+
+Error:   >Mon Dec 02 17:55:51,129<    RfcException raised by system [<unknown>]:
+	message: Connect to SAP gateway failed
+	Connection parameters: PROGID=CalltoQL GWHOST=172.17.254.12 GWSERV=sapgw00
+
+ERROR       service 'sapgw00' unknown
+TIME        Mon Dec 02 17:55:51 2019
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -3
+MODULE      nixxsl.cpp
+LINE        184
+DETAIL      NiSrvLGetServNo: service name cached as unknown
+COUNTER     4
+
+	return code: RFC_FAILURE (1)
+	error group: 102
+	key: RFC_ERROR_COMMUNICATION
+
+Error:   >Mon Dec 02 17:56:01,129<    RfcException raised by system [<unknown>]:
+	message: Connect to SAP gateway failed
+	Connection parameters: PROGID=CalltoQL GWHOST=172.17.254.12 GWSERV=sapgw00
+
+ERROR       service 'sapgw00' unknown
+TIME        Mon Dec 02 17:56:01 2019
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -3
+MODULE      nixxsl.cpp
+LINE        184
+DETAIL      NiSrvLGetServNo: service name cached as unknown
+COUNTER     5
+
+	return code: RFC_FAILURE (1)
+	error group: 102
+	key: RFC_ERROR_COMMUNICATION
+
+Error:   >Mon Dec 02 17:56:17,131<    RfcException raised by system [<unknown>]:
+	message: Connect to SAP gateway failed
+	Connection parameters: PROGID=CalltoQL GWHOST=172.17.254.12 GWSERV=sapgw00
+
+ERROR       service 'sapgw00' unknown
+TIME        Mon Dec 02 17:56:17 2019
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -3
+MODULE      nixxsl.cpp
+LINE        184
+DETAIL      NiSrvLGetServNo: service name cached as unknown
+COUNTER     6
+
+	return code: RFC_FAILURE (1)
+	error group: 102
+	key: RFC_ERROR_COMMUNICATION
+
+Error:   >Mon Dec 02 17:56:19,181<    RfcException raised by system [<unknown>]:
+	message: Connect to SAP gateway failed
+	Connection parameters: PROGID=CalltoQL GWHOST=172.17.254.12 GWSERV=3200
+no SAP ErrInfo available
+	return code: RFC_FAILURE (1)
+	error group: 102
+	key: RFC_ERROR_COMMUNICATION
+
+Error:   >Mon Dec 02 17:56:49,132<    RfcException raised by system [<unknown>]:
+	message: Connect to SAP gateway failed
+	Connection parameters: PROGID=CalltoQL GWHOST=172.17.254.12 GWSERV=sapgw00
+
+ERROR       service 'sapgw00' unknown
+TIME        Mon Dec 02 17:56:49 2019
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -3
+MODULE      nixxsl.cpp
+LINE        184
+DETAIL      NiSrvLGetServNo: service name cached as unknown
+COUNTER     7
+
+	return code: RFC_FAILURE (1)
+	error group: 102
+	key: RFC_ERROR_COMMUNICATION
+
+Error:   >Mon Dec 02 17:57:53,165<    RfcException raised by system [<unknown>]:
+	message: Connect to SAP gateway failed
+	Connection parameters: PROGID=CalltoQL GWHOST=172.17.254.12 GWSERV=sapgw00
+
+ERROR       service 'sapgw00' unknown
+TIME        Mon Dec 02 17:57:53 2019
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -3
+MODULE      nixxsl.cpp
+LINE        184
+DETAIL      NiSrvLGetServNo: service name cached as unknown
+COUNTER     8
+
+	return code: RFC_FAILURE (1)
+	error group: 102
+	key: RFC_ERROR_COMMUNICATION
+
+Error:   >Mon Dec 02 17:58:27,195<    RfcException raised by system [<unknown>]:
+	message: Connect to SAP gateway failed
+	Connection parameters: PROGID=CalltoQL GWHOST=172.17.254.12 GWSERV=3200
+no SAP ErrInfo available
+	return code: RFC_FAILURE (1)
+	error group: 102
+	key: RFC_ERROR_COMMUNICATION
+
+Error:   >Mon Dec 02 18:00:03,156<    RfcException raised by system [<unknown>]:
+	message: Connect to SAP gateway failed
+	Connection parameters: PROGID=CalltoQL GWHOST=172.17.254.12 GWSERV=sapgw00
+
+ERROR       service 'sapgw00' unknown
+TIME        Mon Dec 02 18:00:03 2019
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -3
+MODULE      nixxsl.cpp
+LINE        184
+DETAIL      NiSrvLGetServNo: service name cached as unknown
+COUNTER     9
+
+	return code: RFC_FAILURE (1)
+	error group: 102
+	key: RFC_ERROR_COMMUNICATION
+
+Error:   >Mon Dec 02 18:02:43,284<    RfcException raised by system [<unknown>]:
+	message: Connect to SAP gateway failed
+	Connection parameters: PROGID=CalltoQL GWHOST=172.17.254.12 GWSERV=3200
+no SAP ErrInfo available
+	return code: RFC_FAILURE (1)
+	error group: 102
+	key: RFC_ERROR_COMMUNICATION
+
+Error:   >Mon Dec 02 18:04:19,242<    RfcException raised by system [<unknown>]:
+	message: Connect to SAP gateway failed
+	Connection parameters: PROGID=CalltoQL GWHOST=172.17.254.12 GWSERV=sapgw00
+
+ERROR       service 'sapgw00' unknown
+TIME        Mon Dec 02 18:04:19 2019
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -3
+MODULE      nixxsl.cpp
+LINE        184
+DETAIL      NiSrvLGetServNo: service name cached as unknown
+COUNTER     10
+
+	return code: RFC_FAILURE (1)
+	error group: 102
+	key: RFC_ERROR_COMMUNICATION
+
+
+**** Error file opened at 20191202 180842 Korea Standard Time Rel. 3.0.20 (2019-09-05) [721.1311]
+Error:   >Mon Dec 02 18:08:42,399<    RfcException raised by system [<unknown>]:
+	message: Connect to SAP gateway failed
+	Connection parameters: PROGID=CalltoQL GWHOST=172.17.254.12 GWSERV=sapgw00
+
+ERROR       service 'sapgw00' unknown
+TIME        Mon Dec 02 18:08:42 2019
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -3
+MODULE      ninti.c
+LINE        933
+DETAIL      NiPGetServByName: 'sapgw00' not found
+SYSTEM CALL getaddrinfo
+COUNTER     1
+
+	return code: RFC_FAILURE (1)
+	error group: 102
+	key: RFC_ERROR_COMMUNICATION
+
+Error:   >Mon Dec 02 18:08:44,364<    RfcException raised by system [<unknown>]:
+	message: Connect to SAP gateway failed
+	Connection parameters: PROGID=CalltoQL GWHOST=172.17.254.12 GWSERV=sapgw00
+
+ERROR       service 'sapgw00' unknown
+TIME        Mon Dec 02 18:08:44 2019
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -3
+MODULE      nixxsl.cpp
+LINE        184
+DETAIL      NiSrvLGetServNo: service name cached as unknown
+COUNTER     2
+
+	return code: RFC_FAILURE (1)
+	error group: 102
+	key: RFC_ERROR_COMMUNICATION
+
+Error:   >Mon Dec 02 18:08:48,364<    RfcException raised by system [<unknown>]:
+	message: Connect to SAP gateway failed
+	Connection parameters: PROGID=CalltoQL GWHOST=172.17.254.12 GWSERV=sapgw00
+
+ERROR       service 'sapgw00' unknown
+TIME        Mon Dec 02 18:08:48 2019
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -3
+MODULE      nixxsl.cpp
+LINE        184
+DETAIL      NiSrvLGetServNo: service name cached as unknown
+COUNTER     3
+
+	return code: RFC_FAILURE (1)
+	error group: 102
+	key: RFC_ERROR_COMMUNICATION
+
+Error:   >Mon Dec 02 18:08:52,365<    RfcException raised by system [<unknown>]:
+	message: Connect to SAP gateway failed
+	Connection parameters: PROGID=CalltoQL GWHOST=172.17.254.12 GWSERV=sapgw00
+
+ERROR       service 'sapgw00' unknown
+TIME        Mon Dec 02 18:08:52 2019
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -3
+MODULE      nixxsl.cpp
+LINE        184
+DETAIL      NiSrvLGetServNo: service name cached as unknown
+COUNTER     4
+
+	return code: RFC_FAILURE (1)
+	error group: 102
+	key: RFC_ERROR_COMMUNICATION
+
+Error:   >Mon Dec 02 18:09:02,366<    RfcException raised by system [<unknown>]:
+	message: Connect to SAP gateway failed
+	Connection parameters: PROGID=CalltoQL GWHOST=172.17.254.12 GWSERV=sapgw00
+
+ERROR       service 'sapgw00' unknown
+TIME        Mon Dec 02 18:09:02 2019
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -3
+MODULE      nixxsl.cpp
+LINE        184
+DETAIL      NiSrvLGetServNo: service name cached as unknown
+COUNTER     5
+
+	return code: RFC_FAILURE (1)
+	error group: 102
+	key: RFC_ERROR_COMMUNICATION
+
+Error:   >Mon Dec 02 18:09:20,366<    RfcException raised by system [<unknown>]:
+	message: Connect to SAP gateway failed
+	Connection parameters: PROGID=CalltoQL GWHOST=172.17.254.12 GWSERV=sapgw00
+
+ERROR       service 'sapgw00' unknown
+TIME        Mon Dec 02 18:09:20 2019
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -3
+MODULE      nixxsl.cpp
+LINE        184
+DETAIL      NiSrvLGetServNo: service name cached as unknown
+COUNTER     6
+
+	return code: RFC_FAILURE (1)
+	error group: 102
+	key: RFC_ERROR_COMMUNICATION
+
+
+**** Error file opened at 20191202 181009 Korea Standard Time Rel. 3.0.20 (2019-09-05) [721.1311]
+Error:   >Mon Dec 02 18:10:09,399<    RfcException raised by system [<unknown>]:
+	message: Connect to SAP gateway failed
+	Connection parameters: PROGID=CalltoQL GWHOST=172.17.254.12 GWSERV=sapgw00
+
+ERROR       service 'sapgw00' unknown
+TIME        Mon Dec 02 18:10:09 2019
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -3
+MODULE      ninti.c
+LINE        933
+DETAIL      NiPGetServByName: 'sapgw00' not found
+SYSTEM CALL getaddrinfo
+COUNTER     1
+
+	return code: RFC_FAILURE (1)
+	error group: 102
+	key: RFC_ERROR_COMMUNICATION
+
+Error:   >Mon Dec 02 18:10:11,379<    RfcException raised by system [<unknown>]:
+	message: Connect to SAP gateway failed
+	Connection parameters: PROGID=CalltoQL GWHOST=172.17.254.12 GWSERV=sapgw00
+
+ERROR       service 'sapgw00' unknown
+TIME        Mon Dec 02 18:10:11 2019
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -3
+MODULE      nixxsl.cpp
+LINE        184
+DETAIL      NiSrvLGetServNo: service name cached as unknown
+COUNTER     2
+
+	return code: RFC_FAILURE (1)
+	error group: 102
+	key: RFC_ERROR_COMMUNICATION
+
+Error:   >Mon Dec 02 18:10:15,376<    RfcException raised by system [<unknown>]:
+	message: Connect to SAP gateway failed
+	Connection parameters: PROGID=CalltoQL GWHOST=172.17.254.12 GWSERV=sapgw00
+
+ERROR       service 'sapgw00' unknown
+TIME        Mon Dec 02 18:10:15 2019
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -3
+MODULE      nixxsl.cpp
+LINE        184
+DETAIL      NiSrvLGetServNo: service name cached as unknown
+COUNTER     3
+
+	return code: RFC_FAILURE (1)
+	error group: 102
+	key: RFC_ERROR_COMMUNICATION
+
+
+**** Error file opened at 20191202 181053 Korea Standard Time Rel. 3.0.20 (2019-09-05) [721.1311]
+Error:   >Mon Dec 02 18:10:53,504<    RfcException raised by system [<unknown>]:
+	message: Connect to SAP gateway failed
+	Connection parameters: PROGID=CalltoQL GWHOST=172.17.254.12 GWSERV=sapgw00
+
+ERROR       service 'sapgw00' unknown
+TIME        Mon Dec 02 18:10:53 2019
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -3
+MODULE      ninti.c
+LINE        933
+DETAIL      NiPGetServByName: 'sapgw00' not found
+SYSTEM CALL getaddrinfo
+COUNTER     1
+
+	return code: RFC_FAILURE (1)
+	error group: 102
+	key: RFC_ERROR_COMMUNICATION
+
+Error:   >Mon Dec 02 18:10:55,507<    RfcException raised by system [<unknown>]:
+	message: Connect to SAP gateway failed
+	Connection parameters: PROGID=CalltoQL GWHOST=172.17.254.12 GWSERV=sapgw00
+
+ERROR       service 'sapgw00' unknown
+TIME        Mon Dec 02 18:10:55 2019
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -3
+MODULE      nixxsl.cpp
+LINE        184
+DETAIL      NiSrvLGetServNo: service name cached as unknown
+COUNTER     2
+
+	return code: RFC_FAILURE (1)
+	error group: 102
+	key: RFC_ERROR_COMMUNICATION
+
+Error:   >Mon Dec 02 18:10:59,478<    RfcException raised by system [<unknown>]:
+	message: Connect to SAP gateway failed
+	Connection parameters: PROGID=CalltoQL GWHOST=172.17.254.12 GWSERV=sapgw00
+
+ERROR       service 'sapgw00' unknown
+TIME        Mon Dec 02 18:10:59 2019
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -3
+MODULE      nixxsl.cpp
+LINE        184
+DETAIL      NiSrvLGetServNo: service name cached as unknown
+COUNTER     3
+
+	return code: RFC_FAILURE (1)
+	error group: 102
+	key: RFC_ERROR_COMMUNICATION
+
+Error:   >Mon Dec 02 18:11:05,479<    RfcException raised by system [<unknown>]:
+	message: Connect to SAP gateway failed
+	Connection parameters: PROGID=CalltoQL GWHOST=172.17.254.12 GWSERV=sapgw00
+
+ERROR       service 'sapgw00' unknown
+TIME        Mon Dec 02 18:11:05 2019
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -3
+MODULE      nixxsl.cpp
+LINE        184
+DETAIL      NiSrvLGetServNo: service name cached as unknown
+COUNTER     4
+
+	return code: RFC_FAILURE (1)
+	error group: 102
+	key: RFC_ERROR_COMMUNICATION
+
+Error:   >Mon Dec 02 18:11:15,364<    RfcException raised by system [<unknown>]:
+	message: Connect to SAP gateway failed
+	Connection parameters: PROGID=CalltoQL GWHOST=172.17.254.12 GWSERV=3200
+no SAP ErrInfo available
+	return code: RFC_FAILURE (1)
+	error group: 102
+	key: RFC_ERROR_COMMUNICATION
+
+Error:   >Mon Dec 02 18:11:15,479<    RfcException raised by system [<unknown>]:
+	message: Connect to SAP gateway failed
+	Connection parameters: PROGID=CalltoQL GWHOST=172.17.254.12 GWSERV=sapgw00
+
+ERROR       service 'sapgw00' unknown
+TIME        Mon Dec 02 18:11:15 2019
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -3
+MODULE      nixxsl.cpp
+LINE        184
+DETAIL      NiSrvLGetServNo: service name cached as unknown
+COUNTER     5
+
+	return code: RFC_FAILURE (1)
+	error group: 102
+	key: RFC_ERROR_COMMUNICATION
+
+
+**** Error file opened at 20191202 181132 Korea Standard Time Rel. 3.0.20 (2019-09-05) [721.1311]
+Error:   >Mon Dec 02 18:11:32,208<    RfcException raised by system [<unknown>]:
+	message: Connect to SAP gateway failed
+	Connection parameters: PROGID=CalltoQL GWHOST=172.17.254.12 GWSERV=sapgw00
+
+ERROR       service 'sapgw00' unknown
+TIME        Mon Dec 02 18:11:32 2019
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -3
+MODULE      ninti.c
+LINE        933
+DETAIL      NiPGetServByName: 'sapgw00' not found
+SYSTEM CALL getaddrinfo
+COUNTER     1
+
+	return code: RFC_FAILURE (1)
+	error group: 102
+	key: RFC_ERROR_COMMUNICATION
+
+Error:   >Mon Dec 02 18:11:34,178<    RfcException raised by system [<unknown>]:
+	message: Connect to SAP gateway failed
+	Connection parameters: PROGID=CalltoQL GWHOST=172.17.254.12 GWSERV=sapgw00
+
+ERROR       service 'sapgw00' unknown
+TIME        Mon Dec 02 18:11:34 2019
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -3
+MODULE      nixxsl.cpp
+LINE        184
+DETAIL      NiSrvLGetServNo: service name cached as unknown
+COUNTER     2
+
+	return code: RFC_FAILURE (1)
+	error group: 102
+	key: RFC_ERROR_COMMUNICATION
+
+Error:   >Mon Dec 02 18:11:38,178<    RfcException raised by system [<unknown>]:
+	message: Connect to SAP gateway failed
+	Connection parameters: PROGID=CalltoQL GWHOST=172.17.254.12 GWSERV=sapgw00
+
+ERROR       service 'sapgw00' unknown
+TIME        Mon Dec 02 18:11:38 2019
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -3
+MODULE      nixxsl.cpp
+LINE        184
+DETAIL      NiSrvLGetServNo: service name cached as unknown
+COUNTER     3
+
+	return code: RFC_FAILURE (1)
+	error group: 102
+	key: RFC_ERROR_COMMUNICATION
+
+Error:   >Mon Dec 02 18:11:44,178<    RfcException raised by system [<unknown>]:
+	message: Connect to SAP gateway failed
+	Connection parameters: PROGID=CalltoQL GWHOST=172.17.254.12 GWSERV=sapgw00
+
+ERROR       service 'sapgw00' unknown
+TIME        Mon Dec 02 18:11:44 2019
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -3
+MODULE      nixxsl.cpp
+LINE        184
+DETAIL      NiSrvLGetServNo: service name cached as unknown
+COUNTER     4
+
+	return code: RFC_FAILURE (1)
+	error group: 102
+	key: RFC_ERROR_COMMUNICATION
+
+Error:   >Mon Dec 02 18:11:54,178<    RfcException raised by system [<unknown>]:
+	message: Connect to SAP gateway failed
+	Connection parameters: PROGID=CalltoQL GWHOST=172.17.254.12 GWSERV=sapgw00
+
+ERROR       service 'sapgw00' unknown
+TIME        Mon Dec 02 18:11:54 2019
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -3
+MODULE      nixxsl.cpp
+LINE        184
+DETAIL      NiSrvLGetServNo: service name cached as unknown
+COUNTER     5
+
+	return code: RFC_FAILURE (1)
+	error group: 102
+	key: RFC_ERROR_COMMUNICATION
+
+Error:   >Mon Dec 02 18:12:12,178<    RfcException raised by system [<unknown>]:
+	message: Connect to SAP gateway failed
+	Connection parameters: PROGID=CalltoQL GWHOST=172.17.254.12 GWSERV=sapgw00
+
+ERROR       service 'sapgw00' unknown
+TIME        Mon Dec 02 18:12:12 2019
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -3
+MODULE      nixxsl.cpp
+LINE        184
+DETAIL      NiSrvLGetServNo: service name cached as unknown
+COUNTER     6
+
+	return code: RFC_FAILURE (1)
+	error group: 102
+	key: RFC_ERROR_COMMUNICATION
+
+Error:   >Mon Dec 02 18:12:46,179<    RfcException raised by system [<unknown>]:
+	message: Connect to SAP gateway failed
+	Connection parameters: PROGID=CalltoQL GWHOST=172.17.254.12 GWSERV=sapgw00
+
+ERROR       service 'sapgw00' unknown
+TIME        Mon Dec 02 18:12:46 2019
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -3
+MODULE      nixxsl.cpp
+LINE        184
+DETAIL      NiSrvLGetServNo: service name cached as unknown
+COUNTER     7
+
+	return code: RFC_FAILURE (1)
+	error group: 102
+	key: RFC_ERROR_COMMUNICATION
+
+Error:   >Mon Dec 02 18:13:50,186<    RfcException raised by system [<unknown>]:
+	message: Connect to SAP gateway failed
+	Connection parameters: PROGID=CalltoQL GWHOST=172.17.254.12 GWSERV=sapgw00
+
+ERROR       service 'sapgw00' unknown
+TIME        Mon Dec 02 18:13:50 2019
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -3
+MODULE      nixxsl.cpp
+LINE        184
+DETAIL      NiSrvLGetServNo: service name cached as unknown
+COUNTER     8
+
+	return code: RFC_FAILURE (1)
+	error group: 102
+	key: RFC_ERROR_COMMUNICATION
+
+Error:   >Mon Dec 02 18:15:58,204<    RfcException raised by system [<unknown>]:
+	message: Connect to SAP gateway failed
+	Connection parameters: PROGID=CalltoQL GWHOST=172.17.254.12 GWSERV=sapgw00
+
+ERROR       service 'sapgw00' unknown
+TIME        Mon Dec 02 18:15:58 2019
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -3
+MODULE      nixxsl.cpp
+LINE        184
+DETAIL      NiSrvLGetServNo: service name cached as unknown
+COUNTER     9
+
+	return code: RFC_FAILURE (1)
+	error group: 102
+	key: RFC_ERROR_COMMUNICATION
+
+Error:   >Mon Dec 02 18:20:14,229<    RfcException raised by system [<unknown>]:
+	message: Connect to SAP gateway failed
+	Connection parameters: PROGID=CalltoQL GWHOST=172.17.254.12 GWSERV=sapgw00
+
+ERROR       service 'sapgw00' unknown
+TIME        Mon Dec 02 18:20:14 2019
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -3
+MODULE      nixxsl.cpp
+LINE        184
+DETAIL      NiSrvLGetServNo: service name cached as unknown
+COUNTER     10
+
+	return code: RFC_FAILURE (1)
+	error group: 102
+	key: RFC_ERROR_COMMUNICATION
+
+
+**** Error file opened at 20191202 182532 Korea Standard Time Rel. 3.0.20 (2019-09-05) [721.1311]
+Error:   >Mon Dec 02 18:25:32,078<    RfcException raised by system [<unknown>]:
+	message: Connect to SAP gateway failed
+	Connection parameters: PROGID=CalltoQL GWHOST=172.17.254.12 GWSERV=sapgw00
+
+ERROR       service 'sapgw00' unknown
+TIME        Mon Dec 02 18:25:32 2019
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -3
+MODULE      ninti.c
+LINE        933
+DETAIL      NiPGetServByName: 'sapgw00' not found
+SYSTEM CALL getaddrinfo
+COUNTER     1
+
+	return code: RFC_FAILURE (1)
+	error group: 102
+	key: RFC_ERROR_COMMUNICATION
+
+Error:   >Mon Dec 02 18:25:34,051<    RfcException raised by system [<unknown>]:
+	message: Connect to SAP gateway failed
+	Connection parameters: PROGID=CalltoQL GWHOST=172.17.254.12 GWSERV=sapgw00
+
+ERROR       service 'sapgw00' unknown
+TIME        Mon Dec 02 18:25:34 2019
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -3
+MODULE      nixxsl.cpp
+LINE        184
+DETAIL      NiSrvLGetServNo: service name cached as unknown
+COUNTER     2
+
+	return code: RFC_FAILURE (1)
+	error group: 102
+	key: RFC_ERROR_COMMUNICATION
+
+Error:   >Mon Dec 02 18:25:38,048<    RfcException raised by system [<unknown>]:
+	message: Connect to SAP gateway failed
+	Connection parameters: PROGID=CalltoQL GWHOST=172.17.254.12 GWSERV=sapgw00
+
+ERROR       service 'sapgw00' unknown
+TIME        Mon Dec 02 18:25:38 2019
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -3
+MODULE      nixxsl.cpp
+LINE        184
+DETAIL      NiSrvLGetServNo: service name cached as unknown
+COUNTER     3
+
+	return code: RFC_FAILURE (1)
+	error group: 102
+	key: RFC_ERROR_COMMUNICATION
+
+Error:   >Mon Dec 02 18:25:44,048<    RfcException raised by system [<unknown>]:
+	message: Connect to SAP gateway failed
+	Connection parameters: PROGID=CalltoQL GWHOST=172.17.254.12 GWSERV=sapgw00
+
+ERROR       service 'sapgw00' unknown
+TIME        Mon Dec 02 18:25:44 2019
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -3
+MODULE      nixxsl.cpp
+LINE        184
+DETAIL      NiSrvLGetServNo: service name cached as unknown
+COUNTER     4
+
+	return code: RFC_FAILURE (1)
+	error group: 102
+	key: RFC_ERROR_COMMUNICATION
+
+Error:   >Mon Dec 02 18:25:54,048<    RfcException raised by system [<unknown>]:
+	message: Connect to SAP gateway failed
+	Connection parameters: PROGID=CalltoQL GWHOST=172.17.254.12 GWSERV=sapgw00
+
+ERROR       service 'sapgw00' unknown
+TIME        Mon Dec 02 18:25:54 2019
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -3
+MODULE      nixxsl.cpp
+LINE        184
+DETAIL      NiSrvLGetServNo: service name cached as unknown
+COUNTER     5
+
+	return code: RFC_FAILURE (1)
+	error group: 102
+	key: RFC_ERROR_COMMUNICATION
+
+Error:   >Mon Dec 02 18:26:12,048<    RfcException raised by system [<unknown>]:
+	message: Connect to SAP gateway failed
+	Connection parameters: PROGID=CalltoQL GWHOST=172.17.254.12 GWSERV=sapgw00
+
+ERROR       service 'sapgw00' unknown
+TIME        Mon Dec 02 18:26:12 2019
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -3
+MODULE      nixxsl.cpp
+LINE        184
+DETAIL      NiSrvLGetServNo: service name cached as unknown
+COUNTER     6
+
+	return code: RFC_FAILURE (1)
+	error group: 102
+	key: RFC_ERROR_COMMUNICATION
+
+Error:   >Mon Dec 02 18:26:44,052<    RfcException raised by system [<unknown>]:
+	message: Connect to SAP gateway failed
+	Connection parameters: PROGID=CalltoQL GWHOST=172.17.254.12 GWSERV=sapgw00
+
+ERROR       service 'sapgw00' unknown
+TIME        Mon Dec 02 18:26:44 2019
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -3
+MODULE      nixxsl.cpp
+LINE        184
+DETAIL      NiSrvLGetServNo: service name cached as unknown
+COUNTER     7
+
+	return code: RFC_FAILURE (1)
+	error group: 102
+	key: RFC_ERROR_COMMUNICATION
+
+Error:   >Mon Dec 02 18:28:19,498<    RfcException raised by system [<unknown>]:
+	message: Connect to SAP gateway failed
+	Connection parameters: PROGID=CalltoQL GWHOST=172.17.254.12 GWSERV=3200
+no SAP ErrInfo available
+	return code: RFC_FAILURE (1)
+	error group: 102
+	key: RFC_ERROR_COMMUNICATION
+
+Error:   >Mon Dec 02 18:28:46,276<    RfcException raised by system [<unknown>]:
+	message: Connect to SAP gateway failed
+	Connection parameters: PROGID=CalltoQL GWHOST=172.17.254.12 GWSERV=sapgw00
+
+ERROR       service 'sapgw00' unknown
+TIME        Mon Dec 02 18:28:46 2019
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -3
+MODULE      ninti.c
+LINE        933
+DETAIL      NiPGetServByName: 'sapgw00' not found
+SYSTEM CALL getaddrinfo
+COUNTER     11
+
+	return code: RFC_FAILURE (1)
+	error group: 102
+	key: RFC_ERROR_COMMUNICATION
+
+
+**** Error file opened at 20191206 154740 Korea Standard Time Rel. 3.0.20 (2019-09-05) [721.1311]
+Error:   >Fri Dec 06 15:47:40,177<    >RfcIoException:
+	message: CPIC-CALL: SAP_CMACCPTP3 on convId:         
+
+LOCATION    SAP-Gateway on host henc-erpedu1 / sapgw00
+ERROR       registration of tp CalltoQL from host ??? not allowed
+TIME        Fri Dec  6 15:47:48 2019
+RELEASE     749
+COMPONENT   SAP-Gateway
+VERSION     2
+RC          720
+MODULE      /bas/749_REL/src/krn/si/gw/gwxxrd.c
+LINE        3655
+COUNTER     26738
+
+	Return code: RFCIO_ERROR_REGISTRATION_DENIED (35)<
+
+
+
+Error:   >Fri Dec 06 15:47:40,184<    >RfcIoException:
+	message: CPIC-CALL: SAP_CMACCPTP3 on convId:         
+
+LOCATION    SAP-Gateway on host henc-erpedu1 / sapgw00
+ERROR       registration of tp CalltoQL from host ??? not allowed
+TIME        Fri Dec  6 15:47:48 2019
+RELEASE     749
+COMPONENT   SAP-Gateway
+VERSION     2
+RC          720
+MODULE      /bas/749_REL/src/krn/si/gw/gwxxrd.c
+LINE        3655
+COUNTER     26752
+
+	Return code: RFCIO_ERROR_REGISTRATION_DENIED (35)<
+
+
+
+Error:   >Fri Dec 06 15:47:40,187<    >RfcIoException:
+	message: CPIC-CALL: SAP_CMACCPTP3 on convId:         
+
+LOCATION    SAP-Gateway on host henc-erpedu1 / sapgw00
+ERROR       registration of tp CalltoQL from host ??? not allowed
+TIME        Fri Dec  6 15:47:48 2019
+RELEASE     749
+COMPONENT   SAP-Gateway
+VERSION     2
+RC          720
+MODULE      /bas/749_REL/src/krn/si/gw/gwxxrd.c
+LINE        3655
+COUNTER     26750
+
+	Return code: RFCIO_ERROR_REGISTRATION_DENIED (35)<
+
+
+
+Error:   >Fri Dec 06 15:47:40,187<    >RfcIoException:
+	message: CPIC-CALL: SAP_CMACCPTP3 on convId:         
+
+LOCATION    SAP-Gateway on host henc-erpedu1 / sapgw00
+ERROR       registration of tp CalltoQL from host ??? not allowed
+TIME        Fri Dec  6 15:47:48 2019
+RELEASE     749
+COMPONENT   SAP-Gateway
+VERSION     2
+RC          720
+MODULE      /bas/749_REL/src/krn/si/gw/gwxxrd.c
+LINE        3655
+COUNTER     26748
+
+	Return code: RFCIO_ERROR_REGISTRATION_DENIED (35)<
+
+
+
+Error:   >Fri Dec 06 15:47:40,189<    >RfcIoException:
+	message: CPIC-CALL: SAP_CMACCPTP3 on convId:         
+
+LOCATION    SAP-Gateway on host henc-erpedu1 / sapgw00
+ERROR       registration of tp CalltoQL from host ??? not allowed
+TIME        Fri Dec  6 15:47:48 2019
+RELEASE     749
+COMPONENT   SAP-Gateway
+VERSION     2
+RC          720
+MODULE      /bas/749_REL/src/krn/si/gw/gwxxrd.c
+LINE        3655
+COUNTER     26746
+
+	Return code: RFCIO_ERROR_REGISTRATION_DENIED (35)<
+
+
+
+Error:   >Fri Dec 06 15:47:40,189<    >RfcIoException:
+	message: CPIC-CALL: SAP_CMACCPTP3 on convId:         
+
+LOCATION    SAP-Gateway on host henc-erpedu1 / sapgw00
+ERROR       registration of tp CalltoQL from host ??? not allowed
+TIME        Fri Dec  6 15:47:48 2019
+RELEASE     749
+COMPONENT   SAP-Gateway
+VERSION     2
+RC          720
+MODULE      /bas/749_REL/src/krn/si/gw/gwxxrd.c
+LINE        3655
+COUNTER     26744
+
+	Return code: RFCIO_ERROR_REGISTRATION_DENIED (35)<
+
+
+
+Error:   >Fri Dec 06 15:47:40,189<    >RfcIoException:
+	message: CPIC-CALL: SAP_CMACCPTP3 on convId:         
+
+LOCATION    SAP-Gateway on host henc-erpedu1 / sapgw00
+ERROR       registration of tp CalltoQL from host ??? not allowed
+TIME        Fri Dec  6 15:47:48 2019
+RELEASE     749
+COMPONENT   SAP-Gateway
+VERSION     2
+RC          720
+MODULE      /bas/749_REL/src/krn/si/gw/gwxxrd.c
+LINE        3655
+COUNTER     26742
+
+	Return code: RFCIO_ERROR_REGISTRATION_DENIED (35)<
+
+
+
+Error:   >Fri Dec 06 15:47:40,192<    >RfcIoException:
+	message: CPIC-CALL: SAP_CMACCPTP3 on convId:         
+
+LOCATION    SAP-Gateway on host henc-erpedu1 / sapgw00
+ERROR       registration of tp CalltoQL from host ??? not allowed
+TIME        Fri Dec  6 15:47:48 2019
+RELEASE     749
+COMPONENT   SAP-Gateway
+VERSION     2
+RC          720
+MODULE      /bas/749_REL/src/krn/si/gw/gwxxrd.c
+LINE        3655
+COUNTER     26740
+
+	Return code: RFCIO_ERROR_REGISTRATION_DENIED (35)<
+
+
+
+
+**** Error file opened at 20191206 154922 Korea Standard Time Rel. 3.0.20 (2019-09-05) [721.1311]
+Error:   >Fri Dec 06 15:49:22,778<    >RfcIoException:
+	message: CPIC-CALL: SAP_CMACCPTP3 on convId:         
+
+LOCATION    SAP-Gateway on host henc-erpedu1 / sapgw00
+ERROR       registration of tp CalltoQL from host ??? not allowed
+TIME        Fri Dec  6 15:49:30 2019
+RELEASE     749
+COMPONENT   SAP-Gateway
+VERSION     2
+RC          720
+MODULE      /bas/749_REL/src/krn/si/gw/gwxxrd.c
+LINE        3655
+COUNTER     26766
+
+	Return code: RFCIO_ERROR_REGISTRATION_DENIED (35)<
+
+
+
+Error:   >Fri Dec 06 15:49:22,786<    >RfcIoException:
+	message: CPIC-CALL: SAP_CMACCPTP3 on convId:         
+
+LOCATION    SAP-Gateway on host henc-erpedu1 / sapgw00
+ERROR       registration of tp CalltoQL from host ??? not allowed
+TIME        Fri Dec  6 15:49:30 2019
+RELEASE     749
+COMPONENT   SAP-Gateway
+VERSION     2
+RC          720
+MODULE      /bas/749_REL/src/krn/si/gw/gwxxrd.c
+LINE        3655
+COUNTER     26770
+
+	Return code: RFCIO_ERROR_REGISTRATION_DENIED (35)<
+
+
+
+Error:   >Fri Dec 06 15:49:22,786<    >RfcIoException:
+	message: CPIC-CALL: SAP_CMACCPTP3 on convId:         
+
+LOCATION    SAP-Gateway on host henc-erpedu1 / sapgw00
+ERROR       registration of tp CalltoQL from host ??? not allowed
+TIME        Fri Dec  6 15:49:30 2019
+RELEASE     749
+COMPONENT   SAP-Gateway
+VERSION     2
+RC          720
+MODULE      /bas/749_REL/src/krn/si/gw/gwxxrd.c
+LINE        3655
+COUNTER     26768
+
+	Return code: RFCIO_ERROR_REGISTRATION_DENIED (35)<
+
+
+
+
+**** Error file opened at 20191206 154949 Korea Standard Time Rel. 3.0.20 (2019-09-05) [721.1311]
+Error:   >Fri Dec 06 15:49:49,058<    RfcException raised by system [<unknown>]:
+	message: Connect to SAP gateway failed
+	Connection parameters: PROGID=CalltoQL GWHOST=172.17.254.12 GWSERV=3200
+no SAP ErrInfo available
+	return code: RFC_FAILURE (1)
+	error group: 102
+	key: RFC_ERROR_COMMUNICATION
+
+Error:   >Fri Dec 06 15:49:51,036<    RfcException raised by system [<unknown>]:
+	message: Connect to SAP gateway failed
+	Connection parameters: PROGID=CalltoQL GWHOST=172.17.254.12 GWSERV=3200
+no SAP ErrInfo available
+	return code: RFC_FAILURE (1)
+	error group: 102
+	key: RFC_ERROR_COMMUNICATION
+
+Error:   >Fri Dec 06 15:49:55,033<    RfcException raised by system [<unknown>]:
+	message: Connect to SAP gateway failed
+	Connection parameters: PROGID=CalltoQL GWHOST=172.17.254.12 GWSERV=3200
+no SAP ErrInfo available
+	return code: RFC_FAILURE (1)
+	error group: 102
+	key: RFC_ERROR_COMMUNICATION
+
+Error:   >Fri Dec 06 15:50:01,035<    RfcException raised by system [<unknown>]:
+	message: Connect to SAP gateway failed
+	Connection parameters: PROGID=CalltoQL GWHOST=172.17.254.12 GWSERV=3200
+no SAP ErrInfo available
+	return code: RFC_FAILURE (1)
+	error group: 102
+	key: RFC_ERROR_COMMUNICATION
+
+
+**** Error file opened at 20191206 155313 Korea Standard Time Rel. 3.0.20 (2019-09-05) [721.1311]
+Error:   >Fri Dec 06 15:53:13,270<    RfcException raised by system [<unknown>]:
+	message: Connect to SAP gateway failed
+	Connection parameters: PROGID=CalltoQL GWHOST=172.17.254.12 GWSERV=3200
+no SAP ErrInfo available
+	return code: RFC_FAILURE (1)
+	error group: 102
+	key: RFC_ERROR_COMMUNICATION
+
+Error:   >Fri Dec 06 15:53:15,240<    RfcException raised by system [<unknown>]:
+	message: Connect to SAP gateway failed
+	Connection parameters: PROGID=CalltoQL GWHOST=172.17.254.12 GWSERV=3200
+no SAP ErrInfo available
+	return code: RFC_FAILURE (1)
+	error group: 102
+	key: RFC_ERROR_COMMUNICATION
+
+Error:   >Fri Dec 06 15:53:19,243<    RfcException raised by system [<unknown>]:
+	message: Connect to SAP gateway failed
+	Connection parameters: PROGID=CalltoQL GWHOST=172.17.254.12 GWSERV=3200
+no SAP ErrInfo available
+	return code: RFC_FAILURE (1)
+	error group: 102
+	key: RFC_ERROR_COMMUNICATION
+
+Error:   >Fri Dec 06 15:53:25,242<    RfcException raised by system [<unknown>]:
+	message: Connect to SAP gateway failed
+	Connection parameters: PROGID=CalltoQL GWHOST=172.17.254.12 GWSERV=3200
+no SAP ErrInfo available
+	return code: RFC_FAILURE (1)
+	error group: 102
+	key: RFC_ERROR_COMMUNICATION
+
+Error:   >Fri Dec 06 15:53:35,243<    RfcException raised by system [<unknown>]:
+	message: Connect to SAP gateway failed
+	Connection parameters: PROGID=CalltoQL GWHOST=172.17.254.12 GWSERV=3200
+no SAP ErrInfo available
+	return code: RFC_FAILURE (1)
+	error group: 102
+	key: RFC_ERROR_COMMUNICATION
+
+Error:   >Fri Dec 06 15:53:53,242<    RfcException raised by system [<unknown>]:
+	message: Connect to SAP gateway failed
+	Connection parameters: PROGID=CalltoQL GWHOST=172.17.254.12 GWSERV=3200
+no SAP ErrInfo available
+	return code: RFC_FAILURE (1)
+	error group: 102
+	key: RFC_ERROR_COMMUNICATION
+
+Error:   >Fri Dec 06 15:54:25,277<    RfcException raised by system [<unknown>]:
+	message: Connect to SAP gateway failed
+	Connection parameters: PROGID=CalltoQL GWHOST=172.17.254.12 GWSERV=3200
+no SAP ErrInfo available
+	return code: RFC_FAILURE (1)
+	error group: 102
+	key: RFC_ERROR_COMMUNICATION
+
+Error:   >Fri Dec 06 15:55:29,251<    RfcException raised by system [<unknown>]:
+	message: Connect to SAP gateway failed
+	Connection parameters: PROGID=CalltoQL GWHOST=172.17.254.12 GWSERV=3200
+no SAP ErrInfo available
+	return code: RFC_FAILURE (1)
+	error group: 102
+	key: RFC_ERROR_COMMUNICATION
+
+Error:   >Fri Dec 06 15:57:37,265<    RfcException raised by system [<unknown>]:
+	message: Connect to SAP gateway failed
+	Connection parameters: PROGID=CalltoQL GWHOST=172.17.254.12 GWSERV=3200
+no SAP ErrInfo available
+	return code: RFC_FAILURE (1)
+	error group: 102
+	key: RFC_ERROR_COMMUNICATION
+
+Error:   >Fri Dec 06 16:01:53,294<    RfcException raised by system [<unknown>]:
+	message: Connect to SAP gateway failed
+	Connection parameters: PROGID=CalltoQL GWHOST=172.17.254.12 GWSERV=3200
+no SAP ErrInfo available
+	return code: RFC_FAILURE (1)
+	error group: 102
+	key: RFC_ERROR_COMMUNICATION
+
+
+**** Error file opened at 20191206 160316 Korea Standard Time Rel. 3.0.20 (2019-09-05) [721.1311]
+Error:   >Fri Dec 06 16:03:16,915<    >RfcIoException:
+	message: CPIC-CALL: SAP_CMACCPTP3 on convId:         
+
+LOCATION    SAP-Gateway on host henc-erpedu1 / sapgw00
+ERROR       registration of tp CalltoQL from host ??? not allowed
+TIME        Fri Dec  6 16:03:25 2019
+RELEASE     749
+COMPONENT   SAP-Gateway
+VERSION     2
+RC          720
+MODULE      /bas/749_REL/src/krn/si/gw/gwxxrd.c
+LINE        3655
+COUNTER     26828
+
+	Return code: RFCIO_ERROR_REGISTRATION_DENIED (35)<
+
+
+
+Error:   >Fri Dec 06 16:03:16,923<    >RfcIoException:
+	message: CPIC-CALL: SAP_CMACCPTP3 on convId:         
+
+LOCATION    SAP-Gateway on host henc-erpedu1 / sapgw00
+ERROR       registration of tp CalltoQL from host ??? not allowed
+TIME        Fri Dec  6 16:03:25 2019
+RELEASE     749
+COMPONENT   SAP-Gateway
+VERSION     2
+RC          720
+MODULE      /bas/749_REL/src/krn/si/gw/gwxxrd.c
+LINE        3655
+COUNTER     26834
+
+	Return code: RFCIO_ERROR_REGISTRATION_DENIED (35)<
+
+
+
+Error:   >Fri Dec 06 16:03:16,923<    >RfcIoException:
+	message: CPIC-CALL: SAP_CMACCPTP3 on convId:         
+
+LOCATION    SAP-Gateway on host henc-erpedu1 / sapgw00
+ERROR       registration of tp CalltoQL from host ??? not allowed
+TIME        Fri Dec  6 16:03:25 2019
+RELEASE     749
+COMPONENT   SAP-Gateway
+VERSION     2
+RC          720
+MODULE      /bas/749_REL/src/krn/si/gw/gwxxrd.c
+LINE        3655
+COUNTER     26832
+
+	Return code: RFCIO_ERROR_REGISTRATION_DENIED (35)<
+
+
+
+Error:   >Fri Dec 06 16:03:16,925<    >RfcIoException:
+	message: CPIC-CALL: SAP_CMACCPTP3 on convId:         
+
+LOCATION    SAP-Gateway on host henc-erpedu1 / sapgw00
+ERROR       registration of tp CalltoQL from host ??? not allowed
+TIME        Fri Dec  6 16:03:25 2019
+RELEASE     749
+COMPONENT   SAP-Gateway
+VERSION     2
+RC          720
+MODULE      /bas/749_REL/src/krn/si/gw/gwxxrd.c
+LINE        3655
+COUNTER     26830
+
+	Return code: RFCIO_ERROR_REGISTRATION_DENIED (35)<
+
+
+
+
+**** Error file opened at 20191206 160342 Korea Standard Time Rel. 3.0.20 (2019-09-05) [721.1311]
+Error:   >Fri Dec 06 16:03:42,252<    >RfcIoException:
+	message: CPIC-CALL: SAP_CMACCPTP3 on convId:         
+
+LOCATION    SAP-Gateway on host henc-erpedu1 / sapgw00
+ERROR       registration of tp JCO_TEST from host ??? not allowed
+TIME        Fri Dec  6 16:03:50 2019
+RELEASE     749
+COMPONENT   SAP-Gateway
+VERSION     2
+RC          720
+MODULE      /bas/749_REL/src/krn/si/gw/gwxxrd.c
+LINE        3655
+COUNTER     26845
+
+	Return code: RFCIO_ERROR_REGISTRATION_DENIED (35)<
+
+
+
+Error:   >Fri Dec 06 16:03:42,259<    >RfcIoException:
+	message: CPIC-CALL: SAP_CMACCPTP3 on convId:         
+
+LOCATION    SAP-Gateway on host henc-erpedu1 / sapgw00
+ERROR       registration of tp JCO_TEST from host ??? not allowed
+TIME        Fri Dec  6 16:03:50 2019
+RELEASE     749
+COMPONENT   SAP-Gateway
+VERSION     2
+RC          720
+MODULE      /bas/749_REL/src/krn/si/gw/gwxxrd.c
+LINE        3655
+COUNTER     26849
+
+	Return code: RFCIO_ERROR_REGISTRATION_DENIED (35)<
+
+
+
+Error:   >Fri Dec 06 16:03:42,259<    >RfcIoException:
+	message: CPIC-CALL: SAP_CMACCPTP3 on convId:         
+
+LOCATION    SAP-Gateway on host henc-erpedu1 / sapgw00
+ERROR       registration of tp JCO_TEST from host ??? not allowed
+TIME        Fri Dec  6 16:03:50 2019
+RELEASE     749
+COMPONENT   SAP-Gateway
+VERSION     2
+RC          720
+MODULE      /bas/749_REL/src/krn/si/gw/gwxxrd.c
+LINE        3655
+COUNTER     26847
+
+	Return code: RFCIO_ERROR_REGISTRATION_DENIED (35)<
+
+
+
+
+**** Error file opened at 20191206 160429 Korea Standard Time Rel. 3.0.20 (2019-09-05) [721.1311]
+Error:   >Fri Dec 06 16:04:29,034<    >RfcIoException:
+	message: CPIC-CALL: SAP_CMACCPTP3 on convId:         
+
+LOCATION    SAP-Gateway on host henc-erpedu1 / sapgw00
+ERROR       registration of tp JCOTEST from host ??? not allowed
+TIME        Fri Dec  6 16:04:37 2019
+RELEASE     749
+COMPONENT   SAP-Gateway
+VERSION     2
+RC          720
+MODULE      /bas/749_REL/src/krn/si/gw/gwxxrd.c
+LINE        3655
+COUNTER     26862
+
+	Return code: RFCIO_ERROR_REGISTRATION_DENIED (35)<
+
+
+
+Error:   >Fri Dec 06 16:04:29,041<    >RfcIoException:
+	message: CPIC-CALL: SAP_CMACCPTP3 on convId:         
+
+LOCATION    SAP-Gateway on host henc-erpedu1 / sapgw00
+ERROR       registration of tp JCOTEST from host ??? not allowed
+TIME        Fri Dec  6 16:04:37 2019
+RELEASE     749
+COMPONENT   SAP-Gateway
+VERSION     2
+RC          720
+MODULE      /bas/749_REL/src/krn/si/gw/gwxxrd.c
+LINE        3655
+COUNTER     26866
+
+	Return code: RFCIO_ERROR_REGISTRATION_DENIED (35)<
+
+
+
+Error:   >Fri Dec 06 16:04:29,044<    >RfcIoException:
+	message: CPIC-CALL: SAP_CMACCPTP3 on convId:         
+
+LOCATION    SAP-Gateway on host henc-erpedu1 / sapgw00
+ERROR       registration of tp JCOTEST from host ??? not allowed
+TIME        Fri Dec  6 16:04:37 2019
+RELEASE     749
+COMPONENT   SAP-Gateway
+VERSION     2
+RC          720
+MODULE      /bas/749_REL/src/krn/si/gw/gwxxrd.c
+LINE        3655
+COUNTER     26864
+
+	Return code: RFCIO_ERROR_REGISTRATION_DENIED (35)<
+
+
+
+
+**** Error file opened at 20191209 105622 Korea Standard Time Rel. 3.0.20 (2019-09-05) [721.1311]
+Error:   >Mon Dec 09 10:56:22,393<    >RfcIoException:
+	message: CPIC-CALL: SAP_CMACCPTP3 on convId:         
+
+LOCATION    SAP-Gateway on host henc-erpedu1 / sapgw00
+ERROR       registration of tp JCOTEST1 from host ??? not allowed
+TIME        Mon Dec  9 10:56:24 2019
+RELEASE     749
+COMPONENT   SAP-Gateway
+VERSION     2
+RC          720
+MODULE      /bas/749_REL/src/krn/si/gw/gwxxrd.c
+LINE        3655
+COUNTER     459
+
+	Return code: RFCIO_ERROR_REGISTRATION_DENIED (35)<
+
+
+
+Error:   >Mon Dec 09 10:56:22,401<    >RfcIoException:
+	message: CPIC-CALL: SAP_CMACCPTP3 on convId:         
+
+LOCATION    SAP-Gateway on host henc-erpedu1 / sapgw00
+ERROR       registration of tp JCOTEST1 from host ??? not allowed
+TIME        Mon Dec  9 10:56:24 2019
+RELEASE     749
+COMPONENT   SAP-Gateway
+VERSION     2
+RC          720
+MODULE      /bas/749_REL/src/krn/si/gw/gwxxrd.c
+LINE        3655
+COUNTER     467
+
+	Return code: RFCIO_ERROR_REGISTRATION_DENIED (35)<
+
+
+
+Error:   >Mon Dec 09 10:56:22,402<    >RfcIoException:
+	message: CPIC-CALL: SAP_CMACCPTP3 on convId:         
+
+LOCATION    SAP-Gateway on host henc-erpedu1 / sapgw00
+ERROR       registration of tp JCOTEST1 from host ??? not allowed
+TIME        Mon Dec  9 10:56:24 2019
+RELEASE     749
+COMPONENT   SAP-Gateway
+VERSION     2
+RC          720
+MODULE      /bas/749_REL/src/krn/si/gw/gwxxrd.c
+LINE        3655
+COUNTER     465
+
+	Return code: RFCIO_ERROR_REGISTRATION_DENIED (35)<
+
+
+
+Error:   >Mon Dec 09 10:56:22,403<    >RfcIoException:
+	message: CPIC-CALL: SAP_CMACCPTP3 on convId:         
+
+LOCATION    SAP-Gateway on host henc-erpedu1 / sapgw00
+ERROR       registration of tp JCOTEST1 from host ??? not allowed
+TIME        Mon Dec  9 10:56:24 2019
+RELEASE     749
+COMPONENT   SAP-Gateway
+VERSION     2
+RC          720
+MODULE      /bas/749_REL/src/krn/si/gw/gwxxrd.c
+LINE        3655
+COUNTER     463
+
+	Return code: RFCIO_ERROR_REGISTRATION_DENIED (35)<
+
+
+
+Error:   >Mon Dec 09 10:56:22,405<    >RfcIoException:
+	message: CPIC-CALL: SAP_CMACCPTP3 on convId:         
+
+LOCATION    SAP-Gateway on host henc-erpedu1 / sapgw00
+ERROR       registration of tp JCOTEST1 from host ??? not allowed
+TIME        Mon Dec  9 10:56:24 2019
+RELEASE     749
+COMPONENT   SAP-Gateway
+VERSION     2
+RC          720
+MODULE      /bas/749_REL/src/krn/si/gw/gwxxrd.c
+LINE        3655
+COUNTER     461
+
+	Return code: RFCIO_ERROR_REGISTRATION_DENIED (35)<
+
+
+
+Error:   >Mon Dec 09 10:56:22,406<    >RfcIoException:
+	message: CPIC-CALL: SAP_CMACCPTP3 on convId:         
+
+LOCATION    SAP-Gateway on host henc-erpedu1 / sapgw00
+ERROR       registration of tp JCOTEST1 from host ??? not allowed
+TIME        Mon Dec  9 10:56:24 2019
+RELEASE     749
+COMPONENT   SAP-Gateway
+VERSION     2
+RC          720
+MODULE      /bas/749_REL/src/krn/si/gw/gwxxrd.c
+LINE        3655
+COUNTER     469
+
+	Return code: RFCIO_ERROR_REGISTRATION_DENIED (35)<
+
+
+
+
+**** Error file opened at 20191209 105740 Korea Standard Time Rel. 3.0.20 (2019-09-05) [721.1311]
+Error:   >Mon Dec 09 10:57:40,503<    >RfcIoException:
+	message: CPIC-CALL: SAP_CMACCPTP3 on convId:         
+
+LOCATION    SAP-Gateway on host henc-erpedu1 / sapgw00
+ERROR       registration of tp JCOTEST from host ??? not allowed
+TIME        Mon Dec  9 10:57:42 2019
+RELEASE     749
+COMPONENT   SAP-Gateway
+VERSION     2
+RC          720
+MODULE      /bas/749_REL/src/krn/si/gw/gwxxrd.c
+LINE        3655
+COUNTER     499
+
+	Return code: RFCIO_ERROR_REGISTRATION_DENIED (35)<
+
+
+
+Error:   >Mon Dec 09 10:57:40,520<    >RfcIoException:
+	message: CPIC-CALL: SAP_CMACCPTP3 on convId:         
+
+LOCATION    SAP-Gateway on host henc-erpedu1 / sapgw00
+ERROR       registration of tp JCOTEST from host ??? not allowed
+TIME        Mon Dec  9 10:57:42 2019
+RELEASE     749
+COMPONENT   SAP-Gateway
+VERSION     2
+RC          720
+MODULE      /bas/749_REL/src/krn/si/gw/gwxxrd.c
+LINE        3655
+COUNTER     507
+
+	Return code: RFCIO_ERROR_REGISTRATION_DENIED (35)<
+
+
+
+Error:   >Mon Dec 09 10:57:40,521<    >RfcIoException:
+	message: CPIC-CALL: SAP_CMACCPTP3 on convId:         
+
+LOCATION    SAP-Gateway on host henc-erpedu1 / sapgw00
+ERROR       registration of tp JCOTEST from host ??? not allowed
+TIME        Mon Dec  9 10:57:42 2019
+RELEASE     749
+COMPONENT   SAP-Gateway
+VERSION     2
+RC          720
+MODULE      /bas/749_REL/src/krn/si/gw/gwxxrd.c
+LINE        3655
+COUNTER     505
+
+	Return code: RFCIO_ERROR_REGISTRATION_DENIED (35)<
+
+
+
+Error:   >Mon Dec 09 10:57:40,522<    >RfcIoException:
+	message: CPIC-CALL: SAP_CMACCPTP3 on convId:         
+
+LOCATION    SAP-Gateway on host henc-erpedu1 / sapgw00
+ERROR       registration of tp JCOTEST from host ??? not allowed
+TIME        Mon Dec  9 10:57:42 2019
+RELEASE     749
+COMPONENT   SAP-Gateway
+VERSION     2
+RC          720
+MODULE      /bas/749_REL/src/krn/si/gw/gwxxrd.c
+LINE        3655
+COUNTER     503
+
+	Return code: RFCIO_ERROR_REGISTRATION_DENIED (35)<
+
+
+
+Error:   >Mon Dec 09 10:57:40,523<    >RfcIoException:
+	message: CPIC-CALL: SAP_CMACCPTP3 on convId:         
+
+LOCATION    SAP-Gateway on host henc-erpedu1 / sapgw00
+ERROR       registration of tp JCOTEST from host ??? not allowed
+TIME        Mon Dec  9 10:57:42 2019
+RELEASE     749
+COMPONENT   SAP-Gateway
+VERSION     2
+RC          720
+MODULE      /bas/749_REL/src/krn/si/gw/gwxxrd.c
+LINE        3655
+COUNTER     501
+
+	Return code: RFCIO_ERROR_REGISTRATION_DENIED (35)<
+
+
+
