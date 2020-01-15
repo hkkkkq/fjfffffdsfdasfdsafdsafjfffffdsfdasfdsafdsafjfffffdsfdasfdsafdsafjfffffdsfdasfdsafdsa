@@ -1,0 +1,5 @@
+/app/sw/jeus8/bin/jeusadmin -u administrator -p jeusadmin -host 172.17.254.9 -port 7736 -verbose 'redeploy-application ac_fileupload'
+
+/app/sw/jeus8/bin/jeusadmin -u administrator -p jeusadmin -host 172.17.254.9 -port 7736 -verbose 'stop-server ac_fileupload11 --shutdowntimeout 10'
+sleep 10
+/app/sw/jeus8/bin/jeusadmin -u administrator -p jeusadmin -host 172.17.254.9 -port 7736 -verbose 'start-server ac_fileupload11'
