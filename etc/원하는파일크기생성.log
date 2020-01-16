@@ -1,0 +1,11 @@
+# 윈도우/리눅스 원하는 크기 파일 생성하기
+
+# 윈도우
+fsutil file createnew [파일이름] [파일용량-단위Byte]
+fsutil file createnew testFile10MB 10485760
+fsutil file createnew testFile100MB 104857600
+fsutil file createnew testFile500MB 524288000
+
+# 리눅스
+dd if=/dev/zero=[위치 및 파일명] bs=[파일사이즈] count=[반복횟수]
+dd if=/dev/zero=./testFile1MB bs=1M count=1
