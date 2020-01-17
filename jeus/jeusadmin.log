@@ -3,3 +3,6 @@
 /app/sw/jeus8/bin/jeusadmin -u administrator -p jeusadmin -host 172.17.254.9 -port 7736 -verbose 'stop-server ac_fileupload11 --shutdowntimeout 10'
 sleep 10
 /app/sw/jeus8/bin/jeusadmin -u administrator -p jeusadmin -host 172.17.254.9 -port 7736 -verbose 'start-server ac_fileupload11'
+
+/app/sw/jeus8/bin/startManagedServer -dasurl $DAS_URL -domain $DOMAIN_NAME -server ac_fileupload11  -f $ENCODE_FILE  -cachelogin
+/app/sw/jeus8/bin/jeusadmin -host `hostname`:10170 -domain $DOMAIN_NAME -f $ENCODE_FILE -cachelogin "local-shutdown -to 120"
