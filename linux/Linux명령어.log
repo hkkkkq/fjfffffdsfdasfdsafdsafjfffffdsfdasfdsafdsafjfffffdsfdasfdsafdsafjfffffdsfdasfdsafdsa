@@ -573,3 +573,12 @@ mount -l | column -t
  /usr/local/jdk/jdk1.8.0_221/jre/lib/security/java.security
  securerandom.source=file:/dev/./urandom
  
+ <119>
+ grep "STR" [FILE] => 대상 파일에서 문자열 검색
+ grep -i "STR" [FILE] => 대상 파일에서 문자열 검색 시 대소문자 무시
+ grep -a "STR" [FILE] => 대상 바이너리 파일을 텍스프 파일로 문자열 검색
+ grep -E "STR" [FILE] => PATTERN을 확장 정규 표현식(Extended RegEx)으로 해석
+ grep -F "a*[1-9]?" [FILE] => 문자열 패턴 전체를 정규 표현식 메타 문자가 아닌 일반 문자로 검색하기
+ grep "STR" * => 현재 디렉토리 모든 파일에서 문자열 검색
+ grep -r "STR" * => 하위 디렉토리를 포함한 모든 파일에서 문자열 검색
+ grep -v "STR" [FILE] => 매칭되는 PATTERN이 존재하지 않는 라인 선택
