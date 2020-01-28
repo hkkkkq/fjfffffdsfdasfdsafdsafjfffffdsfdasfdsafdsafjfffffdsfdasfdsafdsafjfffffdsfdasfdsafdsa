@@ -1,4 +1,4 @@
-[인터넷 안되는 경우]
+[설치-인터넷 안되는 경우]
 
  #1. git 최신 버전 설치 
  yum remove git
@@ -38,13 +38,14 @@ yum install gitlab-ce-12.7.2-ce.0.el7.x86_64.rpm
 /var/opt/gitlab : gitlab 디렉토리
 /var/log/gitlab : gitlab 로그 디렉토리
 /etc/gitlab : gitlab 설정파일 디렉토리
+/data/gitlab/git-data : 데이터 디렉토리 (default: /var/opt/gitlab/git-data)
 
 #6. vi /etc/gitlab/gitlab.rb
 
 # (중요) gitlab은 기본적으로 80포트를 사용하고 인증 관련된 부분은 8080포트를 사용합니다. gitlab의 경우 15개 SW가 패키징되는 만큼 포트 충돌여부를 확인한다.
 
 #6.1 gitlab페이지가 보여지는 웹사이트 url로 방화벽 오픈 대상(디폴트 80)
-external_url 'http://172.17.254.11:9080'
+external_url 'http://172.17.254.11:8001'
 
 #6.2 기본 인증 관련 내부 포트(디폴트 8080)로 방화벽 작업 대상은 아님. 만약 8080 사용 중이면 두군데 주석 제거 후 수정
 gitlab_workhorse['auth_backend'] = "http://localhost:9081"
@@ -64,7 +65,7 @@ gitlab-ctl reconfigure : gitlab 설정파일 변경 후 재 구성 필요 시
 
 -------------------------------------------------------------------------
 
-[인터넷 되는 경우]
+[설치-인터넷 되는 경우]
 
  #1. git 최신 버전 설치 
  yum remove git
@@ -87,17 +88,18 @@ curl -sS https://packages.gitlab.com/install/repositories/gitlab/gitlab-ce/scrip
 yum install gitlab-ce
 
 #5. 관련 디렉토리
-/opt/gitlab: gitlab 설치 디렉토리
+/opt/gitlab : gitlab 설치 디렉토리
 /var/opt/gitlab : gitlab 디렉토리
 /var/log/gitlab : gitlab 로그 디렉토리
 /etc/gitlab : gitlab 설정파일 디렉토리
+/data/gitlab/git-data : 데이터 디렉토리 (default: /var/opt/gitlab/git-data)
 
 #6. vi /etc/gitlab/gitlab.rb
 
 # (중요) gitlab은 기본적으로 80포트를 사용하고 인증 관련된 부분은 8080포트를 사용합니다. gitlab의 경우 15개 SW가 패키징되는 만큼 포트 충돌여부를 확인한다.
 
 #6.1 gitlab페이지가 보여지는 웹사이트 url로 방화벽 오픈 대상(디폴트 80)
-external_url 'http://172.17.254.11:9080'
+external_url 'http://172.17.254.11:8001'
 
 #6.2 기본 인증 관련 내부 포트(디폴트 8080)로 방화벽 작업 대상은 아님. 만약 8080 사용 중이면 두군데 주석 제거 후 수정
 gitlab_workhorse['auth_backend'] = "http://localhost:9081"
@@ -114,3 +116,27 @@ gitlab-ctl reconfigure : gitlab 설정파일 변경 후 재 구성 필요 시
  
  #8. 디폴드 어드민 계정은 root
  
+ -------------------------------------------------------------------------
+ 
+[데이터 저장소 위치 변경]
+ 
+#1. 
+# Prevent users from writing to the repositories while you move them.
+ gitlab-ctl stop
+ 
+#2.
+rsync -av /var/opt/gitlab/git-data/repositories /data/gitlab/git-data/
+ 
+#3. 
+ vi /etc/gitlab/gitlab.rb
+ git_data_dirs({
+   "default" => {
+      "path" => "/data/gitlab/git-data"
+     }
+ })
+ 
+ #4.
+ gitlab-ctl reconfigure
+ 
+ #5.
+ gitlab-ctl start
