@@ -1,35 +1,69 @@
 [인터넷 안되는 경우]
 
-#1. gitlab-ce rpm 파일 다운로드 
-wget --content-disposition https://packages.gitlab.com/gitlab/gitlab-ce/packages/el/7/gitlab-ce-12.1.3-ce.0.el7.x86_64.rpm/download.rpm
+ #1. git 최신 버전 설치 
+ yum remove git
+ 
+ https://github.com/git/git/archive/v2.22.0.tar.gz
+ tar -xvf git-2.22.0.tar.gz
+ cd git-2.22.0
+ make install
+ 
+ --------------- 컴파일 에러 발생하는 경우 참조
+ yum install openssl-devel
+ yum install curl-devel
+ yum install expat-devel
 
-#2. root 계정으로
-rpm -i gitlab-ce-12.1.3-ce.0.el7.x86_64.rpm
-yum install gitlab-ce-12.1.3-ce.0.el7.x86_64.rpm
+vi  .bash_profile
+export PATH=$JAVA_HOME/bin:$PATH:/root/downloads/git-2.22.0
 
-#3. 관련 디렉토리
+
+#2. 사전 필수 확인 및 설치
+yum install curl policycoreutils openssh-server openssh-clients 
+systemctl enable sshd 
+systemctl start sshd 
+yum install postfix 
+systemctl enable postfix 
+systemctl start postfix 
+
+
+#3. gitlab-ce rpm 파일 다운로드 
+https://packages.gitlab.com/gitlab/gitlab-ce/gitlab-ce-12.7.2-ce.0.el7.x86_64.rpm
+
+
+#4. root 계정으로
+yum install gitlab-ce-12.7.2-ce.0.el7.x86_64.rpm
+
+#5. 관련 디렉토리
 /opt/gitlab: gitlab 설치 디렉토리
 /var/opt/gitlab : gitlab 디렉토리
 /var/log/gitlab : gitlab 로그 디렉토리
-
 /etc/gitlab : gitlab 설정파일 디렉토리
 
- - (중요) gitlab은 기본적으로 80포트를 사용하고 인증 관련된 부분은 8080포트를 사용합니다. gitlab의 경우 15개 SW가 패키징되는 만큼 포트 충돌여부를 확인한다.
- - gitlab.rb 내 
-   # gitlab페이지가 보여지는 웹사이트 url로 방화벽 오픈 대상 (디폴트 80)
-   1) external_url 'http://175.30.1.51:9080' 으로 설정한다.
-   # 기본 인증 관련 내부 포트(디폴트 8080)로 방화벽 작업 대상은 아님. 만약 8080 사용 중이면 두군데 주석 제거 후 수정
-   2) gitlab_workhorse['auth_backend'] = "http://localhost:9081"
-   3) unicorn['port'] = 9081
+#6. vi /etc/gitlab/gitlab.rb
 
-#4. 기동/중지 스크립트
+# (중요) gitlab은 기본적으로 80포트를 사용하고 인증 관련된 부분은 8080포트를 사용합니다. gitlab의 경우 15개 SW가 패키징되는 만큼 포트 충돌여부를 확인한다.
+
+#6.1 gitlab페이지가 보여지는 웹사이트 url로 방화벽 오픈 대상(디폴트 80)
+external_url 'http://172.17.254.11:9080'
+
+#6.2 기본 인증 관련 내부 포트(디폴트 8080)로 방화벽 작업 대상은 아님. 만약 8080 사용 중이면 두군데 주석 제거 후 수정
+gitlab_workhorse['auth_backend'] = "http://localhost:9081"
+unicorn['port'] = 9081
+ 
+ #6. 위 설정 변경사항에 대한 반영 
+ gitlab-ctl reconfigure
+ 
+ #7. 참고 스크립트
 gitlab-ctl start
 gitlab-ctl stop
 gitlab-ctl restart
 gitlab-ctl reconfigure : gitlab 설정파일 변경 후 재 구성 필요 시
+ 
+ #8. 디폴드 어드민 계정은 root
 
- #5. 디폴드 어드민 계정은 root
+
 -------------------------------------------------------------------------
+
 [인터넷 되는 경우]
 
  #1. git 최신 버전 설치 
@@ -52,14 +86,20 @@ curl -sS https://packages.gitlab.com/install/repositories/gitlab/gitlab-ce/scrip
 #4. yum 설치 (gitlab-ce.x86_64 0:12.2.5-ce.0.el7)
 yum install gitlab-ce
 
-#5. vi /etc/gitlab/gitlab.rb
+#5. 관련 디렉토리
+/opt/gitlab: gitlab 설치 디렉토리
+/var/opt/gitlab : gitlab 디렉토리
+/var/log/gitlab : gitlab 로그 디렉토리
+/etc/gitlab : gitlab 설정파일 디렉토리
+
+#6. vi /etc/gitlab/gitlab.rb
 
 # (중요) gitlab은 기본적으로 80포트를 사용하고 인증 관련된 부분은 8080포트를 사용합니다. gitlab의 경우 15개 SW가 패키징되는 만큼 포트 충돌여부를 확인한다.
 
-#5.1 gitlab페이지가 보여지는 웹사이트 url로 방화벽 오픈 대상(디폴트 80)
+#6.1 gitlab페이지가 보여지는 웹사이트 url로 방화벽 오픈 대상(디폴트 80)
 external_url 'http://172.17.254.11:9080'
 
-#5.2 기본 인증 관련 내부 포트(디폴트 8080)로 방화벽 작업 대상은 아님. 만약 8080 사용 중이면 두군데 주석 제거 후 수정
+#6.2 기본 인증 관련 내부 포트(디폴트 8080)로 방화벽 작업 대상은 아님. 만약 8080 사용 중이면 두군데 주석 제거 후 수정
 gitlab_workhorse['auth_backend'] = "http://localhost:9081"
 unicorn['port'] = 9081
  

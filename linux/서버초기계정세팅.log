@@ -1,5 +1,7 @@
+1)
 chage -E -1 -I -1 -m 0 -M 99999 root
 
+2)
 vi /root/.bash_profile
 ---------
 export TMOUT=0
@@ -7,10 +9,16 @@ export EDITOR=vi
 set -o vi
 export PS1="[\$LOGNAME@`hostname`:\$PWD]$ "
 
+export JAVA_HOME=/usr/local/jdk/jdk1.8.0_202
+export PATH=$JAVA_HOME/bin:$PATH
+
 alias ll='ls -al'
 ---------
+
+3)
 source /root/.bash_profile
 
+4)
 vi /root/.vimrc
 ---------
 set smartindent
@@ -19,11 +27,16 @@ set expandtab
 set shiftwidth=2
 ---------
 
+5)
+source /root/.vimrc
+
+6)
 systemctl status firewalld.service
 systemctl stop firewalld.service
 systemctl disable firewalld.service
 
 ---------------------------------------------------------------------------------------
+7)
 mkdir -p /usr/local/jdk
 
 scp -r jdk1.8.0_221 root@172.17.254.11:/usr/local/jdk
