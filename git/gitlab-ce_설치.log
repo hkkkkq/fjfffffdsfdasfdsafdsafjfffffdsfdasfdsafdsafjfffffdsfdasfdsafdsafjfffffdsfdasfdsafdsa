@@ -6,6 +6,9 @@
  https://github.com/git/git/archive/v2.22.0.tar.gz
  tar -xvf git-2.22.0.tar.gz
  cd git-2.22.0
+ make configure
+  ./configure --prefix=/app/git/git-2.22.0
+ make
  make install
  
  --------------- 컴파일 에러 발생하는 경우 참조

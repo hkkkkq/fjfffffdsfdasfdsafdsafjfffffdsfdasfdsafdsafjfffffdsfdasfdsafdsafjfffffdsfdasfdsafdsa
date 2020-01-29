@@ -11,11 +11,11 @@ or
 
 3. 컴파일
 ./configure \
---prefix=/app/sw/mdwiki/nginx-1.16.1 \
---conf-path=/app/sw/mdwiki/nginx-1.16.1/conf/nginx.conf \
---pid-path=/app/log/mdwiki/nginx.pid \
---error-log-path=/app/log/mdwiki/error.log \
---http-log-path=/app/log/mdwiki/access.log
+--prefix=/app/mdwiki/nginx-1.16.1 \
+--conf-path=/app/mdwiki/nginx-1.16.1/conf/nginx.conf \
+--pid-path=/log/mdwiki/nginx.pid \
+--error-log-path=/log/mdwiki/error.log \
+--http-log-path=/log/mdwiki/access.log
 
 4. make
 
