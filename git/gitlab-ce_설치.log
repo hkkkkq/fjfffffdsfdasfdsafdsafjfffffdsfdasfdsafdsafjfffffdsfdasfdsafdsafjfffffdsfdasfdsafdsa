@@ -7,9 +7,9 @@
  tar -xvf git-2.22.0.tar.gz
  cd git-2.22.0
  make configure
-  ./configure --prefix=/app/git/git-2.22.0
+  ./configure --prefix=/usr/local/git/git-2.22.0
  make
- make install
+ make install install-doc install-html install-info
  
  --------------- 컴파일 에러 발생하는 경우 참조
  yum install openssl-devel
@@ -39,6 +39,7 @@ yum install gitlab-ce-12.7.2-ce.0.el7.x86_64.rpm
 #5. 관련 디렉토리
 /opt/gitlab: gitlab 설치 디렉토리
 /var/opt/gitlab : gitlab 디렉토리
+/run/gitlab : gitlab 디렉토리
 /var/log/gitlab : gitlab 로그 디렉토리
 /etc/gitlab : gitlab 설정파일 디렉토리
 /data/gitlab/git-data : 데이터 디렉토리 (default: /var/opt/gitlab/git-data)
@@ -92,7 +93,8 @@ yum install gitlab-ce
 
 #5. 관련 디렉토리
 /opt/gitlab : gitlab 설치 디렉토리
-/var/opt/gitlab : gitlab 디렉토리
+/var/opt/gitlab : gitlab 설치디렉토리
+/run/gitlab : gitlab 설치 디렉토리
 /var/log/gitlab : gitlab 로그 디렉토리
 /etc/gitlab : gitlab 설정파일 디렉토리
 /data/gitlab/git-data : 데이터 디렉토리 (default: /var/opt/gitlab/git-data)
