@@ -173,6 +173,17 @@ git push --force origin master
 
 
 
+```bash
+git pull
+fatal: 관계 없는 커밋 내역의 병합을 거부합니다
+# git pull 시 위와 같은 에러가 발생하면 아래의 방법으로 해결한다.
+git fetch --all  # git remote 에서 전체 내용을 받아온다.
+git reset --hard origin/master # 수정된 내역을 지우고 이전내용으로 복구한다.
+git pull origin master # 현재 작업하고있는 로컬에 커밋을 병합한다.
+```
+
+
+
 - git checkout:  `Switch branches or restore working tree files`
 
 ```bash
