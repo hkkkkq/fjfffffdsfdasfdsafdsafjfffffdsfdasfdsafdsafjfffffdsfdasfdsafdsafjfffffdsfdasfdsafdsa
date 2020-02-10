@@ -10,20 +10,6 @@ docker push docker-registry.default.svc.cluster.local:5000/mmp/athn:0.1
 docker tag docker-registry.default.svc.cluster.local:5000/mmp/athn:0.1 docker-registry.default.svc.cluster.local:5000/mmp/athn:latest
 docker push docker-registry.default.svc.cluster.local:5000/mmp/athn:latest
 
-# curl =======================
-
-curl -X POST -H "Content-Type: application/json" \
--d " \
-{ \
- \"title\":\"c++\", \
- \"author\":\"steven\",\
- \"description\":\"wow\",\
- \"published\":777\
-}\
-" \
-http://10.106.65.91/api/books/create
-
-curl -HHost:sample1-millet.container.ipc.kt.com http://172.30.158.41/svc1/hello
 
 # openshift 권한 관련 설정 =======================
 
@@ -64,31 +50,6 @@ mkdir -p /home/bsscoe/.kube
 cp ~/.kube/config /home/bsscoe/.kube
 chown bsscoe:bsscoe /home/bsscoe/.kube/config
 
-su -l bsscoe
-
-[bsscoe 계정으로]
-
-vi ~/.bash_profile
-export TMOUT=0
-alias ll='ls -al'
-# motd
-/home/bsscoe/motd
-
-vi motd
-#!/bin/bash
-
-echo "
-==========================================================================
- Hello~! Somebody to love!
-==========================================================================
- - Hostname...........: `uname -n`
- - Release............: `cat /etc/redhat-release`
- - Users..............: Currently `users | wc -w` user(s) logged on
- - Currnet user.......: `whoami`
-==========================================================================
-"
-
-. ~/.bash_profile
 
 -- Master Node 대상 kubectl 작업
 vi ~/.bash_profile
@@ -155,3 +116,44 @@ while true; do echo "================TEST==============="; curl -k --header "Hos
 
 kubectl -n vivaldi top node
 kubectl -n vivaldi top pod --containers
+
+
+
+# 이름 없는 도커 이미지 삭제
+docker rmi $(docker images -f dangling=true -q) || true;
+
+# 최근 빌드된 이미지로 reload 하기 위한 순차 재기동
+kubectl -n flex rollout restart deployment/flex-oauth2-authorization
+
+
+# jib gradle 설정
+
+plugins {
+	id 'com.google.cloud.tools.jib' version '1.6.1'
+}
+
+def current_timestamp = new Date().format('YYYYMMddHHmmss')
+
+jib {
+  from {
+    image = '172.16.51.166:5000/flex-base-image:1.0'
+  }
+  to {
+  	println current_timestamp
+    image = '172.16.51.166:5000/flex/flex-user-api'
+    //credHelper = 'osxkeychain'
+    tags = [current_timestamp, 'latest']
+    //tags = ['tag2', 'latest']
+  }
+  container {
+    jvmFlags = ['-Xms512m','-Xmx512m','-XX:MetaspaceSize=128m','-XX:MaxMetaspaceSize=256m','-XX:+UseG1GC','-XX:+UnlockDiagnosticVMOptions','-XX:+G1SummarizeConcMark','-XX:InitiatingHeapOccupancyPercent=35','-XX:G1ConcRefinementThreads=20','-Djava.security.egd=file:/dev/./urandom']
+    //mainClass = 'mypackage.MyApp'
+    //args = ['some', 'args']
+    //ports = ['1000', '2000-2003/udp']
+    //labels = [key1:'value1', key2:'value2']
+    //environment = [key1:'value1', key2:'value2']
+    format = 'OCI'
+    creationTime = 'USE_CURRENT_TIMESTAMP'
+    allowInsecureRegistries = true
+  }
+}

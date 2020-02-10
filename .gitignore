@@ -1,0 +1,14 @@
+/.settings/
+/.project
+**/.settings/
+**/.project
+**/.classpath
+**/target/
+**/*.DS_Store
+/.factorypath
+**/transaction-logs/
+/bin/
+/build/
+/.gradle/
+/transaction-logs/
+**/nexacro/

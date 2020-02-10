@@ -385,7 +385,7 @@ eval $COMMAND
 
 <84> rtail1 | grep 'Exception\|SEVERE\|WARNING'
 
-<85> curl http://10.217.81.120:8000/index.html			<html><body><h1>It works!</h1></body></html>
+<85> curl http://10.217.81.120:8000/index.html
  		 curl -X GET -k https://dev.k-kos.kt.co.kr/check.html
      curl -k -X OPTIONS https://test.k-kos.kt.co.kr
      curl -k -i -X OPTIONS https://test.k-kos.kt.co.kr
@@ -407,6 +407,8 @@ eval $COMMAND
           }\
           " \
           http://10.106.65.91/api/books/create
+
+     curl --resolve alicek106.example.com:30001:10.96.86.195 alicek106.example.com:30001/echo-hostname
 
 <86> nslookup knote.kt.com
 : domain명에 해당하는 IP 확인
@@ -595,4 +597,26 @@ mount -l | column -t
  5) make uninstall: 설치 제거를 하려면 make를 했던 디렉토리로 돌아와 아래 명령을 입력
 
 
- 
+ <121> MOTD (messages of the day)
+
+vi ~/.bash_profile
+
+# motd
+/home/bsscoe/motd
+
+vi motd
+#!/bin/bash
+
+echo "
+==========================================================================
+Hello dear~! Be careful for working here as root user.
+==========================================================================
+- Hostname...........: `uname -n`
+- IP.................: `hostname -I | awk '{print $1}'`
+- Release............: `lsb_release -s -d`
+- Users..............: Currently `users | wc -w` user(s) logged on
+- Currnet user.......: `whoami`
+==========================================================================
+"
+
+또는 /etc/update-motd.d/96-custom-motd1 이와 같은 파일로 적용할 수 있다.
